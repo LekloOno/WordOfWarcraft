@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Godot", "Godot.csproj", "{7AB25014-C475-4FB0-BA40-601A78F21CDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowGd", "WowGd.csproj", "{7AB25014-C475-4FB0-BA40-601A78F21CDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,57 @@
+# Godot 4+ specific ignores
+.godot/
+.nomedia
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_credentials.cfg
+*.tmp
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+
+/android/
+.vscode
+.vs
+
+
+# .NET / ASP.NET Core
+bin/
+obj/
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+
+# Migrations snapshot build artifacts
+*.db
+*.db-shm
+*.db-wal
+
+# EF tooling temporary files
+Migrations/*.Designer.cs.bak
+
+
+# ASP.NET runtime / logs
+*.log
+logs
+
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Docker
+.env
+
+# Rust
+target/
