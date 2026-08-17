@@ -32,7 +32,7 @@ public partial class Mover : Node
 
         if (GetParent() is not Body body)
         {
-            GD.PushError($"[{nameof(Mover)}] requires a [{nameof(Body)}] parent.");
+            GD.PushError($"[{nameof(Mover)}] requires a [{nameof(BodyPhx)}] parent.");
             return;
         }
 
@@ -94,7 +94,6 @@ public partial class Mover : Node
 
     private void Unstun()
     {
-        GD.Print("unstun");
         SetPhysicsProcess(false);
         _stunned = false;
 
