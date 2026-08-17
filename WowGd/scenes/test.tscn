@@ -9,7 +9,9 @@
 [ext_resource type="Texture2D" uid="uid://c7xm7lie3s6oo" path="res://icon.svg" id="4_5jxlq"]
 [ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Input/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
+[ext_resource type="Script" uid="uid://haep2dj5gh3q" path="res://Src/Input/Debug/GameLineEdit.cs" id="8_5jxlq"]
 [ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="9_ajshl"]
+[ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="10_ghpyy"]
 [ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Input/Debug/RandomMode.cs" id="11_ajshl"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
@@ -204,6 +206,19 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3515629, 0.3515629, 0.35156286, 1)
 
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/ColorRect" unique_id=1103746866]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextEdit" type="TextEdit" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1200759941]
+custom_minimum_size = Vector2(350, 150)
+layout_mode = 2
+script = ExtResource("8_5jxlq")
+
 [node name="Debug" type="Node" parent="." unique_id=1667357618]
 
 [node name="GridKeyDbgConfig" type="Node" parent="Debug" unique_id=915393630]
@@ -223,6 +238,10 @@ _maxSpeed = 5.0
 _friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
+[node name="StandardWishDir" type="Node" parent="Player/Body/BodyMover" unique_id=2081914523]
+script = ExtResource("10_ghpyy")
+metadata/_custom_type_script = "uid://fdi60jyuew2y"
+
 [node name="CursorWishDir" type="Node" parent="Player/Body/BodyMover" unique_id=1502251497 node_paths=PackedStringArray("_body")]
 script = ExtResource("11_xrtyr")
 _body = NodePath("../..")
@@ -239,13 +258,13 @@ metadata/_custom_type_script = "uid://b1cu3p8irox5s"
 
 [node name="SwappableCursorConfirm" type="Node" parent="Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=595710127]
 script = ExtResource("14_5jxlq")
-Type = 1
 metadata/_custom_type_script = "uid://hlchubm80yhc"
 
 [node name="ModePicker" type="Node" parent="Player" unique_id=6245791]
 script = ExtResource("14_7mbro")
 metadata/_custom_type_script = "uid://c31kjrec3ir15"
 
-[node name="RandomMode" type="Node" parent="Player" unique_id=892624159]
+[node name="RandomMode" type="Node" parent="Player" unique_id=892624159 node_paths=PackedStringArray("_textEdit")]
 script = ExtResource("11_ajshl")
+_textEdit = NodePath("../../CanvasLayer/ColorRect/CenterContainer/TextEdit")
 metadata/_custom_type_script = "uid://8g48clggqvjf"

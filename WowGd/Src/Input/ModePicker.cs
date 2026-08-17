@@ -6,7 +6,7 @@ namespace WowGd.Src.Input;
 public partial class ModePicker : Node
 {   
     private IMode? _current;
-    public override void _UnhandledKeyInput(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
         if (!ModeRegistry.TryGetMode(@event, out IMode? mode))
             return;
