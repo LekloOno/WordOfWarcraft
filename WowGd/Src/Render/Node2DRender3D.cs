@@ -14,9 +14,9 @@ namespace WowGd.Src.Render;
 /// This nodes listens to the actual logic, and presents it in 3D, by binding it to an actual Node3D.
 /// </summary>
 [GlobalClass]
-public partial class Body3D : Node3D
+public partial class Node2DRender3D : Node3D
 {
-    [Export] private Body _body = null!;
+    [Export] private Node2D _node = null!;
     private Node3D _grid = null!;
 
     public override void _Ready()
@@ -27,6 +27,7 @@ public partial class Body3D : Node3D
 
     public override void _Process(double delta)
     {
-        Position = _body.GetInterpollatedPosition().ToVector3() + _grid.GlobalPosition;
+        //GD.Print(_node.Position);
+        Position = _node.Position.ToVector3() + _grid.GlobalPosition;
     }
 }

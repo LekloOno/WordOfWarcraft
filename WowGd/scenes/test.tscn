@@ -5,12 +5,18 @@
 [ext_resource type="Script" uid="uid://daypoor440fks" path="res://Src/Render/Body3D.cs" id="1_jcd4p"]
 [ext_resource type="Texture2D" uid="uid://b118doud0y232" path="res://assets/sprites/world/all_purpose_blob.png" id="2_iyx0m"]
 [ext_resource type="Texture2D" uid="uid://tqh5c10lsis5" path="res://assets/sprites/entities/dude.png" id="2_uacia"]
-[ext_resource type="Script" uid="uid://fvtkceiascyd" path="res://Src/Physics/Movement/Debug/TargetClicker.cs" id="6_yk7ts"]
+[ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="3_7yos8"]
+[ext_resource type="Texture2D" uid="uid://c7xm7lie3s6oo" path="res://icon.svg" id="4_5jxlq"]
+[ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Input/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
-[ext_resource type="Script" uid="uid://bugvlynnu3t8b" path="res://Src/Physics/Movement/Mover.cs" id="8_ghpyy"]
-[ext_resource type="Script" uid="uid://c22jyyfp8sg7w" path="res://Src/Physics/Movement/Data/DashData.cs" id="9_yk7ts"]
-[ext_resource type="Script" uid="uid://ct13vceyge8do" path="res://Src/Physics/Movement/Data/RunData.cs" id="10_ajshl"]
-[ext_resource type="Script" uid="uid://b11iw5yx802gb" path="res://Src/Physics/Movement/BodyPhx/BodyTranslator.cs" id="12_ghpyy"]
+[ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="9_ajshl"]
+[ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="10_ghpyy"]
+[ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Input/Debug/RandomMode.cs" id="11_ajshl"]
+[ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
+[ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
+[ext_resource type="Script" uid="uid://tpyk5vpm1qmm" path="res://Src/Input/Targeting/Free/Control/RelativeKeyCursorMover.cs" id="13_5jxlq"]
+[ext_resource type="Script" uid="uid://c8bv056y7nwm6" path="res://Src/Input/Targeting/Free/Confirm/CursorInputConfirm.cs" id="14_5jxlq"]
+[ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -35,22 +41,6 @@ size = Vector3(12, 8, 0.5)
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
 
-[sub_resource type="Resource" id="Resource_44saj"]
-script = ExtResource("9_yk7ts")
-MaxDistance = 1.5
-StunDuration = 0.3
-Speed = 8.0
-Acceleration = 90.0
-Deceleration = 120.0
-metadata/_custom_type_script = "uid://c22jyyfp8sg7w"
-
-[sub_resource type="Resource" id="Resource_7mbro"]
-script = ExtResource("10_ajshl")
-Speed = 2.5
-Acceleration = 40.0
-Deceleration = 70.0
-metadata/_custom_type_script = "uid://ct13vceyge8do"
-
 [node name="Node3D" type="Node3D" unique_id=230273561]
 
 [node name="Terrain" type="Node3D" parent="." unique_id=1013197777]
@@ -72,6 +62,17 @@ metadata/_custom_type_script = "uid://daypoor440fks"
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, 0)
 billboard = 1
 texture = ExtResource("2_uacia")
+
+[node name="Node2DRender3D" type="Node3D" parent="Terrain/Ground" unique_id=448805318 node_paths=PackedStringArray("_node")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 0.1, 0.19999981)
+top_level = true
+script = ExtResource("3_7yos8")
+_node = NodePath("../../../Player/Body/BodyMover/CursorWishDir/Cursor")
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Node2DRender3D" unique_id=110655466]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4901161e-08, 0.20000002)
+texture = ExtResource("4_5jxlq")
 
 [node name="Ground2" type="MeshInstance3D" parent="Terrain" unique_id=1544251900]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.1, 1)
@@ -206,11 +207,9 @@ color = Color(0.3515629, 0.3515629, 0.35156286, 1)
 
 [node name="Debug" type="Node" parent="." unique_id=1667357618]
 
-[node name="TargetClicker" type="Node" parent="Debug" unique_id=548062394 node_paths=PackedStringArray("_mover", "_grid")]
-script = ExtResource("6_yk7ts")
-_mover = NodePath("../../Player/Body/Mover")
-_grid = NodePath("../../Terrain/Ground2")
-metadata/_custom_type_script = "uid://fvtkceiascyd"
+[node name="GridKeyDbgConfig" type="Node" parent="Debug" unique_id=915393630]
+script = ExtResource("7_44saj")
+metadata/_custom_type_script = "uid://ci37j55i0s46e"
 
 [node name="Player" type="Node" parent="." unique_id=162077607]
 
@@ -218,12 +217,38 @@ metadata/_custom_type_script = "uid://fvtkceiascyd"
 script = ExtResource("7_ajshl")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 
-[node name="Mover" type="Node" parent="Player/Body" unique_id=1078304997]
-script = ExtResource("8_ghpyy")
-_dashData = SubResource("Resource_44saj")
-_runData = SubResource("Resource_7mbro")
-metadata/_custom_type_script = "uid://bugvlynnu3t8b"
+[node name="BodyMover" type="Node" parent="Player/Body" unique_id=1844309947]
+script = ExtResource("9_ajshl")
+_acceleration = 55.0
+_maxSpeed = 5.0
+_friction = 15.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
-[node name="BodyTranslator" type="Node" parent="Player/Body" unique_id=476755572]
-script = ExtResource("12_ghpyy")
-metadata/_custom_type_script = "uid://b11iw5yx802gb"
+[node name="CursorWishDir" type="Node" parent="Player/Body/BodyMover" unique_id=1502251497 node_paths=PackedStringArray("_body")]
+script = ExtResource("11_xrtyr")
+_body = NodePath("../..")
+metadata/_custom_type_script = "uid://ciu72damg3lg6"
+
+[node name="Cursor" type="Node2D" parent="Player/Body/BodyMover/CursorWishDir" unique_id=1490903261]
+script = ExtResource("12_daiq8")
+metadata/_custom_type_script = "uid://dro2y37vij5qd"
+
+[node name="RelativeKeyCursorMover" type="Node" parent="Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=1462932981]
+script = ExtResource("13_5jxlq")
+metadata/_custom_type_script = "uid://tpyk5vpm1qmm"
+
+[node name="CursorInputConfirm" type="Node" parent="Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=1129496508]
+script = ExtResource("14_5jxlq")
+metadata/_custom_type_script = "uid://c8bv056y7nwm6"
+
+[node name="StandardWishDir" type="Node" parent="Player/Body/BodyMover" unique_id=75003469]
+script = ExtResource("10_ghpyy")
+metadata/_custom_type_script = "uid://fdi60jyuew2y"
+
+[node name="ModePicker" type="Node" parent="Player" unique_id=6245791]
+script = ExtResource("14_7mbro")
+metadata/_custom_type_script = "uid://c31kjrec3ir15"
+
+[node name="RandomMode" type="Node" parent="Player" unique_id=892624159]
+script = ExtResource("11_ajshl")
+metadata/_custom_type_script = "uid://8g48clggqvjf"
