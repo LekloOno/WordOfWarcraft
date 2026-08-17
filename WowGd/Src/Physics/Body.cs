@@ -4,6 +4,16 @@ using WowGd.Src.Physics.Movement.Data;
 
 namespace WowGd.Src.Physics;
 
+/// <summary>
+/// Holds and computes the physics of a targeteable body.
+/// 
+/// That is a body that can be assigned to reach a given destination.
+/// 
+/// It's not deriving Node2D nor Node3D, as it is a pure logic Node.
+/// Representation should be handled separetely, as we're still in early prototyping phase,
+/// and don't have a fixed view on what we want the game to look like.
+/// Fully separating the logic can only be a good thing anyways.
+/// </summary>
 [GlobalClass]
 public partial class Body : Node
 {
@@ -46,6 +56,8 @@ public partial class Body : Node
             ReachedTarget?.Invoke();
     }
 
+    // This thing is WIP.
+    // The current behavior isn't ideal yet, need more accurate kinematic to avoid perpetual zoomies correction.
     public override void _PhysicsProcess(double delta)
     {
         PrevPosition = Position;

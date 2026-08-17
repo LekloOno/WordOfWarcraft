@@ -3,6 +3,17 @@ using WowGd.Src.Physics.Movement.Data;
 
 namespace WowGd.Src.Physics.Movement;
 
+/// <summary>
+/// The mover has two modes - run and dash.
+/// 
+/// Movement that are short enough are transformed into a fast and snappy dash.
+/// However, the player can't move for a brief moment after a dash. It is used to dodge or quickly reposition, not to rotate.
+/// 
+/// Below the _dashData.MaxDistance, the player moves normally.
+/// 
+/// This script also includes a little buffer mechanism.
+/// When a movement action is registered as the mover is still in a stun status, it will be buffered then sent and as soon as the stun ends.
+/// </summary>
 [GlobalClass]
 public partial class Mover : Node
 {

@@ -3,6 +3,11 @@ using WowGd.Src.Physics.General;
 
 namespace WowGd.Src.Physics.Movement.Debug;
 
+/// <summary>
+/// Just a little debug tool to quickly test the movement physics.
+/// 
+/// The real game will not be based on clicks, it was just faster to implement and test.
+/// </summary>
 [GlobalClass]
 public partial class TargetClicker : Node
 {
