@@ -38,4 +38,6 @@ public partial class StandardKeyGenerator : Node, IVec2InputGenerator
 
     public bool Enable()  => _toggle.Enable();
     public bool Disable() => _toggle.Disable();
+    public bool Enabled => _toggle.Enabled;
+    
 }

@@ -30,6 +30,8 @@ public partial class CursorWishDir : Node, IWishDir
         _cursor.Enable();
         return _toggle.Enable();
     }
+    
+    public bool Enabled => _toggle.Enabled;
 
     public Vector2 WishDir()
     {

@@ -30,6 +30,8 @@ public partial class TargetClicker : Node, IWishDir
         return true;
     }
 
+    public bool Enabled => IsProcessingUnhandledInput();
+
     public Vector2 WishDir()
     {
         Vector2 dir = _target - _body.Position;

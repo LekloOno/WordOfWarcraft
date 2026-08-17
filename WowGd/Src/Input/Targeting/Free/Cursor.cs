@@ -44,4 +44,6 @@ public partial class Cursor : Node2D, IDisablable
         ProcessMode = ProcessModeEnum.Disabled;
         return _toggle.Disable();
     }
+
+    public bool Enabled => ProcessMode == ProcessModeEnum.Inherit;
 }

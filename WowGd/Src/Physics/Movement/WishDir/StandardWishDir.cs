@@ -28,4 +28,6 @@ public partial class StandardWishDir : Node, IWishDir
     {
         return _generator.Enable();
     }
+
+    public bool Enabled => _generator.Enabled;
 }

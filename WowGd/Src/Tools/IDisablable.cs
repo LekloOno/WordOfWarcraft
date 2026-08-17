@@ -4,4 +4,5 @@ public interface IDisablable
 {
     bool Enable();
     bool Disable();
+    bool Enabled {get;}
 }

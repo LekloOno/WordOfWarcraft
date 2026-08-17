@@ -46,6 +46,7 @@ public partial class RelativeKeyGenerator : Node, IVec2InputGenerator
 
     public bool Enable()    => _toggle.Enable();
     public bool Disable()   => _toggle.Disable();
+    public bool Enabled     => _toggle.Enabled;
 
     private void ResetBuffer(bool _)
         => _buffered = false;
