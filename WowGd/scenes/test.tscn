@@ -2,7 +2,14 @@
 
 [ext_resource type="Texture2D" uid="uid://dlhqo5yeju6wj" path="res://assets/sprites/world/trees/tree_1.png" id="1_bl13t"]
 [ext_resource type="Shader" uid="uid://o1mbdritu7w5" path="res://assets/shaders/grid.gdshader" id="1_iyx0m"]
+[ext_resource type="Script" uid="uid://daypoor440fks" path="res://Src/Render/Body3D.cs" id="1_jcd4p"]
 [ext_resource type="Texture2D" uid="uid://b118doud0y232" path="res://assets/sprites/world/all_purpose_blob.png" id="2_iyx0m"]
+[ext_resource type="Texture2D" uid="uid://tqh5c10lsis5" path="res://assets/sprites/entities/dude.png" id="2_uacia"]
+[ext_resource type="Script" uid="uid://fvtkceiascyd" path="res://Src/Physics/Movement/Debug/TargetClicker.cs" id="6_yk7ts"]
+[ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
+[ext_resource type="Script" uid="uid://bugvlynnu3t8b" path="res://Src/Physics/Movement/Mover.cs" id="8_ghpyy"]
+[ext_resource type="Script" uid="uid://c22jyyfp8sg7w" path="res://Src/Physics/Movement/Data/DashData.cs" id="9_yk7ts"]
+[ext_resource type="Script" uid="uid://ct13vceyge8do" path="res://Src/Physics/Movement/Data/RunData.cs" id="10_ajshl"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -20,9 +27,27 @@ shader_parameter/line_width = 0.05
 [sub_resource type="QuadMesh" id="QuadMesh_iyx0m"]
 size = Vector2(12, 8)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_175km"]
+size = Vector3(12, 8, 0.5)
+
 [sub_resource type="Environment" id="Environment_175km"]
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
+
+[sub_resource type="Resource" id="Resource_44saj"]
+script = ExtResource("9_yk7ts")
+MaxDistance = 1.5
+Speed = 100.0
+Acceleration = 90.0
+Deceleration = 120.0
+metadata/_custom_type_script = "uid://c22jyyfp8sg7w"
+
+[sub_resource type="Resource" id="Resource_7mbro"]
+script = ExtResource("10_ajshl")
+Speed = 3.0
+Acceleration = 40.0
+Deceleration = 70.0
+metadata/_custom_type_script = "uid://ct13vceyge8do"
 
 [node name="Node3D" type="Node3D" unique_id=230273561]
 
@@ -33,10 +58,29 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 material_override = SubResource("StandardMaterial3D_74lek")
 mesh = SubResource("QuadMesh_175km")
 
+[node name="Body3D" type="Node3D" parent="Terrain/Ground" unique_id=1500607365 node_paths=PackedStringArray("_body")]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+top_level = true
+script = ExtResource("1_jcd4p")
+_body = NodePath("../../../Player/Body")
+metadata/_custom_type_script = "uid://daypoor440fks"
+
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Body3D" unique_id=2125332346]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, 0)
+billboard = 1
+texture = ExtResource("2_uacia")
+
 [node name="Ground2" type="MeshInstance3D" parent="Terrain" unique_id=1544251900]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0.1, 1)
 material_override = SubResource("ShaderMaterial_175km")
 mesh = SubResource("QuadMesh_iyx0m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Terrain/Ground2" unique_id=2033274519]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Ground2/StaticBody3D" unique_id=2054458591]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.35)
+shape = SubResource("BoxShape3D_175km")
 
 [node name="Tree2" type="Sprite3D" parent="Terrain" unique_id=1879480110]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -6.3999996, 1.5999999, -2.5)
@@ -157,3 +201,23 @@ offset_top = 432.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.3515629, 0.3515629, 0.35156286, 1)
+
+[node name="Debug" type="Node" parent="." unique_id=1667357618]
+
+[node name="TargetClicker" type="Node" parent="Debug" unique_id=548062394 node_paths=PackedStringArray("_mover", "_grid")]
+script = ExtResource("6_yk7ts")
+_mover = NodePath("../../Player/Body/Mover")
+_grid = NodePath("../../Terrain/Ground2")
+metadata/_custom_type_script = "uid://fvtkceiascyd"
+
+[node name="Player" type="Node" parent="." unique_id=162077607]
+
+[node name="Body" type="Node" parent="Player" unique_id=1943242179]
+script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="Mover" type="Node" parent="Player/Body" unique_id=1078304997]
+script = ExtResource("8_ghpyy")
+_dashData = SubResource("Resource_44saj")
+_runData = SubResource("Resource_7mbro")
+metadata/_custom_type_script = "uid://bugvlynnu3t8b"

@@ -24,6 +24,12 @@ window/stretch/aspect="expand"
 
 project/assembly_name="WowGd"
 
+[file_customization]
+
+folder_colors={
+"res://Src/": "purple"
+}
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
