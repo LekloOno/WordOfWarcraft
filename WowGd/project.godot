@@ -27,7 +27,8 @@ project/assembly_name="WowGd"
 [file_customization]
 
 folder_colors={
-"res://Src/": "purple"
+"res://Src/": "purple",
+"res://assets/": "orange"
 }
 
 [physics]
