@@ -44,6 +44,12 @@ public partial class Mover : Node
     {
         _move.Target = position;
 
+        Vector2 toTarget = _move.Target - _body.Position;
+        float d = toTarget.Length();
+        bool arrived = d < Body.ArrivalEpsilon;
+
+        if (arrived)
+            return;
         if (_stunned)
             _buffered = true;
         else

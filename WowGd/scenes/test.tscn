@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://bugvlynnu3t8b" path="res://Src/Physics/Movement/Mover.cs" id="8_ghpyy"]
 [ext_resource type="Script" uid="uid://c22jyyfp8sg7w" path="res://Src/Physics/Movement/Data/DashData.cs" id="9_yk7ts"]
 [ext_resource type="Script" uid="uid://ct13vceyge8do" path="res://Src/Physics/Movement/Data/RunData.cs" id="10_ajshl"]
-[ext_resource type="Script" uid="uid://bmawoq5sv2gy8" path="res://Src/Physics/Movement/BodyPhx/BodyAccelerator.cs" id="11_ajshl"]
 [ext_resource type="Script" uid="uid://b11iw5yx802gb" path="res://Src/Physics/Movement/BodyPhx/BodyTranslator.cs" id="12_ghpyy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
@@ -39,6 +38,7 @@ background_color = Color(0.64561886, 0.870362, 1, 1)
 [sub_resource type="Resource" id="Resource_44saj"]
 script = ExtResource("9_yk7ts")
 MaxDistance = 1.5
+StunDuration = 0.3
 Speed = 8.0
 Acceleration = 90.0
 Deceleration = 120.0
@@ -223,10 +223,6 @@ script = ExtResource("8_ghpyy")
 _dashData = SubResource("Resource_44saj")
 _runData = SubResource("Resource_7mbro")
 metadata/_custom_type_script = "uid://bugvlynnu3t8b"
-
-[node name="BodyAccelerator" type="Node" parent="Player/Body" unique_id=839382072]
-script = ExtResource("11_ajshl")
-metadata/_custom_type_script = "uid://bmawoq5sv2gy8"
 
 [node name="BodyTranslator" type="Node" parent="Player/Body" unique_id=476755572]
 script = ExtResource("12_ghpyy")
