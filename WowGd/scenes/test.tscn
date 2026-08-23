@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://dlhqo5yeju6wj" path="res://assets/sprites/world/trees/tree_1.png" id="1_bl13t"]
 [ext_resource type="Shader" uid="uid://o1mbdritu7w5" path="res://assets/shaders/grid.gdshader" id="1_iyx0m"]
-[ext_resource type="Script" uid="uid://daypoor440fks" path="res://Src/Render/Body3D.cs" id="1_jcd4p"]
 [ext_resource type="Texture2D" uid="uid://b118doud0y232" path="res://assets/sprites/world/all_purpose_blob.png" id="2_iyx0m"]
 [ext_resource type="Texture2D" uid="uid://tqh5c10lsis5" path="res://assets/sprites/entities/dude.png" id="2_uacia"]
 [ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="3_7yos8"]
@@ -52,27 +51,27 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 material_override = SubResource("StandardMaterial3D_74lek")
 mesh = SubResource("QuadMesh_175km")
 
-[node name="Body3D" type="Node3D" parent="Terrain/Ground" unique_id=1500607365 node_paths=PackedStringArray("_body")]
+[node name="Player" type="Node3D" parent="Terrain/Ground" unique_id=1523057225 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 top_level = true
-script = ExtResource("1_jcd4p")
-_body = NodePath("../../../Physics/Player/Body")
-metadata/_custom_type_script = "uid://daypoor440fks"
+script = ExtResource("3_7yos8")
+_node = NodePath("../../../Physics/Player/Body")
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
 
-[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Body3D" unique_id=2125332346]
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Player" unique_id=2125332346]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, 0)
 billboard = 1
 texture = ExtResource("2_uacia")
 
-[node name="Node2DRender3D" type="Node3D" parent="Terrain/Ground" unique_id=448805318 node_paths=PackedStringArray("_node")]
+[node name="Cursor" type="Node3D" parent="Terrain/Ground" unique_id=448805318 node_paths=PackedStringArray("_node")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 0.1, 0.19999981)
 top_level = true
 script = ExtResource("3_7yos8")
 _node = NodePath("../../../Physics/Player/Body/BodyMover/CursorWishDir/Cursor")
 metadata/_custom_type_script = "uid://r0iw0hgjbuff"
 
-[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Node2DRender3D" unique_id=110655466]
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Cursor" unique_id=110655466]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.4901161e-08, 0.20000002)
 texture = ExtResource("4_5jxlq")
 
@@ -89,103 +88,103 @@ shape = SubResource("BoxShape3D_175km")
 
 [node name="Tree2" type="Sprite3D" parent="Terrain" unique_id=1879480110]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -6.3999996, 1.5999999, -2.5)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("1_bl13t")
 
 [node name="Tree4" type="Sprite3D" parent="Terrain" unique_id=549852988]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 6.6000004, 2.1999998, -4.1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("1_bl13t")
 
 [node name="Tree3" type="Sprite3D" parent="Terrain" unique_id=339992621]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 6.6000004, 1.5999999, 3.3999999)
 modulate = Color(0.92535293, 0.9253528, 0.9253529, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("1_bl13t")
 
 [node name="Tree" type="Sprite3D" parent="Terrain" unique_id=1547253807]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -1.2999998, 1.7, 0.5999999)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("1_bl13t")
 
 [node name="Bush3" type="Sprite3D" parent="Terrain" unique_id=739716644]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.6999999, 0.39999998, 1.7)
 modulate = Color(0.4108109, 0.7113688, 0.40181136, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush4" type="Sprite3D" parent="Terrain" unique_id=1059637074]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -1.9999999, 0.39999998, -3.2)
 modulate = Color(0.34657735, 0.61132216, 0.3364663, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush2" type="Sprite3D" parent="Terrain" unique_id=594869457]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2, 0.39999998, 1.3000001)
 modulate = Color(0.3317085, 0.7279724, 0.32756048, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush5" type="Sprite3D" parent="Terrain" unique_id=404990658]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 2.3, 0.39999998, 2.4)
 modulate = Color(0.39155024, 0.7665795, 0.39683557, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush" type="Sprite3D" parent="Terrain" unique_id=1766717020]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4000002, 0.39999998, 2.2000003)
 modulate = Color(0.4070153, 0.6533228, 0.2988561, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush6" type="Sprite3D" parent="Terrain" unique_id=197191922]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, 0.39999998, -1.3999997)
 modulate = Color(0.4070153, 0.6533228, 0.2988561, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock" type="Sprite3D" parent="Terrain" unique_id=1590277796]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 5.3, 0.39999998, -2.6000001)
 modulate = Color(0.6255971, 0.6255971, 0.6255971, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock4" type="Sprite3D" parent="Terrain" unique_id=1119622648]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.3000002, 0.39999998, -2.6000001)
 modulate = Color(0.6255971, 0.6255971, 0.6255971, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock2" type="Sprite3D" parent="Terrain" unique_id=855985598]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 7.3, 0.59999996, -4.1)
 modulate = Color(0.59313357, 0.5931336, 0.5931334, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock5" type="Sprite3D" parent="Terrain" unique_id=579919330]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -3.6999998, 0.99999994, -4.2999997)
 modulate = Color(0.7204674, 0.7204675, 0.7204674, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock3" type="Sprite3D" parent="Terrain" unique_id=1055022399]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -6.7, 0.9, -2.6999998)
 modulate = Color(0.5370113, 0.5370113, 0.5370113, 1)
-billboard = 1
+billboard = 2
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
@@ -236,9 +235,8 @@ metadata/_custom_type_script = "uid://ci37j55i0s46e"
 
 [node name="Player" type="Node" parent="Physics" unique_id=162077607]
 
-[node name="Body" type="Node" parent="Physics/Player" unique_id=1943242179]
+[node name="Body" type="Node2D" parent="Physics/Player" unique_id=1512090276]
 script = ExtResource("7_ajshl")
-metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 
 [node name="BodyMover" type="Node" parent="Physics/Player/Body" unique_id=1844309947]
 script = ExtResource("9_ajshl")
@@ -251,9 +249,8 @@ metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 script = ExtResource("12_c6rvn")
 metadata/_custom_type_script = "uid://fdi60jyuew2y"
 
-[node name="CursorWishDir" type="Node" parent="Physics/Player/Body/BodyMover" unique_id=1502251497 node_paths=PackedStringArray("_body")]
+[node name="CursorWishDir" type="Node" parent="Physics/Player/Body/BodyMover" unique_id=1502251497]
 script = ExtResource("11_xrtyr")
-_body = NodePath("../..")
 metadata/_custom_type_script = "uid://ciu72damg3lg6"
 
 [node name="Cursor" type="Node2D" parent="Physics/Player/Body/BodyMover/CursorWishDir" unique_id=1490903261]
@@ -284,6 +281,7 @@ script = ExtResource("19_daiq8")
 _bodyMover = NodePath("../Player/Body/BodyMover")
 _inDelay = 0.1
 _outDelay = 0.8
-_distance = 2.5
+_maxWishDirVel = 2.5
+_distance = 1.0
 _velDamping = 10.0
 metadata/_custom_type_script = "uid://cq7uydnmbvtkv"

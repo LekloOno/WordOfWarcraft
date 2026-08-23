@@ -12,6 +12,6 @@ public partial class BodyFollower : Node2D
 
     public override void _Process(double delta)
     {
-        Position = Position.ProcessLerp(_body.GetInterpollatedPosition(), _lerpSpeed, (float) delta);
+        Position = Position.ProcessLerp(_body.Position, _lerpSpeed, (float)delta);
     }
 }
