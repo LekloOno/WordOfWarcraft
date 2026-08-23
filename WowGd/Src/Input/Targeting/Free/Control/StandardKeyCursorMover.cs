@@ -15,9 +15,6 @@ public partial class StandardKeyCursorMover : CursorMover<StandardKeyGenerator>
     public override void _PhysicsProcess(double delta)
     {
         if (_generator.Retrieve(out Vector2 wishDir))
-        {
-            GD.Print(wishDir);
             _cursor.Position += wishDir * _cursorSpeed * (float) delta;
-        }
     }
 }

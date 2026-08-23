@@ -15,6 +15,9 @@ public partial class BodyMover : Node, IMode
     private Body _body = null!;
     private IWishDir _wishDir = null!;
 
+    public Vector2 CurrentWishDir {get; private set;}
+    public Body Body => _body;
+
     public override void _Ready()
     {
         if (!this.TryGetComposed(out Body? body))
@@ -33,19 +36,19 @@ public partial class BodyMover : Node, IMode
     {
         float dt = (float) delta;
 
-        Vector2 wishDir = _wishDir.WishDir();
+        CurrentWishDir = _wishDir.WishDir();
 
-        float currentSpeed = _body.Velocity.Dot(wishDir);
+        float currentSpeed = _body.Velocity.Dot(CurrentWishDir);
         float t = Mathf.Clamp(currentSpeed / _maxSpeed, 0f, 1f);
         float accelThisFrame = _acceleration * (1f - t) * dt; 
-        _body.Velocity += accelThisFrame * wishDir;
+        _body.Velocity += accelThisFrame * CurrentWishDir;
 
         Vector2 drag = -_friction * _body.Velocity;
 
-        if (wishDir != Vector2.Zero)
+        if (CurrentWishDir != Vector2.Zero)
         {
-            float communeDrag = Mathf.Max(0, drag.Dot(-wishDir));
-            drag += communeDrag * wishDir;
+            float communeDrag = Mathf.Max(0, drag.Dot(-CurrentWishDir));
+            drag += communeDrag * CurrentWishDir;
         }
 
         _body.Velocity += drag * dt;

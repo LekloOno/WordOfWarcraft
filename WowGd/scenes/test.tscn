@@ -11,13 +11,14 @@
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
 [ext_resource type="Script" uid="uid://haep2dj5gh3q" path="res://Src/Input/Debug/GameLineEdit.cs" id="8_5jxlq"]
 [ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="9_ajshl"]
-[ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="10_ghpyy"]
 [ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Input/Debug/RandomMode.cs" id="11_ajshl"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
+[ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="12_c6rvn"]
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
 [ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="13_5jxlq"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="14_5jxlq"]
 [ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
+[ext_resource type="Script" uid="uid://cq7uydnmbvtkv" path="res://Src/Render/Camera/BodyWishDirPredictor.cs" id="19_daiq8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -56,7 +57,7 @@ physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 top_level = true
 script = ExtResource("1_jcd4p")
-_body = NodePath("../../../Player/Body")
+_body = NodePath("../../../Physics/Player/Body")
 metadata/_custom_type_script = "uid://daypoor440fks"
 
 [node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Body3D" unique_id=2125332346]
@@ -68,7 +69,7 @@ texture = ExtResource("2_uacia")
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 0.1, 0.19999981)
 top_level = true
 script = ExtResource("3_7yos8")
-_node = NodePath("../../../Player/Body/BodyMover/CursorWishDir/Cursor")
+_node = NodePath("../../../Physics/Player/Body/BodyMover/CursorWishDir/Cursor")
 metadata/_custom_type_script = "uid://r0iw0hgjbuff"
 
 [node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Node2DRender3D" unique_id=110655466]
@@ -188,8 +189,14 @@ billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1889835405]
-transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.5735765, 0, -0.5735765, 0.81915206, 0, 4.6999993, 9.8)
+[node name="Node2DRender3D" type="Node3D" parent="." unique_id=1480775654 node_paths=PackedStringArray("_node")]
+transform = Transform3D(1, 0, 0, 0, 1, -2.9802322e-08, 0, 2.9802322e-08, 1, 0, 4.7683716e-07, 3.000001)
+script = ExtResource("3_7yos8")
+_node = NodePath("../Physics/BodyWishDirPredictor")
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Camera3D" type="Camera3D" parent="Node2DRender3D" unique_id=1889835405]
+transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.5735765, 0, -0.5735765, 0.81915206, 0, 4.7, 7.799999)
 fov = 60.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=839505643]
@@ -225,46 +232,58 @@ script = ExtResource("8_5jxlq")
 script = ExtResource("7_44saj")
 metadata/_custom_type_script = "uid://ci37j55i0s46e"
 
-[node name="Player" type="Node" parent="." unique_id=162077607]
+[node name="Physics" type="Node" parent="." unique_id=1058930856]
 
-[node name="Body" type="Node" parent="Player" unique_id=1943242179]
+[node name="Player" type="Node" parent="Physics" unique_id=162077607]
+
+[node name="Body" type="Node" parent="Physics/Player" unique_id=1943242179]
 script = ExtResource("7_ajshl")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 
-[node name="BodyMover" type="Node" parent="Player/Body" unique_id=1844309947]
+[node name="BodyMover" type="Node" parent="Physics/Player/Body" unique_id=1844309947]
 script = ExtResource("9_ajshl")
 _acceleration = 55.0
 _maxSpeed = 5.0
 _friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
-[node name="StandardWishDir" type="Node" parent="Player/Body/BodyMover" unique_id=2081914523]
-script = ExtResource("10_ghpyy")
+[node name="StandardWishDir" type="Node" parent="Physics/Player/Body/BodyMover" unique_id=1727349880]
+script = ExtResource("12_c6rvn")
 metadata/_custom_type_script = "uid://fdi60jyuew2y"
 
-[node name="CursorWishDir" type="Node" parent="Player/Body/BodyMover" unique_id=1502251497 node_paths=PackedStringArray("_body")]
+[node name="CursorWishDir" type="Node" parent="Physics/Player/Body/BodyMover" unique_id=1502251497 node_paths=PackedStringArray("_body")]
 script = ExtResource("11_xrtyr")
 _body = NodePath("../..")
 metadata/_custom_type_script = "uid://ciu72damg3lg6"
 
-[node name="Cursor" type="Node2D" parent="Player/Body/BodyMover/CursorWishDir" unique_id=1490903261]
+[node name="Cursor" type="Node2D" parent="Physics/Player/Body/BodyMover/CursorWishDir" unique_id=1490903261]
 script = ExtResource("12_daiq8")
 metadata/_custom_type_script = "uid://dro2y37vij5qd"
 
-[node name="SwappableCursorMover" type="Node" parent="Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=2121452702]
+[node name="SwappableCursorMover" type="Node" parent="Physics/Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=2121452702]
 script = ExtResource("13_5jxlq")
 Type = 1
 metadata/_custom_type_script = "uid://b1cu3p8irox5s"
 
-[node name="SwappableCursorConfirm" type="Node" parent="Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=595710127]
+[node name="SwappableCursorConfirm" type="Node" parent="Physics/Player/Body/BodyMover/CursorWishDir/Cursor" unique_id=595710127]
 script = ExtResource("14_5jxlq")
+Type = 1
 metadata/_custom_type_script = "uid://hlchubm80yhc"
 
-[node name="ModePicker" type="Node" parent="Player" unique_id=6245791]
+[node name="ModePicker" type="Node" parent="Physics/Player" unique_id=6245791]
 script = ExtResource("14_7mbro")
 metadata/_custom_type_script = "uid://c31kjrec3ir15"
 
-[node name="RandomMode" type="Node" parent="Player" unique_id=892624159 node_paths=PackedStringArray("_textEdit")]
+[node name="RandomMode" type="Node" parent="Physics/Player" unique_id=892624159 node_paths=PackedStringArray("_textEdit")]
 script = ExtResource("11_ajshl")
-_textEdit = NodePath("../../CanvasLayer/ColorRect/CenterContainer/TextEdit")
+_textEdit = NodePath("../../../CanvasLayer/ColorRect/CenterContainer/TextEdit")
 metadata/_custom_type_script = "uid://8g48clggqvjf"
+
+[node name="BodyWishDirPredictor" type="Node2D" parent="Physics" unique_id=1854550123 node_paths=PackedStringArray("_bodyMover")]
+script = ExtResource("19_daiq8")
+_bodyMover = NodePath("../Player/Body/BodyMover")
+_inDelay = 0.1
+_outDelay = 0.8
+_distance = 2.5
+_velDamping = 10.0
+metadata/_custom_type_script = "uid://cq7uydnmbvtkv"
