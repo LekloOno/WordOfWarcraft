@@ -9,7 +9,7 @@ public partial class RandomMode : Node, IMode
 
     public override void _Ready()
     {
-        ModeRegistry.Register(Key.Z, this);
+        ModeRegistry.Register(Key.K, this);
     }
 
     public bool Disable()

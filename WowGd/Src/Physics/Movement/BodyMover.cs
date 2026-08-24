@@ -26,7 +26,7 @@ public partial class BodyMover : Node, IMode
         if (!this.TryGetComponent(out IWishDir? wishDir))
             return;
 
-        ModeRegistry.Register(Key.A, this);
+        ModeRegistry.Register(Key.J, this);
 
         _body = body;
         _wishDir = wishDir;

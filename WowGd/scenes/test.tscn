@@ -255,7 +255,7 @@ script = ExtResource("7_ajshl")
 [node name="BodyMover" type="Node" parent="Physics/Player/Body" unique_id=1844309947]
 script = ExtResource("9_ajshl")
 _acceleration = 55.0
-_maxSpeed = 8.0
+_maxSpeed = 6.0
 _friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
