@@ -21,6 +21,8 @@
 [ext_resource type="Script" uid="uid://bmetkgh2bcqgr" path="res://Src/Entities/BasicBot/FollowerWishDir.cs" id="13_kay4s"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="14_5jxlq"]
 [ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
+[ext_resource type="Script" uid="uid://7buc4meflsqr" path="res://Src/Entities/BasicBot/TargetAcquirer.cs" id="14_y81of"]
+[ext_resource type="Script" uid="uid://14ici7sfka52" path="res://Src/Entities/BasicBot/BasicAttack.cs" id="15_gsk6d"]
 [ext_resource type="Script" uid="uid://4ruoe347w3ap" path="res://Src/Input/ModeInitializer.cs" id="18_gm488"]
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
 [ext_resource type="Script" uid="uid://dim1tr0x143dg" path="res://Src/Combat/Health/HealthHandlers/MoverHealthHandler.cs" id="19_si7kk"]
@@ -315,8 +317,16 @@ metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="FollowerWishDir" type="Node" parent="Physics/Entity/BodyMover" unique_id=1889443656]
 script = ExtResource("13_kay4s")
-_targetTeamMask = 1
 metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="TargetAcquirer" type="Node" parent="Physics/Entity" unique_id=522172015]
+script = ExtResource("14_y81of")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://7buc4meflsqr"
+
+[node name="BasicAttack" type="Node" parent="Physics/Entity" unique_id=1610089465]
+script = ExtResource("15_gsk6d")
+metadata/_custom_type_script = "uid://14ici7sfka52"
 
 [node name="Entity2" type="Node" parent="Physics" unique_id=829405404]
 script = ExtResource("10_pn65j")
@@ -336,8 +346,16 @@ metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="FollowerWishDir" type="Node" parent="Physics/Entity2/BodyMover" unique_id=941719733]
 script = ExtResource("13_kay4s")
-_targetTeamMask = 1
 metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="TargetAcquirer" type="Node" parent="Physics/Entity2" unique_id=1382993694]
+script = ExtResource("14_y81of")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://7buc4meflsqr"
+
+[node name="BasicAttack" type="Node" parent="Physics/Entity2" unique_id=1061367720]
+script = ExtResource("15_gsk6d")
+metadata/_custom_type_script = "uid://14ici7sfka52"
 
 [node name="Entity3" type="Node" parent="Physics" unique_id=277453397]
 script = ExtResource("10_pn65j")
@@ -357,8 +375,16 @@ metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="FollowerWishDir" type="Node" parent="Physics/Entity3/BodyMover" unique_id=352348688]
 script = ExtResource("13_kay4s")
-_targetTeamMask = 1
 metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="TargetAcquirer" type="Node" parent="Physics/Entity3" unique_id=736024440]
+script = ExtResource("14_y81of")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://7buc4meflsqr"
+
+[node name="BasicAttack" type="Node" parent="Physics/Entity3" unique_id=499925992]
+script = ExtResource("15_gsk6d")
+metadata/_custom_type_script = "uid://14ici7sfka52"
 
 [node name="Player" type="Node" parent="Physics" unique_id=162077607]
 script = ExtResource("10_pn65j")
