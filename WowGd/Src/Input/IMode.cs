@@ -1,8 +1,10 @@
 
+using WowGd.Src.Tools;
+
 namespace WowGd.Src.Input;
 
-public interface IMode
+public interface IMode : IDisablable
 {
-    bool Enable();
-    bool Disable();
+    bool Activate();
+    bool Deactivate();
 }

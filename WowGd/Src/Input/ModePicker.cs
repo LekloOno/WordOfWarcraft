@@ -6,16 +6,36 @@ namespace WowGd.Src.Input;
 public partial class ModePicker : Node
 {   
     private IMode? _current;
+
+    public override void _Ready()
+    {
+        _current?.Activate();
+    }
+
     public override void _Input(InputEvent @event)
     {
         if (!ModeRegistry.TryGetMode(@event, out IMode? mode))
             return;
 
-        if (_current == mode)
-            return;
+        Select(mode);
+    }
 
-        _current?.Disable();
+    public bool Select(IMode mode)
+    {
+        if (_current == mode)
+            return true;
+
+        _current?.Deactivate();
+
+        if (!mode.Activate())
+            return false;
+
         _current = mode;
-        _current.Enable();
+        return true;
+    }
+
+    public void Preselect(IMode mode)
+    {
+        _current = mode;
     }
 }

@@ -3,7 +3,7 @@ using WowGd.Src.Tools;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Physics;
 
-namespace WowGd.Src.Input.Debug;
+namespace WowGd.Src.Debug;
 
 /// <summary>
 /// Just a little debug tool to quickly test the movement physics.

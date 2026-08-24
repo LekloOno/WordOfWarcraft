@@ -1,6 +1,6 @@
 using Godot;
 
-namespace WowGd.Src.Input.Debug;
+namespace WowGd.Src.Debug;
 
 public partial class GameLineEdit : TextEdit
 {

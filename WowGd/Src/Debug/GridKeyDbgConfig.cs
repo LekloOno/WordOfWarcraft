@@ -1,7 +1,7 @@
 using Godot;
 using WowGd.Src.Input.Targeting.Free;
 
-namespace WowGd.Src.Input.Debug;
+namespace WowGd.Src.Debug;
 
 [GlobalClass]
 public partial class GridKeyDbgConfig : Node
