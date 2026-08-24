@@ -17,7 +17,9 @@
 [ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="13_5jxlq"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="14_5jxlq"]
 [ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
+[ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
 [ext_resource type="Script" uid="uid://cq7uydnmbvtkv" path="res://Src/Render/Camera/BodyWishDirPredictor.cs" id="19_daiq8"]
+[ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -41,6 +43,18 @@ size = Vector3(12, 8, 0.5)
 [sub_resource type="Environment" id="Environment_175km"]
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
+
+[sub_resource type="Resource" id="Resource_n74k2"]
+script = ExtResource("20_n74k2")
+Speed = 20.0
+VelDamping = 50.0
+metadata/_custom_type_script = "uid://cxvoblnwrx032"
+
+[sub_resource type="Resource" id="Resource_pn65j"]
+script = ExtResource("20_n74k2")
+Speed = 2.5
+VelDamping = 6.0
+metadata/_custom_type_script = "uid://cxvoblnwrx032"
 
 [node name="Node3D" type="Node3D" unique_id=230273561]
 
@@ -191,11 +205,11 @@ texture = ExtResource("2_iyx0m")
 [node name="Node2DRender3D" type="Node3D" parent="." unique_id=1480775654 node_paths=PackedStringArray("_node")]
 transform = Transform3D(1, 0, 0, 0, 1, -2.9802322e-08, 0, 2.9802322e-08, 1, 0, 4.7683716e-07, 3.000001)
 script = ExtResource("3_7yos8")
-_node = NodePath("../Physics/BodyWishDirPredictor")
+_node = NodePath("../Physics/RadiusFollower")
 metadata/_custom_type_script = "uid://r0iw0hgjbuff"
 
 [node name="Camera3D" type="Camera3D" parent="Node2DRender3D" unique_id=1889835405]
-transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.5735765, 0, -0.5735765, 0.81915206, 0, 4.7, 7.799999)
+transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.5735765, 0, -0.5735765, 0.81915206, 0, 6.700001, 10.799999)
 fov = 60.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=839505643]
@@ -241,7 +255,7 @@ script = ExtResource("7_ajshl")
 [node name="BodyMover" type="Node" parent="Physics/Player/Body" unique_id=1844309947]
 script = ExtResource("9_ajshl")
 _acceleration = 55.0
-_maxSpeed = 5.0
+_maxSpeed = 8.0
 _friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
@@ -285,3 +299,13 @@ _maxWishDirVel = 2.5
 _distance = 1.0
 _velDamping = 10.0
 metadata/_custom_type_script = "uid://cq7uydnmbvtkv"
+
+[node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
+script = ExtResource("19_c6rvn")
+_radius = 0.85
+_lookTriggerRadius = 0.7
+_lookDistance = 1.2
+CenterVelDamperData = SubResource("Resource_n74k2")
+LookVelDamperData = SubResource("Resource_pn65j")
+_node = NodePath("../Player/Body")
+metadata/_custom_type_script = "uid://yu3jttiip8tv"
