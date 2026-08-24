@@ -1,21 +1,35 @@
 using Godot;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Entities.Health;
-using WowGd.Src.Physics.Movement;
+using WowGd.Src.Physics;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Entities;
 
 [GlobalClass]
-public partial class Entity : Node
+public partial class Entity : Node, IEntity
 {
+    [Export(PropertyHint.Layers2DPhysics)] public uint TeamMask {get; private set;}
+
+    public Body Body {get; private set;} = null!;
     private IEntityHealth _health = EnvironmentHealth.Instance;
+
     public override void _Ready()
     {
         FetchBaseComponents();
 
         foreach (Node child in GetChildren())
             InitComponent(child);
+    }
+
+    public override void _EnterTree()
+    {
+        EntitiesRegistry.Register(this);
+    }
+
+    public override void _ExitTree()
+    {
+        EntitiesRegistry.Unregister(this);
     }
 
     private void FetchBaseComponents()
@@ -25,6 +39,9 @@ public partial class Entity : Node
             _health = health;
             _health.Resurrect();
         }
+
+        if (this.TryGetComponent(out Body? body))
+            Body = body;
     }
 
     private void InitComponent(Node child)

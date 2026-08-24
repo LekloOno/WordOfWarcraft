@@ -1,12 +1,11 @@
 using Godot;
-using WowGd.Src.Input;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement;
 
 [GlobalClass]
-public partial class BodyMover : Node, IMode
+public partial class BodyMover : Node
 {
 	[Export] private float _acceleration;
 	[Export] private float _maxSpeed;
@@ -19,8 +18,7 @@ public partial class BodyMover : Node, IMode
 	public Body Body => _body;
 
 	public bool Enabled => _enabled;
-	private bool _enabled = true;
-	private bool _active  = false;
+	private bool _enabled = false;
 
 	public override void _Ready()
 	{
@@ -29,8 +27,6 @@ public partial class BodyMover : Node, IMode
 
 		if (!this.TryGetComponent(out IWishDir? wishDir))
 			return;
-
-		ModeRegistry.Register(Key.J, this);
 
 		_body = body;
 		_wishDir = wishDir;
@@ -58,14 +54,8 @@ public partial class BodyMover : Node, IMode
 		_body.Velocity += drag * dt;
 	}
 
-	public bool Activate() =>
-		DisableExt.IndempActivate(ref _active, _enabled, () => _wishDir.Enable());
-
-	public bool Deactivate() =>
-		DisableExt.IndempDeactivate(ref _active, _enabled, () => _wishDir.Disable());
-
 	public bool Enable() =>
-		DisableExt.IndempEnableActivable(ref _enabled, _active, () => _wishDir.Enable());
+		DisableExt.IndempEnable(ref _enabled, () => _wishDir.Enable());
 
 	public bool Disable() =>
 		DisableExt.IndempDisable(ref _enabled, () => _wishDir.Disable());

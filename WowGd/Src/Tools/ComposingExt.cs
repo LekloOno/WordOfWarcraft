@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
 
@@ -16,6 +17,25 @@ public static class ComposingExt
 
         composed = p;
         return true;
+    }
+
+    public static bool TryGetComposedRecursive<T>(this Node self, [NotNullWhen(true)] out T? composed)
+    {
+        Node? current = self;
+
+        do
+        {
+            current = current.GetParent();
+            if (current is T p)
+            {
+                composed = p;
+                return true;
+            }
+        } while(current is not null);
+
+        composed = default;
+        GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] parent.");
+        return false;
     }
 
     public static bool TryGetComponent<T>(this Node self, [NotNullWhen(true)] out T? component)

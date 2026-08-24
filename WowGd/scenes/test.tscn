@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="12_c6rvn"]
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
 [ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="13_5jxlq"]
+[ext_resource type="Script" uid="uid://bmetkgh2bcqgr" path="res://Src/Entities/BasicBot/FollowerWishDir.cs" id="13_kay4s"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="14_5jxlq"]
 [ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
 [ext_resource type="Script" uid="uid://4ruoe347w3ap" path="res://Src/Input/ModeInitializer.cs" id="18_gm488"]
@@ -25,6 +26,7 @@
 [ext_resource type="Script" uid="uid://dim1tr0x143dg" path="res://Src/Combat/Health/HealthHandlers/MoverHealthHandler.cs" id="19_si7kk"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://dpe0v5mdqgxk" path="res://Src/Combat/Health/HealthHandlers/RandomModeHealthHandler.cs" id="22_5f8cm"]
+[ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="25_j7bvy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -80,6 +82,45 @@ metadata/_custom_type_script = "uid://r0iw0hgjbuff"
 
 [node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Player" unique_id=2125332346]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, 0)
+billboard = 1
+texture = ExtResource("2_uacia")
+
+[node name="Monster" type="Node3D" parent="Terrain/Ground" unique_id=1288939886 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
+top_level = true
+script = ExtResource("3_7yos8")
+_node = NodePath("../../../Physics/Entity/Body")
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Monster" unique_id=1234088021]
+transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, 0.3, 0)
+billboard = 1
+texture = ExtResource("2_uacia")
+
+[node name="Monster2" type="Node3D" parent="Terrain/Ground" unique_id=582091057 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
+top_level = true
+script = ExtResource("3_7yos8")
+_node = NodePath("../../../Physics/Entity2/Body")
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Monster2" unique_id=1437733180]
+transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, 0.3, 0)
+billboard = 1
+texture = ExtResource("2_uacia")
+
+[node name="Monster3" type="Node3D" parent="Terrain/Ground" unique_id=478747241 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
+top_level = true
+script = ExtResource("3_7yos8")
+_node = NodePath("../../../Physics/Entity3/Body")
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Monster3" unique_id=1521537059]
+transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, 0.3, 0)
 billboard = 1
 texture = ExtResource("2_uacia")
 
@@ -256,8 +297,72 @@ metadata/_custom_type_script = "uid://bl5jmlur1ki7n"
 
 [node name="Physics" type="Node" parent="." unique_id=1058930856]
 
+[node name="Entity" type="Node" parent="Physics" unique_id=89603445]
+script = ExtResource("10_pn65j")
+metadata/_custom_type_script = "uid://cfm24npuh7ybu"
+
+[node name="Body" type="Node2D" parent="Physics/Entity" unique_id=634919825]
+position = Vector2(0, -17.74)
+script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="BodyMover" type="Node" parent="Physics/Entity" unique_id=1554230232]
+script = ExtResource("9_ajshl")
+_acceleration = 20.0
+_maxSpeed = 4.0
+_friction = 9.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="FollowerWishDir" type="Node" parent="Physics/Entity/BodyMover" unique_id=1889443656]
+script = ExtResource("13_kay4s")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="Entity2" type="Node" parent="Physics" unique_id=829405404]
+script = ExtResource("10_pn65j")
+metadata/_custom_type_script = "uid://cfm24npuh7ybu"
+
+[node name="Body" type="Node2D" parent="Physics/Entity2" unique_id=1964881177]
+position = Vector2(19.095, -11.075)
+script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="BodyMover" type="Node" parent="Physics/Entity2" unique_id=2140389682]
+script = ExtResource("9_ajshl")
+_acceleration = 20.0
+_maxSpeed = 4.0
+_friction = 9.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="FollowerWishDir" type="Node" parent="Physics/Entity2/BodyMover" unique_id=941719733]
+script = ExtResource("13_kay4s")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="Entity3" type="Node" parent="Physics" unique_id=277453397]
+script = ExtResource("10_pn65j")
+metadata/_custom_type_script = "uid://cfm24npuh7ybu"
+
+[node name="Body" type="Node2D" parent="Physics/Entity3" unique_id=195826170]
+position = Vector2(-14.085, -8.09)
+script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="BodyMover" type="Node" parent="Physics/Entity3" unique_id=311588086]
+script = ExtResource("9_ajshl")
+_acceleration = 20.0
+_maxSpeed = 4.0
+_friction = 9.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="FollowerWishDir" type="Node" parent="Physics/Entity3/BodyMover" unique_id=352348688]
+script = ExtResource("13_kay4s")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
 [node name="Player" type="Node" parent="Physics" unique_id=162077607]
 script = ExtResource("10_pn65j")
+TeamMask = 1
 
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")
@@ -292,13 +397,17 @@ script = ExtResource("14_5jxlq")
 Type = 1
 metadata/_custom_type_script = "uid://hlchubm80yhc"
 
-[node name="ModeInitializer" type="Node" parent="Physics/Player/BodyMover" unique_id=2023048388 node_paths=PackedStringArray("_picker")]
+[node name="Body" type="Node2D" parent="Physics/Player" unique_id=1512090276]
+script = ExtResource("7_ajshl")
+
+[node name="MoveMode" type="Node" parent="Physics/Player" unique_id=1160715641]
+script = ExtResource("25_j7bvy")
+metadata/_custom_type_script = "uid://pux5ejw5b5kx"
+
+[node name="ModeInitializer" type="Node" parent="Physics/Player/MoveMode" unique_id=2023048388 node_paths=PackedStringArray("_picker")]
 script = ExtResource("18_gm488")
 _picker = NodePath("../../ModePicker")
 metadata/_custom_type_script = "uid://4ruoe347w3ap"
-
-[node name="Body" type="Node2D" parent="Physics/Player" unique_id=1512090276]
-script = ExtResource("7_ajshl")
 
 [node name="ModePicker" type="Node" parent="Physics/Player" unique_id=6245791]
 script = ExtResource("14_7mbro")
