@@ -117,7 +117,7 @@ texture_filter = 0
 texture = ExtResource("1_bl13t")
 
 [node name="Tree4" type="Sprite3D" parent="Terrain" unique_id=549852988]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 6.6000004, 2.1999998, -4.1)
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 6.6000004, 2.1999998, -3.5)
 billboard = 2
 texture_filter = 0
 texture = ExtResource("1_bl13t")

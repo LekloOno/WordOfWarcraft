@@ -1,5 +1,3 @@
-
-using System;
 using Godot;
 using WowGd.Src.Input.Generators;
 using WowGd.Src.Tools;

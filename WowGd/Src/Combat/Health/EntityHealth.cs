@@ -6,14 +6,14 @@ namespace WowGd.Src.Combat.Health;
 [GlobalClass]
 public partial class EntityHealth : Node, IEntityHealth
 {
-    [Export] public int HitPoints { get; private set; } = 50;
+    [Export] public int MaxHps { get; private set; } = 50;
 
     public event Action<int>?   Damaged;
     public event Action<int>?   Healed;
     public event Action?        Died;
     public event Action<int>?   Resurrected;
 
-    public int Current { get; private set; }
+    public int CurrentHps { get; private set; }
 
     public bool Resurrect(int? hp = null)
     {
@@ -21,16 +21,17 @@ public partial class EntityHealth : Node, IEntityHealth
         if (!dead)
             return false;
 
-        hp ??= HitPoints;
-        Current = (int)hp;
+        hp ??= MaxHps;
+        CurrentHps = (int)hp;
 
-        Resurrected?.Invoke(Current);
+        Resurrected?.Invoke(CurrentHps);
+
         return true;
     }
 
     public bool Damage(int hp)
     {
-        Current -= hp;
+        CurrentHps -= hp;
         Damaged?.Invoke(hp);
 
         bool dead = Dead();
@@ -45,12 +46,12 @@ public partial class EntityHealth : Node, IEntityHealth
         if (Dead())
             return true;
 
-        int max  = HitPoints - Current;
+        int max  = MaxHps - CurrentHps;
         int heal = Math.Min(max, hp);
-        Current += heal;
+        CurrentHps += heal;
         Healed?.Invoke(hp);
         return false;
     }
 
-    public bool Dead() => Current <= 0;
+    public bool Dead() => CurrentHps <= 0;
 }

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using WowGd.Src.Combat.Health;
 using WowGd.Src.Entities;
-using WowGd.Src.Entities.Health;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Debug;

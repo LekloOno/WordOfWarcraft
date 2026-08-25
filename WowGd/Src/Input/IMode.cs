@@ -1,4 +1,3 @@
-
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Input;

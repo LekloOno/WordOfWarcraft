@@ -1,5 +1,4 @@
 using Godot;
-using WowGd.Src.Entities.Health;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Health.Handlers;

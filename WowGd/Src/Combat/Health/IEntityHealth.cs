@@ -4,8 +4,8 @@ namespace WowGd.Src.Combat.Health;
 
 public interface IEntityHealth
 {
-    int HitPoints   {get;}
-    int Current     {get;}
+    int MaxHps   {get;}
+    int CurrentHps     {get;}
 
     event Action<int>?  Damaged;
     event Action<int>?  Healed;

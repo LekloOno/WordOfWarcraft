@@ -1,4 +1,3 @@
-
 using Godot;
 using WowGd.Src.Tools;
 

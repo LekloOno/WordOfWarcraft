@@ -6,8 +6,8 @@ public class EnvironmentHealth : IEntityHealth
 {
     public readonly static EnvironmentHealth Instance = new();
 
-    public int HitPoints => 0;
-    public int Current => 0;
+    public int MaxHps => 0;
+    public int CurrentHps => 0;
 
     public event Action<int>?   Damaged;
     public event Action<int>?   Healed;

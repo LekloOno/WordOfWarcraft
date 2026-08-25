@@ -1,6 +1,5 @@
 using Godot;
 using WowGd.Src.Input.Generators;
-using WowGd.Src.Tools;
 
 namespace WowGd.Src.Input.Targeting.Free.Control;
 

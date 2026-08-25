@@ -1,4 +1,4 @@
-namespace WowGd.Src.Entities.Health;
+namespace WowGd.Src.Combat.Health;
 
 public interface IEntityHealthHandler
 {

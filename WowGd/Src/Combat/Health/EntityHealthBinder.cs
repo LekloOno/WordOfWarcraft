@@ -1,5 +1,3 @@
-using WowGd.Src.Entities.Health;
-
 namespace WowGd.Src.Combat.Health;
 
 /// <summary>

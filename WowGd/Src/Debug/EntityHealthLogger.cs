@@ -1,6 +1,5 @@
 using Godot;
 using WowGd.Src.Combat.Health;
-using WowGd.Src.Entities.Health;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Debug;
@@ -18,7 +17,7 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
 
     public void OnDamaged(int hp)
     {
-		GD.Print($"Hit sent !\t {_health.Current} (-{hp})");
+		GD.Print($"Hit sent !\t {_health.CurrentHps} (-{hp})");
     }
 
     public void OnDied()
@@ -28,11 +27,11 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
 
     public void OnHealed(int hp)
     {
-        GD.Print($"Healed !\t {_health.Current} (+{hp})");
+        GD.Print($"Healed !\t {_health.CurrentHps} (+{hp})");
     }
 
     public void OnRessurected(int hp)
     {
-        GD.Print($"Resurrected.\t hp: {_health.Current}");
+        GD.Print($"Resurrected.\t hp: {_health.CurrentHps}");
     }
 }

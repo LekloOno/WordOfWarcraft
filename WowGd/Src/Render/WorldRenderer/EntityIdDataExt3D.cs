@@ -1,8 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Godot;
-using WowGd.Src.Combat.Health;
 using WowGd.Src.Entities;
-using WowGd.Src.Render.Ui;
 using WowGd.Src.Render.WorldRenderer.Entities;
 
 namespace WowGd.Src.Render.WorldRenderer;
@@ -31,7 +29,7 @@ public static class EntityIdDataExt3D
             dude.Init(self);
             dude.Scale = Vector3.One * 1.5f;
             render3d = dude;
-            
+
             return true;
         }
         

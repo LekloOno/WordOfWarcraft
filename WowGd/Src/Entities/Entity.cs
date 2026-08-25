@@ -1,6 +1,5 @@
 using Godot;
 using WowGd.Src.Combat.Health;
-using WowGd.Src.Entities.Health;
 using WowGd.Src.Physics;
 using WowGd.Src.Tools;
 

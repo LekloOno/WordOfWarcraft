@@ -1,7 +1,5 @@
-using System;
 using Godot;
 using WowGd.Src.Combat.Health;
-using WowGd.Src.Entities.Health;
 
 namespace WowGd.Src.Render.Ui;
 
@@ -26,8 +24,8 @@ public partial class HealthBar : Control, IEntityHealthHandler
         _tailTween?.Kill();
 
         _body.MinValue = _tail.MinValue = 0f;
-        _body.MaxValue = _tail.MaxValue = _health.HitPoints;
-        _body.Value = _tail.Value = _health.Current;
+        _body.MaxValue = _tail.MaxValue = _health.MaxHps;
+        _body.Value = _tail.Value = _health.CurrentHps;
     }
 
     public void SetHealth(IEntityHealth health)
@@ -71,11 +69,11 @@ public partial class HealthBar : Control, IEntityHealthHandler
     public void OnDied() {}
 
     public void OnDamaged(int hp) =>
-        Damage(_health.Current);
+        Damage(_health.CurrentHps);
 
     public void OnHealed(int hp) =>
-        Heal(_health.Current);
+        Heal(_health.CurrentHps);
 
     public void OnRessurected(int hp) =>
-        Heal(_health.Current);
+        Heal(_health.CurrentHps);
 }
