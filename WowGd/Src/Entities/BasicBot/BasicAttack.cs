@@ -43,7 +43,6 @@ public partial class BasicAttack : Node, IEntityHealthHandler
             return;
 
         target.Health.Damage(_attackDmg);
-        GD.Print($"attacking ! ${target.Health.CurrentHps} (-{_attackDmg})");
         _acc = 0f;
     }
 

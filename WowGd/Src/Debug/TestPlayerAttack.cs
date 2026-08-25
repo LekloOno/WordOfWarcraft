@@ -25,8 +25,8 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
     {
         if (@event is InputEventKey keyEvent && keyEvent.Pressed)
 		{
-			if (keyEvent.Keycode == Key.J)
-				Attack();
+			//if (keyEvent.Keycode == Key.J)
+			//	Attack();
             if (keyEvent.Keycode == Key.K)
                 Heal();
             if (keyEvent.Keycode == Key.L)
@@ -37,7 +37,6 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
     private void Resurrect()
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
-        GD.Print($"Players resurrects {targets.Count} targets..");
         foreach (IEntity target in targets)
             target.Health.Resurrect();
     }
@@ -45,7 +44,6 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
     private void Heal()
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
-        GD.Print($"Players heals {targets.Count} targets..");
         foreach (IEntity target in targets)
             target.Health.Heal(_hp);
     }
@@ -53,14 +51,12 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
     private void Attack()
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
-        GD.Print($"Players attacks {targets.Count} targets..");
         foreach (IEntity target in targets)
             target.Health.Damage(_hp);
     }
 
     public void OnDied()
     {
-        GD.Print("alo");
         SetProcessUnhandledKeyInput(false);
     }
 

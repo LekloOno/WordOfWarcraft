@@ -81,4 +81,17 @@ public static class ComposingExt
         self.AddChild(component);
         return component;    
     }
+
+    public static bool TryDeriveComponent<T>(this object self, [NotNullWhen(true)] out T? component)
+    {
+        if (self is T c)
+        {
+            component = c;
+            return true;
+        }
+
+        component = default;
+        GD.PushError($"[{self.GetType()}] is not a valid [{nameof(T)}] component.");
+        return false;
+    }
 }
