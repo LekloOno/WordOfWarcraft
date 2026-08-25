@@ -55,6 +55,9 @@ size = Vector3(12, 8, 0.5)
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
+radius = 0.4
+
 [sub_resource type="Resource" id="Resource_n74k2"]
 script = ExtResource("20_n74k2")
 Speed = 20.0
@@ -77,7 +80,6 @@ material_override = SubResource("StandardMaterial3D_74lek")
 mesh = SubResource("QuadMesh_175km")
 
 [node name="Player" type="Node3D" parent="Terrain/Ground" unique_id=1523057225 node_paths=PackedStringArray("_node")]
-physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 top_level = true
 script = ExtResource("3_7yos8")
@@ -90,7 +92,6 @@ billboard = 1
 texture = ExtResource("2_uacia")
 
 [node name="Monster" type="Node3D" parent="Terrain/Ground" unique_id=1288939886 node_paths=PackedStringArray("_node")]
-physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 top_level = true
 script = ExtResource("3_7yos8")
@@ -103,7 +104,6 @@ billboard = 1
 texture = ExtResource("2_uacia")
 
 [node name="Monster2" type="Node3D" parent="Terrain/Ground" unique_id=582091057 node_paths=PackedStringArray("_node")]
-physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 top_level = true
 script = ExtResource("3_7yos8")
@@ -116,7 +116,6 @@ billboard = 1
 texture = ExtResource("2_uacia")
 
 [node name="Monster3" type="Node3D" parent="Terrain/Ground" unique_id=478747241 node_paths=PackedStringArray("_node")]
-physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
 top_level = true
 script = ExtResource("3_7yos8")
@@ -253,9 +252,11 @@ texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Node2DRender3D" type="Node3D" parent="." unique_id=1480775654 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
 transform = Transform3D(1, 0, 0, 0, 1, -2.9802322e-08, 0, 2.9802322e-08, 1, 0, 4.7683716e-07, 3.000001)
 script = ExtResource("3_7yos8")
 _node = NodePath("../Physics/RadiusFollower")
+ProcessType = 0
 metadata/_custom_type_script = "uid://r0iw0hgjbuff"
 
 [node name="Camera3D" type="Camera3D" parent="Node2DRender3D" unique_id=1889835405]
@@ -306,10 +307,14 @@ script = ExtResource("10_pn65j")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
-[node name="Body" type="Node2D" parent="Physics/Entity" unique_id=634919825]
+[node name="Body" type="RigidBody2D" parent="Physics/Entity" unique_id=308186831]
 position = Vector2(0, -17.74)
+gravity_scale = 0.0
 script = ExtResource("7_ajshl")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Entity/Body" unique_id=1873095554]
+shape = SubResource("CircleShape2D_175km")
 
 [node name="BodyMover" type="Node" parent="Physics/Entity" unique_id=1554230232]
 script = ExtResource("9_ajshl")
@@ -348,10 +353,14 @@ script = ExtResource("10_pn65j")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
-[node name="Body" type="Node2D" parent="Physics/Entity2" unique_id=1964881177]
+[node name="Body" type="RigidBody2D" parent="Physics/Entity2" unique_id=922912355]
 position = Vector2(19.095, -11.075)
+gravity_scale = 0.0
 script = ExtResource("7_ajshl")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Entity2/Body" unique_id=818983996]
+shape = SubResource("CircleShape2D_175km")
 
 [node name="BodyMover" type="Node" parent="Physics/Entity2" unique_id=2140389682]
 script = ExtResource("9_ajshl")
@@ -390,10 +399,14 @@ script = ExtResource("10_pn65j")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
-[node name="Body" type="Node2D" parent="Physics/Entity3" unique_id=195826170]
+[node name="Body" type="RigidBody2D" parent="Physics/Entity3" unique_id=1767193476]
 position = Vector2(-14.085, -8.09)
+gravity_scale = 0.0
 script = ExtResource("7_ajshl")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Entity3/Body" unique_id=878965073]
+shape = SubResource("CircleShape2D_175km")
 
 [node name="BodyMover" type="Node" parent="Physics/Entity3" unique_id=311588086]
 script = ExtResource("9_ajshl")
@@ -468,8 +481,13 @@ script = ExtResource("14_5jxlq")
 Type = 1
 metadata/_custom_type_script = "uid://hlchubm80yhc"
 
-[node name="Body" type="Node2D" parent="Physics/Player" unique_id=1512090276]
+[node name="Body" type="RigidBody2D" parent="Physics/Player" unique_id=39715753]
+gravity_scale = 0.0
 script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Player/Body" unique_id=1440208240]
+shape = SubResource("CircleShape2D_175km")
 
 [node name="MoveMode" type="Node" parent="Physics/Player" unique_id=1160715641]
 script = ExtResource("25_j7bvy")
@@ -503,6 +521,7 @@ _range = 10.0
 metadata/_custom_type_script = "uid://8hakekh7logr"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
 script = ExtResource("19_c6rvn")
 _radius = 0.85
 _lookTriggerRadius = 0.7

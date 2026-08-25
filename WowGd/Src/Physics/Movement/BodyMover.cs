@@ -39,12 +39,12 @@ public partial class BodyMover : Node
 
 		CurrentWishDir = _wishDir.WishDir();
 
-		float currentSpeed = _body.Velocity.Dot(CurrentWishDir);
+		float currentSpeed = _body.LinearVelocity.Dot(CurrentWishDir);
 		float t = Mathf.Clamp(currentSpeed / _maxSpeed, 0f, 1f);
-		float accelThisFrame = _acceleration * (1f - t) * dt; 
-		_body.Velocity += accelThisFrame * CurrentWishDir;
+		float accelThisFrame = _acceleration * (1f - t); 
+		_body.ApplyForce(accelThisFrame * CurrentWishDir);
 
-		Vector2 drag = -_friction * _body.Velocity;
+		Vector2 drag = -_friction * _body.LinearVelocity;
 
 		if (CurrentWishDir != Vector2.Zero)
 		{
@@ -52,7 +52,7 @@ public partial class BodyMover : Node
 			drag += communeDrag * CurrentWishDir;
 		}
 
-		_body.Velocity += drag * dt;
+		_body.ApplyForce(drag);
 	}
 
 	public bool Enable() =>

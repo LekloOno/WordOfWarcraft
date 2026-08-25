@@ -1,4 +1,3 @@
-using System;
 using Godot;
 
 namespace WowGd.Src.Physics;
@@ -14,13 +13,14 @@ namespace WowGd.Src.Physics;
 /// Fully separating the logic can only be a good thing anyways.
 /// </summary>
 [GlobalClass]
-public partial class Body : Node2D
+public partial class Body : RigidBody2D
 {
-    [Export]
-    public Vector2 Velocity = Vector2.Zero;
+    //public Vector2 Velocity = Vector2.Zero;
 
+    /*
     public override void _PhysicsProcess(double delta)
     {
+
         Position += Velocity * (float)delta;
-    }
+    }*/
 }

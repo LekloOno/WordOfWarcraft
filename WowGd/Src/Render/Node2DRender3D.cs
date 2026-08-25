@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using Godot;
 using WowGd.Src.Physics;
 using WowGd.Src.Tools;
@@ -19,15 +21,57 @@ public partial class Node2DRender3D : Node3D
     [Export] private Node2D _node = null!;
     private Node3D _grid = null!;
 
+    private ProcessType _processType = ProcessType.PhysicsProcess;
+    [Export] private ProcessType ProcessType
+    {
+        get => _processType;
+        set
+        {
+            if (value == _processType)
+                return;
+
+            _processType = value;
+            UpdateProcessType();
+        }
+    }
+
+    private void UpdateProcessType()
+    {
+        if (_processType == ProcessType.Process)
+        {
+            PhysicsInterpolationMode = PhysicsInterpolationModeEnum.Off;
+            SetPhysicsProcess(false);
+            SetProcess(true);
+        }
+        else
+        {
+            PhysicsInterpolationMode = PhysicsInterpolationModeEnum.On;
+            SetPhysicsProcess(true);
+            SetProcess(false);
+        }
+    }
+
     public override void _Ready()
     {
         if (this.TryGetComposed(out Node3D? grid))
             _grid = grid;
+
+        UpdateProcessType();
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        //GD.Print(_node.Position);
         Position = _node.Position.ToVector3() + _grid.GlobalPosition;
     }
+
+    public override void _Process(double delta)
+    {
+        Position = _node.Position.ToVector3() + _grid.GlobalPosition;
+    }
+}
+
+public enum ProcessType
+{
+    Process,
+    PhysicsProcess,
 }

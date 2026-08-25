@@ -54,9 +54,22 @@ public partial class RadiusFollower : Node2DFollower
         _look   = new(_lookVelDamperData);
     }
 
+    private Vector2 _previousTargetPosition;
+    private Vector2 _currentTargetPosition;
     public override void _PhysicsProcess(double delta)
     {
-        Vector2 posDelt = _node.GlobalPosition - _targetCenter;
+        _previousTargetPosition = _currentTargetPosition;
+        _currentTargetPosition = _node.GlobalPosition;
+    }
+
+    public override void _Process(double delta)
+    {
+        float alpha     = (float)Engine.GetPhysicsInterpolationFraction();
+
+        Vector2 targetPosition =
+            _previousTargetPosition.Lerp(_currentTargetPosition, alpha);
+
+        Vector2 posDelt = targetPosition - _targetCenter;
         Vector2 dir     = posDelt.Normalized();
 
         float distance  = posDelt.Length();
@@ -70,7 +83,7 @@ public partial class RadiusFollower : Node2DFollower
 
         _center.Process(_targetCenter, dt);
 
-        Vector2 lookDir     = _node.GlobalPosition - _center.Position;
+        Vector2 lookDir     = targetPosition - _center.Position;
         float realDistance  = lookDir.Length();
         if (realDistance > _lookTriggerRadius)
             _targetLook = lookDir.Normalized() * _lookDistance;
