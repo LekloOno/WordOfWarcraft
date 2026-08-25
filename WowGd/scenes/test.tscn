@@ -33,7 +33,6 @@
 [ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
 [ext_resource type="Script" uid="uid://cw5iwe2wk53ax" path="res://Src/Dactylo/Abilities/Effects/TestRadiusAttack.cs" id="30_1xwo4"]
 [ext_resource type="Script" uid="uid://u8xdp6fmf226" path="res://Src/Dactylo/Worders/Worder.cs" id="31_5civd"]
-[ext_resource type="Script" uid="uid://1hd4iygfqp00" path="res://Src/Dactylo/Input/DactyloInput.cs" id="32_mi64w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -308,6 +307,7 @@ TeamMask = 1
 
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")
+MaxHps = 500
 metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 
 [node name="BodyMover" type="Node" parent="Physics/Player" unique_id=1844309947]
@@ -360,9 +360,9 @@ metadata/_custom_type_script = "uid://4ruoe347w3ap"
 script = ExtResource("14_7mbro")
 metadata/_custom_type_script = "uid://c31kjrec3ir15"
 
-[node name="RandomMode" type="Node" parent="Physics/Player" unique_id=892624159 node_paths=PackedStringArray("_textEdit")]
+[node name="RandomMode" type="Node" parent="Physics/Player" unique_id=892624159 node_paths=PackedStringArray("_ability")]
 script = ExtResource("11_ajshl")
-_textEdit = NodePath("../../../CanvasLayer/ColorRect/CenterContainer/TextEdit")
+_ability = NodePath("../WordBasedAbility")
 
 [node name="MoverHealthHandler" type="Node" parent="Physics/Player" unique_id=1923537253]
 script = ExtResource("19_si7kk")
@@ -387,11 +387,6 @@ metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
 [node name="Worder" type="Node" parent="Physics/Player/WordBasedAbility" unique_id=1144036271]
 script = ExtResource("31_5civd")
 metadata/_custom_type_script = "uid://u8xdp6fmf226"
-
-[node name="DactyloInput" type="Node" parent="Physics/Player" unique_id=1924052248 node_paths=PackedStringArray("Worder")]
-script = ExtResource("32_mi64w")
-Worder = NodePath("../WordBasedAbility/Worder")
-metadata/_custom_type_script = "uid://1hd4iygfqp00"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2

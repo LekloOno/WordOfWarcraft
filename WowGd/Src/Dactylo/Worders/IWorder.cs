@@ -1,9 +1,10 @@
 using System;
 using Godot;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Dactylo.Worders;
 
-public interface IWorder
+public interface IWorder : IDisablable
 {
     string? CurrentWord { get; }
     string? Written     { get; }

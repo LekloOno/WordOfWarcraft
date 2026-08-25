@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Dactylo.Abilities;
 using WowGd.Src.Input;
 using WowGd.Src.Tools;
 
@@ -7,7 +8,7 @@ namespace WowGd.Src.Debug;
 [GlobalClass]
 public partial class RandomMode : Node, IMode
 {
-    [Export] private TextEdit _textEdit = null!;
+    [Export] private WordBasedAbility _ability = null!;
 
     public bool Enabled => _enabled;
     private bool _enabled = true;
@@ -19,14 +20,14 @@ public partial class RandomMode : Node, IMode
     }
 
     public bool Activate() =>
-        DisableExt.IndempActivate(ref _active, _enabled, _textEdit.GrabFocus);
+        DisableExt.IndempActivate(ref _active, _enabled, () => _ability.Enable());
 
     public bool Deactivate() =>
-        DisableExt.IndempDeactivate(ref _active, _enabled, _textEdit.ReleaseFocus);
+        DisableExt.IndempDeactivate(ref _active, _enabled, () => _ability.Disable());
 
     public bool Enable() =>
-        DisableExt.IndempEnableActivable(ref _enabled, _active, _textEdit.GrabFocus);
+        DisableExt.IndempEnableActivable(ref _enabled, _active, () => _ability.Enable());
 
     public bool Disable() =>
-        DisableExt.IndempDisable(ref _enabled, _textEdit.ReleaseFocus);
+        DisableExt.IndempDisable(ref _enabled, () => _ability.Disable());
 }

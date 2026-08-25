@@ -7,7 +7,7 @@ using WowGd.Src.Tools;
 namespace WowGd.Src.Dactylo.Abilities;
 
 [GlobalClass]
-public partial class WordBasedAbility : Node, IWorderStreamHandler
+public partial class WordBasedAbility : Node, IWorderStreamHandler, IAbility
 {
 	[Export] private FreeTargetAbilityEffect _effect = null!;
 	[Export(PropertyHint.Layers2DRender)]
@@ -20,6 +20,9 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler
 	private IWorder _worder = null!;
 	private IEntity _entity = null!;
 	public Vector2 Target = Vector2.Zero;
+
+	public bool Enabled => _enabled;
+	private bool _enabled = false;
 
 	public override void _Ready()
 	{
@@ -47,4 +50,10 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler
 		if (remainingWords == 0)
 			_worder.TryGenerate(20, _wordMinSize, _wordMaxSize);
 	}
+
+	public bool Enable() =>
+		DisableExt.IndempEnable(ref _enabled, () => _worder.Enable());
+	public bool Disable() =>
+		DisableExt.IndempDisable(ref _enabled, () => _worder.Disable());
+
 }

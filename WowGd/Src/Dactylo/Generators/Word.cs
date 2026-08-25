@@ -66,7 +66,7 @@ public class Word(string content)
         }
 
         @char = _written[Idx];
-        bool hit = @char != _content[Idx];
+        bool hit = Idx < Length && @char != _content[Idx];
 
         _written.Remove(Idx, 1);
         Idx --;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using WowGd.Src.Dactylo.Generators;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Dactylo.Worders;
 
@@ -28,6 +29,9 @@ public partial class Worder : Node, IWorder
     public string? Written => _current?.Written;
     public int? CurrentCorrect => _current?.Correct;
     public int? CurrentLength => _current?.Length;
+
+    public bool Enabled => _enabled;
+    private bool _enabled = false;
 
     public int TryGenerate(int count, int minSize = 0, int maxSize = int.MaxValue)
     {
@@ -145,4 +149,26 @@ public partial class Worder : Node, IWorder
                 break;
         }
     }
+
+    public override void _UnhandledKeyInput(InputEvent @event)
+    {
+        if (@event is not InputEventKey key)
+            return;
+
+        if (!key.IsPressed() || key.IsEcho())
+            return;
+
+        Process(key);
+    }
+
+    public override void _Ready()
+    {
+        SetProcessUnhandledKeyInput(false);
+    }
+
+    public bool Enable() =>
+        DisableExt.IndempEnable(ref _enabled, () => SetProcessUnhandledKeyInput(true));
+
+    public bool Disable() =>
+        DisableExt.IndempDisable(ref _enabled, () => SetProcessUnhandledKeyInput(false));
 }
