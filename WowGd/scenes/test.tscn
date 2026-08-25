@@ -517,7 +517,7 @@ metadata/_custom_type_script = "uid://dpe0v5mdqgxk"
 [node name="TestPlayerAttack" type="Node" parent="Physics/Player" unique_id=1480911816]
 script = ExtResource("29_4k8fq")
 _targetTeamMask = 2
-_range = 10.0
+_range = 6.0
 metadata/_custom_type_script = "uid://8hakekh7logr"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
