@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Godot;
 using WowGd.Src.Dactylo.Abilities.Effects;
+using WowGd.Src.Dactylo.Generators;
 using WowGd.Src.Dactylo.Worders;
 using WowGd.Src.Entities;
 using WowGd.Src.Tools;
@@ -33,7 +35,6 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler, IAbility
 			return;
 
 		this.Bind(_worder);
-		_worder.TryGenerate(20, _wordMinSize, _wordMaxSize);
 		_worder.Next();
 	}
 
@@ -45,15 +46,10 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler, IAbility
 		_effect.Apply(_entity, new(Target, _targetTeamMask), accuracy * sizeFactor);
 	}
 
-	public void OnWordStarted(string word, int remainingWords)
-	{
-		if (remainingWords == 0)
-			_worder.TryGenerate(20, _wordMinSize, _wordMaxSize);
-	}
+	public void OnWordStarted(string word, int remainingWords) {}
 
 	public bool Enable() =>
 		DisableExt.IndempEnable(ref _enabled, () => _worder.Enable());
 	public bool Disable() =>
 		DisableExt.IndempDisable(ref _enabled, () => _worder.Disable());
-
 }

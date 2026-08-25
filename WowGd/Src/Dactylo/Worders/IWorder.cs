@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using Godot;
+using WowGd.Src.Dactylo.Generators;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Dactylo.Worders;
@@ -10,6 +12,7 @@ public interface IWorder : IDisablable
     string? Written     { get; }
     int? CurrentCorrect { get; }
     int? CurrentLength  { get; }
+    IReadOnlyCollection<Word> Words { get; }
 
     event Action<char, int>? CharHit;
     event Action<char, int>? CharMixed;
@@ -25,6 +28,7 @@ public interface IWorder : IDisablable
 
     event Action<string, string, int>? Completed;
     event Action<string, int>? WordStarted;
+    event Action<Word>? WordEnqueued;
 
     void Process(InputEventKey key);
     int TryGenerate(int count, int minSize = 0, int maxSize = int.MaxValue);

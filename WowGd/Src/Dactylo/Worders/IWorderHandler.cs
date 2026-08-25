@@ -4,4 +4,5 @@ public interface IWorderHandler :
     IWorderCharHandler,
     IWorderEraseHandler,
     IWorderEraseAllHandler,
-    IWorderStreamHandler;
+    IWorderStreamHandler,
+    IWorderQueueHandler;

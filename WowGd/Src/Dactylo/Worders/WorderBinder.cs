@@ -11,6 +11,7 @@ public static class WorderBinder
         (handler as IWorderEraseHandler).Bind(worder);
         (handler as IWorderEraseAllHandler).Bind(worder);
         (handler as IWorderStreamHandler).Bind(worder);
+        (handler as IWorderQueueHandler).Bind(worder);
     }
 
     public static void Unbind(this IWorderHandler handler, IWorder worder)
@@ -19,6 +20,7 @@ public static class WorderBinder
         (handler as IWorderEraseHandler).Unbind(worder);
         (handler as IWorderEraseAllHandler).Unbind(worder);
         (handler as IWorderStreamHandler).Unbind(worder);
+        (handler as IWorderQueueHandler).Unbind(worder);
     }
 
     public static void Bind(this IWorderCharHandler handler, IWorder worder)
@@ -73,5 +75,15 @@ public static class WorderBinder
     {
         worder.Completed    -= handler.OnCompleted;
         worder.WordStarted  -= handler.OnWordStarted;
+    }
+
+    public static void Bind(this IWorderQueueHandler handler, IWorder worder)
+    {
+        worder.WordEnqueued  += handler.OnWordEnqueued;
+    }
+
+    public static void Unbind(this IWorderQueueHandler handler, IWorder worder)
+    {
+        worder.WordEnqueued -= handler.OnWordEnqueued;
     }
 }

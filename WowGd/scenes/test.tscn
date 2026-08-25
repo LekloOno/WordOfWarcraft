@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
 [ext_resource type="Script" uid="uid://haep2dj5gh3q" path="res://Src/Debug/GameLineEdit.cs" id="8_5jxlq"]
+[ext_resource type="Script" uid="uid://d3die7shwuki7" path="res://Src/Render/Ui/Worder/WorderDisplay.cs" id="8_gv2t6"]
 [ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="9_ajshl"]
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="9_n74k2"]
 [ext_resource type="Script" uid="uid://bl5jmlur1ki7n" path="res://Src/Debug/SelfHarmDbg.cs" id="9_si7kk"]
@@ -258,6 +259,21 @@ grow_vertical = 2
 custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
 script = ExtResource("8_5jxlq")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer" unique_id=179035936 node_paths=PackedStringArray("_worder")]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 403.0
+offset_top = -179.0
+offset_right = -405.0
+offset_bottom = -37.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+script = ExtResource("8_gv2t6")
+_worder = NodePath("../../Physics/Player/WordBasedAbility/Worder")
 
 [node name="Debug" type="Node" parent="." unique_id=1667357618]
 

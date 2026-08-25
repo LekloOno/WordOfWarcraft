@@ -9,6 +9,10 @@ namespace WowGd.Src.Dactylo.Worders;
 [GlobalClass]
 public partial class Worder : Node, IWorder
 {
+    [Export] private int _minSize = 1;
+	[Export] private int _maxSize = 10;
+    [Export] private int _preLoaded = 20;
+
     private readonly IWordGenerator _generator = StandardWordGeneratorFr.Instance;
     private readonly Queue<Word> _activeWords = [];
     private Word? _current;
@@ -24,11 +28,13 @@ public partial class Worder : Node, IWorder
     public event Action<int, int>? EraseAllMissed;
     public event Action<string, string, int>? Completed;
     public event Action<string, int>? WordStarted;
+    public event Action<Word>? WordEnqueued;
 
     public string? CurrentWord => _current?.Content;
     public string? Written => _current?.Written;
     public int? CurrentCorrect => _current?.Correct;
     public int? CurrentLength => _current?.Length;
+    public IReadOnlyCollection<Word> Words => _activeWords;
 
     public bool Enabled => _enabled;
     private bool _enabled = false;
@@ -38,7 +44,10 @@ public partial class Worder : Node, IWorder
         int generated = _generator.TryGenerate(out Queue<Word> words, count, minSize, maxSize);
         
         foreach (Word word in words)
+        {
             _activeWords.Enqueue(word);
+            WordEnqueued?.Invoke(word);
+        }
 
         return generated;
     }
@@ -51,6 +60,12 @@ public partial class Worder : Node, IWorder
             Completed?.Invoke(_current.Written, _current.Content, _current.Correct);
         }
 
+        if (_preLoaded != 0 && _generator.TryGenerate(out Word? newWord, _minSize, _maxSize))
+        {
+            _activeWords.Enqueue(newWord);
+            WordEnqueued?.Invoke(newWord);
+        }
+            
         if(!_activeWords.TryDequeue(out Word? word))
         {
             _current = null;
@@ -60,6 +75,7 @@ public partial class Worder : Node, IWorder
         _current = word;
         GD.Print(_current.Content);
         WordStarted?.Invoke(word.Content, _activeWords.Count);
+
         return true;
     }
 
@@ -163,6 +179,7 @@ public partial class Worder : Node, IWorder
 
     public override void _Ready()
     {
+        TryGenerate(_preLoaded, _minSize, _maxSize);
         SetProcessUnhandledKeyInput(false);
     }
 
