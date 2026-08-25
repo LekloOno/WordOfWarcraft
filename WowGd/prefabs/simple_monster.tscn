@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://r63mql4al3qq"]
+
+[ext_resource type="Script" uid="uid://cfm24npuh7ybu" path="res://Src/Entities/Entity.cs" id="1_qnhqu"]
+[ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="2_cloog"]
+[ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="3_1w3fa"]
+[ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="4_h08dd"]
+[ext_resource type="Script" uid="uid://bmetkgh2bcqgr" path="res://Src/Entities/BasicBot/FollowerWishDir.cs" id="5_l5v4k"]
+[ext_resource type="Script" uid="uid://7buc4meflsqr" path="res://Src/Entities/BasicBot/TargetAcquirer.cs" id="6_43w1u"]
+[ext_resource type="Script" uid="uid://14ici7sfka52" path="res://Src/Entities/BasicBot/BasicAttack.cs" id="7_kkf7f"]
+[ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="8_7lu00"]
+[ext_resource type="Script" uid="uid://dim1tr0x143dg" path="res://Src/Combat/Health/HealthHandlers/MoverHealthHandler.cs" id="9_r01k3"]
+
+[sub_resource type="Resource" id="Resource_4k8fq"]
+script = ExtResource("2_cloog")
+Key = "goblin"
+metadata/_custom_type_script = "uid://defda3606ges4"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
+radius = 0.4
+
+[node name="Entity" type="Node" unique_id=907940979]
+script = ExtResource("1_qnhqu")
+IdData = SubResource("Resource_4k8fq")
+TeamMask = 2
+metadata/_custom_type_script = "uid://cfm24npuh7ybu"
+
+[node name="Body" type="RigidBody2D" parent="." unique_id=1471660406]
+gravity_scale = 0.0
+script = ExtResource("3_1w3fa")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body" unique_id=2143505716]
+shape = SubResource("CircleShape2D_175km")
+
+[node name="BodyMover" type="Node" parent="." unique_id=537882806]
+script = ExtResource("4_h08dd")
+_acceleration = 20.0
+_maxSpeed = 4.0
+_friction = 9.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="FollowerWishDir" type="Node" parent="BodyMover" unique_id=1415161567]
+script = ExtResource("5_l5v4k")
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="TargetAcquirer" type="Node" parent="." unique_id=1765758570]
+script = ExtResource("6_43w1u")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://7buc4meflsqr"
+
+[node name="BasicAttack" type="Node" parent="." unique_id=1704236596]
+script = ExtResource("7_kkf7f")
+metadata/_custom_type_script = "uid://14ici7sfka52"
+
+[node name="EntityHealth" type="Node" parent="." unique_id=777489415]
+script = ExtResource("8_7lu00")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="MoverHealthHandler" type="Node" parent="." unique_id=605582853]
+script = ExtResource("9_r01k3")
+metadata/_custom_type_script = "uid://dim1tr0x143dg"
