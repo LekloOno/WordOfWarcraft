@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://byd256lw7uyjm"]
+
+[ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/health_bar.tscn" id="1_4uvtf"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_evht8"]
+viewport_path = NodePath("SubViewport")
+
+[node name="HealthBar" type="Sprite3D" unique_id=650881374]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_evht8")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1568086297]
+transparent_bg = true
+
+[node name="HealthBar" parent="SubViewport" unique_id=1048134132 instance=ExtResource("1_4uvtf")]

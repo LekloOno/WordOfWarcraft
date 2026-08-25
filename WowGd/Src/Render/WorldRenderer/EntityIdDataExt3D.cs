@@ -1,46 +1,41 @@
 using System.Diagnostics.CodeAnalysis;
 using Godot;
+using WowGd.Src.Combat.Health;
 using WowGd.Src.Entities;
+using WowGd.Src.Render.Ui;
+using WowGd.Src.Render.WorldRenderer.Entities;
 
 namespace WowGd.Src.Render.WorldRenderer;
 
 public static class EntityIdDataExt3D
 {
     private readonly static Texture2D _dudeText = GD.Load<Texture2D>("res://assets/sprites/entities/dude.png");
+    private const string SimpleDudePath = "res://prefabs/dude_template3d.tscn";
+    private readonly static PackedScene _simpleDudeScene = GD.Load<PackedScene>(SimpleDudePath);
 
     public static bool TryBuildRender3D(this IEntity self, [NotNullWhen(true)] out EntityRender3D? render3d)
     {
-        render3d = new(self);
-
-        Sprite3D sprite = new()
-        {
-            Billboard = BaseMaterial3D.BillboardModeEnum.Enabled,
-            Texture = _dudeText
-        };
-
-        render3d.AddChild(sprite);
-
         if (self.IdData.Key == "goblin")
         {
-            Vector3 position = sprite.Position;
-            position.Y = 0.3f;
-            sprite.Position = position;
+            SimpleDude dude = _simpleDudeScene.Instantiate<SimpleDude>();
+            dude.Init(self);
+            dude.Scale = Vector3.One * 0.85f;
+            render3d = dude;
 
-            sprite.Scale = Vector3.One * 0.85f;
+            return true;
         }
         else if (self.IdData.Key == "player")
         {
-            Vector3 position = sprite.Position;
-            position.Y = 0.5f;
-            sprite.Position = position;
-
-            sprite.Scale = Vector3.One * 1.5f;
+            
+            SimpleDude dude = _simpleDudeScene.Instantiate<SimpleDude>();
+            dude.Init(self);
+            dude.Scale = Vector3.One * 1.5f;
+            render3d = dude;
+            
+            return true;
         }
-        else
-            return false;
-
         
-        GD.Print("oi");
-        return true;
+        render3d = null;
+        return false;
     }
 }

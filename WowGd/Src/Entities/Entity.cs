@@ -11,6 +11,7 @@ public partial class Entity : Node, IEntity
 {
     [Export]
     public EntityIdData IdData {get; private set;} = null!;
+
     [Export(PropertyHint.Layers2DPhysics)]
     public uint TeamMask {get; private set;}
 
@@ -25,11 +26,16 @@ public partial class Entity : Node, IEntity
             InitComponent(child);
 
         Health.Resurrect();
+
+        _initialized = true;
+        EntitiesRegistry.Register(this);
     }
 
+    private bool _initialized = false;
     public override void _EnterTree()
     {
-        EntitiesRegistry.Register(this);
+        if (_initialized)
+            EntitiesRegistry.Register(this);
     }
 
     public override void _ExitTree()

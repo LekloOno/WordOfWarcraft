@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://tb2k4gfi3asl"]
+
+[ext_resource type="Script" uid="uid://n2v87bjqo5r4" path="res://Src/Render/WorldRenderer/Entities/SimpleDude.cs" id="1_yvh0v"]
+[ext_resource type="Texture2D" uid="uid://tqh5c10lsis5" path="res://assets/sprites/entities/dude.png" id="2_7hvws"]
+[ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/dude_template3d/dude_template3d_health_bar.tscn" id="3_yvh0v"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_7hvws"]
+viewport_path = NodePath("SubViewport")
+
+[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar")]
+script = ExtResource("1_yvh0v")
+_bodySprite = NodePath("BodySprite")
+_healthBar = NodePath("HealthBar/SubViewport/HealthBar")
+
+[node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+billboard = 1
+texture = ExtResource("2_7hvws")
+
+[node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_yvh0v")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
+texture = SubResource("ViewportTexture_7hvws")
+
+[editable path="HealthBar"]

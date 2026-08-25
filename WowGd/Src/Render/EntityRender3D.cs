@@ -1,15 +1,22 @@
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Physics;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Render;
-public partial class EntityRender3D(IEntity entity) : Node3D
+public partial class EntityRender3D : Node3D
 {
-    private readonly IEntity _entity = entity;
+    public EntityRender3D() {}
+    public EntityRender3D(IEntity entity) { Entity = entity; }
+
+    public IEntity Entity = null!;
 
     public override void _PhysicsProcess(double delta)
     {
-        Position = _entity.Body.Position.ToVector3();
+        Position = Entity.Body.Position.ToVector3();
+    }
+
+    public virtual void Init(IEntity entity)
+    {
+        Entity = entity;
     }
 }
