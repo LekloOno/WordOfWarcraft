@@ -1,10 +1,11 @@
 using Godot;
+using WowGd.Src.Entities.Health;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Entities.BasicBot;
 
 [GlobalClass]
-public partial class BasicAttack : Node, IDisablable
+public partial class BasicAttack : Node, IEntityHealthHandler
 {
     [Export] private float _attackRange = 1.5f;
     [Export] private float _attackCd    = 1f;
@@ -46,13 +47,16 @@ public partial class BasicAttack : Node, IDisablable
         _acc = 0f;
     }
 
-    public bool Disable()
+    public void OnDied()
     {
-        throw new System.NotImplementedException();
+        SetPhysicsProcess(false);
     }
 
-    public bool Enable()
+    public void OnDamaged(int hp) {}
+    public void OnHealed(int hp) {}
+
+    public void OnRessurected(int hp)
     {
-        throw new System.NotImplementedException();
+        SetPhysicsProcess(true);
     }
 }

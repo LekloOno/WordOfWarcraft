@@ -20,6 +20,8 @@ public partial class Entity : Node, IEntity
 
         foreach (Node child in GetChildren())
             InitComponent(child);
+
+        Health.Resurrect();
     }
 
     public override void _EnterTree()
@@ -37,7 +39,6 @@ public partial class Entity : Node, IEntity
         if (this.TryGetComponent(out IEntityHealth? health))
         {
             Health = health;
-            Health.Resurrect();
         }
 
         if (this.TryGetComponent(out Body? body))

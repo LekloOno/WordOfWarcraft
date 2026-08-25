@@ -23,12 +23,14 @@
 [ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
 [ext_resource type="Script" uid="uid://7buc4meflsqr" path="res://Src/Entities/BasicBot/TargetAcquirer.cs" id="14_y81of"]
 [ext_resource type="Script" uid="uid://14ici7sfka52" path="res://Src/Entities/BasicBot/BasicAttack.cs" id="15_gsk6d"]
+[ext_resource type="Script" uid="uid://swtlq1uyuwcd" path="res://Src/Debug/EntityHealthLogger.cs" id="17_2cnsr"]
 [ext_resource type="Script" uid="uid://4ruoe347w3ap" path="res://Src/Input/ModeInitializer.cs" id="18_gm488"]
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
 [ext_resource type="Script" uid="uid://dim1tr0x143dg" path="res://Src/Combat/Health/HealthHandlers/MoverHealthHandler.cs" id="19_si7kk"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://dpe0v5mdqgxk" path="res://Src/Combat/Health/HealthHandlers/RandomModeHealthHandler.cs" id="22_5f8cm"]
 [ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="25_j7bvy"]
+[ext_resource type="Script" uid="uid://8hakekh7logr" path="res://Src/Debug/TestPlayerAttack.cs" id="29_4k8fq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -301,6 +303,7 @@ metadata/_custom_type_script = "uid://bl5jmlur1ki7n"
 
 [node name="Entity" type="Node" parent="Physics" unique_id=89603445]
 script = ExtResource("10_pn65j")
+TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
 [node name="Body" type="Node2D" parent="Physics/Entity" unique_id=634919825]
@@ -328,8 +331,21 @@ metadata/_custom_type_script = "uid://7buc4meflsqr"
 script = ExtResource("15_gsk6d")
 metadata/_custom_type_script = "uid://14ici7sfka52"
 
+[node name="EntityHealth" type="Node" parent="Physics/Entity" unique_id=1282545828]
+script = ExtResource("9_n74k2")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="EntityHealthLogger" type="Node" parent="Physics/Entity/EntityHealth" unique_id=658878836]
+script = ExtResource("17_2cnsr")
+metadata/_custom_type_script = "uid://swtlq1uyuwcd"
+
+[node name="MoverHealthHandler" type="Node" parent="Physics/Entity" unique_id=1002153728]
+script = ExtResource("19_si7kk")
+metadata/_custom_type_script = "uid://dim1tr0x143dg"
+
 [node name="Entity2" type="Node" parent="Physics" unique_id=829405404]
 script = ExtResource("10_pn65j")
+TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
 [node name="Body" type="Node2D" parent="Physics/Entity2" unique_id=1964881177]
@@ -357,8 +373,21 @@ metadata/_custom_type_script = "uid://7buc4meflsqr"
 script = ExtResource("15_gsk6d")
 metadata/_custom_type_script = "uid://14ici7sfka52"
 
+[node name="EntityHealth" type="Node" parent="Physics/Entity2" unique_id=744923674]
+script = ExtResource("9_n74k2")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="EntityHealthLogger" type="Node" parent="Physics/Entity2/EntityHealth" unique_id=623410784]
+script = ExtResource("17_2cnsr")
+metadata/_custom_type_script = "uid://swtlq1uyuwcd"
+
+[node name="MoverHealthHandler" type="Node" parent="Physics/Entity2" unique_id=1509912192]
+script = ExtResource("19_si7kk")
+metadata/_custom_type_script = "uid://dim1tr0x143dg"
+
 [node name="Entity3" type="Node" parent="Physics" unique_id=277453397]
 script = ExtResource("10_pn65j")
+TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
 [node name="Body" type="Node2D" parent="Physics/Entity3" unique_id=195826170]
@@ -386,6 +415,18 @@ metadata/_custom_type_script = "uid://7buc4meflsqr"
 script = ExtResource("15_gsk6d")
 metadata/_custom_type_script = "uid://14ici7sfka52"
 
+[node name="EntityHealth" type="Node" parent="Physics/Entity3" unique_id=1896072887]
+script = ExtResource("9_n74k2")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="EntityHealthLogger" type="Node" parent="Physics/Entity3/EntityHealth" unique_id=1898489000]
+script = ExtResource("17_2cnsr")
+metadata/_custom_type_script = "uid://swtlq1uyuwcd"
+
+[node name="MoverHealthHandler" type="Node" parent="Physics/Entity3" unique_id=397226330]
+script = ExtResource("19_si7kk")
+metadata/_custom_type_script = "uid://dim1tr0x143dg"
+
 [node name="Player" type="Node" parent="Physics" unique_id=162077607]
 script = ExtResource("10_pn65j")
 TeamMask = 1
@@ -393,6 +434,10 @@ TeamMask = 1
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")
 metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="EntityHealthLogger" type="Node" parent="Physics/Player/EntityHealth" unique_id=1138419255]
+script = ExtResource("17_2cnsr")
+metadata/_custom_type_script = "uid://swtlq1uyuwcd"
 
 [node name="BodyMover" type="Node" parent="Physics/Player" unique_id=1844309947]
 script = ExtResource("9_ajshl")
@@ -450,6 +495,12 @@ metadata/_custom_type_script = "uid://dim1tr0x143dg"
 [node name="RandomModeHealthHandler" type="Node" parent="Physics/Player" unique_id=554984717]
 script = ExtResource("22_5f8cm")
 metadata/_custom_type_script = "uid://dpe0v5mdqgxk"
+
+[node name="TestPlayerAttack" type="Node" parent="Physics/Player" unique_id=1480911816]
+script = ExtResource("29_4k8fq")
+_targetTeamMask = 2
+_range = 10.0
+metadata/_custom_type_script = "uid://8hakekh7logr"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 script = ExtResource("19_c6rvn")

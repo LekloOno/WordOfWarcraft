@@ -30,6 +30,7 @@ public partial class BodyMover : Node
 
 		_body = body;
 		_wishDir = wishDir;
+		_wishDir.Disable();
 	}
 
 	public override void _PhysicsProcess(double delta)

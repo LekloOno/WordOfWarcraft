@@ -26,16 +26,21 @@ public partial class FollowerWishDir : Node, IWishDir
 
     public bool Disable()
     {
-        throw new System.NotImplementedException();
+        _enabled = false;
+        return true;
     }
 
     public bool Enable()
     {
-        throw new System.NotImplementedException();
+        _enabled = true;
+        return true;
     }
 
     public Vector2 WishDir()
     {
+        if (!_enabled)
+            return Vector2.Zero;
+
         if (_targetAcquirer.Target is not IEntity target)
             return Vector2.Zero;
 

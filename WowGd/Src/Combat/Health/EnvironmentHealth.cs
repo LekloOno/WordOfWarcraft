@@ -17,5 +17,5 @@ public class EnvironmentHealth : IEntityHealth
     public bool Damage(int hp) => false;
     public bool Dead() => false;
     public bool Heal(int hp) => false;
-    public void Resurrect(int? hp) {}
+    public bool Resurrect(int? hp) => false;
 }

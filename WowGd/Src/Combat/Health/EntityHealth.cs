@@ -15,12 +15,17 @@ public partial class EntityHealth : Node, IEntityHealth
 
     public int Current { get; private set; }
 
-    public void Resurrect(int? hp = null)
+    public bool Resurrect(int? hp = null)
     {
+        bool dead = Dead();
+        if (!dead)
+            return false;
+
         hp ??= HitPoints;
         Current = (int)hp;
 
         Resurrected?.Invoke(Current);
+        return true;
     }
 
     public bool Damage(int hp)

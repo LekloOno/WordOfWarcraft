@@ -15,5 +15,5 @@ public interface IEntityHealth
     bool Damage(int hp);
     bool Heal(int hp);
     bool Dead();
-    void Resurrect(int? hp = null);
+    bool Resurrect(int? hp = null);
 }

@@ -34,48 +34,6 @@ public partial class TargetAcquirer : Node, ITargetAcquirer
             (TargetUpdateMask & _id);
 
         if (processTick)
-            TryGetClosestTarget(out _target);
-    }
-
-    private bool TryGetTarget([NotNullWhen(true)] out IEntity? target)
-    {
-        foreach (IEntity entity in EntitiesRegistry.Entities)
-        {
-            if (entity == _entity)
-                continue;
-
-            if ((entity.TeamMask & _targetTeamMask) != 0)
-            {
-                target = entity;
-                return true;
-            }
-        }
-
-        target = null;
-        return false;
-    }
-
-    private bool TryGetClosestTarget([NotNullWhen(true)] out IEntity? target)
-    {
-        target = null;
-        float closestSquaredDist = float.PositiveInfinity;
-
-        foreach (IEntity entity in EntitiesRegistry.Entities)
-        {
-            if (entity == _entity)
-                continue;
-
-            if ((entity.TeamMask & _targetTeamMask) != 0)
-            {
-                float squaredDist = (entity.Body.Position - _entity.Body.Position).LengthSquared();
-                if (squaredDist < closestSquaredDist)
-                {
-                    target = entity;
-                    closestSquaredDist = squaredDist;
-                }
-            }
-        }
-
-        return target != null;
+            _entity.TryGetClosestTarget(out _target, _targetTeamMask);
     }
 }
