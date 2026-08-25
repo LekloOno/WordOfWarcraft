@@ -13,14 +13,7 @@ namespace WowGd.Src.Physics;
 /// Fully separating the logic can only be a good thing anyways.
 /// </summary>
 [GlobalClass]
-public partial class Body : RigidBody2D
+public partial class Body : RigidBody2D, IBody
 {
-    //public Vector2 Velocity = Vector2.Zero;
-
-    /*
-    public override void _PhysicsProcess(double delta)
-    {
-
-        Position += Velocity * (float)delta;
-    }*/
+    void IBody.ApplyForce(Vector2 force) => ApplyForce(force);
 }

@@ -11,7 +11,7 @@ public partial class Entity : Node, IEntity
 {
     [Export(PropertyHint.Layers2DPhysics)] public uint TeamMask {get; private set;}
 
-    public Body Body {get; private set;} = null!;
+    public IBody Body {get; private set;} = null!;
     public IEntityHealth Health { get; private set; } = EnvironmentHealth.Instance;
 
     public override void _Ready()
@@ -41,7 +41,7 @@ public partial class Entity : Node, IEntity
             Health = health;
         }
 
-        if (this.TryGetComponent(out Body? body))
+        if (this.TryGetComponent(out IBody? body))
             Body = body;
     }
 

@@ -11,18 +11,18 @@ public partial class BodyMover : Node
 	[Export] private float _maxSpeed;
 	[Export] private float _friction;
 
-	private Body _body = null!;
+	private IBody _body = null!;
 	private IWishDir _wishDir = null!;
 
 	public Vector2 CurrentWishDir {get; private set;}
-	public Body Body => _body;
+	public IBody Body => _body;
 
 	public bool Enabled => _enabled;
 	private bool _enabled = false;
 
 	public override void _Ready()
 	{
-		if (!this.TryGetSiblingComponent(out Body? body))
+		if (!this.TryGetSiblingComponent(out IBody? body))
 			return;
 
 		if (!this.TryGetComponent(out IWishDir? wishDir))
@@ -35,8 +35,6 @@ public partial class BodyMover : Node
 
 	public override void _PhysicsProcess(double delta)
 	{
-		float dt = (float) delta;
-
 		CurrentWishDir = _wishDir.WishDir();
 
 		float currentSpeed = _body.LinearVelocity.Dot(CurrentWishDir);
