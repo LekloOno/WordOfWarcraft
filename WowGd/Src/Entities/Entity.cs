@@ -9,7 +9,10 @@ namespace WowGd.Src.Entities;
 [GlobalClass]
 public partial class Entity : Node, IEntity
 {
-    [Export(PropertyHint.Layers2DPhysics)] public uint TeamMask {get; private set;}
+    [Export]
+    public EntityIdData IdData {get; private set;} = null!;
+    [Export(PropertyHint.Layers2DPhysics)]
+    public uint TeamMask {get; private set;}
 
     public IBody Body {get; private set;} = null!;
     public IEntityHealth Health { get; private set; } = EnvironmentHealth.Instance;

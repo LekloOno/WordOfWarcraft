@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://biqqr5rd2wqka"]
 
+[ext_resource type="Script" uid="uid://dkbr282rb0aq" path="res://Src/Render/WorldRenderer/WorldRenderer3D.cs" id="1_2cnsr"]
 [ext_resource type="Texture2D" uid="uid://dlhqo5yeju6wj" path="res://assets/sprites/world/trees/tree_1.png" id="1_bl13t"]
 [ext_resource type="Shader" uid="uid://o1mbdritu7w5" path="res://assets/shaders/grid.gdshader" id="1_iyx0m"]
 [ext_resource type="Texture2D" uid="uid://b118doud0y232" path="res://assets/sprites/world/all_purpose_blob.png" id="2_iyx0m"]
-[ext_resource type="Texture2D" uid="uid://tqh5c10lsis5" path="res://assets/sprites/entities/dude.png" id="2_uacia"]
 [ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="3_7yos8"]
 [ext_resource type="Texture2D" uid="uid://c7xm7lie3s6oo" path="res://icon.svg" id="4_5jxlq"]
 [ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="9_n74k2"]
 [ext_resource type="Script" uid="uid://bl5jmlur1ki7n" path="res://Src/Debug/SelfHarmDbg.cs" id="9_si7kk"]
 [ext_resource type="Script" uid="uid://cfm24npuh7ybu" path="res://Src/Entities/Entity.cs" id="10_pn65j"]
+[ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="11_4k8fq"]
 [ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Debug/RandomMode.cs" id="11_ajshl"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
 [ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="12_c6rvn"]
@@ -55,8 +56,18 @@ size = Vector3(12, 8, 0.5)
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
 
+[sub_resource type="Resource" id="Resource_4k8fq"]
+script = ExtResource("11_4k8fq")
+Key = "goblin"
+metadata/_custom_type_script = "uid://defda3606ges4"
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
+
+[sub_resource type="Resource" id="Resource_75pfo"]
+script = ExtResource("11_4k8fq")
+Key = "player"
+metadata/_custom_type_script = "uid://defda3606ges4"
 
 [sub_resource type="Resource" id="Resource_n74k2"]
 script = ExtResource("20_n74k2")
@@ -79,53 +90,11 @@ transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0
 material_override = SubResource("StandardMaterial3D_74lek")
 mesh = SubResource("QuadMesh_175km")
 
-[node name="Player" type="Node3D" parent="Terrain/Ground" unique_id=1523057225 node_paths=PackedStringArray("_node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+[node name="WorldRenderer3D" type="Node3D" parent="Terrain/Ground" unique_id=1762567380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 top_level = true
-script = ExtResource("3_7yos8")
-_node = NodePath("../../../Physics/Player/Body")
-metadata/_custom_type_script = "uid://r0iw0hgjbuff"
-
-[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Player" unique_id=2125332346]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0.5, 0)
-billboard = 1
-texture = ExtResource("2_uacia")
-
-[node name="Monster" type="Node3D" parent="Terrain/Ground" unique_id=1288939886 node_paths=PackedStringArray("_node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
-top_level = true
-script = ExtResource("3_7yos8")
-_node = NodePath("../../../Physics/Entity/Body")
-metadata/_custom_type_script = "uid://r0iw0hgjbuff"
-
-[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Monster" unique_id=1234088021]
-transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, 0.3, 0)
-billboard = 1
-texture = ExtResource("2_uacia")
-
-[node name="Monster2" type="Node3D" parent="Terrain/Ground" unique_id=582091057 node_paths=PackedStringArray("_node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
-top_level = true
-script = ExtResource("3_7yos8")
-_node = NodePath("../../../Physics/Entity2/Body")
-metadata/_custom_type_script = "uid://r0iw0hgjbuff"
-
-[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Monster2" unique_id=1437733180]
-transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, 0.3, 0)
-billboard = 1
-texture = ExtResource("2_uacia")
-
-[node name="Monster3" type="Node3D" parent="Terrain/Ground" unique_id=478747241 node_paths=PackedStringArray("_node")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 3)
-top_level = true
-script = ExtResource("3_7yos8")
-_node = NodePath("../../../Physics/Entity3/Body")
-metadata/_custom_type_script = "uid://r0iw0hgjbuff"
-
-[node name="Sprite3D" type="Sprite3D" parent="Terrain/Ground/Monster3" unique_id=1521537059]
-transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, 0.3, 0)
-billboard = 1
-texture = ExtResource("2_uacia")
+script = ExtResource("1_2cnsr")
+metadata/_custom_type_script = "uid://dkbr282rb0aq"
 
 [node name="Cursor" type="Node3D" parent="Terrain/Ground" unique_id=448805318 node_paths=PackedStringArray("_node")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 1, 0.1, 0.19999981)
@@ -304,6 +273,7 @@ metadata/_custom_type_script = "uid://bl5jmlur1ki7n"
 
 [node name="Entity" type="Node" parent="Physics" unique_id=89603445]
 script = ExtResource("10_pn65j")
+IdData = SubResource("Resource_4k8fq")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
@@ -350,6 +320,7 @@ metadata/_custom_type_script = "uid://dim1tr0x143dg"
 
 [node name="Entity2" type="Node" parent="Physics" unique_id=829405404]
 script = ExtResource("10_pn65j")
+IdData = SubResource("Resource_4k8fq")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
@@ -396,6 +367,7 @@ metadata/_custom_type_script = "uid://dim1tr0x143dg"
 
 [node name="Entity3" type="Node" parent="Physics" unique_id=277453397]
 script = ExtResource("10_pn65j")
+IdData = SubResource("Resource_4k8fq")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
@@ -440,8 +412,103 @@ metadata/_custom_type_script = "uid://swtlq1uyuwcd"
 script = ExtResource("19_si7kk")
 metadata/_custom_type_script = "uid://dim1tr0x143dg"
 
+[node name="Entity4" type="Node" parent="Physics" unique_id=780164792]
+script = ExtResource("10_pn65j")
+IdData = SubResource("Resource_4k8fq")
+TeamMask = 2
+metadata/_custom_type_script = "uid://cfm24npuh7ybu"
+
+[node name="Body" type="RigidBody2D" parent="Physics/Entity4" unique_id=759696759]
+position = Vector2(-14.085, -0.09)
+gravity_scale = 0.0
+script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Entity4/Body" unique_id=1723133977]
+shape = SubResource("CircleShape2D_175km")
+
+[node name="BodyMover" type="Node" parent="Physics/Entity4" unique_id=2093753539]
+script = ExtResource("9_ajshl")
+_acceleration = 20.0
+_maxSpeed = 4.0
+_friction = 9.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="FollowerWishDir" type="Node" parent="Physics/Entity4/BodyMover" unique_id=991777474]
+script = ExtResource("13_kay4s")
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="TargetAcquirer" type="Node" parent="Physics/Entity4" unique_id=1204983618]
+script = ExtResource("14_y81of")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://7buc4meflsqr"
+
+[node name="BasicAttack" type="Node" parent="Physics/Entity4" unique_id=1787647960]
+script = ExtResource("15_gsk6d")
+metadata/_custom_type_script = "uid://14ici7sfka52"
+
+[node name="EntityHealth" type="Node" parent="Physics/Entity4" unique_id=1713236043]
+script = ExtResource("9_n74k2")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="EntityHealthLogger" type="Node" parent="Physics/Entity4/EntityHealth" unique_id=253165009]
+script = ExtResource("17_2cnsr")
+metadata/_custom_type_script = "uid://swtlq1uyuwcd"
+
+[node name="MoverHealthHandler" type="Node" parent="Physics/Entity4" unique_id=40350446]
+script = ExtResource("19_si7kk")
+metadata/_custom_type_script = "uid://dim1tr0x143dg"
+
+[node name="Entity5" type="Node" parent="Physics" unique_id=1626824144]
+script = ExtResource("10_pn65j")
+IdData = SubResource("Resource_4k8fq")
+TeamMask = 2
+metadata/_custom_type_script = "uid://cfm24npuh7ybu"
+
+[node name="Body" type="RigidBody2D" parent="Physics/Entity5" unique_id=471057708]
+position = Vector2(6.815, -8.09)
+gravity_scale = 0.0
+script = ExtResource("7_ajshl")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Entity5/Body" unique_id=1444595100]
+shape = SubResource("CircleShape2D_175km")
+
+[node name="BodyMover" type="Node" parent="Physics/Entity5" unique_id=1765743522]
+script = ExtResource("9_ajshl")
+_acceleration = 20.0
+_maxSpeed = 4.0
+_friction = 9.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="FollowerWishDir" type="Node" parent="Physics/Entity5/BodyMover" unique_id=1681332900]
+script = ExtResource("13_kay4s")
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
+[node name="TargetAcquirer" type="Node" parent="Physics/Entity5" unique_id=1214007145]
+script = ExtResource("14_y81of")
+_targetTeamMask = 1
+metadata/_custom_type_script = "uid://7buc4meflsqr"
+
+[node name="BasicAttack" type="Node" parent="Physics/Entity5" unique_id=894027797]
+script = ExtResource("15_gsk6d")
+metadata/_custom_type_script = "uid://14ici7sfka52"
+
+[node name="EntityHealth" type="Node" parent="Physics/Entity5" unique_id=7137505]
+script = ExtResource("9_n74k2")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="EntityHealthLogger" type="Node" parent="Physics/Entity5/EntityHealth" unique_id=1497965969]
+script = ExtResource("17_2cnsr")
+metadata/_custom_type_script = "uid://swtlq1uyuwcd"
+
+[node name="MoverHealthHandler" type="Node" parent="Physics/Entity5" unique_id=774774393]
+script = ExtResource("19_si7kk")
+metadata/_custom_type_script = "uid://dim1tr0x143dg"
+
 [node name="Player" type="Node" parent="Physics" unique_id=162077607]
 script = ExtResource("10_pn65j")
+IdData = SubResource("Resource_75pfo")
 TeamMask = 1
 
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
