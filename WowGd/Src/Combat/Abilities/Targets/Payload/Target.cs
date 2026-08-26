@@ -1,17 +1,6 @@
 using WowGd.Src.Entities;
 
-namespace WowGd.Src.Combat.Abilities.Targets;
-
-/// <summary>
-/// Describes the relation a given target has to
-/// the entity that initiated the targeting query.
-/// </summary>
-public enum TargetRelation
-{
-    Self,
-    Ally,
-    Enemy,
-}
+namespace WowGd.Src.Combat.Abilities.Targets.Payload;
 
 /// <summary>
 /// Represents a target, resulting of a targeting query.

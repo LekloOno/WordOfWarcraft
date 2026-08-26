@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using WowGd.Src.Entities;
 
-namespace WowGd.Src.Combat.Abilities.Targets;
+namespace WowGd.Src.Combat.Abilities.Targets.Payload;
 
 /// <summary>
 /// Represents the payload resulting of a targeting query.

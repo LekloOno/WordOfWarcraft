@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Godot;
-using WowGd.Src.Dactylo.Abilities.Effects;
-using WowGd.Src.Dactylo.Generators;
+using WowGd.Src.Combat.Abilities.Effects;
+using WowGd.Src.Combat.Abilities.Targets.Payload;
 using WowGd.Src.Dactylo.Worders;
 using WowGd.Src.Entities;
 using WowGd.Src.Tools;
@@ -9,9 +9,9 @@ using WowGd.Src.Tools;
 namespace WowGd.Src.Dactylo.Abilities;
 
 [GlobalClass]
-public partial class WordBasedAbility : Node, IWorderStreamHandler, IAbility
+public partial class WordBasedAbility : Node, IWorderStreamHandler, IDisablable
 {
-	[Export] private FreeTargetAbilityEffect _effect = null!;
+	[Export] private AbilityEffect _effect = null!;
 	[Export(PropertyHint.Layers2DRender)]
 	private uint _targetTeamMask;
 
@@ -38,12 +38,32 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler, IAbility
 		_worder.Next();
 	}
 
-	public void OnCompleted(string written, string target, int correct)
+	public void OnCompleted(string written, string targetWord, int correct)
 	{
-		float accuracy   = (float) correct/target.Length;
-		float sizeFactor = (float) target.Length / _wordBaseSize;
+		float accuracy   = (float) correct/targetWord.Length;
+		float sizeFactor = (float) targetWord.Length / _wordBaseSize;
 
-		_effect.Apply(_entity, new(Target, _targetTeamMask), accuracy * sizeFactor);
+		// TEMPORARY
+		// Targeting logic should later be externalized
+		ICollection<IEntity> entities = _entity.GetTargetsInRange(5f, excludeSelf: false);
+
+		HashSet<Target> targets = [];
+		foreach (IEntity entity in entities)
+		{
+			Target target;
+
+			if (entity == _entity)
+				target = new(entity, TargetRelation.Self, false);
+			else if (entity.TeamMask == _entity.TeamMask)
+				target = new(entity, TargetRelation.Ally, false);
+			else
+				target = new(entity, TargetRelation.Enemy, false);
+			
+			targets.Add(target);
+		}
+
+		TargetsPayload payload = new(targets, _entity);
+		_effect.Apply(payload, accuracy * sizeFactor);
 	}
 
 	public void OnWordStarted(string word, int remainingWords) {}

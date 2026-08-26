@@ -32,8 +32,8 @@
 [ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="27_gv2t6"]
 [ext_resource type="Script" uid="uid://8hakekh7logr" path="res://Src/Debug/TestPlayerAttack.cs" id="29_4k8fq"]
 [ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
-[ext_resource type="Script" uid="uid://cw5iwe2wk53ax" path="res://Src/Dactylo/Abilities/Effects/TestRadiusAttack.cs" id="30_1xwo4"]
 [ext_resource type="Script" uid="uid://u8xdp6fmf226" path="res://Src/Dactylo/Worders/Worder.cs" id="31_5civd"]
+[ext_resource type="Script" uid="uid://cm4kx3mq73kgp" path="res://Src/Combat/Abilities/Effects/Impls/SingleDamageEffect.cs" id="31_gv2t6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -87,9 +87,10 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_175km"]
-script = ExtResource("30_1xwo4")
-metadata/_custom_type_script = "uid://cw5iwe2wk53ax"
+[sub_resource type="Resource" id="Resource_ds53i"]
+script = ExtResource("31_gv2t6")
+_target = 4
+metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
 
 [sub_resource type="Resource" id="Resource_n74k2"]
 script = ExtResource("20_n74k2")
@@ -426,7 +427,7 @@ metadata/_custom_type_script = "uid://8hakekh7logr"
 
 [node name="WordBasedAbility" type="Node" parent="Physics/Player" unique_id=819744398]
 script = ExtResource("29_gv2t6")
-_effect = SubResource("Resource_175km")
+_effect = SubResource("Resource_ds53i")
 _targetTeamMask = 2
 metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
 

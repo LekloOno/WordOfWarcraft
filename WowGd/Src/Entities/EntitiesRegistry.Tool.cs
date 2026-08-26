@@ -52,7 +52,7 @@ public static partial class EntitiesRegistry
         ICollection<IEntity> inRange = [];
         float rangeSquared = range * range;
         
-        foreach (IEntity entity in EntitiesRegistry.Entities)
+        foreach (IEntity entity in Entities)
         {
             if (excludeSelf && entity == self)
                 continue;
