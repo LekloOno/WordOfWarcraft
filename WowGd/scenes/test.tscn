@@ -34,7 +34,10 @@
 [ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
 [ext_resource type="Script" uid="uid://u8xdp6fmf226" path="res://Src/Dactylo/Worders/Worder.cs" id="31_5civd"]
 [ext_resource type="Script" uid="uid://cm4kx3mq73kgp" path="res://Src/Combat/Abilities/Effects/Impls/SingleDamageEffect.cs" id="31_gv2t6"]
+[ext_resource type="Script" uid="uid://xkykq0cq7xkm" path="res://Src/Combat/Abilities/Effects/SingleAbilityEffect.cs" id="31_p8c7m"]
+[ext_resource type="Script" uid="uid://dhcf1q68fgvyv" path="res://Src/Combat/Abilities/Effects/Impls/SingleHealEffect.cs" id="33_3ss0b"]
 [ext_resource type="Script" uid="uid://bpfitrkj2ijoy" path="res://Src/Combat/Abilities/Targets/Queriers/SelfQuerier.cs" id="33_5civd"]
+[ext_resource type="Script" uid="uid://dkmjl1psg5bj8" path="res://Src/Combat/Abilities/Effects/ComposedAbilityEffect.cs" id="34_mftsw"]
 [ext_resource type="Script" uid="uid://bwg3ndt4iuoxx" path="res://Src/Combat/Abilities/Targets/AreaGatherers/RadiusGatherer.cs" id="34_mi64w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
@@ -89,12 +92,21 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_q6ayx"]
+[sub_resource type="Resource" id="Resource_s6cx0"]
 script = ExtResource("31_gv2t6")
-_hp = 50.0
-_launcher = true
 _target = 4
 metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
+
+[sub_resource type="Resource" id="Resource_emonu"]
+script = ExtResource("33_3ss0b")
+_hp = 4.0
+_launcher = true
+metadata/_custom_type_script = "uid://dhcf1q68fgvyv"
+
+[sub_resource type="Resource" id="Resource_iq7xp"]
+script = ExtResource("34_mftsw")
+_effects = Array[ExtResource("31_p8c7m")]([SubResource("Resource_s6cx0"), SubResource("Resource_emonu")])
+metadata/_custom_type_script = "uid://dkmjl1psg5bj8"
 
 [sub_resource type="Resource" id="Resource_n74k2"]
 script = ExtResource("20_n74k2")
@@ -431,7 +443,7 @@ metadata/_custom_type_script = "uid://8hakekh7logr"
 
 [node name="WordBasedAbility" type="Node" parent="Physics/Player" unique_id=819744398]
 script = ExtResource("29_gv2t6")
-_effect = SubResource("Resource_q6ayx")
+_effect = SubResource("Resource_iq7xp")
 _wordMinSize = 4
 _wordMaxSize = 4
 metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
