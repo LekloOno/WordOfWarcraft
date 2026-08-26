@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c7xm7lie3s6oo" path="res://icon.svg" id="4_5jxlq"]
 [ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
-[ext_resource type="Script" uid="uid://haep2dj5gh3q" path="res://Src/Debug/GameLineEdit.cs" id="8_5jxlq"]
+[ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="8_1xwo4"]
 [ext_resource type="Script" uid="uid://d3die7shwuki7" path="res://Src/Render/Ui/Worder/WorderDisplay.cs" id="8_gv2t6"]
 [ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="9_ajshl"]
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="9_n74k2"]
@@ -57,6 +57,13 @@ size = Vector3(12, 8, 0.5)
 [sub_resource type="Environment" id="Environment_175km"]
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
+
+[sub_resource type="Resource" id="Resource_lswdd"]
+script = ExtResource("8_1xwo4")
+AnimationTime = 0.2
+TransitionType = 3
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
 [sub_resource type="Resource" id="Resource_75pfo"]
 script = ExtResource("11_4k8fq")
@@ -255,25 +262,33 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextEdit" type="TextEdit" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1200759941]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1563631358 node_paths=PackedStringArray("_worder", "_container", "_cursor")]
 custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
-script = ExtResource("8_5jxlq")
-
-[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer" unique_id=179035936 node_paths=PackedStringArray("_worder")]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 403.0
-offset_top = -179.0
-offset_right = -405.0
-offset_bottom = -37.0
-grow_horizontal = 2
-grow_vertical = 0
-alignment = 1
 script = ExtResource("8_gv2t6")
-_worder = NodePath("../../Physics/Player/WordBasedAbility/Worder")
+_worder = NodePath("../../../../Physics/Player/WordBasedAbility/Worder")
+_container = NodePath("HFlowContainer")
+_cursor = NodePath("MarginContainer")
+_cursorTweenSettings = SubResource("Resource_lswdd")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer" unique_id=179035936]
+layout_mode = 2
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer" unique_id=1839887052]
+custom_minimum_size = Vector2(1, 23)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(149.49, 0)
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer/MarginContainer" unique_id=270397720]
+layout_mode = 2
+offset_transform_position = Vector2(143.47, 0)
+color = Color(0.99999994, 0.62532383, 0.36127993, 1)
 
 [node name="Debug" type="Node" parent="." unique_id=1667357618]
 
