@@ -1,7 +1,7 @@
 using Godot;
 using WowGd.Src.Combat.Health;
 
-namespace WowGd.Src.Render.Ui;
+namespace WowGd.Src.Render.Ui.Combat.Health;
 
 [GlobalClass]
 public partial class HealthBar : Control, IEntityHealthHandler
