@@ -12,7 +12,7 @@ public partial class EntityRender3D : Node3D
 
     public override void _PhysicsProcess(double delta)
     {
-        Position = Entity.Body.Position.ToVector3();
+        Position = Entity.Body.GlobalPosition.ToVector3();
     }
 
     public virtual void Init(IEntity entity)

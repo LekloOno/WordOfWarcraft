@@ -89,7 +89,7 @@ radius = 0.4
 
 [sub_resource type="Resource" id="Resource_ds53i"]
 script = ExtResource("31_gv2t6")
-_hp = 100.0
+_hp = 15.0
 _launcher = true
 _target = 4
 metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
@@ -431,6 +431,8 @@ metadata/_custom_type_script = "uid://8hakekh7logr"
 script = ExtResource("29_gv2t6")
 _effect = SubResource("Resource_ds53i")
 _targetTeamMask = 2
+_wordMinSize = 4
+_wordMaxSize = 4
 metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
 
 [node name="Worder" type="Node" parent="Physics/Player/WordBasedAbility" unique_id=1144036271]

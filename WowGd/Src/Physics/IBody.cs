@@ -4,7 +4,7 @@ namespace WowGd.Src.Physics;
 
 public interface IBody
 {
-    Vector2 Position        { get; }
+    Vector2 GlobalPosition        { get; }
     Vector2 LinearVelocity  { get; }
     float AngularVelocity   { get; }
     
