@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using WowGd.Src.Combat.Abilities.Effects;
@@ -40,7 +41,8 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler, IDisablable
 
 	public void OnCompleted(string written, string targetWord, int correct)
 	{
-		float accuracy   = (float) correct/targetWord.Length;
+		int compSize	 = Math.Max(targetWord.Length, written.Length);
+		float accuracy   = (float) correct / compSize;
 		float sizeFactor = (float) targetWord.Length / _wordBaseSize;
 
 		// TEMPORARY
