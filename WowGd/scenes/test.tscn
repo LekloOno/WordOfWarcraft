@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://biqqr5rd2wqka"]
 
 [ext_resource type="Script" uid="uid://dkbr282rb0aq" path="res://Src/Render/WorldRenderer/WorldRenderer3D.cs" id="1_2cnsr"]
-[ext_resource type="Texture2D" uid="uid://dlhqo5yeju6wj" path="res://assets/sprites/world/trees/tree_1.png" id="1_bl13t"]
 [ext_resource type="Shader" uid="uid://o1mbdritu7w5" path="res://assets/shaders/grid.gdshader" id="1_iyx0m"]
 [ext_resource type="Texture2D" uid="uid://b118doud0y232" path="res://assets/sprites/world/all_purpose_blob.png" id="2_iyx0m"]
 [ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="3_7yos8"]
 [ext_resource type="Texture2D" uid="uid://c7xm7lie3s6oo" path="res://icon.svg" id="4_5jxlq"]
+[ext_resource type="Texture2D" uid="uid://5imopu02t7y3" path="res://assets/sprites/world/trees/tree.png" id="5_gv2t6"]
 [ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="8_1xwo4"]
@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://bl5jmlur1ki7n" path="res://Src/Debug/SelfHarmDbg.cs" id="9_si7kk"]
 [ext_resource type="Script" uid="uid://bng07rnqcnt53" path="res://Src/Debug/WrittenInputIntercept.cs" id="10_gsk6d"]
 [ext_resource type="Script" uid="uid://cfm24npuh7ybu" path="res://Src/Entities/Entity.cs" id="10_pn65j"]
-[ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/simple_monster.tscn" id="10_y81of"]
+[ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/physic/simple_monster.tscn" id="10_y81of"]
 [ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="11_4k8fq"]
 [ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Debug/RandomMode.cs" id="11_ajshl"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
@@ -60,9 +60,6 @@ background_color = Color(0.64561886, 0.870362, 1, 1)
 
 [sub_resource type="Resource" id="Resource_gv2t6"]
 script = ExtResource("8_1xwo4")
-AnimationTime = 0.2
-TransitionType = 3
-EaseType = 1
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
 [sub_resource type="Resource" id="Resource_75pfo"]
@@ -127,29 +124,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.35)
 shape = SubResource("BoxShape3D_175km")
 
 [node name="Tree2" type="Sprite3D" parent="Terrain" unique_id=1879480110]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -6.3999996, 1.5999999, -2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3999996, 2.35, -2.5)
 billboard = 2
 texture_filter = 0
-texture = ExtResource("1_bl13t")
+texture = ExtResource("5_gv2t6")
 
 [node name="Tree4" type="Sprite3D" parent="Terrain" unique_id=549852988]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 6.6000004, 2.1999998, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6000004, 2.35, -3.5)
 billboard = 2
 texture_filter = 0
-texture = ExtResource("1_bl13t")
+texture = ExtResource("5_gv2t6")
 
 [node name="Tree3" type="Sprite3D" parent="Terrain" unique_id=339992621]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 6.6000004, 1.5999999, 3.3999999)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6000004, 2.35, 3.3999999)
 modulate = Color(0.92535293, 0.9253528, 0.9253529, 1)
 billboard = 2
 texture_filter = 0
-texture = ExtResource("1_bl13t")
+texture = ExtResource("5_gv2t6")
 
 [node name="Tree" type="Sprite3D" parent="Terrain" unique_id=1547253807]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -1.2999998, 1.7, 0.5999999)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2999998, 2.35, 0.5999999)
 billboard = 2
 texture_filter = 0
-texture = ExtResource("1_bl13t")
+texture = ExtResource("5_gv2t6")
 
 [node name="Bush3" type="Sprite3D" parent="Terrain" unique_id=739716644]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.6999999, 0.39999998, 1.7)

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://byd256lw7uyjm"]
 
-[ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/health_bar.tscn" id="1_4uvtf"]
+[ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/render/health/health_bar.tscn" id="1_ilny6"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_evht8"]
 viewport_path = NodePath("SubViewport")
@@ -13,4 +13,4 @@ texture = SubResource("ViewportTexture_evht8")
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1568086297]
 transparent_bg = true
 
-[node name="HealthBar" parent="SubViewport" unique_id=1048134132 instance=ExtResource("1_4uvtf")]
+[node name="HealthBar" parent="SubViewport" unique_id=1048134132 instance=ExtResource("1_ilny6")]

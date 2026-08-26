@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://wj2hvaemholr"]
 
-[ext_resource type="Script" uid="uid://sbgbxjm61r8y" path="res://Src/Render/Ui/HealthBar.cs" id="1_n478s"]
+[ext_resource type="Script" uid="uid://sbgbxjm61r8y" path="res://Src/Render/Ui/HealthBar.cs" id="1_hoifu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqnaj"]
 bg_color = Color(0, 0, 0, 0.34509805)
@@ -23,7 +23,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_n478s")
+script = ExtResource("1_hoifu")
 _body = NodePath("Body")
 _tail = NodePath("Tail")
 _tailSpeed = 0.5
