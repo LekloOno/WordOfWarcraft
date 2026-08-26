@@ -34,6 +34,8 @@
 [ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
 [ext_resource type="Script" uid="uid://u8xdp6fmf226" path="res://Src/Dactylo/Worders/Worder.cs" id="31_5civd"]
 [ext_resource type="Script" uid="uid://cm4kx3mq73kgp" path="res://Src/Combat/Abilities/Effects/Impls/SingleDamageEffect.cs" id="31_gv2t6"]
+[ext_resource type="Script" uid="uid://bpfitrkj2ijoy" path="res://Src/Combat/Abilities/Targets/Queriers/SelfQuerier.cs" id="33_5civd"]
+[ext_resource type="Script" uid="uid://bwg3ndt4iuoxx" path="res://Src/Combat/Abilities/Targets/AreaGatherers/RadiusGatherer.cs" id="34_mi64w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -87,9 +89,9 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_ds53i"]
+[sub_resource type="Resource" id="Resource_q6ayx"]
 script = ExtResource("31_gv2t6")
-_hp = 15.0
+_hp = 50.0
 _launcher = true
 _target = 4
 metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
@@ -429,8 +431,7 @@ metadata/_custom_type_script = "uid://8hakekh7logr"
 
 [node name="WordBasedAbility" type="Node" parent="Physics/Player" unique_id=819744398]
 script = ExtResource("29_gv2t6")
-_effect = SubResource("Resource_ds53i")
-_targetTeamMask = 2
+_effect = SubResource("Resource_q6ayx")
 _wordMinSize = 4
 _wordMaxSize = 4
 metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
@@ -438,6 +439,15 @@ metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
 [node name="Worder" type="Node" parent="Physics/Player/WordBasedAbility" unique_id=1144036271]
 script = ExtResource("31_5civd")
 metadata/_custom_type_script = "uid://u8xdp6fmf226"
+
+[node name="SelfQuerier" type="Node" parent="Physics/Player/WordBasedAbility" unique_id=1636515760]
+script = ExtResource("33_5civd")
+metadata/_custom_type_script = "uid://bpfitrkj2ijoy"
+
+[node name="RadiusGatherer" type="Node" parent="Physics/Player/WordBasedAbility/SelfQuerier" unique_id=1941926848]
+script = ExtResource("34_mi64w")
+_radius = 213123.0
+metadata/_custom_type_script = "uid://bwg3ndt4iuoxx"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2
