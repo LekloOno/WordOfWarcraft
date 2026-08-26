@@ -58,7 +58,7 @@ size = Vector3(12, 8, 0.5)
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
 
-[sub_resource type="Resource" id="Resource_lswdd"]
+[sub_resource type="Resource" id="Resource_gv2t6"]
 script = ExtResource("8_1xwo4")
 AnimationTime = 0.2
 TransitionType = 3
@@ -262,30 +262,29 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1563631358 node_paths=PackedStringArray("_worder", "_container", "_cursor")]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1563631358 node_paths=PackedStringArray("_worder", "_container", "_caret")]
 custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
 script = ExtResource("8_gv2t6")
 _worder = NodePath("../../../../Physics/Player/WordBasedAbility/Worder")
 _container = NodePath("HFlowContainer")
-_cursor = NodePath("MarginContainer")
-_cursorTweenSettings = SubResource("Resource_lswdd")
+_caret = NodePath("Caret")
+_caretTweenSettings = SubResource("Resource_gv2t6")
 
 [node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer" unique_id=179035936]
 layout_mode = 2
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer" unique_id=1839887052]
+[node name="Caret" type="MarginContainer" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer" unique_id=1839887052]
 custom_minimum_size = Vector2(1, 23)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 offset_transform_enabled = true
-offset_transform_position = Vector2(149.49, 0)
 theme_override_constants/margin_top = 2
 theme_override_constants/margin_bottom = 1
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer/MarginContainer" unique_id=270397720]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/ColorRect/CenterContainer/PanelContainer/Caret" unique_id=270397720]
 layout_mode = 2
 offset_transform_position = Vector2(143.47, 0)
 color = Color(0.99999994, 0.62532383, 0.36127993, 1)

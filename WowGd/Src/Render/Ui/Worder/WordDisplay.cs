@@ -66,4 +66,19 @@ public partial class WordDisplay : RichTextLabel
     {
         return $"[color={color}]{character}[/color]";
     }
+
+    public Vector2 GetCaretPosition()
+    {
+        Font font = GetThemeFont("normal_font");
+        int fontSize = GetThemeFontSize("normal_font_size");
+
+        float width = font.GetStringSize(
+            _word.Written,
+            HorizontalAlignment.Left,
+            -1,
+            fontSize
+        ).X;
+
+        return GlobalPosition + Vector2.Right * width;
+    }
 }
