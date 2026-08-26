@@ -171,7 +171,7 @@ public partial class Worder : Node, IWorder
         if (@event is not InputEventKey key)
             return;
 
-        if (!key.IsPressed() || key.IsEcho())
+        if (!key.IsPressed())
             return;
 
         Process(key);
