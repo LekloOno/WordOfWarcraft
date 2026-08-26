@@ -26,10 +26,10 @@
 [ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
 [ext_resource type="Script" uid="uid://4ruoe347w3ap" path="res://Src/Input/ModeInitializer.cs" id="18_gm488"]
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
-[ext_resource type="Script" uid="uid://dim1tr0x143dg" path="res://Src/Combat/Health/HealthHandlers/MoverHealthHandler.cs" id="19_si7kk"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://dpe0v5mdqgxk" path="res://Src/Combat/Health/HealthHandlers/RandomModeHealthHandler.cs" id="22_5f8cm"]
 [ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="25_j7bvy"]
+[ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="27_gv2t6"]
 [ext_resource type="Script" uid="uid://8hakekh7logr" path="res://Src/Debug/TestPlayerAttack.cs" id="29_4k8fq"]
 [ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
 [ext_resource type="Script" uid="uid://cw5iwe2wk53ax" path="res://Src/Dactylo/Abilities/Effects/TestRadiusAttack.cs" id="30_1xwo4"]
@@ -60,6 +60,9 @@ background_color = Color(0.64561886, 0.870362, 1, 1)
 
 [sub_resource type="Resource" id="Resource_gv2t6"]
 script = ExtResource("8_1xwo4")
+AnimationTime = 0.2
+TransitionType = 3
+EaseType = 1
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
 [sub_resource type="Resource" id="Resource_75pfo"]
@@ -391,9 +394,9 @@ metadata/_custom_type_script = "uid://c31kjrec3ir15"
 script = ExtResource("11_ajshl")
 _ability = NodePath("../WordBasedAbility")
 
-[node name="MoverHealthHandler" type="Node" parent="Physics/Player" unique_id=1923537253]
-script = ExtResource("19_si7kk")
-metadata/_custom_type_script = "uid://dim1tr0x143dg"
+[node name="MoveModeHealthHandler" type="Node" parent="Physics/Player" unique_id=1416009957]
+script = ExtResource("27_gv2t6")
+metadata/_custom_type_script = "uid://bftjqppjm3ti3"
 
 [node name="RandomModeHealthHandler" type="Node" parent="Physics/Player" unique_id=554984717]
 script = ExtResource("22_5f8cm")
