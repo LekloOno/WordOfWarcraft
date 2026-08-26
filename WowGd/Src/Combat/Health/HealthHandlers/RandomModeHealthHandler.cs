@@ -15,7 +15,7 @@ public partial class RandomModeHealthHandler : HealthHandler<RandomMode>
     public override void OnDamaged(int hp) {}
     public override void OnHealed(int hp) {}
 
-    public override void OnRessurected(int hp) =>
+    public override void OnResurrected(int hp) =>
         _component.Enable();
 
     public override void OnDied() =>

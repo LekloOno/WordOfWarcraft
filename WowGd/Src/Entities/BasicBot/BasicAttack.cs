@@ -54,7 +54,7 @@ public partial class BasicAttack : Node, IEntityHealthHandler
     public void OnDamaged(int hp) {}
     public void OnHealed(int hp) {}
 
-    public void OnRessurected(int hp)
+    public void OnResurrected(int hp)
     {
         SetPhysicsProcess(true);
     }

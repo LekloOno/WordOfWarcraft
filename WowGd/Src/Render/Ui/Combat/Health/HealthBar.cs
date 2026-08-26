@@ -74,6 +74,6 @@ public partial class HealthBar : Control, IEntityHealthHandler
     public void OnHealed(int hp) =>
         Heal(_health.CurrentHps);
 
-    public void OnRessurected(int hp) =>
+    public void OnResurrected(int hp) =>
         Heal(_health.CurrentHps);
 }

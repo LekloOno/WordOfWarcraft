@@ -60,7 +60,7 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
         SetProcessUnhandledKeyInput(false);
     }
 
-    public void OnRessurected(int hp)
+    public void OnResurrected(int hp)
     {
         SetProcessUnhandledKeyInput(true);
     }

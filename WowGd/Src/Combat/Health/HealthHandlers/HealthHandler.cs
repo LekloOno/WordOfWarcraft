@@ -19,5 +19,5 @@ public abstract partial class HealthHandler<T> : Node, IEntityHealthHandler
     public abstract void OnDamaged(int hp);
     public abstract void OnDied();
     public abstract void OnHealed(int hp);
-    public abstract void OnRessurected(int hp);
+    public abstract void OnResurrected(int hp);
 }

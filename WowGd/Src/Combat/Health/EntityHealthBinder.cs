@@ -10,7 +10,7 @@ public static class EntityHealthBinder
         health.Died         += handler.OnDied;
         health.Damaged      += handler.OnDamaged;
         health.Healed       += handler.OnHealed;
-        health.Resurrected  += handler.OnRessurected;
+        health.Resurrected  += handler.OnResurrected;
     }
 
     public static void Unbind(this IEntityHealthHandler handler, IEntityHealth health)
@@ -18,6 +18,6 @@ public static class EntityHealthBinder
         health.Died         -= handler.OnDied;
         health.Damaged      -= handler.OnDamaged;
         health.Healed       -= handler.OnHealed;
-        health.Resurrected  -= handler.OnRessurected;
+        health.Resurrected  -= handler.OnResurrected;
     }
 }
