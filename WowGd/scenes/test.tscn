@@ -89,6 +89,8 @@ radius = 0.4
 
 [sub_resource type="Resource" id="Resource_ds53i"]
 script = ExtResource("31_gv2t6")
+_hp = 100.0
+_launcher = true
 _target = 4
 metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
 

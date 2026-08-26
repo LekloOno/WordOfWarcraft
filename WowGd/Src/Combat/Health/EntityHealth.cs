@@ -21,6 +21,9 @@ public partial class EntityHealth : Node, IEntityHealth
         if (!dead)
             return false;
 
+        if (hp == 0)
+            return false;
+
         hp ??= MaxHps;
         CurrentHps = (int)hp;
 
@@ -31,6 +34,12 @@ public partial class EntityHealth : Node, IEntityHealth
 
     public bool Damage(int hp)
     {
+        if (Dead())
+            return true;
+
+        if (hp <= 0)
+            return false;
+
         CurrentHps -= hp;
         Damaged?.Invoke(hp);
 
@@ -44,13 +53,16 @@ public partial class EntityHealth : Node, IEntityHealth
     public bool Heal(int hp)
     {
         if (Dead())
-            return true;
+            return false;
+
+        if (hp <= 0)
+            return false;
 
         int max  = MaxHps - CurrentHps;
         int heal = Math.Min(max, hp);
         CurrentHps += heal;
         Healed?.Invoke(hp);
-        return false;
+        return true;
     }
 
     public bool Dead() => CurrentHps <= 0;
