@@ -25,7 +25,7 @@ public partial class ModesManager : Node, IEntityHealthBinder
             }
 
         if (_initActivate && _modes.Count > 0)
-            Activate(_modes[0]);
+            SelectActive(_modes[0], 0);
     }
 
     public void Bind(IEntityHealth health) =>

@@ -21,5 +21,6 @@ public partial class ModePicker : Node
             _manager.Activate(mode);
     }
 
-    private static bool IsSwitch(InputEventKey key) => key.Keycode == Key.Tab;
+    private static bool IsSwitch(InputEventKey key) => 
+        key.IsPressed() && !key.IsEcho() && key.Keycode == Key.Tab;
 }
