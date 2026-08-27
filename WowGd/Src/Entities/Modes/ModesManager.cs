@@ -22,6 +22,7 @@ public partial class ModesManager : Node, IEntityHealthBinder
             {
                 _indexes[mode] = _modes.Count;
                 _modes.Add(mode);
+                mode.Deactivate();
             }
 
         if (_initActivate && _modes.Count > 0)

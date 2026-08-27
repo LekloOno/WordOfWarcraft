@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
+using WowGd.Src.Combat.Abilities;
 using WowGd.Src.Combat.Abilities.Effects;
 using WowGd.Src.Combat.Abilities.Targets.Payload;
 using WowGd.Src.Combat.Abilities.Targets.Queriers;
@@ -11,7 +12,7 @@ using WowGd.Src.Tools;
 namespace WowGd.Src.Dactylo.Abilities;
 
 [GlobalClass]
-public partial class WordBasedAbility : Node, IWorderStreamHandler, IDisablable
+public partial class WordBasedAbility : Node, IWorderStreamHandler, IAbility
 {
 	[Export] private AbilityEffect _effect = null!;
 	[Export] private int _wordBaseSize = 5;
@@ -23,6 +24,9 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler, IDisablable
 
 	public bool Enabled => _enabled;
 	private bool _enabled = false;
+
+	public event Action? Started;
+	public event Action? Stopped;
 
 	public override void _Ready()
 	{
@@ -63,4 +67,11 @@ public partial class WordBasedAbility : Node, IWorderStreamHandler, IDisablable
 		DisableExt.IndempEnable(ref _enabled, () => _worder.Enable());
 	public bool Disable() =>
 		DisableExt.IndempDisable(ref _enabled, () => _worder.Disable());
+
+	public bool Start() =>
+		Enable();
+
+	public bool Stop() =>
+		Disable();
+
 }
