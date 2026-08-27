@@ -444,8 +444,6 @@ metadata/_custom_type_script = "uid://8hakekh7logr"
 [node name="WordBasedAbility" type="Node" parent="Physics/Player" unique_id=819744398]
 script = ExtResource("29_gv2t6")
 _effect = SubResource("Resource_iq7xp")
-_wordMinSize = 4
-_wordMaxSize = 4
 metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
 
 [node name="Worder" type="Node" parent="Physics/Player/WordBasedAbility" unique_id=1144036271]

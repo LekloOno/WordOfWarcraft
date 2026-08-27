@@ -14,9 +14,6 @@ namespace WowGd.Src.Dactylo.Abilities;
 public partial class WordBasedAbility : Node, IWorderStreamHandler, IDisablable
 {
 	[Export] private AbilityEffect _effect = null!;
-
-	[Export] private int _wordMinSize  = 1;
-	[Export] private int _wordMaxSize  = 10;
 	[Export] private int _wordBaseSize = 5;
 
 	private IWorder 		_worder 		= null!;
