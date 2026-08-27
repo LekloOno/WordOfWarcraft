@@ -1,6 +1,6 @@
 using WowGd.Src.Tools;
 
-namespace WowGd.Src.Input;
+namespace WowGd.Src.Entities.Modes;
 
 public interface IMode : IDisablable
 {

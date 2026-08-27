@@ -17,28 +17,28 @@
 [ext_resource type="Script" uid="uid://cfm24npuh7ybu" path="res://Src/Entities/Entity.cs" id="10_pn65j"]
 [ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/physic/simple_monster.tscn" id="10_y81of"]
 [ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="11_4k8fq"]
-[ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Debug/RandomMode.cs" id="11_ajshl"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
 [ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="12_c6rvn"]
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
 [ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="13_5jxlq"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="14_5jxlq"]
-[ext_resource type="Script" uid="uid://c31kjrec3ir15" path="res://Src/Input/ModePicker.cs" id="14_7mbro"]
-[ext_resource type="Script" uid="uid://4ruoe347w3ap" path="res://Src/Input/ModeInitializer.cs" id="18_gm488"]
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
-[ext_resource type="Script" uid="uid://dpe0v5mdqgxk" path="res://Src/Combat/Health/HealthHandlers/RandomModeHealthHandler.cs" id="22_5f8cm"]
-[ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="25_j7bvy"]
-[ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="27_gv2t6"]
 [ext_resource type="Script" uid="uid://8hakekh7logr" path="res://Src/Debug/TestPlayerAttack.cs" id="29_4k8fq"]
 [ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
 [ext_resource type="Script" uid="uid://u8xdp6fmf226" path="res://Src/Dactylo/Worders/Worder.cs" id="31_5civd"]
 [ext_resource type="Script" uid="uid://cm4kx3mq73kgp" path="res://Src/Combat/Abilities/Effects/Impls/SingleDamageEffect.cs" id="31_gv2t6"]
 [ext_resource type="Script" uid="uid://xkykq0cq7xkm" path="res://Src/Combat/Abilities/Effects/SingleAbilityEffect.cs" id="31_p8c7m"]
+[ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="32_p8c7m"]
 [ext_resource type="Script" uid="uid://dhcf1q68fgvyv" path="res://Src/Combat/Abilities/Effects/Impls/SingleHealEffect.cs" id="33_3ss0b"]
 [ext_resource type="Script" uid="uid://bpfitrkj2ijoy" path="res://Src/Combat/Abilities/Targets/Queriers/SelfQuerier.cs" id="33_5civd"]
+[ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="33_mftsw"]
 [ext_resource type="Script" uid="uid://dkmjl1psg5bj8" path="res://Src/Combat/Abilities/Effects/ComposedAbilityEffect.cs" id="34_mftsw"]
 [ext_resource type="Script" uid="uid://bwg3ndt4iuoxx" path="res://Src/Combat/Abilities/Targets/AreaGatherers/RadiusGatherer.cs" id="34_mi64w"]
+[ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="34_q6ayx"]
+[ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="35_iq7xp"]
+[ext_resource type="Script" uid="uid://8g48clggqvjf" path="res://Src/Debug/RandomMode.cs" id="36_s6cx0"]
+[ext_resource type="Script" uid="uid://dpe0v5mdqgxk" path="res://Src/Combat/Health/HealthHandlers/RandomModeHealthHandler.cs" id="37_emonu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -94,6 +94,8 @@ radius = 0.4
 
 [sub_resource type="Resource" id="Resource_s6cx0"]
 script = ExtResource("31_gv2t6")
+_hp = 100.0
+_launcher = true
 _target = 4
 metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
 
@@ -410,31 +412,6 @@ metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Player/Body" unique_id=1440208240]
 shape = SubResource("CircleShape2D_175km")
 
-[node name="MoveMode" type="Node" parent="Physics/Player" unique_id=1160715641]
-script = ExtResource("25_j7bvy")
-metadata/_custom_type_script = "uid://pux5ejw5b5kx"
-
-[node name="ModeInitializer" type="Node" parent="Physics/Player/MoveMode" unique_id=2023048388 node_paths=PackedStringArray("_picker")]
-script = ExtResource("18_gm488")
-_picker = NodePath("../../ModePicker")
-metadata/_custom_type_script = "uid://4ruoe347w3ap"
-
-[node name="ModePicker" type="Node" parent="Physics/Player" unique_id=6245791]
-script = ExtResource("14_7mbro")
-metadata/_custom_type_script = "uid://c31kjrec3ir15"
-
-[node name="RandomMode" type="Node" parent="Physics/Player" unique_id=892624159 node_paths=PackedStringArray("_ability")]
-script = ExtResource("11_ajshl")
-_ability = NodePath("../WordBasedAbility")
-
-[node name="MoveModeHealthHandler" type="Node" parent="Physics/Player" unique_id=1416009957]
-script = ExtResource("27_gv2t6")
-metadata/_custom_type_script = "uid://bftjqppjm3ti3"
-
-[node name="RandomModeHealthHandler" type="Node" parent="Physics/Player" unique_id=554984717]
-script = ExtResource("22_5f8cm")
-metadata/_custom_type_script = "uid://dpe0v5mdqgxk"
-
 [node name="TestPlayerAttack" type="Node" parent="Physics/Player" unique_id=1480911816]
 script = ExtResource("29_4k8fq")
 _targetTeamMask = 2
@@ -458,6 +435,31 @@ metadata/_custom_type_script = "uid://bpfitrkj2ijoy"
 script = ExtResource("34_mi64w")
 _radius = 213123.0
 metadata/_custom_type_script = "uid://bwg3ndt4iuoxx"
+
+[node name="ModesManager" type="Node" parent="Physics/Player" unique_id=2097076642]
+script = ExtResource("32_p8c7m")
+metadata/_custom_type_script = "uid://bgf68riiwyila"
+
+[node name="ModePicker" type="Node" parent="Physics/Player/ModesManager" unique_id=951960610]
+script = ExtResource("33_mftsw")
+metadata/_custom_type_script = "uid://bjsonh2oopm3s"
+
+[node name="MoveMode" type="Node" parent="Physics/Player/ModesManager" unique_id=29026249]
+script = ExtResource("34_q6ayx")
+metadata/_custom_type_script = "uid://pux5ejw5b5kx"
+
+[node name="MoveModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=521768474]
+script = ExtResource("35_iq7xp")
+metadata/_custom_type_script = "uid://bftjqppjm3ti3"
+
+[node name="RandomMode" type="Node" parent="Physics/Player/ModesManager" unique_id=379048797 node_paths=PackedStringArray("_ability")]
+script = ExtResource("36_s6cx0")
+_ability = NodePath("../../WordBasedAbility")
+metadata/_custom_type_script = "uid://8g48clggqvjf"
+
+[node name="RandomModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=1319258572]
+script = ExtResource("37_emonu")
+metadata/_custom_type_script = "uid://dpe0v5mdqgxk"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2

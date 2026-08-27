@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
 
-namespace WowGd.Src.Input;
+namespace WowGd.Src.Entities.Modes;
 
 public static class ModeRegistry
 {
