@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://ccndnpoye41sa"]
+
+[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="1_2wdd6"]
+[ext_resource type="Script" uid="uid://bmpi88sbvo1rf" path="res://Src/Render/Ui/Combat/Health/DamageIndicator3D.cs" id="1_bli4a"]
+[ext_resource type="Script" uid="uid://d0pwdq7a28vss" path="res://Src/Render/Animation/TweenTools/Value/Vector2TweenValue.cs" id="3_2wdd6"]
+[ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="4_q8grb"]
+[ext_resource type="Script" uid="uid://qoydsswh3nis" path="res://Src/Render/Animation/TweenTools/Value/FloatTweenValue.cs" id="5_olh2f"]
+
+[sub_resource type="Resource" id="Resource_4pern"]
+script = ExtResource("3_2wdd6")
+_value = Vector2(1, 1)
+metadata/_custom_type_script = "uid://d0pwdq7a28vss"
+
+[sub_resource type="Resource" id="Resource_trj5x"]
+script = ExtResource("4_q8grb")
+AnimationTime = 0.25
+TransitionType = 10
+EaseType = 1
+Value = SubResource("Resource_4pern")
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_4dkpk"]
+script = ExtResource("5_olh2f")
+_value = 1.0
+metadata/_custom_type_script = "uid://qoydsswh3nis"
+
+[sub_resource type="Resource" id="Resource_olh2f"]
+script = ExtResource("4_q8grb")
+AnimationTime = 0.2
+Value = SubResource("Resource_4dkpk")
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_egiqu"]
+script = ExtResource("5_olh2f")
+_value = 5.0
+metadata/_custom_type_script = "uid://qoydsswh3nis"
+
+[sub_resource type="Resource" id="Resource_8qm53"]
+script = ExtResource("4_q8grb")
+AnimationTime = 0.25
+TransitionType = 3
+EaseType = 1
+Value = SubResource("Resource_egiqu")
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_thth2"]
+script = ExtResource("3_2wdd6")
+_value = Vector2(1, 1)
+metadata/_custom_type_script = "uid://d0pwdq7a28vss"
+
+[sub_resource type="Resource" id="Resource_mrems"]
+script = ExtResource("4_q8grb")
+Value = SubResource("Resource_thth2")
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_8lk6p"]
+script = ExtResource("5_olh2f")
+metadata/_custom_type_script = "uid://qoydsswh3nis"
+
+[sub_resource type="Resource" id="Resource_o2nyr"]
+script = ExtResource("4_q8grb")
+AnimationTime = 0.7
+Value = SubResource("Resource_8lk6p")
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[node name="DamageIndicator" type="Label3D" unique_id=854293509]
+pixel_size = 0.002
+fixed_size = true
+text = "69"
+font = ExtResource("1_2wdd6")
+script = ExtResource("1_bli4a")
+_scaleInSettings = SubResource("Resource_trj5x")
+_fadeInSettings = SubResource("Resource_olh2f")
+_rotateInSettings = SubResource("Resource_8qm53")
+_scaleOutSettings = SubResource("Resource_mrems")
+_fadeOutSettings = SubResource("Resource_o2nyr")
+_damageColor = Color(0.9638199, 0.28892395, 0.09339193, 1)
+_healColor = Color(0.38732332, 0.8333899, 0.34116867, 1)
+_resColor = Color(1, 0.9019608, 0, 1)
+_deadColor = Color(0.9490196, 0, 0, 1)
+metadata/_custom_type_script = "uid://bmpi88sbvo1rf"

@@ -2,13 +2,12 @@
 
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="1_7jmbk"]
 [ext_resource type="Script" uid="uid://bt71m2lioi3l1" path="res://Src/Render/Animation/TweenTools/TweenAnimation.cs" id="2_fklho"]
-[ext_resource type="Script" uid="uid://bloy2n8rdn44x" path="res://Src/Render/Animation/TweenTools/Value/Vector3TweenValue.cs" id="2_nx2ev"]
+[ext_resource type="Script" uid="uid://b5j30dl2w4rr0" path="res://Src/Render/Animation/TweenTools/Value/Vector3TweenValue.cs" id="2_nx2ev"]
 [ext_resource type="Script" uid="uid://qrk8the2ctgr" path="res://Src/Render/Animation/TweenTools/N3D/Node3DTweenSettings.cs" id="3_nx2ev"]
 
 [sub_resource type="Resource" id="Resource_csknu"]
 script = ExtResource("2_nx2ev")
 _value = Vector3(0, 0.2, 0)
-metadata/_custom_type_script = "uid://bloy2n8rdn44x"
 
 [sub_resource type="Resource" id="Resource_7jmbk"]
 script = ExtResource("3_nx2ev")
@@ -20,7 +19,6 @@ metadata/_custom_type_script = "uid://qrk8the2ctgr"
 [sub_resource type="Resource" id="Resource_mlju8"]
 script = ExtResource("2_nx2ev")
 _value = Vector3(0, -0.2, 0)
-metadata/_custom_type_script = "uid://bloy2n8rdn44x"
 
 [sub_resource type="Resource" id="Resource_nx2ev"]
 script = ExtResource("3_nx2ev")

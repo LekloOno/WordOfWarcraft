@@ -1,6 +1,6 @@
 using Godot;
 using WowGd.Src.Dactylo.Abilities;
-using WowGd.Src.Input;
+using WowGd.Src.Entities.Modes;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Debug;

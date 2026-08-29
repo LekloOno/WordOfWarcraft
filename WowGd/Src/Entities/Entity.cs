@@ -55,6 +55,8 @@ public partial class Entity : Node, IEntity
 
     private void InitComponent(Node child)
     {
+        if (child is IEntityHealthBinder bindable)
+            bindable.Bind(Health);
         if (child is IEntityHealthHandler healthHandler)
             healthHandler.Bind(Health);
     }

@@ -44,6 +44,6 @@ public partial class FollowerWishDir : Node, IWishDir
         if (_targetAcquirer.Target is not IEntity target)
             return Vector2.Zero;
 
-        return (target.Body.Position - _entity.Body.Position).Normalized();
+        return (target.Body.GlobalPosition - _entity.Body.GlobalPosition).Normalized();
     }
 }

@@ -30,7 +30,7 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
         GD.Print($"Healed !\t {_health.CurrentHps} (+{hp})");
     }
 
-    public void OnRessurected(int hp)
+    public void OnResurrected(int hp)
     {
         GD.Print($"Resurrected.\t hp: {_health.CurrentHps}");
     }

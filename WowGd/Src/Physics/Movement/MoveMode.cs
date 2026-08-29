@@ -1,5 +1,6 @@
 using Godot;
-using WowGd.Src.Input;
+using WowGd.Src.Entities;
+using WowGd.Src.Entities.Modes;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement;
@@ -15,11 +16,16 @@ public partial class MoveMode : Node, IMode
 
 	public override void _Ready()
 	{
-		if (!this.TryGetSiblingComponent(out BodyMover? mover))
-            return;
+		if (!this.TryGetComposedRecursive(out IEntity? entity))
+			return;
 
+		if (entity is not Node entityNode)
+			return;
+
+		if (!entityNode.TryGetComponent(out _mover!))
+			return;
+			
 		ModeRegistry.Register(Key.J, this);
-        _mover = mover;
 	}
 
 	public bool Activate() =>

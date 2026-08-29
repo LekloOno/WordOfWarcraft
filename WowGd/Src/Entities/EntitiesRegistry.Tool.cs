@@ -1,3 +1,4 @@
+using Godot;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -17,7 +18,7 @@ public static partial class EntitiesRegistry
 
             if ((entity.TeamMask & targetTeamMask) != 0)
             {
-                float squaredDist = (entity.Body.Position - self.Body.Position).LengthSquared();
+                float squaredDist = (entity.Body.GlobalPosition - self.Body.GlobalPosition).LengthSquared();
                 if (squaredDist < closestSquaredDist)
                 {
                     target = entity;
@@ -52,17 +53,32 @@ public static partial class EntitiesRegistry
         ICollection<IEntity> inRange = [];
         float rangeSquared = range * range;
         
-        foreach (IEntity entity in EntitiesRegistry.Entities)
+        foreach (IEntity entity in Entities)
         {
             if (excludeSelf && entity == self)
                 continue;
 
             if ((entity.TeamMask & targetTeamMask) != 0)
             {
-                float squaredDist = (entity.Body.Position - self.Body.Position).LengthSquared();
+                float squaredDist = (entity.Body.GlobalPosition - self.Body.GlobalPosition).LengthSquared();
                 if (squaredDist <= rangeSquared)
                     inRange.Add(entity);
             }
+        }
+
+        return inRange;
+    }
+
+    public static HashSet<IEntity> GetEntitiesInRange(Vector2 position, float range)
+    {
+        HashSet<IEntity> inRange = [];
+        float rangeSquared = range * range;
+        
+        foreach (IEntity entity in Entities)
+        {
+            float squaredDist = (entity.Body.GlobalPosition - position).LengthSquared();
+            if (squaredDist <= rangeSquared)
+                inRange.Add(entity);
         }
 
         return inRange;

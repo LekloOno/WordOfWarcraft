@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
 
@@ -71,6 +72,21 @@ public static class ComposingExt
 
         GD.PushError($"[{self.GetType()}] has no [{nameof(T)}] sibling component.");
         return false;
+    }
+
+    public static int GetComponents<T>(this Node self, ICollection<T> collection)
+    {
+        int added = 0;
+        foreach (Node child in self.GetChildren())
+        {
+            if (child is not T component)
+                continue;
+
+            collection.Add(component);
+            added ++;
+        }
+
+        return added;
     }
 
     public static T CreateComponent<T>(this Node self)

@@ -3,14 +3,17 @@
 [ext_resource type="Script" uid="uid://s1duq848di8" path="res://Src/Render/WorldRenderer/Entities/SimpleGoblin.cs" id="1_hiiaf"]
 [ext_resource type="Texture2D" uid="uid://b8vejflhxk2lc" path="res://assets/sprites/entities/goblin.png" id="2_qcrgf"]
 [ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="3_hbpfo"]
+[ext_resource type="Script" uid="uid://by1fhpgvvgq5o" path="res://Src/Render/Ui/Combat/Health/DamageIndicatorManager.cs" id="4_hbpfo"]
+[ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="5_4pern"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4pern"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_hbpfo"]
 viewport_path = NodePath("SubViewport")
 
-[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar")]
+[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager")]
 script = ExtResource("1_hiiaf")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/HealthBar")
+_damageIndicatorManager = NodePath("DamageIndicatorManager")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
 transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.5, 0)
@@ -19,6 +22,12 @@ texture = ExtResource("2_qcrgf")
 
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_hbpfo")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_4pern")
+texture = SubResource("ViewportTexture_hbpfo")
+
+[node name="DamageIndicatorManager" type="Node3D" parent="." unique_id=249663640]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("4_hbpfo")
+_indicator = ExtResource("5_4pern")
+metadata/_custom_type_script = "uid://by1fhpgvvgq5o"
 
 [editable path="HealthBar"]

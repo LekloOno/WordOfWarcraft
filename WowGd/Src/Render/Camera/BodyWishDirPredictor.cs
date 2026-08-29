@@ -40,7 +40,7 @@ public partial class BodyWishDirPredictor : Node2D
 
         _smoothedWishDir += _velocity * dt;
 
-        Position = _bodyMover.Body.Position + _smoothedWishDir * _distance;
+        Position = _bodyMover.Body.GlobalPosition + _smoothedWishDir * _distance;
     }
 
     private Vector2 GetActiveTargetWishDir(float dt)
