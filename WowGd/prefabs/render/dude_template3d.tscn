@@ -1,18 +1,25 @@
 [gd_scene format=3 uid="uid://tb2k4gfi3asl"]
 
 [ext_resource type="Script" uid="uid://n2v87bjqo5r4" path="res://Src/Render/WorldRenderer/Entities/SimpleDude.cs" id="1_yvh0v"]
+[ext_resource type="Script" uid="uid://pjj5hwfsprfu" path="res://Src/Render/Animation/TweenTools/TweenAnimator.cs" id="2_udhfh"]
 [ext_resource type="Texture2D" uid="uid://bohr8qp6rgkk" path="res://assets/sprites/entities/player.png" id="2_yvh0v"]
 [ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="3_udhfh"]
+[ext_resource type="Script" uid="uid://bt71m2lioi3l1" path="res://Src/Render/Animation/TweenTools/TweenAnimation.cs" id="3_ulh73"]
 [ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="3_yvh0v"]
-[ext_resource type="Script" uid="uid://myo7tb38ita6" path="res://Src/Render/Animation/Entity/EntityAnimator.cs" id="4_clljq"]
+[ext_resource type="Resource" uid="uid://b1o8wohbo1btc" path="res://animations/entity_movement.tres" id="4_kdopt"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_icjb0"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_khgro"]
 viewport_path = NodePath("SubViewport")
 
 [node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar")]
 script = ExtResource("1_yvh0v")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/HealthBar")
+
+[node name="TweenAnimator" type="Node" parent="." unique_id=1092020771 node_paths=PackedStringArray("Target")]
+script = ExtResource("2_udhfh")
+Target = NodePath("../BodySprite")
+Animations = Array[ExtResource("3_ulh73")]([ExtResource("4_kdopt")])
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -23,10 +30,6 @@ script = ExtResource("3_udhfh")
 
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_yvh0v")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_icjb0")
-
-[node name="Animator" type="Node" parent="." unique_id=1092020771 node_paths=PackedStringArray("_render")]
-script = ExtResource("4_clljq")
-_render = NodePath("..")
+texture = SubResource("ViewportTexture_khgro")
 
 [editable path="HealthBar"]
