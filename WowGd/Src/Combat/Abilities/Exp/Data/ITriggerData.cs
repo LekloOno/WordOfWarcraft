@@ -1,4 +1,4 @@
-namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
+namespace WowGd.Src.Combat.Abilities.Exp.Data;
 
 public interface ITriggerData
 {

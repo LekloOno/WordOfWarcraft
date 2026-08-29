@@ -1,5 +1,5 @@
 using Godot;
-using WowGd.Src.Combat.Abilities.Exp.Data.Models;
+using WowGd.Src.Combat.Abilities.Exp.Data;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.CasterRules;

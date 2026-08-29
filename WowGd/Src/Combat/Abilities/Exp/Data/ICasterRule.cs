@@ -1,6 +1,6 @@
 using WowGd.Src.Entities;
 
-namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
+namespace WowGd.Src.Combat.Abilities.Exp.Data;
 
 /// <summary>
 /// A precondition, based on the state of the caster entity.

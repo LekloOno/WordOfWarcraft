@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
+namespace WowGd.Src.Combat.Abilities.Exp.Data;
 
 /// <summary>
 /// A stateless representation of an ability, pure data.
