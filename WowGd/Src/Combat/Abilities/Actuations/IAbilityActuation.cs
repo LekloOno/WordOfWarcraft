@@ -6,7 +6,7 @@ namespace WowGd.Src.Combat.Abilities.Actuations;
 /// <summary>
 /// Describes the means to activate an ability.
 /// 
-/// It could be a simple instant cast, a time/dactylography cast, 
+/// It could be a simple instant cast, a time/dactylography cast, etc.
 /// </summary>
 public interface IAbilityActuation
 {

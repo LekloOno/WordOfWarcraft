@@ -1,34 +1,11 @@
 using System;
-using Godot;
 
-namespace WowGd.Src.Combat.Abilities.Exp.Data.Resources.CasterPreconditions.ResourceChecks;
+namespace WowGd.Src.Combat.Abilities.Exp.CasterRules.ResourceRules;
 
-public abstract partial class CasterResourcePreconditionData : CasterPrecondition
-{
-    [Export] public float               Amount      { get; private set; }
-    [Export] public ResourceAmountType  AmountType  { get; private set; }
-    [Export] public ResourceComparison  Comparison  { get; private set; }
-}
-
-public enum ResourceAmountType
-{
-    Flat,
-    BasePercent,    // Base maximum with no modifiers
-    MaxPercent,     // Absolute maximum
-}
-
-
-public enum ResourceComparison
-{
-    Less,
-    Equal,
-    More,
-}
-
-public static class CasterResourcePreconditionDataExt
+public static class CasterResourceRuleExt
 {
     public static bool Compare(
-        this CasterResourcePreconditionData data,
+        this CasterResourceRule data,
         float current,
         float maxTotal,
         float @base)

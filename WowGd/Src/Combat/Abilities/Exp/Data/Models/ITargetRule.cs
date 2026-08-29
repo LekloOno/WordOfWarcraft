@@ -1,6 +1,6 @@
 namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
 
-public interface ITargetPreconditionData
+public interface ITargetRule
 {
     string Id { get; }
 }

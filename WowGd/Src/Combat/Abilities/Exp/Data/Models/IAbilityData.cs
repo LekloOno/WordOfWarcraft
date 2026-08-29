@@ -13,7 +13,7 @@ public interface IAbilityData
     /// <br/>
     /// Order does not matter, preconditions should not mutate anything.
     /// </summary>
-    IReadOnlyList<ICasterPreconditionData>  StartPreconditions      { get; }
+    IReadOnlyList<ICasterRule>  StartPreconditions      { get; }
     /// <summary>
     /// The launches to emit if the start preconditions are met.
     /// <br/>
@@ -22,7 +22,7 @@ public interface IAbilityData
     /// Order has a meaning. First launch will be launch first.
     /// A launch might thus invalidate the conditions of the next one.
     /// </summary>
-    IReadOnlyList<ILaunchData>              InstantLaunches         { get; }
+    IReadOnlyList<ILaunchData>  InstantLaunches         { get; }
     /// <summary>
     /// The rules that apply to acquire targets, relative to the states of the caster and given target intent.
     /// <br/>
@@ -30,7 +30,7 @@ public interface IAbilityData
     /// <br/>
     /// Order does not matter, preconditions should not mutate anything.
     /// </summary>
-    IReadOnlyList<ITargetPreconditionData>  TargetPreconditions     { get; }
+    IReadOnlyList<ITargetRule>  TargetRules             { get; }
     /// <summary>
     /// The mean of acquiring targets.
     /// 
@@ -40,31 +40,31 @@ public interface IAbilityData
     /// This makes the ability description compatible with both an AI or a player.
     /// A player would redirect to an input based interraction, while the AI will retrieve it through its decision algorithm.
     /// </summary>
-    TargetIntentAcquirer                   TargetIntentAcquirer    { get; }
+    TargetIntentAcquirer        TargetIntentAcquirer    { get; }
     /// <summary>
     /// The launches to emit when the target has been acquired.
     /// <br/>
     /// Order has a meaning. First launch will be launch first.
     /// A launch might thus invalidate the conditions of the next one.
     /// </summary>
-    IReadOnlyList<ILaunchData>              TargetingLaunches       { get; }
+    IReadOnlyList<ILaunchData>  TargetingLaunches       { get; }
     /// <summary>
     /// The way to actuate the main launches.
     /// 
     /// For example, a time cast, some interractions from the entity (input for player like dactylo, decisions for an AI), etc.
     /// </summary>
-    IActuatorData                           Actuator                { get; }
+    IActuatorData               Actuator                { get; }
     /// <summary>
     /// The launches to emit once actuation has been completed.
     /// <br/>
     /// Order has a meaning. First launch will be launch first.
     /// A launch might thus invalidate the conditions of the next one.
     /// </summary>
-    IReadOnlyList<ILaunchData>              ActuationLaunches            { get; }
+    IReadOnlyList<ILaunchData>  ActuationLaunches       { get; }
     /// <summary>
     /// Condition to meet to loop back to the actuator.
     /// <br/>
     /// Order does not matter, preconditions should not mutate anything.
     /// </summary>
-    IReadOnlyList<ILoopPreconditionData>    LoopPreconditions       { get; }
+    IReadOnlyList<ILoopRule>    LoopRules               { get; }
 }

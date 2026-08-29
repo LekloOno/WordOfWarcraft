@@ -1,6 +1,6 @@
 namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
 
-public interface ILoopPreconditionData
+public interface ILoopRule
 {
     string Id { get; }
 }
