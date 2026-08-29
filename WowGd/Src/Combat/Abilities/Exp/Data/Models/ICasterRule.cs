@@ -1,3 +1,5 @@
+using WowGd.Src.Entities;
+
 namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
 
 /// <summary>
@@ -6,4 +8,5 @@ namespace WowGd.Src.Combat.Abilities.Exp.Data.Models;
 public interface ICasterRule
 {
     string Id { get; }
+    bool Check(IEntity caster);
 }

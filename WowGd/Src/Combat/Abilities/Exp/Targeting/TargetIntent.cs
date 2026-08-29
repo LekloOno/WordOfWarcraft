@@ -1,23 +1,7 @@
 using Godot;
 using WowGd.Src.Entities;
 
-public interface ITargetIntent
-{
-    IEntity? Entity { get; }
-    Vector2 Position { get; }
-}
-
-public readonly struct DirectTargetIntent(IEntity entity) : ITargetIntent
-{
-    public readonly IEntity? Entity => entity;
-    public readonly Vector2 Position => entity.Body.GlobalPosition;
-}
-
-public readonly struct IndirectTargetIntent(Vector2 position) : ITargetIntent
-{
-    public readonly IEntity? Entity => null;
-    public readonly Vector2 Position => position;
-}
+namespace WowGd.Src.Combat.Abilities.Exp.Targeting;
 
 public readonly struct TargetIntent
 {
