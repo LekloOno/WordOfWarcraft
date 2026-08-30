@@ -19,7 +19,7 @@ public readonly struct TypingPackage
     {
         CorrectCharacters = correct;
 
-        SentAccuracy = correct / Math.Max(targetLength, typed);
-        TotalAccuracy = correct / Math.Max(targetLength, strokes);
+        SentAccuracy = (float)correct / Math.Max(targetLength, typed);
+        TotalAccuracy = (float)correct / Math.Max(targetLength, strokes);
     }
 }
