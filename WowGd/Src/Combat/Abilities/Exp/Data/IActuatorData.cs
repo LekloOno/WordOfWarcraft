@@ -5,5 +5,5 @@ namespace WowGd.Src.Combat.Abilities.Exp.Data;
 /// </summary>
 public interface IActuatorData
 {
-    string Id { get; }
+    string  Id { get; }
 }

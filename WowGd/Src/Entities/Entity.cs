@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Physics;
 using WowGd.Src.Tools;
@@ -16,6 +17,8 @@ public partial class Entity : Node, IEntity
 
     public IBody Body {get; private set;} = null!;
     public IEntityHealth Health { get; private set; } = EnvironmentHealth.Instance;
+
+    public IActuatorDriver ActuatorDriver { get; private set; } = null!;
 
     public override void _Ready()
     {
@@ -45,12 +48,13 @@ public partial class Entity : Node, IEntity
     private void FetchBaseComponents()
     {
         if (this.TryGetComponent(out IEntityHealth? health))
-        {
             Health = health;
-        }
 
         if (this.TryGetComponent(out IBody? body))
             Body = body;
+
+        if (this.TryGetComponent(out IActuatorDriver? driver))
+            ActuatorDriver = driver;
     }
 
     private void InitComponent(Node child)

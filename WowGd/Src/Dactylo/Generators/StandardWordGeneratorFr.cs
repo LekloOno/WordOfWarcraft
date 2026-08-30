@@ -60,7 +60,24 @@ public class StandardWordGeneratorFr : IWordGenerator
             words.Enqueue(word);
         }
 
-        return words.Count;
+        return count;
+    }
+
+    public int TryGenerate(out Word[] words, int count, int minSize = 0, int maxSize = int.MaxValue)
+    {
+        words = new Word[count];
+        string[] subBank = GetSubBank(minSize, maxSize);
+        
+        if (subBank.IsEmpty())
+            return 0;
+
+        for (int i = 0; i < count; i++)
+        {
+            int idx = Random.Shared.Next(subBank.Length);
+            words[i] = new(subBank[idx]);;
+        }
+
+        return count;
     }
 
     private string[] GetSubBank(int minSize, int maxSize) =>
