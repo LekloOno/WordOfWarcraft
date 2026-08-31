@@ -1,4 +1,5 @@
 using WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
+using WowGd.Src.Combat.Abilities.Exp.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Physics;
 
@@ -9,18 +10,20 @@ public interface IEntity
     /// <summary>
     /// Data that identifies the entity.
     /// </summary>
-    EntityIdData    IdData          { get; }
+    EntityIdData    IdData      { get; }
     /// <summary>
     /// Allows to regroup entities into teams.
     /// </summary>
-    uint            TeamMask        { get; }
+    uint            TeamMask    { get; }
     /// <summary>
     /// The physical body of the entity, notably defines its position.
     /// </summary>
-    IBody           Body            { get; }
+    IBody           Body        { get; }
     /// <summary>
     /// The health of the entity.
     /// </summary>
-    IEntityHealth   Health          { get; }
-    IActuatorDriver ActuatorDriver  { get; }
+    IEntityHealth   Health      { get; }
+
+    IActuatorDriver     ActuatorDriver      { get; }
+    ITargetIntentDriver TargetIntentDriver  { get; }
 }
