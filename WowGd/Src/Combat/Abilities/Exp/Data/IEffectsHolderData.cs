@@ -7,5 +7,5 @@ public interface IEffectsHolderData
     string              Id          { get; }
     ITriggerData        Trigger     { get; }
     IGathererData       Gatherer    { get; }
-    List<IEffectData>   Effects     { get; }
+    List<IEffect>   Effects     { get; }
 }

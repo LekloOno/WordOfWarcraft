@@ -1,5 +1,6 @@
 using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
+using WowGd.Src.Combat.Abilities.Exp.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Physics;
 using WowGd.Src.Tools;
@@ -19,6 +20,7 @@ public partial class Entity : Node, IEntity
     public IEntityHealth Health { get; private set; } = EnvironmentHealth.Instance;
 
     public IActuatorDriver ActuatorDriver { get; private set; } = null!;
+    public ITargetIntentDriver TargetIntentDriver { get; private set; } = null!;
 
     public override void _Ready()
     {
@@ -53,8 +55,11 @@ public partial class Entity : Node, IEntity
         if (this.TryGetComponent(out IBody? body))
             Body = body;
 
-        if (this.TryGetComponent(out IActuatorDriver? driver))
-            ActuatorDriver = driver;
+        if (this.TryGetComponent(out IActuatorDriver? actuatorDriver))
+            ActuatorDriver = actuatorDriver;
+
+        if (this.TryGetComponent(out ITargetIntentDriver? targetIntentDriver))
+            TargetIntentDriver = targetIntentDriver;
     }
 
     private void InitComponent(Node child)
