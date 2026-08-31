@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
@@ -16,7 +17,7 @@ public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
         AddChild(_directDriver);
     }
 
-    public Task<TargetIntent> RetrieveTargetIntent(TargetIntentAcquirer method, CancellationToken ct)
+    public Task<TargetIntent> RetrieveTargetIntent(TargetIntentAcquirer method, CancellationToken ct, IReadOnlyCollection<ITargetRule>? rules = null)
     {
         return method switch
         {

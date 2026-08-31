@@ -62,10 +62,16 @@ public partial class AbilityStateMachine : Node, IAbility
         _cts = new CancellationTokenSource();
 
         // STEP 3 - retrieve target intent
-        TargetIntent targetIntent = await
-            caster.TargetIntentDriver.RetrieveTargetIntent(
-                _data.TargetIntentAcquirer,
-                _cts.Token);
+        TargetIntent targetIntent;
+        do
+        {
+            targetIntent =  await
+                caster.TargetIntentDriver.RetrieveTargetIntent(
+                    _data.TargetIntentAcquirer,
+                    _cts.Token,
+                    _data.TargetRules);
+        }
+        while (!_data.TargetRulesDt.CheckAll(caster, targetIntent));
 
         // STEP 4 - trigger targeting launches
         _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));

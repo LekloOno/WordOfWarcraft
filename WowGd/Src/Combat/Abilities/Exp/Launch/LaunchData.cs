@@ -5,6 +5,7 @@ using WowGd.Src.Combat.Abilities.Exp.CasterRules;
 using WowGd.Src.Combat.Abilities.Exp.Data;
 using WowGd.Src.Combat.Abilities.Exp.Data.Resources;
 using WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders;
+using WowGd.Src.Combat.Abilities.Exp.Targeting.TargetRules;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Launch;
 

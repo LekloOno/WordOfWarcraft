@@ -1,8 +1,7 @@
 using Godot;
-using WowGd.Src.Combat.Abilities.Exp.Targeting;
 using WowGd.Src.Entities;
 
-namespace WowGd.Src.Combat.Abilities.Exp.CasterRules;
+namespace WowGd.Src.Combat.Abilities.Exp.Targeting.TargetRules;
 
 [GlobalClass]
 public partial class RangeTargetRule : TargetRule

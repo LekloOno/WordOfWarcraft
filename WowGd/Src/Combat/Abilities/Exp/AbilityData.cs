@@ -6,6 +6,7 @@ using WowGd.Src.Combat.Abilities.Exp.CasterRules;
 using WowGd.Src.Combat.Abilities.Exp.Data;
 using WowGd.Src.Combat.Abilities.Exp.Launch;
 using WowGd.Src.Combat.Abilities.Exp.LoopRules;
+using WowGd.Src.Combat.Abilities.Exp.Targeting.TargetRules;
 
 namespace WowGd.Src.Combat.Abilities.Exp;
 
