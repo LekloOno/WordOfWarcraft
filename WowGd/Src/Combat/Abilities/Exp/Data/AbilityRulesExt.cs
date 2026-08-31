@@ -10,18 +10,18 @@ namespace WowGd.Src.Combat.Abilities.Exp.Data;
 
 public static class AbilityRulesExt
 {
-    public static bool CheckAll(this CasterRule[] rules, IEntity caster)
+    public static bool CheckAll(this ICasterRule[] rules, IEntity caster)
     {
-        foreach (CasterRule rule in rules)
+        foreach (ICasterRule rule in rules)
             if (!rule.Check(caster))
                 return false;
 
         return true;
     }
 
-    public static bool CheckAll(this ICollection<CasterRule> rules, IEntity caster)
+    public static bool CheckAll(this ICollection<ICasterRule> rules, IEntity caster)
     {
-        foreach (CasterRule rule in rules)
+        foreach (ICasterRule rule in rules)
             if (!rule.Check(caster))
                 return false;
 
@@ -37,18 +37,18 @@ public static class AbilityRulesExt
         return true;
     }
 
-    public static bool CheckAll(this TargetRule[] rules, IEntity caster, TargetIntent intent)
+    public static bool CheckAll(this ITargetRule[] rules, IEntity caster, TargetIntent intent)
     {
-        foreach (TargetRule rule in rules)
+        foreach (ITargetRule rule in rules)
             if (!rule.Check(caster, intent))
                 return false;
 
         return true;
     }
 
-    public static bool CheckAll(this ICollection<TargetRule> rules, IEntity caster, TargetIntent intent)
+    public static bool CheckAll(this ICollection<ITargetRule> rules, IEntity caster, TargetIntent intent)
     {
-        foreach (TargetRule rule in rules)
+        foreach (ITargetRule rule in rules)
             if (!rule.Check(caster, intent))
                 return false;
 
