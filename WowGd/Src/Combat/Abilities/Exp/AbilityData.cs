@@ -33,10 +33,4 @@ public partial class AbilityData : Resource, IAbilityData
     public IReadOnlyList<ILoopRule>   LoopRules             => [.. LoopRulesDt];
     public IReadOnlyList<ICasterRule> CasterLoopRules       => [.. CasterLoopRulesDt];
     public IReadOnlyList<ITargetRule> TargetLoopRules       => [.. TargetLoopRulesDt];
-
-    public ICasterRule[] StartPreconditionsArr    => [.. StartPreconditionsDt];
-    public ITargetRule[] TargetRulesArr           => [.. TargetRulesDt];
-    public ILoopRule[]   LoopRulesArr             => [.. LoopRulesDt];
-    public ICasterRule[] CasterLoopRulesArr       => [.. CasterLoopRulesDt];
-    public ITargetRule[] TargetLoopRulesArr       => [.. TargetLoopRulesDt];
 }
