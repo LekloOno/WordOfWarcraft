@@ -17,13 +17,10 @@ public partial class AbilityStateMachine : Node, IAbility
 
     public void Resync()
     {
-        foreach(Node child in GetChildren())
-            child.QueueFree();
-
-        _instantLaunches    = _data.InstantLaunchesDt.SyncAll(this);
-        _targetingLaunches  = _data.TargetingLaunchesDt.SyncAll(this);
+        _instantLaunches    = _data.InstantLaunchesDt.BuildAll();
+        _targetingLaunches  = _data.TargetingLaunchesDt.BuildAll();
         _actuator           = _data.ActuatorDt.Build();
-        _actuationLaunches  = _data.ActuationLaunchesDt.SyncAll(this);
+        _actuationLaunches  = _data.ActuationLaunchesDt.BuildAll();
     }
 
     public override void _Ready()

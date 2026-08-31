@@ -1,21 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Actuation;
 using WowGd.Src.Combat.Abilities.Exp.Targeting;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Actuators;
 
-[GlobalClass]
-public partial class CastActuator : Node, IActuator
+public partial class CastActuator(CastActuatorData data) : IActuator
 {
-    [Export] private CastActuatorData _data = null!;
+    private readonly CastActuatorData _data = data;
     private float _currentCharge = 0f;
-
-    public CastActuator() {}
-    public CastActuator(CastActuatorData data) {_data = data;}
 
     public event Action<ActuatePayload>? Actuated;
 

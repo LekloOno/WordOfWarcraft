@@ -8,18 +8,18 @@ using WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Launch;
 
+[GlobalClass]
 public partial class LaunchData : Resource, ILaunchData, IComponentFactory<ILaunch>
 {
     [Export] public string Id { get; private set; } = string.Empty;
 
-    [Export] private Array<CasterRule>          _casterRules    = [];
-    [Export] private Array<TargetRule>          _targetRules    = [];
-    [Export] private Array<EffectsHolderData>   _effectsHolders = [];
+    [Export] public Array<CasterRule>           CasterRulesDt    { get; private set; } = [];
+    [Export] public Array<TargetRule>           TargetRulesDt    { get; private set; } = [];
+    [Export] public Array<EffectsHolderData>    EffectsHoldersDt { get; private set; } = [];
 
-    public List<ICasterRule>        CaterRules      => [.. _casterRules];
-    public List<ITargetRule>        TargetRules     => [.. _targetRules];
-    public List<IEffectsHolderData> EffectsHolders  => [.. _effectsHolders];
+    public List<ICasterRule>        CaterRules      => [.. CasterRulesDt];
+    public List<ITargetRule>        TargetRules     => [.. TargetRulesDt];
+    public List<IEffectsHolderData> EffectsHolders  => [.. EffectsHoldersDt];
 
-    public ILaunch Build() =>
-        new Launch(_casterRules, _targetRules, _effectsHolders);
+    public ILaunch Build() => new Launch(this);
 }

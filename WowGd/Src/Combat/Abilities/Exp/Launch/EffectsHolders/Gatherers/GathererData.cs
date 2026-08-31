@@ -11,6 +11,7 @@ namespace WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders.Gatherers;
 /// The only point of having such base abstraction is godot-editability.
 /// This allows us to have an easy "export-compatible" type for any kind of gatherer data, since interfaces are not exportable.
 /// </summary>
+[GlobalClass]
 public abstract partial class GathererData : Resource, IGathererData, IComponentFactory<IGatherer>
 {
     public abstract string Id { get; }

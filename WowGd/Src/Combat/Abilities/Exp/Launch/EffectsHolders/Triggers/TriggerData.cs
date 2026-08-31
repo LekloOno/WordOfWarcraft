@@ -11,6 +11,7 @@ namespace WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders.Triggers;
 /// The only point of having such base abstraction is godot-editability.
 /// This allows us to have an easy "export-compatible" type for any kind of trigger data, since interfaces are not exportable.
 /// </summary>
+[GlobalClass]
 public abstract partial class TriggerData : Resource, ITriggerData, IComponentFactory<ITrigger>
 {
     public abstract string Id { get; }

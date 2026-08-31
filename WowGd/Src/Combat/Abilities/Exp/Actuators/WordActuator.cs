@@ -1,21 +1,15 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Actuation;
 using WowGd.Src.Combat.Abilities.Exp.Targeting;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Actuators;
 
-[GlobalClass]
-public partial class WordActuator : Node, IActuator
+public partial class WordActuator(WordActuatorData data) : IActuator
 {
-    [Export] private WordActuatorData _data = null!;
-
-    public WordActuator() {}
-    public WordActuator(WordActuatorData data) {_data = data;}
-
+    private readonly WordActuatorData _data = data;
     public event Action<ActuatePayload>? Actuated;
 
     public async Task Actuate(IEntity entity, TargetIntent intent, CancellationToken ct)
