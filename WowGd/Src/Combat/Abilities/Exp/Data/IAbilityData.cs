@@ -62,9 +62,21 @@ public interface IAbilityData
     /// </summary>
     IReadOnlyList<ILaunchData>  ActuationLaunches       { get; }
     /// <summary>
-    /// Condition to meet to loop back to the actuator.
+    /// Condition to meet to loop back to the actuator, about the actuation.
     /// <br/>
     /// Order does not matter, preconditions should not mutate anything.
     /// </summary>
     IReadOnlyList<ILoopRule>    LoopRules               { get; }
+    /// <summary>
+    /// Condition to meet to loop back to the actuator, about the caster.
+    /// <br/>
+    /// Order does not matter, preconditions should not mutate anything.
+    /// </summary>
+    IReadOnlyList<ICasterRule>  CasterLoopRules         { get; }
+    /// <summary>
+    /// Condition to meet to loop back to the actuator, about the targeting.
+    /// <br/>
+    /// Order does not matter, preconditions should not mutate anything.
+    /// </summary>
+    IReadOnlyList<ITargetRule>  TargetLoopRules         { get; }
 }
