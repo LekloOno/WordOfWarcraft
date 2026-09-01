@@ -20,7 +20,7 @@ public static class AbilityRulesExt
         return true;
     }
 
-    public static bool CheckAll(this ICollection<ICasterRule> rules, IEntity caster)
+    public static bool CheckAll(this IEnumerable<ICasterRule> rules, IEntity caster)
     {
         foreach (ICasterRule rule in rules)
             if (!rule.Check(caster))
@@ -47,7 +47,7 @@ public static class AbilityRulesExt
         return true;
     }
 
-    public static bool CheckAll(this ICollection<ITargetRule> rules, IEntity caster, TargetIntent intent)
+    public static bool CheckAll(this IEnumerable<ITargetRule> rules, IEntity caster, TargetIntent intent)
     {
         foreach (ITargetRule rule in rules)
             if (!rule.Check(caster, intent))
@@ -74,7 +74,7 @@ public static class AbilityRulesExt
         return true;
     }
 
-    public static bool CheckAll(this ICollection<ILoopRule> rules, ActuatePayload payload)
+    public static bool CheckAll(this IEnumerable<ILoopRule> rules, ActuatePayload payload)
     {
         foreach (ILoopRule rule in rules)
             if (!rule.Check(payload))
