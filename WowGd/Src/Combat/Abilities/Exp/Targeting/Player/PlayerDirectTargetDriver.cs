@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Godot;
+using WowGd.Src.Combat.Abilities.Exp.Data;
+using WowGd.Src.Entities;
+using WowGd.Src.Input.Targeting.Direct;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Targeting.Player;
 
@@ -15,7 +19,7 @@ public partial class PlayerDirectTargetDriver : Node
         SetProcessUnhandledKeyInput(false);
     }
 
-    public async Task<TargetIntent> RetrieveTarget(CancellationToken ct)
+    public async Task<TargetIntent> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct)
     {
         // See if we later put some domain specific cancellation ?
         if (_pendingIntent is not null)
@@ -29,7 +33,7 @@ public partial class PlayerDirectTargetDriver : Node
             TaskCreationOptions.RunContinuationsAsynchronously);
 
         _pendingIntent = pendingIntent;
-        EnableTargeting();
+        EnableTargeting(caster, rules);
 
         try
         {
@@ -50,9 +54,10 @@ public partial class PlayerDirectTargetDriver : Node
         SetProcessUnhandledKeyInput(false);
     }
 
-    private void EnableTargeting()
+    private void EnableTargeting(IEntity caster, IEnumerable<ITargetRule>? rules)
     {
         SetProcessUnhandledKeyInput(true);
+        DirectTargetEntitiesManager.Enable(caster, rules);
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)

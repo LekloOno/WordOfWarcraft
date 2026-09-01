@@ -81,9 +81,10 @@ public partial class AbilityStateMachine : Node, IAbility
         {
             targetIntent =  await
                 caster.TargetIntentDriver.RetrieveTargetIntent(
+                    caster,
                     _data.TargetIntentAcquirer,
                     _cts.Token,
-                    _data.TargetRules);
+                    _data.TargetRulesDt);
         }
         while (!_data.TargetRulesDt.CheckAll(caster, targetIntent));
 

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Data;
+using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Targeting.Player;
 
@@ -17,7 +18,7 @@ public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
         AddChild(_directDriver);
     }
 
-    public Task<TargetIntent> RetrieveTargetIntent(TargetIntentAcquirer method, CancellationToken ct, IReadOnlyCollection<ITargetRule>? rules = null)
+    public Task<TargetIntent> RetrieveTargetIntent(IEntity caster, TargetIntentAcquirer method, CancellationToken ct, IEnumerable<ITargetRule>? rules = null)
     {
         return method switch
         {
@@ -29,7 +30,7 @@ public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
                 throw new NotImplementedException(),
             
             TargetIntentAcquirer.Direct =>
-                _directDriver.RetrieveTarget(ct),
+                _directDriver.RetrieveTarget(caster, rules, ct),
             
             TargetIntentAcquirer.Free =>
                 throw new NotImplementedException(),
