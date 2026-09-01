@@ -42,7 +42,7 @@ public static partial class TargetExt
         Action<IEntity, bool>? enemyEffect  = null)
     {
         foreach (Target target in payload.Targets)
-            target.Relation.GetEffect(selfEffect, allyEffect, enemyEffect)(target.Entity, target.IsDirect);
+            target.Relation.GetEffect(selfEffect, allyEffect, enemyEffect)(target.Caster, target.IsDirect);
     }
 
     private static Action<IEntity, bool> GetEffect(
