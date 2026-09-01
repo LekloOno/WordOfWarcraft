@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Data;
 using WowGd.Src.Entities;
+using WowGd.Src.Input;
 using WowGd.Src.Input.Targeting.Direct;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Targeting.Player;
@@ -52,6 +53,7 @@ public partial class PlayerDirectTargetDriver : Node
     private void DisableTargeting()
     {
         SetProcessUnhandledKeyInput(false);
+        DirectTargetEntitiesManager.Disable();
     }
 
     private void EnableTargeting(IEntity caster, IEnumerable<ITargetRule>? rules)
@@ -76,11 +78,14 @@ public partial class PlayerDirectTargetDriver : Node
     {
         intent = default;
 
-        if (@event is not InputEventKey key || @event.IsReleased())
+        // Ability for now, just for test sake, will use proper map later
+        if (!@event.TryGetAbilityIndex(out int index))
             return false;
 
-        // .. The rest of the logic to develop ...
+        if (!DirectTargetEntitiesManager.TryRetrieveEntity(index, out IEntity? entity))
+            return false;
 
-        return false;
+        intent = new(entity);
+        return true;
     }
 }

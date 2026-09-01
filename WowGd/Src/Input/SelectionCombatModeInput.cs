@@ -17,7 +17,7 @@ public partial class SelectionCombatModeInput : Node
             return;
         }
 
-        if (@event.TryGetIndex(out int index))
+        if (@event.TryGetAbilityIndex(out int index))
             _mode.Select(index);
     }
 }

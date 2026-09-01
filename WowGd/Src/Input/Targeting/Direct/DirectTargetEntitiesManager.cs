@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Data;
 using WowGd.Src.Entities;
@@ -13,11 +14,10 @@ public partial class DirectTargetEntitiesManager : Node
 {
     private static DirectTargetEntitiesManager Instance = null!;
 
-    private static readonly HashSet<IDirectTargetUi> _availableTargets = [];
-    private static readonly HashSet<IDirectTargetUi> _activeTargets = [];
+    private static readonly List<IDirectTargetUi> _availableTargets = [];
+    private static readonly List<IDirectTargetUi> _activeTargets = [];
 
     private static bool _enabled = false;
-    private static int _activeCount = 0;
     private static IEnumerable<ITargetRule> _targetRules = [];
     private static IEntity? _caller;
 
@@ -40,9 +40,7 @@ public partial class DirectTargetEntitiesManager : Node
 
     private static void OnScreenEntered(IDirectTargetUi ui)
     {
-        if (_enabled)
-            TryAddEnable(ui);
-        else
+        if (!_enabled || !TryAddEnable(ui))
             _availableTargets.Add(ui);
     }
 
@@ -72,8 +70,6 @@ public partial class DirectTargetEntitiesManager : Node
         }
 
         _activeTargets.Clear();
-        _activeCount = 0;
-
 
         return true;
     }
@@ -106,15 +102,13 @@ public partial class DirectTargetEntitiesManager : Node
             return false;
         
         ui.Disable();
-        _activeCount --;
         return true;
     }
 
     private static bool TryAddEnable(IDirectTargetUi ui)
     {
         // Possibly some more logic later, typically, max number of targets, maximum distance, etc.
-        FinalizeEnable(ui);
-        return true;
+        return TryFinalizeEnable(ui);
     }
 
     /// <summary>
@@ -122,14 +116,16 @@ public partial class DirectTargetEntitiesManager : Node
     /// Must not be called if the target is still in _availableTargets
     /// </summary>
     /// <param name="ui"></param>
-    private static void FinalizeEnable(IDirectTargetUi ui)
+    private static bool TryFinalizeEnable(IDirectTargetUi ui)
     {
-        _activeTargets.Add(ui);
-        ui.Enable();
-        ui.UpdateIndex(_activeCount);
-        ui.UpdateValidity(GetTargetValidity(ui));
+        if (!ui.Enable())
+            return false;
 
-        _activeCount ++;
+        int index = _activeTargets.Count;
+        _activeTargets.Add(ui);
+        ui.UpdateIndex(index);
+        ui.UpdateValidity(GetTargetValidity(ui));
+        return true;
     }
 
     private static bool GetTargetValidity(IDirectTargetUi ui)
@@ -144,5 +140,17 @@ public partial class DirectTargetEntitiesManager : Node
     {
         foreach (IDirectTargetUi ui in _activeTargets)
             ui.UpdateValidity(GetTargetValidity(ui));
+    }
+
+    public static bool TryRetrieveEntity(int index, [NotNullWhen(true)] out IEntity? entity)
+    {
+        if (_activeTargets.Count <= index)
+        {
+            entity = null;
+            return false;
+        }
+
+        entity = _activeTargets[index].Entity;
+        return true;
     }
 }
