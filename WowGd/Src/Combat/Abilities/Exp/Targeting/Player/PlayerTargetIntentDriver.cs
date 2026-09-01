@@ -26,13 +26,13 @@ public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
                 "Unexpected self target intent request, should be handled by the state machine itself."),
             
             TargetIntentAcquirer.Melee =>
-                throw new System.NotImplementedException(),
+                throw new NotImplementedException(),
             
             TargetIntentAcquirer.Direct =>
                 _directDriver.RetrieveTarget(ct),
             
             TargetIntentAcquirer.Free =>
-                throw new System.NotImplementedException(),
+                throw new NotImplementedException(),
 
             _ => throw new ArgumentOutOfRangeException(nameof(method))
         };

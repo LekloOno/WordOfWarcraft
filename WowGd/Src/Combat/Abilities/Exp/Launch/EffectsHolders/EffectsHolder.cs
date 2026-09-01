@@ -7,7 +7,7 @@ using WowGd.Src.Combat.Abilities.Exp.Targeting.Payload;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders;
 
-public partial class EffectsHolder : IEffectsHolder
+public class EffectsHolder : IEffectsHolder
 {
     private readonly EffectsHolderData _data;
     private readonly ITrigger    _trigger;

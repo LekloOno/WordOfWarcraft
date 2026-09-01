@@ -7,7 +7,7 @@ using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Actuators;
 
-public partial class CastActuator(CastActuatorData data) : IActuator
+public class CastActuator(CastActuatorData data) : IActuator
 {
     private readonly CastActuatorData _data = data;
     private float _currentCharge = 0f;

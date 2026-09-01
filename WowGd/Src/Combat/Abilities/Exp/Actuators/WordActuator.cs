@@ -7,7 +7,7 @@ using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Actuators;
 
-public partial class WordActuator(WordActuatorData data) : IActuator
+public class WordActuator(WordActuatorData data) : IActuator
 {
     private readonly WordActuatorData _data = data;
     public event Action<ActuatePayload>? Actuated;

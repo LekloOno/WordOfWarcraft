@@ -10,6 +10,7 @@ using WowGd.Src.Combat.Abilities.Exp.Targeting.TargetRules;
 
 namespace WowGd.Src.Combat.Abilities.Exp;
 
+[GlobalClass]
 public partial class AbilityData : Resource, IAbilityData
 {
     [Export] public string Id { get; private set; } = string.Empty;

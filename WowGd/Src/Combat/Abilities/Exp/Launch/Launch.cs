@@ -4,7 +4,7 @@ using WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Launch;
 
-public partial class Launch : ILaunch
+public class Launch : ILaunch
 {
     // We could get a reference to the data, to make rules editable.
     // But since effect holders depend on logic structure, and are thus not editable yet,
