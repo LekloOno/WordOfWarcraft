@@ -79,4 +79,18 @@ public interface IAbilityData
     /// Order does not matter, preconditions should not mutate anything.
     /// </summary>
     IReadOnlyList<ITargetRule>  TargetLoopRules         { get; }
+    /// <summary>
+    /// The launches to emit once the looping rules can't be met anymore.
+    /// <br/>
+    /// Order has a meaning. First launch will be launch first.
+    /// A launch might thus invalidate the conditions of the next one.
+    /// </summary>
+    IReadOnlyList<ILaunchData>  StopLaunches            { get; }
+    /// <summary>
+    /// The launches to emit when the ability is cancelled.
+    /// <br/>
+    /// Order has a meaning. First launch will be launch first.
+    /// A launch might thus invalidate the conditions of the next one.
+    /// </summary>
+    IReadOnlyList<ILaunchData>  CancelLaunches          { get; }
 }

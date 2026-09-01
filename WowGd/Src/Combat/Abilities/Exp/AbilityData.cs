@@ -23,6 +23,8 @@ public partial class AbilityData : Resource, IAbilityData
     [Export] public Array<LoopRule>   LoopRulesDt           = [];
     [Export] public Array<CasterRule> CasterLoopRulesDt     = [];
     [Export] public Array<TargetRule> TargetLoopRulesDt     = [];
+    [Export] public Array<LaunchData> StopLaunchesDt        = [];
+    [Export] public Array<LaunchData> CancelLaunchesDt      = [];
 
 
     public IReadOnlyList<ICasterRule> StartPreconditions    => [.. StartPreconditionsDt];
@@ -34,4 +36,6 @@ public partial class AbilityData : Resource, IAbilityData
     public IReadOnlyList<ILoopRule>   LoopRules             => [.. LoopRulesDt];
     public IReadOnlyList<ICasterRule> CasterLoopRules       => [.. CasterLoopRulesDt];
     public IReadOnlyList<ITargetRule> TargetLoopRules       => [.. TargetLoopRulesDt];
+    public IReadOnlyList<ILaunchData> StopLaunches          => [.. StopLaunchesDt];
+    public IReadOnlyList<ILaunchData> CancelLaunches        => [.. CancelLaunchesDt];
 }

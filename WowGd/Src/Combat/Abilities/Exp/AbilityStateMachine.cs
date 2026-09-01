@@ -18,6 +18,8 @@ public partial class AbilityStateMachine : Node, IAbility
     private ILaunch[]       _targetingLaunches  = [];
     private IActuator       _actuator           = null!;
     private ILaunch[]       _actuationLaunches  = [];
+    private ILaunch[]       _stopLaunches       = [];
+    private ILaunch[]       _cancelLaunches     = [];
 
     private CancellationTokenSource? _cts;
 
@@ -30,6 +32,8 @@ public partial class AbilityStateMachine : Node, IAbility
         _targetingLaunches  = _data.TargetingLaunchesDt.BuildAll();
         _actuator           = _data.ActuatorDt.Build();
         _actuationLaunches  = _data.ActuationLaunchesDt.BuildAll();
+        _stopLaunches       = _data.StopLaunchesDt.BuildAll();
+        _cancelLaunches     = _data.CancelLaunchesDt.BuildAll();
 
         _actuator.Actuated += OnActuated;
     }
@@ -39,13 +43,23 @@ public partial class AbilityStateMachine : Node, IAbility
         Resync();
     }
 
-    public bool Stop()
+    public bool Cancel(IEntity caster)
     {
         if (_cts is null)
             return false;
 
         _cts?.Cancel();
+        _cancelLaunches.LaunchAll(new (caster, new(caster), 1f));
         return true;
+    }
+
+    private void Stop(ActuatePayload payload)
+    {
+        if (_cts is null)
+            return;
+
+        _cts?.Cancel();
+        _stopLaunches.LaunchAll(payload);
     }
 
     public async void Start(IEntity caster)
@@ -92,7 +106,7 @@ public partial class AbilityStateMachine : Node, IAbility
             !_data.CasterLoopRulesDt.CheckAll(payload.Caster) ||
             !_data.TargetLoopRulesDt.CheckAll(payload.Caster, payload.Intent))
         {
-            Stop();
+            Stop(payload);
             return;
         }
     }

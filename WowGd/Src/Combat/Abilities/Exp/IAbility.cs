@@ -7,7 +7,7 @@ namespace WowGd.Src.Combat.Abilities.Exp;
 public interface IAbility : IDisablable
 {
     void Start(IEntity caster);
-    bool Stop();
+    bool Cancel(IEntity caster);
     /// <summary>
     /// Allows to attach  additionnal launches to different hooks of a spell cast, for example as modifier.
     /// 
