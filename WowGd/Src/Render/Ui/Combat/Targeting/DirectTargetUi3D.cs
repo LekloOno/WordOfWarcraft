@@ -11,6 +11,7 @@ namespace WowGd.Src.Render.Ui.Combat.Targeting;
 /// Tracks a 3D position, projects it into screen space, and exposes
 /// itself to the DirectTargetEntitiesManager when visible.
 /// </summary>
+[GlobalClass]
 public partial class DirectTargetUi3D : Control, IDirectTargetUi
 {
     public IEntity Entity { get; set; } = null!;
