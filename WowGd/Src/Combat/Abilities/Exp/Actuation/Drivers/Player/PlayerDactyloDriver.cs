@@ -14,9 +14,10 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
     private readonly Channel<InputEventKey> _inputChannel = Channel.CreateUnbounded<InputEventKey>();
     private readonly IWordGenerator _generator = StandardWordGeneratorFr.Instance;
 
-    public event Action<WordRequest, Word>? WordPushed;
     public event Action<WordRequest, Word[]>? WordsInitialized;
+    public event Action<WordRequest, Word>? WordPushed;
     public event Action<WordRequest, Word>? WordCompleted;
+    public event Action? Stopped;
 
     public override void _Ready()
 	{
@@ -59,6 +60,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
                 {
                     if (key.Keycode == Key.Space)
                     {
+                        currentWord.Complete();
                         if (request.Mode == DeliveryMode.PerWord)
                             yield return CreatePackage(currentWord, totalStrokes);
 
@@ -89,6 +91,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
         finally
         {
             SetProcessUnhandledKeyInput(false);
+            Stopped?.Invoke();
         }
     }
 
