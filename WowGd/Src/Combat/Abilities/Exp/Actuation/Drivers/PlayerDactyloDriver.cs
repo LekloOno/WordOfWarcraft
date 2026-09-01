@@ -8,6 +8,7 @@ using WowGd.Src.Dactylo.Generators;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
 
+[GlobalClass]
 public partial class PlayerDactyloDriver : Node, IActuatorDriver
 {
     private readonly Channel<InputEventKey> _inputChannel = Channel.CreateUnbounded<InputEventKey>();

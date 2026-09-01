@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="8_kdopt"]
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="9_khgro"]
 [ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Exp/Targeting/Player/PlayerTargetIntentDriver.cs" id="10_x4cok"]
+[ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Exp/Actuation/Drivers/PlayerDactyloDriver.cs" id="11_pqs6i"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_khgro"]
 viewport_path = NodePath("SubViewport")
@@ -87,5 +88,9 @@ aabb = AABB(-0.5, 0, -0.5, 1, 1.2, 1)
 [node name="PlayerTargetIntentDriver" type="Node" parent="." unique_id=803860652]
 script = ExtResource("10_x4cok")
 metadata/_custom_type_script = "uid://b54uw6fk4ndjr"
+
+[node name="PlayerDactyloDriver" type="Node" parent="." unique_id=766718342]
+script = ExtResource("11_pqs6i")
+metadata/_custom_type_script = "uid://cvln6rapoqvqg"
 
 [editable path="HealthBar"]
