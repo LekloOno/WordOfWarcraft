@@ -7,8 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="5_4pern"]
 [ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="6_23ucx"]
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="7_o7elv"]
-[ext_resource type="Script" uid="uid://bq8ecys6t711p" path="res://Src/Combat/Abilities/Exp/Targeting/Ai/BasicAiTargetIntentDriver.cs" id="8_o7elv"]
-[ext_resource type="Script" uid="uid://cstlfeopg7en0" path="res://Src/Combat/Abilities/Exp/Actuation/Drivers/BasicAiActuatorDriver.cs" id="9_l17jm"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_l17jm"]
 viewport_path = NodePath("SubViewport")
@@ -76,13 +74,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="." unique_id=1771069592]
 aabb = AABB(-0.5, 0, -0.5, 1, 1.2, 1)
-
-[node name="BasicAiTargetIntentDriver" type="Node" parent="." unique_id=786812555]
-script = ExtResource("8_o7elv")
-metadata/_custom_type_script = "uid://bq8ecys6t711p"
-
-[node name="BasicAiActuatorDriver" type="Node" parent="." unique_id=630098452]
-script = ExtResource("9_l17jm")
-metadata/_custom_type_script = "uid://cstlfeopg7en0"
 
 [editable path="HealthBar"]

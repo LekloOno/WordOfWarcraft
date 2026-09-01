@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://14ici7sfka52" path="res://Src/Entities/BasicBot/BasicAttack.cs" id="7_kkf7f"]
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="8_7lu00"]
 [ext_resource type="Script" uid="uid://dim1tr0x143dg" path="res://Src/Combat/Health/HealthHandlers/MoverHealthHandler.cs" id="9_r01k3"]
+[ext_resource type="Script" uid="uid://bq8ecys6t711p" path="res://Src/Combat/Abilities/Exp/Targeting/Ai/BasicAiTargetIntentDriver.cs" id="10_ehr82"]
+[ext_resource type="Script" uid="uid://cstlfeopg7en0" path="res://Src/Combat/Abilities/Exp/Actuation/Drivers/BasicAiActuatorDriver.cs" id="11_ydhbg"]
 
 [sub_resource type="Resource" id="Resource_4k8fq"]
 script = ExtResource("2_cloog")
@@ -59,3 +61,11 @@ metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 [node name="MoverHealthHandler" type="Node" parent="." unique_id=605582853]
 script = ExtResource("9_r01k3")
 metadata/_custom_type_script = "uid://dim1tr0x143dg"
+
+[node name="BasicAiTargetIntentDriver" type="Node" parent="." unique_id=934640659]
+script = ExtResource("10_ehr82")
+metadata/_custom_type_script = "uid://bq8ecys6t711p"
+
+[node name="BasicAiActuatorDriver" type="Node" parent="." unique_id=842900331]
+script = ExtResource("11_ydhbg")
+metadata/_custom_type_script = "uid://cstlfeopg7en0"

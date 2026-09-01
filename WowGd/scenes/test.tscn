@@ -39,6 +39,8 @@
 [ext_resource type="Script" uid="uid://bwg3ndt4iuoxx" path="res://Src/Combat/Abilities/Targets/AreaGatherers/RadiusGatherer.cs" id="34_mi64w"]
 [ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="34_q6ayx"]
 [ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="35_iq7xp"]
+[ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Exp/Targeting/Player/PlayerTargetIntentDriver.cs" id="39_q6ayx"]
+[ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Exp/Actuation/Drivers/PlayerDactyloDriver.cs" id="40_iq7xp"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="40_s6cx0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
@@ -520,6 +522,14 @@ metadata/_custom_type_script = "uid://bwg3ndt4iuoxx"
 [node name="CombatModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=1402982432]
 script = ExtResource("40_s6cx0")
 metadata/_custom_type_script = "uid://dj0sj1thojqst"
+
+[node name="PlayerTargetIntentDriver" type="Node" parent="Physics/Player" unique_id=953860561]
+script = ExtResource("39_q6ayx")
+metadata/_custom_type_script = "uid://b54uw6fk4ndjr"
+
+[node name="PlayerDactyloDriver" type="Node" parent="Physics/Player" unique_id=561782522]
+script = ExtResource("40_iq7xp")
+metadata/_custom_type_script = "uid://cvln6rapoqvqg"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2
