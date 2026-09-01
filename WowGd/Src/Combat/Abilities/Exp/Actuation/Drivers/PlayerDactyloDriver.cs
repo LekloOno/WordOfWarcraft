@@ -5,14 +5,11 @@ using System.Threading;
 using System.Threading.Channels;
 using Godot;
 using WowGd.Src.Dactylo.Generators;
-using WowGd.Src.Dactylo.Worders;
-using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
 
 public partial class PlayerDactyloDriver : Node, IActuatorDriver
 {
-    private IWorder _worder = null!;
     private readonly Channel<InputEventKey> _inputChannel = Channel.CreateUnbounded<InputEventKey>();
     private readonly IWordGenerator _generator = StandardWordGeneratorFr.Instance;
 
@@ -23,9 +20,6 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
     public override void _Ready()
 	{
         SetProcessUnhandledKeyInput(false);
-
-		if (!this.TryGetComponent(out _worder!))
-			return;
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
@@ -45,10 +39,11 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
 
         try
         {
+            SetProcessUnhandledKeyInput(true);
             Queue<Word> wordQueue = new();
             int totalWordsToQueue = 1 + request.LookaheadCount;
 
-            if (StandardWordGeneratorFr.Instance.TryGenerate(out Word[] initialWords, totalWordsToQueue, request.MinLength, request.MaxLength) > 0)
+            if (_generator.TryGenerate(out Word[] initialWords, totalWordsToQueue, request.MinLength, request.MaxLength) > 0)
             {
                 foreach (Word w in initialWords) wordQueue.Enqueue(w);
                 WordsInitialized?.Invoke(request, initialWords);
@@ -82,7 +77,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
 
                 WordCompleted?.Invoke(request, currentWord);
 
-                if (StandardWordGeneratorFr.Instance.TryGenerate(out Word[] newWords, 1, request.MinLength, request.MaxLength) > 0)
+                if (_generator.TryGenerate(out Word[] newWords, 1, request.MinLength, request.MaxLength) > 0)
                 {
                     Word nextWord = newWords[0];
                     wordQueue.Enqueue(nextWord);
