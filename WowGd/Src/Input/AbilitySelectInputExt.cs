@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Godot;
 
 namespace WowGd.Src.Input;
@@ -43,5 +46,55 @@ public static class AbilitySelectInputExt
             index = -1;
 
         return index != -1;
+    }
+
+    private static string GetAbilityActionName(this int index) => index switch
+    {
+        0 => AbilitySelect0,
+        1 => AbilitySelect1,
+        2 => AbilitySelect2,
+        3 => AbilitySelect3,
+        4 => AbilitySelect4,
+        5 => AbilitySelect5,
+        6 => AbilitySelect6,
+        7 => AbilitySelect7,
+        8 => AbilitySelect8,
+        9 => AbilitySelect9,
+        _ => throw new ArgumentOutOfRangeException(),
+    };
+
+    public static int TryGetAbilityInputs(this int index, [NotNullWhen(true)] out ICollection<InputEvent> inputs)
+    {
+        if (index < 0 || index > MaxIndex)
+        {
+            inputs = [];
+            return 0;
+        }
+
+        string name = index.GetAbilityActionName();
+        inputs = InputMap.ActionGetEvents(name);
+        return inputs.Count;
+    }
+
+    public static bool TryGetAbilityFirstKey(this int index, out string key)
+    {
+        if (index < 0 || index > MaxIndex)
+        {
+            key = string.Empty;
+            return false;
+        }
+
+        string name = index.GetAbilityActionName();
+        foreach (InputEvent inputEvent in InputMap.ActionGetEvents(name))
+        {
+            if (inputEvent is InputEventKey keyEvent)
+            {
+                key = char.ConvertFromUtf32((int)keyEvent.Unicode);
+                return true;
+            }
+        }
+
+        key = string.Empty;
+        return false;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using WowGd.Src.Entities;
+using WowGd.Src.Input;
 using WowGd.Src.Input.Targeting.Direct;
 
 namespace WowGd.Src.Render.Ui.Combat.Targeting;
@@ -66,7 +67,10 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
 
     public void UpdateIndex(int index)
     {
-        _indexLabel.Text = index.ToString();
+        if (index.TryGetAbilityFirstKey(out string key))
+            _indexLabel.Text = key;
+        else
+            _indexLabel.Text = string.Empty;
     }
 
     public void UpdateValidity(bool valid)
