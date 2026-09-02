@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Godot;
-using WowGd.Src.Combat.Abilities;
+using WowGd.Src.Combat.Abilities.Exp;
+using WowGd.Src.Entities;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Modes;
@@ -14,14 +14,19 @@ namespace WowGd.Src.Combat.Modes;
 [GlobalClass]
 public partial class SelectionCombatMode : CombatMode
 {
+    private IEntity _entity = null!;
     private readonly List<IAbility> _abilities = [];
     private readonly List<IAbility> _activeAbilities = [];
     protected override bool PreReadySpec()
     {
         this.GetComponents(_abilities);
 
-        foreach (IAbility ability in _abilities)
-            ability.Stopped += () => OnAbilityStop(ability);
+        if (this.TryGetComposedRecursive(out IEntity? entity))
+            _entity = entity;
+
+
+        //foreach (IAbility ability in _abilities)
+        //    ability.Stopped += () => OnAbilityStop(ability);
 
         // even if there's 0 abilities, it's not a functionnal problem.
         return true;
@@ -37,7 +42,7 @@ public partial class SelectionCombatMode : CombatMode
     protected override void DeactivateSpec()
     {
         foreach (IAbility ability in _activeAbilities)
-            ability.Stop();
+            ability.Cancel(_entity);
 
         _activeAbilities.Clear();
     }
@@ -64,7 +69,8 @@ public partial class SelectionCombatMode : CombatMode
 
         IAbility ability = _abilities[index];
         _activeAbilities.Add(ability);
-        return ability.Start();
+        ability.Start(_entity);
+        return true;
     }
 
     public bool HasActive() =>
@@ -78,7 +84,7 @@ public partial class SelectionCombatMode : CombatMode
         if (index >= _activeAbilities.Count)
             return false;
 
-        if (!_activeAbilities[index].Stop())
+        if (!_activeAbilities[index].Cancel(_entity))
             return false;
 
         _activeAbilities.RemoveAt(index);

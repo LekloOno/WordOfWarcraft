@@ -18,11 +18,12 @@ font = ExtResource("9_khgro")
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 0.3529412)
 
-[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager")]
+[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager", "_directTargetUi")]
 script = ExtResource("1_yvh0v")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/HealthBar")
 _damageIndicatorManager = NodePath("DamageIndicatorManager")
+_directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -47,16 +48,19 @@ metadata/_custom_type_script = "uid://by1fhpgvvgq5o"
 
 [node name="DirectTargetUi3D" type="Control" parent="." unique_id=1432325586 node_paths=PackedStringArray("_visibilityNotifier", "_position", "_indexLabel")]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("8_kdopt")
 _visibilityNotifier = NodePath("../VisibleOnScreenNotifier3D")
 _position = NodePath("../DirectTargetUiPosition")
 _indexLabel = NodePath("Label")
-_validColor = Color(1, 1, 1, 0)
+_validColor = Color(1, 1, 1, 1)
+_unvalidColor = Color(0.627451, 0, 0, 0.8862745)
 metadata/_custom_type_script = "uid://cj7dp4rbvvn06"
 
 [node name="Label" type="Label" parent="DirectTargetUi3D" unique_id=2106886676]

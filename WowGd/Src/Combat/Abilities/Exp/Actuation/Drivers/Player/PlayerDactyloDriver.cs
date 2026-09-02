@@ -62,7 +62,10 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
                     {
                         currentWord.Complete();
                         if (request.Mode == DeliveryMode.PerWord)
+                        {
+                            WordCompleted?.Invoke(request, currentWord);
                             yield return CreatePackage(currentWord, totalStrokes);
+                        }
 
                         break; 
                     }
@@ -77,8 +80,6 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
                     if (request.Mode == DeliveryMode.PerKeystroke)
                         yield return CreatePackage(currentWord, totalStrokes);
                 }
-
-                WordCompleted?.Invoke(request, currentWord);
 
                 if (_generator.TryGenerate(out Word[] newWords, 1, request.MinLength, request.MaxLength) > 0)
                 {

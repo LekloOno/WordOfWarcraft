@@ -1,25 +1,23 @@
 using Godot;
-using WowGd.Src.Combat.Abilities.Targets.Payload;
+using WowGd.Src.Combat.Abilities.Exp.Targeting.Payload;
 using WowGd.Src.Entities;
 
-namespace WowGd.Src.Combat.Abilities.Effects;
+namespace WowGd.Src.Combat.Abilities.Exp.Launch.EffectsHolders.Effects.SingleAbilityEffects;
+
 
 /// <summary>
 /// Single in that it performs the same effect for every target matchin the specified TargetRelation.
 /// </summary>
-public abstract partial class SingleAbilityEffect : AbilityEffect
+[GlobalClass]
+public abstract partial class SingleAbilityEffect : Effect
 {
     [Export] private bool _launcher;
     [Export] private TargetRelation _target;
 
-    protected float _size {get; private set;}
-
-    public override bool Apply(TargetsPayload targetsPayload, float size)
+    public override bool Apply(TargetsPayload targetsPayload)
     {
-        _size = size;
-
         if (_launcher)
-            LauncherEffect(targetsPayload.Launcher);
+            LauncherEffect(targetsPayload.Launcher, targetsPayload.ActuateWeight);
 
         if (_target == TargetRelation.None)
             return true;
@@ -33,6 +31,6 @@ public abstract partial class SingleAbilityEffect : AbilityEffect
         return true;
     }
 
-    public abstract void Effect(IEntity entity, bool IsDirect);
-    public abstract void LauncherEffect(IEntity entity);
+    public abstract void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight);
+    public abstract void LauncherEffect(IEntity entity, float actuateWeight);
 }

@@ -65,7 +65,7 @@ public partial class PlayerDirectTargetDriver : Node
     public override void _UnhandledKeyInput(InputEvent @event)
     {
         if (_pendingIntent is null)
-        return;
+            return;
 
         if (TryGetTargetIntent(@event, out TargetIntent intent))
         {

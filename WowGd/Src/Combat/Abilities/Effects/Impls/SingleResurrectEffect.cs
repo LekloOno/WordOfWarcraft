@@ -6,7 +6,6 @@ namespace WowGd.Src.Combat.Abilities.Effects.Impls;
 /// <summary>
 /// Single in that it performs the same effect for every target matchin the specified TargetRelation.
 /// </summary>
-[GlobalClass]
 public partial class SingleResurrectEffect : SingleAbilityEffect
 {
     /// <summary>

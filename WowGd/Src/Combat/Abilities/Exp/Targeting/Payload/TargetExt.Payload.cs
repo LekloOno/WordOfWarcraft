@@ -37,19 +37,19 @@ public static partial class TargetExt
     /// <param name="enemyEffect"></param>
     public static void Apply(
         this TargetsPayload payload,
-        Action<IEntity, bool>? selfEffect   = null,
-        Action<IEntity, bool>? allyEffect   = null,
-        Action<IEntity, bool>? enemyEffect  = null)
+        Action<IEntity, bool, float, float>? selfEffect   = null,
+        Action<IEntity, bool, float, float>? allyEffect   = null,
+        Action<IEntity, bool, float, float>? enemyEffect  = null)
     {
         foreach (Target target in payload.Targets)
-            target.Relation.GetEffect(selfEffect, allyEffect, enemyEffect)(target.Entity, target.IsDirect);
+            target.Relation.GetEffect(selfEffect, allyEffect, enemyEffect)(target.Entity, target.IsDirect, target.GatherWeight, payload.ActuateWeight);
     }
 
-    private static Action<IEntity, bool> GetEffect(
+    private static Action<IEntity, bool, float, float> GetEffect(
         this TargetRelation relation,
-        Action<IEntity, bool>? selfEffect,
-        Action<IEntity, bool>? allyEffect,
-        Action<IEntity, bool>? enemyEffect)
+        Action<IEntity, bool, float, float>? selfEffect,
+        Action<IEntity, bool, float, float>? allyEffect,
+        Action<IEntity, bool, float, float>? enemyEffect)
     {
         return relation switch
         {
@@ -60,5 +60,5 @@ public static partial class TargetExt
         };
     }
 
-    private static void Pit(IEntity entity, bool isDirect) {}
+    private static void Pit(IEntity entity, bool isDirect, float gatherWeight, float actuateWeight) {}
 }

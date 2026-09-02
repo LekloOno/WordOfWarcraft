@@ -29,13 +29,13 @@ public partial class DirectTargetEntitiesManager : Node
     public static void Register(IDirectTargetUi directTargetUi3D)
     {
         directTargetUi3D.ScreenEntered += OnScreenEntered;
-        directTargetUi3D.ScreenEntered += OnScreenExited;
+        directTargetUi3D.ScreenExited  += OnScreenExited;
     }
 
     public static void Unregister(IDirectTargetUi directTargetUi3D)
     {
         directTargetUi3D.ScreenEntered -= OnScreenEntered;
-        directTargetUi3D.ScreenEntered -= OnScreenExited;
+        directTargetUi3D.ScreenExited  -= OnScreenExited;
     }
 
     private static void OnScreenEntered(IDirectTargetUi ui)
@@ -82,18 +82,11 @@ public partial class DirectTargetEntitiesManager : Node
         _caller = caller;
         _targetRules = rules ?? [];
 
-        foreach (IDirectTargetUi ui in _availableTargets)
-            TryEnable(ui);
+        _availableTargets.RemoveAll(TryAddEnable);
 
         Instance.SetPhysicsProcess(true);
 
         return true;
-    }
-
-    private static void TryEnable(IDirectTargetUi ui)
-    {
-        if (TryAddEnable(ui))
-            _availableTargets.Remove(ui);
     }
 
     private static bool TryDisable(IDirectTargetUi ui)

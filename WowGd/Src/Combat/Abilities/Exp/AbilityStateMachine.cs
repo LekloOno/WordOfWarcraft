@@ -65,7 +65,6 @@ public partial class AbilityStateMachine : Node, IAbility
     public async void Start(IEntity caster)
     {
         _cts?.Cancel();
-
         // STEP 1 - check preconditions
         if (!_data.StartPreconditionsDt.CheckAll(caster))
             return;

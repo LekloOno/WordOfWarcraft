@@ -1,3 +1,4 @@
+using Godot;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Exp.Targeting.Payload;

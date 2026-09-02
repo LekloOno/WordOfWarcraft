@@ -30,6 +30,7 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
     {
         DirectTargetEntitiesManager.Register(this);
         Visible = false;
+        SetProcess(false);
     }
 
     public override void _Ready()
@@ -37,6 +38,9 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
         _camera = GetViewport().GetCamera3D();
         _visibilityNotifier.ScreenEntered += OnScreenEntered;
         _visibilityNotifier.ScreenExited += OnScreenExited;
+        SetProcess(false);
+
+        _indexLabel.TopLevel = true;
     }
 
     private void OnScreenEntered() => ScreenEntered?.Invoke(this);
@@ -82,9 +86,10 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
     {
         Vector3 worldPosition = 
             _position.GetGlobalTransformInterpolated().Origin;
+
         Vector2 screenPosition = 
             _camera.UnprojectPosition(worldPosition);
 
-        Position = screenPosition - Size * 0.5f;
+        _indexLabel.GlobalPosition = screenPosition - Size * 0.5f;
     }
 }

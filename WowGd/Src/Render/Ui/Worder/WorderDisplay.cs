@@ -209,6 +209,13 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 
 	public void OnWordsInitialized(WordRequest req, Word[] words)
 	{
+		if (_current != null)
+			this.Unbind(_current.Word);
+
+		_current = null;
+
+		_idx = 0;
+
 		foreach (Word word in words)
 			OnWordPushed(req, word);
 
@@ -252,10 +259,21 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 			(yPos = control.GlobalPosition.Y) != _current?.GlobalPosition.Y)
 			FadeLine(yPos);
 
-		_idx ++;
+		StartNext();
 	}
 
-	public void OnStopped() {}
+	public void OnStopped()
+	{
+		if (_current != null)
+			this.Unbind(_current.Word);
+			
+		_current = null;
+
+		foreach (Node node in _container.GetChildren())
+			node.QueueFree();
+
+		_idx = 0;
+	}
 
 	public void OnCompleted() {}
 }
