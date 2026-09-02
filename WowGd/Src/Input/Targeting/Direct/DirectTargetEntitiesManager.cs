@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
-using WowGd.Src.Combat.Abilities.Exp.Data;
+using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Combat.Targeting;
 

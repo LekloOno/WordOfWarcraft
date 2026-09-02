@@ -1,4 +1,4 @@
-namespace WowGd.Src.Combat.Abilities.Exp.Data.Resources;
+namespace WowGd.Src.Tools;
 
 public interface IComponentFactory<out TComponent>
 {

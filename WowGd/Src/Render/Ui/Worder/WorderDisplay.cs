@@ -1,7 +1,7 @@
 using Godot;
-using WowGd.Src.Combat.Abilities.Exp.Actuation;
-using WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
-using WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers.Player;
+using WowGd.Src.Combat.Abilities.Actuation;
+using WowGd.Src.Combat.Abilities.Actuation.Drivers;
+using WowGd.Src.Combat.Abilities.Actuation.Drivers.Player;
 using WowGd.Src.Dactylo.Generators;
 using WowGd.Src.Dactylo.Worders;
 using WowGd.Src.Render.Animation.TweenTools;

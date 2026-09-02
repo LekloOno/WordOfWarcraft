@@ -1,6 +1,6 @@
 using Godot;
-using WowGd.Src.Combat.Abilities.Exp.Actuation.Drivers;
-using WowGd.Src.Combat.Abilities.Exp.Targeting;
+using WowGd.Src.Combat.Abilities.Actuation.Drivers;
+using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Physics;
 using WowGd.Src.Tools;

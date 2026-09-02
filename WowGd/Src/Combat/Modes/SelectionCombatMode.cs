@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Godot;
-using WowGd.Src.Combat.Abilities.Exp;
+using WowGd.Src.Combat.Abilities;
 using WowGd.Src.Entities;
 using WowGd.Src.Tools;
 
