@@ -5,11 +5,12 @@ using System.Threading;
 using System.Threading.Channels;
 using Godot;
 using WowGd.Src.Dactylo.Generators;
+using WowGd.Src.Input.Hands;
 
 namespace WowGd.Src.Combat.Abilities.Actuation.Drivers;
 
 [GlobalClass]
-public partial class PlayerDactyloDriver : Node, IActuatorDriver
+public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInputMode
 {
     private readonly Channel<InputEventKey> _inputChannel = Channel.CreateUnbounded<InputEventKey>();
     private readonly IWordGenerator _generator = StandardWordGeneratorFr.Instance;
@@ -18,6 +19,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
     public event Action<WordRequest, Word>? WordPushed;
     public event Action<WordRequest, Word>? WordCompleted;
     public event Action? Stopped;
+    private bool _processing = false;
 
     public override void _Ready()
 	{
@@ -41,7 +43,9 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
 
         try
         {
-            SetProcessUnhandledKeyInput(true);
+            _processing = true;
+            HandsInputManager.TryPushTwoHandedMode(this);
+
             Queue<Word> wordQueue = new();
             int totalWordsToQueue = 1 + request.LookaheadCount;
 
@@ -91,7 +95,8 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
         }
         finally
         {
-            SetProcessUnhandledKeyInput(false);
+            _processing = false;
+            GD.Print(HandsInputManager.TryPopTwoHandedMode());
             Stopped?.Invoke();
         }
     }
@@ -123,4 +128,19 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver
 
     private static TypingPackage CreatePackage(Word word, int totalStrokes) =>
         new(word.Correct, word.Length, word.WrittenLength, totalStrokes);
+
+    public bool CanStart() => _processing;
+    public void Start()
+    {
+        if (_processing)
+            SetProcessUnhandledKeyInput(true);
+    }
+
+    public bool CanStop() => true;
+
+    public void Stop()
+    {
+        SetProcessUnhandledKeyInput(false);
+    }
+
 }

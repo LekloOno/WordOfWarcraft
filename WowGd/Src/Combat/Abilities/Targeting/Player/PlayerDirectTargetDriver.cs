@@ -6,11 +6,12 @@ using Godot;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Entities;
 using WowGd.Src.Input;
+using WowGd.Src.Input.Hands;
 using WowGd.Src.Input.Targeting.Direct;
 
 namespace WowGd.Src.Combat.Abilities.Targeting.Player;
 
-public partial class PlayerDirectTargetDriver : Node
+public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
 {
     private TargetIntent? _buffered;
     private TaskCompletionSource<TargetIntent>? _pendingIntent;
@@ -20,21 +21,26 @@ public partial class PlayerDirectTargetDriver : Node
         SetProcessUnhandledKeyInput(false);
     }
 
-    public async Task<TargetIntent> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct)
+    private bool _processing = false;
+
+    public async Task<TargetIntent> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct, bool useBuffer = true)
     {
         // See if we later put some domain specific cancellation ?
         if (_pendingIntent is not null)
             throw new InvalidOperationException(
                 "A target acquisition is already in progress.");
 
-        if (_buffered is TargetIntent intent)
+        if (useBuffer && _buffered is TargetIntent intent)
             return intent;
 
         var pendingIntent = new TaskCompletionSource<TargetIntent>(
             TaskCreationOptions.RunContinuationsAsynchronously);
 
         _pendingIntent = pendingIntent;
+        
+        _processing = true;
         EnableTargeting(caster, rules);
+        HandsInputManager.TryPushSecondHandMode(this);
 
         try
         {
@@ -45,8 +51,10 @@ public partial class PlayerDirectTargetDriver : Node
         }
         finally
         {
+            _processing = false;
             _pendingIntent = null;
             DisableTargeting();
+            HandsInputManager.TryPopSecondHandMode();
         }
     }
 
@@ -64,18 +72,22 @@ public partial class PlayerDirectTargetDriver : Node
 
     public override void _UnhandledKeyInput(InputEvent @event)
     {
-        if (_pendingIntent is null)
+        if (!TryGetTargetIntent(@event, out TargetIntent intent))
             return;
 
-        if (TryGetTargetIntent(@event, out TargetIntent intent) &&
-            _pendingIntent.TrySetResult(intent))
-        {
-            if (_buffered is TargetIntent targetIntent)
-                targetIntent.Entity!.Health.Died -= OnBufferedDied;
+        if (_pendingIntent is null)
+            SetBuffer(intent);
+        else if (_pendingIntent.TrySetResult(intent))
+            SetBuffer(intent);
+    }
 
-            _buffered = intent;
-            intent.Entity!.Health.Died += OnBufferedDied;
-        }
+    private void SetBuffer(TargetIntent intent)
+    {
+        if (_buffered is TargetIntent targetIntent)
+            targetIntent.Entity!.Health.Died -= OnBufferedDied;
+
+        _buffered = intent;
+        intent.Entity!.Health.Died += OnBufferedDied;
     }
 
     private static bool TryGetTargetIntent(InputEvent @event, out TargetIntent intent)
@@ -96,5 +108,38 @@ public partial class PlayerDirectTargetDriver : Node
     private void OnBufferedDied()
     {
         _buffered = null;
+    }
+
+    public bool CanStart() => true;
+    public void Start()
+    {
+        if (_processing || BufferAcquisition)
+            SetProcessUnhandledKeyInput(true);
+    }
+    public bool CanStop() => true;
+    public void Stop()
+    {
+        SetProcessUnhandledKeyInput(false);
+    }
+
+    public bool BufferAcquisition { get; private set; } = false;
+    public bool StartBufferTarget(IEntity caster, IEnumerable<ITargetRule>? rules)
+    {
+        if (_processing || BufferAcquisition)
+            return false;
+
+        BufferAcquisition = true;
+        EnableTargeting(caster, rules);
+        return HandsInputManager.TryPushSecondHandMode(this);
+    }
+
+    public bool StopBufferTarget()
+    {
+        if (_processing || !BufferAcquisition)
+            return false;
+            
+        BufferAcquisition = false;
+        DisableTargeting();
+        return HandsInputManager.TryPopSecondHandMode();
     }
 }

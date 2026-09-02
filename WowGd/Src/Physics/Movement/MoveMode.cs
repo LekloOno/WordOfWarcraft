@@ -1,12 +1,12 @@
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Entities.Modes;
+using WowGd.Src.Input.Hands;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement;
 
 [GlobalClass]
-public partial class MoveMode : Node, IMode
+public partial class MoveMode : Node, IFirstHandInputMode
 {
 	private BodyMover _mover = null!;
 
@@ -24,19 +24,20 @@ public partial class MoveMode : Node, IMode
 
 		if (!entityNode.TryGetComponent(out _mover!))
 			return;
-			
-		ModeRegistry.Register(Key.J, this);
+
+		HandsInputManager.TryPushFirstHandMode(this);
 	}
-
-	public bool Activate() =>
-		DisableExt.IndempActivate(ref _active, _enabled, () => _mover.Enable());
-
-	public bool Deactivate() =>
-		DisableExt.IndempDeactivate(ref _active, _enabled, () => _mover.Disable());
 
 	public bool Enable() =>
 		DisableExt.IndempEnableActivable(ref _enabled, _active, () => _mover.Enable());
 
 	public bool Disable() =>
 		DisableExt.IndempDisable(ref _enabled, () => _mover.Disable());
+
+    public bool CanStart() => true;
+    public void Start() =>
+		DisableExt.IndempActivate(ref _active, _enabled, () => _mover.Enable());
+    public bool CanStop() => true;
+    public void Stop() =>
+		DisableExt.IndempDeactivate(ref _active, _enabled, () => _mover.Disable());
 }

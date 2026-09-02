@@ -11,11 +11,11 @@ namespace WowGd.Src.Combat.Abilities.Targeting.Player;
 [GlobalClass]
 public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
 {
-    private readonly PlayerDirectTargetDriver _directDriver = new();
+    public readonly PlayerDirectTargetDriver DirectDriver = new();
 
     public override void _Ready()
     {
-        AddChild(_directDriver);
+        AddChild(DirectDriver);
     }
 
     public Task<TargetIntent> RetrieveTargetIntent(IEntity caster, TargetIntentAcquirer method, CancellationToken ct, IEnumerable<ITargetRule>? rules = null)
@@ -30,7 +30,7 @@ public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
                 throw new NotImplementedException(),
             
             TargetIntentAcquirer.Direct =>
-                _directDriver.RetrieveTarget(caster, rules, ct),
+                DirectDriver.RetrieveTarget(caster, rules, ct),
             
             TargetIntentAcquirer.Free =>
                 throw new NotImplementedException(),
