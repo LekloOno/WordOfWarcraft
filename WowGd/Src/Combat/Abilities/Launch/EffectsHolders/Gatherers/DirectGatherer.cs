@@ -9,8 +9,8 @@ public class DirectGatherer : IGatherer
     public TargetsPayload Gather(ActuatePayload actuatePayload, TargetIntent intent)
     {
         if (intent.TryInto(actuatePayload.Caster, out Target target))
-            return new ([target], actuatePayload.Caster, 1f);
+            return new ([target], actuatePayload.Caster, actuatePayload.Weight);
 
-        return new ([], actuatePayload.Caster, 1f); 
+        return new ([], actuatePayload.Caster, actuatePayload.Weight); 
     }
 }

@@ -23,6 +23,8 @@ public class CastActuator(CastActuatorData data) : IActuator
             await foreach (TypingPackage package in entity.ActuatorDriver.StreamTypingAsync(_data.BuildRequest(), ct))
             {
                 float weightMod = package.GetWeight(_data.PerfectMultiplier, _data.AccuracyMultiplier);
+                weightMod *= (float) package.CorrectCharacters / _data.TargetLenght;
+                
                 _currentCharge += weightMod * package.CorrectCharacters;
 
                 if (_currentCharge >= _data.Charge)

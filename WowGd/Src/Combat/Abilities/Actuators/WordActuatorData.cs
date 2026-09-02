@@ -13,8 +13,9 @@ public partial class WordActuatorData : ActuatorData
     [Export] private ActuationType _actuationType = ActuationType.Cast;
     public override ActuationType ActuationType => _actuationType;
 
-    [Export] public float AccuracyMultiplier { get; private set; } = 0f;
+    [Export] public float AccuracyMultiplier { get; private set; } = 0.5f;
     [Export] public float PerfectMultiplier { get; private set; } = 1f;
+    [Export] public int   TargetLenght      { get; private set; } = 5;
 
     public override IActuator Build() =>
         new WordActuator(this);

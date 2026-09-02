@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Godot;
 using WowGd.Src.Combat.Abilities.Actuation;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Entities;
@@ -21,6 +22,8 @@ public class WordActuator(WordActuatorData data) : IActuator
                 TargetIntent intent = await intentController.WaitForValidTargetAsync(ct);
                 
                 float weightMod = package.GetWeight(_data.PerfectMultiplier, _data.AccuracyMultiplier);
+                weightMod *= (float) package.CorrectCharacters / _data.TargetLenght;
+                
                 Actuated?.Invoke(new ActuatePayload(entity, intent, weightMod));
             }
         }
