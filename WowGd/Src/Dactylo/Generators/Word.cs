@@ -27,7 +27,7 @@ public enum WordKeyOutcome
     Ignored,
 }
 
-public class Word(string content)
+public partial class Word(string content)
 {
     private readonly string _content = content;
     public readonly int Length = content.Length;
@@ -39,7 +39,6 @@ public class Word(string content)
     public int Idx      {get; private set;} = -1;
     public int Correct  {get; private set;} = 0;
 
-
     public WordKeyOutcome Write(char @char)
     {
         _written.Append(@char);
@@ -49,13 +48,14 @@ public class Word(string content)
         
         
         if (!correct)
-            return WordKeyOutcome.Miss;
+            return ReturnNotifyMissed(@char);
 
         Correct ++;
         if (Correct == Idx)
-            return WordKeyOutcome.Hit;
-        return WordKeyOutcome.Mixed;
+            return ReturnNotifyHit(@char);
+        return ReturnNotifyMixed(@char);
     }
+
 
     public WordKeyOutcome EraseOne(out char @char)
     {
@@ -72,21 +72,24 @@ public class Word(string content)
         Idx --;
         
         if (hit)
-            return WordKeyOutcome.Hit;
+            return ReturnNotifyEraseHit(@char);
         
         Correct --;
         // If the removed char was not a mistake
         //  and no remaining char is a mistake
         //  there were no reason to remove that char.
         if (Correct == Idx)
-            return WordKeyOutcome.Miss;
+            return ReturnNotifyEraseMissed(@char);
         // Otherwise, it can be a decision
         //  to fix an earlier mistake
-        return WordKeyOutcome.Mixed;
+        return ReturnNotifyEraseMixed(@char);
     }
 
     public WordKeyOutcome EraseAll()
     {
+        if (Idx == -1)
+            return WordKeyOutcome.Ignored;
+
         _written.Clear();
 
         int cachedIdx = Idx;
@@ -95,11 +98,13 @@ public class Word(string content)
         Correct = 0;
 
         if (cachedCorrect == 0)
-            return WordKeyOutcome.Hit;
+            return ReturnNotifyEraseAllHit(cachedIdx + 1);
         
         if (cachedCorrect == cachedIdx)
-            return WordKeyOutcome.Miss;
+            return ReturnNotifyEraseAllMissed(cachedIdx + 1);
 
-        return WordKeyOutcome.Mixed;
+        return ReturnNotifyEraseAllMixed(cachedIdx + 1);
     }
+
+    public void Complete() => Completed?.Invoke();
 }

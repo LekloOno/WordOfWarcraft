@@ -26,20 +26,26 @@
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://c273v4avjawkx" path="res://Src/Input/SelectionCombatModeInput.cs" id="24_q6ayx"]
 [ext_resource type="Script" uid="uid://8hakekh7logr" path="res://Src/Debug/TestPlayerAttack.cs" id="29_4k8fq"]
-[ext_resource type="Script" uid="uid://bsf0pvdp2qsmo" path="res://Src/Dactylo/Abilities/WordBasedAbility.cs" id="29_gv2t6"]
-[ext_resource type="Script" uid="uid://u8xdp6fmf226" path="res://Src/Dactylo/Worders/Worder.cs" id="31_5civd"]
-[ext_resource type="Script" uid="uid://cm4kx3mq73kgp" path="res://Src/Combat/Abilities/Effects/Impls/SingleDamageEffect.cs" id="31_gv2t6"]
 [ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="31_iq7xp"]
-[ext_resource type="Script" uid="uid://xkykq0cq7xkm" path="res://Src/Combat/Abilities/Effects/SingleAbilityEffect.cs" id="31_p8c7m"]
 [ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="32_p8c7m"]
-[ext_resource type="Script" uid="uid://dhcf1q68fgvyv" path="res://Src/Combat/Abilities/Effects/Impls/SingleHealEffect.cs" id="33_3ss0b"]
-[ext_resource type="Script" uid="uid://bpfitrkj2ijoy" path="res://Src/Combat/Abilities/Targets/Queriers/SelfQuerier.cs" id="33_5civd"]
 [ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="33_mftsw"]
-[ext_resource type="Script" uid="uid://dkmjl1psg5bj8" path="res://Src/Combat/Abilities/Effects/ComposedAbilityEffect.cs" id="34_mftsw"]
-[ext_resource type="Script" uid="uid://bwg3ndt4iuoxx" path="res://Src/Combat/Abilities/Targets/AreaGatherers/RadiusGatherer.cs" id="34_mi64w"]
 [ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="34_q6ayx"]
 [ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="35_iq7xp"]
+[ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="39_q6ayx"]
+[ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="40_iq7xp"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="40_s6cx0"]
+[ext_resource type="Script" uid="uid://djomokhsknkk0" path="res://Src/Combat/Abilities/AbilityStateMachine.cs" id="41_1urli"]
+[ext_resource type="Script" uid="uid://ckalqjavqpd37" path="res://Src/Combat/Abilities/Launch/LaunchData.cs" id="42_35prk"]
+[ext_resource type="Script" uid="uid://ckoy54dodnv5e" path="res://Src/Combat/Abilities/CasterRules/CasterRule.cs" id="43_eokji"]
+[ext_resource type="Script" uid="uid://diy1f0p7da221" path="res://Src/Combat/Abilities/Launch/EffectsHolders/EffectsHolderData.cs" id="44_8nvs4"]
+[ext_resource type="Script" uid="uid://3kt2gisdc54v" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/Effect.cs" id="45_2ixbo"]
+[ext_resource type="Script" uid="uid://ctj8xarphtj3u" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleDamageEffect.cs" id="46_uig8d"]
+[ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="47_eixnv"]
+[ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="48_68ewr"]
+[ext_resource type="Script" uid="uid://xxo1vwasspl1" path="res://Src/Combat/Abilities/Targeting/TargetRules/TargetRule.cs" id="49_osnag"]
+[ext_resource type="Script" uid="uid://dpigjmfyxn2c0" path="res://Src/Combat/Abilities/Actuators/WordActuatorData.cs" id="50_vqdru"]
+[ext_resource type="Script" uid="uid://d2qv3p843380o" path="res://Src/Combat/Abilities/LoopRules/LoopRule.cs" id="51_tnm51"]
+[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilityData.cs" id="52_tbman"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
 shading_mode = 0
@@ -93,42 +99,43 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_s6cx0"]
-script = ExtResource("31_gv2t6")
+[sub_resource type="Resource" id="Resource_kfqmg"]
+script = ExtResource("46_uig8d")
 _target = 4
-metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
 
-[sub_resource type="Resource" id="Resource_emonu"]
-script = ExtResource("33_3ss0b")
-_hp = 4.0
-_launcher = true
-metadata/_custom_type_script = "uid://dhcf1q68fgvyv"
+[sub_resource type="Resource" id="Resource_ux1ir"]
+script = ExtResource("47_eixnv")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
 
-[sub_resource type="Resource" id="Resource_iq7xp"]
-script = ExtResource("34_mftsw")
-_effects = Array[ExtResource("31_p8c7m")]([SubResource("Resource_s6cx0"), SubResource("Resource_emonu")])
-metadata/_custom_type_script = "uid://dkmjl1psg5bj8"
+[sub_resource type="Resource" id="Resource_dduds"]
+script = ExtResource("48_68ewr")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 
-[sub_resource type="Resource" id="Resource_3ss0b"]
-script = ExtResource("33_3ss0b")
-_hp = 50.0
-_launcher = true
-metadata/_custom_type_script = "uid://dhcf1q68fgvyv"
+[sub_resource type="Resource" id="Resource_i2jsu"]
+script = ExtResource("44_8nvs4")
+TriggerDt = SubResource("Resource_dduds")
+GathererDt = SubResource("Resource_ux1ir")
+EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_kfqmg")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
 
-[sub_resource type="Resource" id="Resource_mftsw"]
-script = ExtResource("34_mftsw")
-_effects = Array[ExtResource("31_p8c7m")]([SubResource("Resource_3ss0b")])
-metadata/_custom_type_script = "uid://dkmjl1psg5bj8"
+[sub_resource type="Resource" id="Resource_h1wfh"]
+script = ExtResource("42_35prk")
+EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_i2jsu")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
-[sub_resource type="Resource" id="Resource_lswdd"]
-script = ExtResource("31_gv2t6")
-_launcher = true
-metadata/_custom_type_script = "uid://cm4kx3mq73kgp"
+[sub_resource type="Resource" id="Resource_o0kuw"]
+script = ExtResource("50_vqdru")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 
-[sub_resource type="Resource" id="Resource_175km"]
-script = ExtResource("34_mftsw")
-_effects = Array[ExtResource("31_p8c7m")]([SubResource("Resource_lswdd")])
-metadata/_custom_type_script = "uid://dkmjl1psg5bj8"
+[sub_resource type="Resource" id="Resource_2ae6r"]
+script = ExtResource("52_tbman")
+Id = "oui"
+TargetIntentAcquirer = 2
+ActuatorDt = SubResource("Resource_o0kuw")
+ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_h1wfh")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
 [sub_resource type="Resource" id="Resource_n74k2"]
 script = ExtResource("20_n74k2")
@@ -315,11 +322,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1563631358 node_paths=PackedStringArray("_worder", "_container", "_caret")]
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/ColorRect/CenterContainer" unique_id=1563631358 node_paths=PackedStringArray("_driver", "_container", "_caret")]
 custom_minimum_size = Vector2(350, 150)
 layout_mode = 2
 script = ExtResource("8_gv2t6")
-_worder = NodePath("../../../../Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility/Worder")
+_driver = NodePath("../../../../Physics/Player/PlayerDactyloDriver")
 _container = NodePath("HFlowContainer")
 _caret = NodePath("Caret")
 _caretTweenSettings = SubResource("Resource_gv2t6")
@@ -464,62 +471,22 @@ script = ExtResource("31_iq7xp")
 _key = 75
 metadata/_custom_type_script = "uid://8l2woqce8nl6"
 
-[node name="WordBasedAbility" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=819744398]
-script = ExtResource("29_gv2t6")
-_effect = SubResource("Resource_iq7xp")
-metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
-
-[node name="Worder" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility" unique_id=1144036271]
-script = ExtResource("31_5civd")
-metadata/_custom_type_script = "uid://u8xdp6fmf226"
-
-[node name="SelfQuerier" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility" unique_id=1636515760]
-script = ExtResource("33_5civd")
-metadata/_custom_type_script = "uid://bpfitrkj2ijoy"
-
-[node name="RadiusGatherer" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility/SelfQuerier" unique_id=1941926848]
-script = ExtResource("34_mi64w")
-_radius = 6.0
-metadata/_custom_type_script = "uid://bwg3ndt4iuoxx"
-
-[node name="WordBasedAbility2" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=1044889049]
-script = ExtResource("29_gv2t6")
-_effect = SubResource("Resource_mftsw")
-metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
-
-[node name="Worder" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility2" unique_id=1908645416]
-script = ExtResource("31_5civd")
-metadata/_custom_type_script = "uid://u8xdp6fmf226"
-
-[node name="SelfQuerier" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility2" unique_id=1233086279]
-script = ExtResource("33_5civd")
-metadata/_custom_type_script = "uid://bpfitrkj2ijoy"
-
-[node name="RadiusGatherer" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility2/SelfQuerier" unique_id=1772979361]
-script = ExtResource("34_mi64w")
-metadata/_custom_type_script = "uid://bwg3ndt4iuoxx"
-
-[node name="WordBasedAbility3" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=1542723901]
-script = ExtResource("29_gv2t6")
-_effect = SubResource("Resource_175km")
-metadata/_custom_type_script = "uid://bsf0pvdp2qsmo"
-
-[node name="Worder" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility3" unique_id=475359554]
-script = ExtResource("31_5civd")
-metadata/_custom_type_script = "uid://u8xdp6fmf226"
-
-[node name="SelfQuerier" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility3" unique_id=830060806]
-script = ExtResource("33_5civd")
-metadata/_custom_type_script = "uid://bpfitrkj2ijoy"
-
-[node name="RadiusGatherer" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode/WordBasedAbility3/SelfQuerier" unique_id=399726400]
-script = ExtResource("34_mi64w")
-_radius = 6.0
-metadata/_custom_type_script = "uid://bwg3ndt4iuoxx"
+[node name="AbilityStateMachine" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=110559277]
+script = ExtResource("41_1urli")
+_data = SubResource("Resource_2ae6r")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
 
 [node name="CombatModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=1402982432]
 script = ExtResource("40_s6cx0")
 metadata/_custom_type_script = "uid://dj0sj1thojqst"
+
+[node name="PlayerTargetIntentDriver" type="Node" parent="Physics/Player" unique_id=953860561]
+script = ExtResource("39_q6ayx")
+metadata/_custom_type_script = "uid://b54uw6fk4ndjr"
+
+[node name="PlayerDactyloDriver" type="Node" parent="Physics/Player" unique_id=561782522]
+script = ExtResource("40_iq7xp")
+metadata/_custom_type_script = "uid://cvln6rapoqvqg"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2
