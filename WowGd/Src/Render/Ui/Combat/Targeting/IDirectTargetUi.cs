@@ -41,4 +41,7 @@ public interface IDirectTargetUi
     /// This targeting ui's entity.
     /// </summary>
     IEntity Entity { get; }
+
+    public void Select();
+    public void Unselect();
 }

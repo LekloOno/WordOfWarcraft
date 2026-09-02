@@ -21,6 +21,7 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
     [Export] private Label _indexLabel = null!;
     [Export] private Color _validColor;
     [Export] private Color _unvalidColor;
+    [Export] private Node3D? _selectedRing;
 
     private Camera3D _camera = null!;
     
@@ -32,6 +33,7 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
         DirectTargetEntitiesManager.Register(this);
         Visible = false;
         SetProcess(false);
+        _selectedRing?.Hide();
     }
 
     public override void _Ready()
@@ -96,4 +98,10 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
 
         _indexLabel.GlobalPosition = screenPosition - Size * 0.5f;
     }
+
+    public void Select() =>
+        _selectedRing?.Show();
+    
+    public void Unselect() =>
+        _selectedRing?.Hide();
 }

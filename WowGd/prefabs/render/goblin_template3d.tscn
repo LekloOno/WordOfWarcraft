@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="6_23ucx"]
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="7_o7elv"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_l17jm"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_23ucx"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_owfsr"]
@@ -16,7 +16,18 @@ font = ExtResource("7_o7elv")
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 0.3529412)
 
-[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager", "_directTargetUi")]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lswdd"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.62352943, 0.4745098, 0.6392157)
+
+[sub_resource type="TorusMesh" id="TorusMesh_175km"]
+inner_radius = 0.457
+outer_radius = 0.534
+rings = 8
+ring_segments = 8
+
+[node name="EntityRender3D2" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager", "_directTargetUi")]
 script = ExtResource("1_hiiaf")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/HealthBar")
@@ -24,13 +35,13 @@ _damageIndicatorManager = NodePath("DamageIndicatorManager")
 _directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
-transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.5, 0)
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.4, 0)
 billboard = 1
 texture = ExtResource("2_qcrgf")
 
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_hbpfo")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_l17jm")
+texture = SubResource("ViewportTexture_23ucx")
 
 [node name="DamageIndicatorManager" type="Node3D" parent="." unique_id=249663640]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -38,7 +49,7 @@ script = ExtResource("4_hbpfo")
 _indicator = ExtResource("5_4pern")
 metadata/_custom_type_script = "uid://by1fhpgvvgq5o"
 
-[node name="DirectTargetUi3D" type="Control" parent="." unique_id=163072531 node_paths=PackedStringArray("_visibilityNotifier", "_position", "_indexLabel")]
+[node name="DirectTargetUi3D" type="Control" parent="." unique_id=163072531 node_paths=PackedStringArray("_visibilityNotifier", "_position", "_indexLabel", "_selectedRing")]
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -51,7 +62,9 @@ script = ExtResource("6_23ucx")
 _visibilityNotifier = NodePath("../VisibleOnScreenNotifier3D")
 _position = NodePath("../DirectTargetUiPosition")
 _indexLabel = NodePath("Label")
-_validColor = Color(1, 1, 1, 0)
+_validColor = Color(1, 1, 1, 1)
+_unvalidColor = Color(0.627451, 0, 0, 0.8862745)
+_selectedRing = NodePath("../Selection")
 metadata/_custom_type_script = "uid://cj7dp4rbvvn06"
 
 [node name="Label" type="Label" parent="DirectTargetUi3D" unique_id=1938588031]
@@ -78,5 +91,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="." unique_id=1771069592]
 aabb = AABB(-0.5, 0, -0.5, 1, 1.2, 1)
+
+[node name="Selection" type="MeshInstance3D" parent="." unique_id=401441254]
+material_override = SubResource("StandardMaterial3D_lswdd")
+mesh = SubResource("TorusMesh_175km")
 
 [editable path="HealthBar"]

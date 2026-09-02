@@ -147,6 +147,7 @@ public partial class DirectTargetEntitiesManager : Node
             ui.UpdateValidity(GetTargetValidity(ui));
     }
 
+    private static IDirectTargetUi? _selected;
     public static bool TryRetrieveEntity(int index, [NotNullWhen(true)] out IEntity? entity)
     {
         if (_activeTargets.Count <= index)
@@ -155,7 +156,14 @@ public partial class DirectTargetEntitiesManager : Node
             return false;
         }
 
-        entity = _activeTargets[index].Entity;
+        _selected?.Unselect();
+        _selected = _activeTargets[index];
+        _selected.Select();
+
+        entity = _selected.Entity;
         return true;
     }
+
+    public static void Unselect() =>
+        _selected?.Unselect();
 }
