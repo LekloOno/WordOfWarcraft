@@ -18,10 +18,11 @@ namespace WowGd.Src.Combat.Abilities.Exp.Actuators;
 /// </summary>
 public interface IActuator
 {
-    Task Actuate(IEntity entity, TargetIntent intent, CancellationToken ct);
+    Task Actuate(IEntity entity, TargetIntentController intentController, CancellationToken ct);
 
     // using event instead of a Task because actuate might trigger at high frequency
     // For example in the case of a beam. Using task would stress out the GC, but we can't either
     // expect ValueTask to be effective in all scenarios. A push approach is thus probably better.
+    // So instead, we only fire actuate once, then cancel it when the loops tops, instead of calling it multiple times.
     event Action<ActuatePayload>? Actuated;
 }

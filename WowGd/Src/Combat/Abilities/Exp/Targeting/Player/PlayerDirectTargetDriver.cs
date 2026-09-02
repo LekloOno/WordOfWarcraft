@@ -67,10 +67,14 @@ public partial class PlayerDirectTargetDriver : Node
         if (_pendingIntent is null)
             return;
 
-        if (TryGetTargetIntent(@event, out TargetIntent intent))
+        if (TryGetTargetIntent(@event, out TargetIntent intent) &&
+            _pendingIntent.TrySetResult(intent))
         {
-            _pendingIntent.TrySetResult(intent);
+            if (_buffered is TargetIntent targetIntent)
+                targetIntent.Entity!.Health.Died -= OnBufferedDied;
+
             _buffered = intent;
+            intent.Entity!.Health.Died += OnBufferedDied;
         }
     }
 
@@ -87,5 +91,10 @@ public partial class PlayerDirectTargetDriver : Node
 
         intent = new(entity);
         return true;
+    }
+
+    private void OnBufferedDied()
+    {
+        _buffered = null;
     }
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Godot;
 using WowGd.Src.Entities;
 
@@ -27,4 +28,11 @@ public readonly struct TargetIntent
         IsDirect
         ? Entity!.Body.GlobalPosition
         : _position;
+
+    // Just a simple wrapper to avoid explicit null check and handling
+    public bool TryGetEntity([NotNullWhen(true)] out IEntity? entity)
+    {
+        entity = Entity;
+        return IsDirect;
+    }
 }

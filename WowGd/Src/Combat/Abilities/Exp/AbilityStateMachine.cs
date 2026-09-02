@@ -63,6 +63,7 @@ public partial class AbilityStateMachine : Node, IAbility
         _stopLaunches.LaunchAll(payload);
     }
 
+    private TargetIntentController? _targetIntentController;
     public async void Start(IEntity caster)
     {
         _cts?.Cancel();
@@ -77,24 +78,21 @@ public partial class AbilityStateMachine : Node, IAbility
 
         try
         {
-            // STEP 3 - retrieve target intent
-            TargetIntent targetIntent;
-            do
-            {
-                targetIntent =  await
-                    caster.TargetIntentDriver.RetrieveTargetIntent(
-                        caster,
-                        _data.TargetIntentAcquirer,
-                        _cts.Token,
-                        _data.TargetRulesDt);
-            }
-            while (!_data.TargetRulesDt.CheckAll(caster, targetIntent));    
+            _targetIntentController = new(
+                caster, 
+                _data.TargetIntentAcquirer,
+                _data.TargetRulesDt,
+                default,
+                _cts.Token);
+
+            _targetIntentController.RequestRefresh();
+            TargetIntent targetIntent = await _targetIntentController.WaitForValidTargetAsync(_cts.Token);
             
             // STEP 4 - trigger targeting launches
             _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
 
             // STEP 5 - wait for actuation completion
-            await _actuator.Actuate(caster, targetIntent, _cts.Token);
+            await _actuator.Actuate(caster, _targetIntentController, _cts.Token);
 
             // STEP 5.1, 5.2, 5.3 and 5.4 in OnActuated handler
         }
