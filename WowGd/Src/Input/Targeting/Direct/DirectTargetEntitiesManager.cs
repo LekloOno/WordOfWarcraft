@@ -85,6 +85,13 @@ public partial class DirectTargetEntitiesManager : Node
         _targetRules = rules ?? [];
 
         _availableTargets.RemoveAll(TryAddEnable);
+        
+        _activeTargets.Sort((a, b) =>
+            a.Entity.DistanceSquaredTo(caller)
+            .CompareTo(b.Entity.DistanceSquaredTo(caller)));
+        
+        for (int i = 0; i < _activeTargets.Count; i ++)
+            _activeTargets[i].UpdateIndex(i);
 
         Instance.SetPhysicsProcess(true);
 
@@ -102,7 +109,10 @@ public partial class DirectTargetEntitiesManager : Node
 
     private static bool TryAddEnable(IDirectTargetUi ui)
     {
-        // Possibly some more logic later, typically, max number of targets, maximum distance, etc.
+        // Possibly some more logic later, typically, maximum distance ?
+        if (_activeTargets.Count > AbilitySelectInputExt.MaxIndex)
+            return false;
+
         return TryFinalizeEnable(ui);
     }
 

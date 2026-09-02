@@ -15,6 +15,8 @@ public static class AbilitySelectInputExt
     public const string AbilitySelect8 = "ability_select_8";
     public const string AbilitySelect9 = "ability_select_9";
 
+    public const int MaxIndex = 9;
+
     public static bool TryGetAbilityIndex(this InputEvent @event, out int index)
     {
         if (@event.IsActionPressed(AbilitySelect0))

@@ -83,4 +83,10 @@ public static partial class EntitiesRegistry
 
         return inRange;
     }
+
+    public static float DistanceTo(this IEntity left, IEntity right) =>
+        left.Body.GlobalPosition.DistanceTo(right.Body.GlobalPosition);
+
+    public static float DistanceSquaredTo(this IEntity left, IEntity right) =>
+        left.Body.GlobalPosition.DistanceSquaredTo(right.Body.GlobalPosition);
 }
