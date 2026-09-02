@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using Godot;
 using WowGd.Src.Combat.Abilities.Exp.Actuation;
@@ -74,26 +75,33 @@ public partial class AbilityStateMachine : Node, IAbility
 
         _cts = new CancellationTokenSource();
 
-        // STEP 3 - retrieve target intent
-        TargetIntent targetIntent;
-        do
+        try
         {
-            targetIntent =  await
-                caster.TargetIntentDriver.RetrieveTargetIntent(
-                    caster,
-                    _data.TargetIntentAcquirer,
-                    _cts.Token,
-                    _data.TargetRulesDt);
+            // STEP 3 - retrieve target intent
+            TargetIntent targetIntent;
+            do
+            {
+                targetIntent =  await
+                    caster.TargetIntentDriver.RetrieveTargetIntent(
+                        caster,
+                        _data.TargetIntentAcquirer,
+                        _cts.Token,
+                        _data.TargetRulesDt);
+            }
+            while (!_data.TargetRulesDt.CheckAll(caster, targetIntent));    
+            
+            // STEP 4 - trigger targeting launches
+            _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
+
+            // STEP 5 - wait for actuation completion
+            await _actuator.Actuate(caster, targetIntent, _cts.Token);
+
+            // STEP 5.1, 5.2, 5.3 and 5.4 in OnActuated handler
         }
-        while (!_data.TargetRulesDt.CheckAll(caster, targetIntent));
-
-        // STEP 4 - trigger targeting launches
-        _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
-
-        // STEP 5 - wait for actuation completion
-        await _actuator.Actuate(caster, targetIntent, _cts.Token);
-
-        // STEP 5.1, 5.2, 5.3 and 5.4 in OnActuated handler
+        catch (OperationCanceledException) when (_cts.IsCancellationRequested)
+        {
+            // .. silence it   
+        }
     }
 
     private void OnActuated(ActuatePayload payload)

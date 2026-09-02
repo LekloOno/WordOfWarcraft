@@ -39,9 +39,9 @@ public partial class PlayerDirectTargetDriver : Node
         try
         {
             using var registration = ct.Register(
-                () => _pendingIntent.TrySetCanceled(ct));
+                () => pendingIntent.TrySetCanceled(ct));
 
-            return await _pendingIntent.Task;
+            return await pendingIntent.Task;
         }
         finally
         {
