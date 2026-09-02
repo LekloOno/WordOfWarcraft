@@ -78,7 +78,9 @@ public partial class DirectTargetEntitiesManager : Node
     {
         if (_enabled)
             return false;
-
+        
+        _enabled = true;
+        
         _caller = caller;
         _targetRules = rules ?? [];
 
