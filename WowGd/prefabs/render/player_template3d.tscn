@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dtt2vmek6bw1c" path="res://Src/Render/WorldRenderer/Entities/ComplexPlayer.cs" id="2_cgjug"]
 [ext_resource type="PackedScene" uid="uid://tb2k4gfi3asl" path="res://prefabs/render/entity_template3d.tscn" id="2_n78br"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_h0a4m"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_n78br"]
 viewport_path = NodePath("SubViewport")
 
 [node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_healthBar") instance=ExtResource("2_n78br")]
@@ -16,7 +16,7 @@ _healthBar = NodePath("PlayerUi/MarginContainer/BottomContainer/HealthBarContain
 
 [node name="HealthBar" parent="." index="3" unique_id=650881374]
 visible = false
-texture = SubResource("ViewportTexture_h0a4m")
+texture = SubResource("ViewportTexture_n78br")
 
 [editable path="PlayerUi"]
 [editable path="HealthBar"]

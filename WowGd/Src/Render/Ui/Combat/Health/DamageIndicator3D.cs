@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Render.Animation.TweenTools;
 
 namespace WowGd.Src.Render.Ui.Combat.Health;
@@ -119,4 +120,6 @@ public partial class DamageIndicator3D : Label3D, IDamageIndicator
         TopLevel = true;
         GlobalPosition = worldPosition;
     }
+
+    public void SetClientRelation(TargetRelation relation) {}
 }

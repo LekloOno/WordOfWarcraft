@@ -13,7 +13,7 @@ public partial class SimpleDude : EntityRender3D
     public override bool InitSpec(IEntity entity)
     {
         _healthBar.SetHealth(entity.Health);
-        _damageIndicatorManager.SetHealth(entity.Health);
+        _damageIndicatorManager.SetHealth(entity.Health, entity);
         return true;
     }
 

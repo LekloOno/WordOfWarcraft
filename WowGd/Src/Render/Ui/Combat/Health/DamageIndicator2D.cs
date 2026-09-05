@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Render.Animation.TweenTools;
 
 namespace WowGd.Src.Render.Ui.Combat.Health;
@@ -14,10 +15,11 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
     [Export] private float _holdDelay = 0.5f;
     [Export] private TweenSettings  _fadeOutSettings  = null!;
 
-    [Export] private Color _damageColor;
-    [Export] private Color _healColor;
-    [Export] private Color _resColor;
-    [Export] private Color _deadColor;
+    [Export] private DamageIndicatorColor _allyColors = null!;
+    [Export] private DamageIndicatorColor _selfColors = null!;
+    [Export] private DamageIndicatorColor _enemyColors = null!;
+
+    private DamageIndicatorColor _activeColors = null!;
 
     [Export] private Curve _scaleCurve = null!;
     [Export] private float _deadScale       = 1f;
@@ -32,28 +34,28 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
     public void OnDamaged(int hp)
     {
         Text = $"{hp}";
-        Modulate = _damageColor;
+        Modulate = _activeColors.DamageColor;
         StartAnimation(_scaleCurve.Sample(hp));
     }
 
     public void OnDied()
     {
         Text = "Dead";
-        Modulate = _deadColor;
+        Modulate = _activeColors.DeadColor;
         StartAnimation(_deadScale);
     }
 
     public void OnHealed(int hp)
     {
         Text = $"{hp}";
-        Modulate = _healColor;
+        Modulate = _activeColors.HealColor;
         StartAnimation(_scaleCurve.Sample(hp));
     }
 
     public void OnResurrected(int hp)
     {
         Text = "Resurrected";
-        Modulate = _resColor;
+        Modulate = _activeColors.ResColor;
         StartAnimation(_resurrectScale);
     }
 
@@ -98,5 +100,16 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
     public void SetWorldPosition(Vector3 worldPosition)
     {
         _worldPosition = worldPosition;
+    }
+
+    public void SetClientRelation(TargetRelation relation)
+    {
+        _activeColors = relation switch
+        {
+            TargetRelation.Self => _selfColors,
+            TargetRelation.Ally => _allyColors,
+            TargetRelation.Enemy => _enemyColors,
+            _ => _enemyColors,
+        };
     }
 }

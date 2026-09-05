@@ -129,9 +129,6 @@ layout_mode = 2
 [node name="AbilityContainer8" parent="MarginContainer/BottomContainer/AbilitiesContainer/MarginContainer/VFlowContainer" unique_id=1590894518 instance=ExtResource("3_ywrtm")]
 layout_mode = 2
 
-[node name="AbilityContainer9" parent="MarginContainer/BottomContainer/AbilitiesContainer/MarginContainer/VFlowContainer" unique_id=1615004902 instance=ExtResource("3_ywrtm")]
-layout_mode = 2
-
 [node name="HealthBarContainer" type="PanelContainer" parent="MarginContainer/BottomContainer" unique_id=537550551]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_846yy")

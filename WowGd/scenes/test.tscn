@@ -39,6 +39,7 @@
 [ext_resource type="Script" uid="uid://diy1f0p7da221" path="res://Src/Combat/Abilities/Launch/EffectsHolders/EffectsHolderData.cs" id="44_8nvs4"]
 [ext_resource type="Script" uid="uid://3kt2gisdc54v" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/Effect.cs" id="45_2ixbo"]
 [ext_resource type="Script" uid="uid://by0aobke5dswx" path="res://Src/Input/Targeting/Direct/DirectInputBufferTrigger.cs" id="45_335pd"]
+[ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="45_376r3"]
 [ext_resource type="Script" uid="uid://ctj8xarphtj3u" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleDamageEffect.cs" id="46_uig8d"]
 [ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="47_eixnv"]
 [ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="48_68ewr"]
@@ -507,6 +508,10 @@ metadata/_custom_type_script = "uid://cvln6rapoqvqg"
 script = ExtResource("45_335pd")
 _targetIntentDrive = NodePath("../PlayerTargetIntentDriver")
 metadata/_custom_type_script = "uid://by0aobke5dswx"
+
+[node name="ClientMarker" type="Node" parent="Physics/Player" unique_id=590305255]
+script = ExtResource("45_376r3")
+metadata/_custom_type_script = "uid://4ma6ga1bxmpu"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1570422049 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2

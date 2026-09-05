@@ -1,6 +1,8 @@
 using System;
 using Godot;
+using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Entities;
 
 namespace WowGd.Src.Render.Ui.Combat.Health;
 
@@ -9,9 +11,12 @@ public partial class DamageIndicatorManager : Node3D, IEntityHealthHandler
 {
     [Export] private PackedScene _indicator = null!;
     private IEntityHealth _health = null!;
+    private IEntity _entity = null!;
 
-    public void SetHealth(IEntityHealth health)
+    public void SetHealth(IEntityHealth health, IEntity entity)
     {
+        _entity = entity;
+
         if (_health == health)
             return;
 
@@ -51,12 +56,14 @@ public partial class DamageIndicatorManager : Node3D, IEntityHealthHandler
 
     private void CreateNewIndicator(IDamageIndicator indicator, Action action)
     {
+        indicator.SetClientRelation(_entity.GetClientRelation());
         action();
         TryAddChild(indicator);
     }
 
     private void CreateNewIndicator(IDamageIndicator indicator, Action<int> action, int hp)
     {
+        indicator.SetClientRelation(_entity.GetClientRelation());
         TryAddChild(indicator);
         action(hp);
     }
