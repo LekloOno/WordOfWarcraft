@@ -96,7 +96,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
         finally
         {
             _processing = false;
-            GD.Print(HandsInputManager.TryPopTwoHandedMode());
+            HandsInputManager.TryRemoveTwoHandedMode(this);
             Stopped?.Invoke();
         }
     }

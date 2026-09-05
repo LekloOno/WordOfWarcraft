@@ -54,7 +54,7 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
             _processing = false;
             _pendingIntent = null;
             DisableTargeting();
-            HandsInputManager.TryPopSecondHandMode();
+            HandsInputManager.TryRemoveSecondHandMode(this);
         }
     }
 
@@ -140,6 +140,6 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
             
         BufferAcquisition = false;
         DisableTargeting();
-        return HandsInputManager.TryPopSecondHandMode();
+        return HandsInputManager.TryRemoveSecondHandMode(this);
     }
 }

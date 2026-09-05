@@ -1,5 +1,6 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Godot;
 
 namespace WowGd.Src.Input.Hands;
@@ -19,157 +20,177 @@ namespace WowGd.Src.Input.Hands;
 public static class HandsInputManager
 {
     // List instead of stack for easier and clearer to read preemptive checks 
-    private static readonly List<IFirstHandInputMode>  _firstHand  = [];
+    private static readonly List<IFirstHandInputMode> _firstHand = [];
     private static readonly List<ISecondHandInputMode> _secondHand = [];
 
-    public static bool TryPushFirstHandMode(IFirstHandInputMode mode) =>
-        TryPushHandMode(mode, _firstHand);
-    
-    public static bool TryPushSecondHandMode(ISecondHandInputMode mode) =>
-        TryPushHandMode(mode, _secondHand);
+    public static bool TryPushFirstHandMode(IFirstHandInputMode mode)
+    {
+        if (mode is ITwoHandedInputMode)
+            return false;
+
+        return TryTransition(mode, TopOrNull(_secondHand), () => _firstHand.Add(mode));
+    }
+
+    public static bool TryPushSecondHandMode(ISecondHandInputMode mode)
+    {
+        if (mode is ITwoHandedInputMode)
+            return false;
+
+        return TryTransition(TopOrNull(_firstHand), mode, () => _secondHand.Add(mode));
+    }
+
+    public static bool TryPushTwoHandedMode(ITwoHandedInputMode mode) =>
+        TryTransition(mode, mode, () =>
+        {
+            _firstHand.Add(mode);
+            _secondHand.Add(mode);
+        });
 
     public static bool TryPopFirstHandMode() =>
-        TryPopHandMode(target: _firstHand, sibling: _secondHand);
+        _firstHand.Count == 0 || TryRemoveAndReconcile(_firstHand.Count - 1, null);
 
     public static bool TryPopSecondHandMode() =>
-        TryPopHandMode(target: _secondHand, sibling: _firstHand);
-
-    public static bool TryPushTwoHandedMode(ITwoHandedInputMode mode)
-    {
-        if (!mode.CanStart())
-            return false;
-
-        if (TryPeek(_firstHand, out IFirstHandInputMode? fMode)
-            && !fMode.CanStop())
-            return false;
-
-        if (TryPeek(_secondHand, out ISecondHandInputMode? sMode)
-            && !sMode.CanStop())
-            return false;
-        
-
-        fMode?.Stop();
-        sMode?.Stop();
-
-        _firstHand.Add(mode);
-        _secondHand.Add(mode);
-
-        mode.Start();
-        return true;
-    }
+        _secondHand.Count == 0 || TryRemoveAndReconcile(null, _secondHand.Count - 1);
 
     public static bool TryPopTwoHandedMode()
     {
-        if (!TryPeek(_firstHand, out IFirstHandInputMode? fThMode))
-            return !TryPeek(_secondHand, out _);
-
-        if (!TryPeek(_secondHand, out ISecondHandInputMode? sThMode))
-            return false;
-        
-        if (sThMode != fThMode || fThMode is not ITwoHandedInputMode)
-            return false;
-        
-        if (!fThMode.CanStop() || !sThMode.CanStop())
-            return false;
-
-        if (TryPeek(_firstHand, out IFirstHandInputMode? fMode, 2)
-            && !fMode.CanStart())
-            return false;
-
-        if (TryPeek(_secondHand, out ISecondHandInputMode? sMode, 2)
-            && !sMode.CanStart())
-            return false;
-        
-        Pop(_firstHand);
-        Pop(_secondHand);
-
-        fThMode.Stop();
-        sThMode.Stop();
-        
-        fMode?.Start();
-        sMode?.Start();
-
-        return true;
-    }
-
-    private static bool TryPushHandMode<T>(T mode, List<T> hand)
-        where T : IHandInputMode
-    {
-        if (!mode.CanStart())
-            return false;
-
-        // Nothing special about two handed modes in enable.
-        // If the top mode is a two handed one, it'll get disabled anyways, no special check to do.
-        if (TryPeek(hand, out T? current)
-            && !current.CanStop())
-            return false;
-
-        current?.Stop();
-        hand.Add(mode);
-        mode.Start();
-
-        return true;
-    }
-
-    private static bool TryPopHandMode<T, U>(List<T> target, List<U> sibling)
-        where T : IHandInputMode
-        where U : IHandInputMode
-    {
-        if (!TryPeek(target, out T? current))   // Nothing to disable, result is expected.
+        if (_firstHand.Count == 0 && _secondHand.Count == 0)
             return true;
 
-        if (!current.CanStop())                 // There's something to stop
-            return false;                       // But current state doesn't allow it to.
+        var (activeFirst, activeSecond) = ComputeActive(TopOrNull(_firstHand), TopOrNull(_secondHand));
+        if (activeFirst is not ITwoHandedInputMode || !ReferenceEquals(activeFirst, activeSecond))
+            return false; // nothing genuinely (fully) active to pop
 
-        if (!TryPeek(target, out T? next, 2))   // Nothing to enable, and the thing to stop can be.
+        return TryRemoveAndReconcile(_firstHand.Count - 1, _secondHand.Count - 1);
+    }
+
+    public static bool TryRemoveFirstHandMode(IFirstHandInputMode mode)
+    {
+        if (mode is ITwoHandedInputMode)
+            return false;
+
+        int index = _firstHand.LastIndexOf(mode);
+        return index < 0 || TryRemoveAndReconcile(index, null);
+    }
+
+    public static bool TryRemoveSecondHandMode(ISecondHandInputMode mode)
+    {
+        if (mode is ITwoHandedInputMode)
+            return false;
+
+        int index = _secondHand.LastIndexOf(mode);
+        return index < 0 || TryRemoveAndReconcile(null, index);
+    }
+
+    public static bool TryRemoveTwoHandedMode(ITwoHandedInputMode mode)
+    {
+        int fIndex = _firstHand.LastIndexOf(mode);
+        int sIndex = _secondHand.LastIndexOf(mode);
+        if (fIndex < 0 && sIndex < 0)
+            return true;
+
+        if (fIndex < 0 || sIndex < 0)
+            throw new InvalidOperationException("Orphan two-handed mode: present in one hand's stack only.");
+
+        return TryRemoveAndReconcile(fIndex, sIndex);
+    }
+
+    private static T? TopOrNull<T>(List<T> hand, int depth = 1) where T : class =>
+        hand.Count > depth - 1 ? hand[^depth] : null;
+
+    /// <summary>
+    /// A two-handed mode is only genuinely active when it's on top of BOTH stacks
+    /// at once. On top of only one, that hand has nothing active - it's waiting
+    /// for the other hand to converge back onto it.
+    /// </summary>
+    private static (IFirstHandInputMode? First, ISecondHandInputMode? Second) ComputeActive(
+        IFirstHandInputMode? topF, ISecondHandInputMode? topS)
+    {
+        bool converged = topF is ITwoHandedInputMode f && ReferenceEquals(f, topS);
+        return (
+            topF is ITwoHandedInputMode && !converged ? null : topF,
+            topS is ITwoHandedInputMode && !converged ? null : topS
+        );
+    }
+
+    /// <summary>
+    /// Given the tops the stacks WOULD have after a mutation, works out which modes
+    /// should be active, checks the transition is legal, and if so, applies it.
+    /// </summary>
+    private static bool TryTransition(
+        IFirstHandInputMode? newFirstTop, ISecondHandInputMode? newSecondTop, Action onCommit)
+    {
+        var (beforeFirst, beforeSecond) = ComputeActive(TopOrNull(_firstHand), TopOrNull(_secondHand));
+        var (afterFirst, afterSecond) = ComputeActive(newFirstTop, newSecondTop);
+
+        // A much broader definition of what should be started/stopped
+        // We store, with ref identity, the top modes before and after.
+        // It also prevents from double start/stop
+        var before = new HashSet<IHandInputMode>(ReferenceEqualityComparer.Instance);
+        if (beforeFirst is not null) before.Add(beforeFirst);
+        if (beforeSecond is not null) before.Add(beforeSecond);
+
+        var after = new HashSet<IHandInputMode>(ReferenceEqualityComparer.Instance);
+        if (afterFirst is not null) after.Add(afterFirst);
+        if (afterSecond is not null) after.Add(afterSecond);
+
+        var toStop = new List<IHandInputMode>();
+        foreach (var m in before) if (!after.Contains(m)) toStop.Add(m);
+
+        var toStart = new List<IHandInputMode>();
+        foreach (var m in after) if (!before.Contains(m)) toStart.Add(m);
+
+        foreach (var m in toStop) if (!m.CanStop())
+            return false;
+
+        foreach (var m in toStart) if (!m.CanStart())
+            return false;
+
+        foreach (var m in toStop) m.Stop();
+        onCommit();
+        foreach (var m in toStart) m.Start();
+        return true;
+    }
+
+    /// <summary>
+    /// Removes the given index from each stack (a null index is left untouched),
+    /// after checking what the removal reveals.
+    /// If an index isn't the top of its list, removing it can't change what's
+    /// active there.
+    /// 
+    /// If it IS the top, the entry underneath (if any) becomes candidate to start.
+    /// </summary>
+    private static bool TryRemoveAndReconcile(int? firstIndex, int? secondIndex)
+    {
+        IFirstHandInputMode? newFirstTop =
+            firstIndex == _firstHand.Count - 1
+                ? TopOrNull(_firstHand, 2)
+                : TopOrNull(_firstHand);
+
+        ISecondHandInputMode? newSecondTop =
+            secondIndex == _secondHand.Count - 1
+                ? TopOrNull(_secondHand, 2)
+                : TopOrNull(_secondHand);
+
+        return TryTransition(newFirstTop, newSecondTop, () =>
         {
-            Pop(target);
-            current.Stop();
-            return true;
-        }
-
-        if (next is ITwoHandedInputMode twoHanded)  // If the next is two handed, we need to check
-        {                                           // whether its sibling mode is itself.
-            bool plainTwoHanded = sibling[^1] is ITwoHandedInputMode secondTwoHanded
-                && secondTwoHanded == twoHanded;
-
-            if (plainTwoHanded && !twoHanded.CanStart())
-                return false;
-
-            Pop(target);
-            current.Stop();
-
-            if (plainTwoHanded)
-                twoHanded.Start();
-
-            return true;
-        }
-
-        if (!next.CanStart())
-            return false;
-
-        Pop(target);
-        current.Stop();
-        next.Start();
-        return true;
+            if (firstIndex is int fi) _firstHand.RemoveAt(fi);
+            if (secondIndex is int si) _secondHand.RemoveAt(si);
+        });
     }
 
-    private static bool TryPeek<T>(List<T> hand, [NotNullWhen(true)] out T? mode, int depth = 1)
-        where T : IHandInputMode
-    {
-        if (hand.Count < depth)
-        {
-            mode = default;
-            return false;
-        }
 
-        mode = hand[^depth];
-        return true;
-    }
-
-    private static void Pop<T>(List<T> hand)
-        where T : IHandInputMode
+    private static void DebugStack()
     {
-        hand.RemoveAt(hand.Count - 1);
+        StringBuilder f = new();
+
+        foreach (IFirstHandInputMode fh in _firstHand)
+            f.Append($"{fh.GetType().Name},");
+
+        StringBuilder s = new();
+        foreach (ISecondHandInputMode sh in _secondHand)
+            s.Append($"{sh.GetType().Name},");
+
+        GD.Print($"\nf : {f}\ns : {s}");
     }
 }
