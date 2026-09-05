@@ -1,22 +1,22 @@
 [gd_scene format=3 uid="uid://tb2k4gfi3asl"]
 
-[ext_resource type="Script" uid="uid://n2v87bjqo5r4" path="res://Src/Render/WorldRenderer/Entities/SimpleDude.cs" id="1_yvh0v"]
-[ext_resource type="Script" uid="uid://pjj5hwfsprfu" path="res://Src/Render/Animation/TweenTools/TweenAnimator.cs" id="2_udhfh"]
-[ext_resource type="Texture2D" uid="uid://bohr8qp6rgkk" path="res://assets/sprites/entities/player.png" id="2_yvh0v"]
-[ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="3_udhfh"]
-[ext_resource type="Script" uid="uid://bt71m2lioi3l1" path="res://Src/Render/Animation/TweenTools/TweenAnimation.cs" id="3_ulh73"]
-[ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="3_yvh0v"]
-[ext_resource type="Resource" uid="uid://b1o8wohbo1btc" path="res://animations/entity_movement.tres" id="4_khgro"]
-[ext_resource type="Script" uid="uid://by1fhpgvvgq5o" path="res://Src/Render/Ui/Combat/Health/DamageIndicatorManager.cs" id="6_ulh73"]
-[ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="7_kdopt"]
-[ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="8_kdopt"]
-[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="9_khgro"]
+[ext_resource type="Script" uid="uid://n2v87bjqo5r4" path="res://Src/Render/WorldRenderer/Entities/SimpleDude.cs" id="1_ohnyp"]
+[ext_resource type="Script" uid="uid://pjj5hwfsprfu" path="res://Src/Render/Animation/TweenTools/TweenAnimator.cs" id="2_b1sg3"]
+[ext_resource type="Script" uid="uid://bt71m2lioi3l1" path="res://Src/Render/Animation/TweenTools/TweenAnimation.cs" id="3_63tjw"]
+[ext_resource type="Resource" uid="uid://b1o8wohbo1btc" path="res://animations/entity_movement.tres" id="4_6rdus"]
+[ext_resource type="Texture2D" uid="uid://bohr8qp6rgkk" path="res://assets/sprites/entities/player.png" id="5_qy43x"]
+[ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="6_4ekfy"]
+[ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="7_3cnwx"]
+[ext_resource type="Script" uid="uid://by1fhpgvvgq5o" path="res://Src/Render/Ui/Combat/Health/DamageIndicatorManager.cs" id="8_5u01r"]
+[ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="9_2fntv"]
+[ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="10_ck4kr"]
+[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="11_w2bcy"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pqs6i"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ohnyp"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_175km"]
-font = ExtResource("9_khgro")
+font = ExtResource("11_w2bcy")
 shadow_size = 0
 shadow_color = Color(0, 0, 0, 0.3529412)
 
@@ -32,32 +32,32 @@ rings = 8
 ring_segments = 8
 
 [node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager", "_directTargetUi")]
-script = ExtResource("1_yvh0v")
+script = ExtResource("1_ohnyp")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/HealthBar")
 _damageIndicatorManager = NodePath("DamageIndicatorManager")
 _directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="TweenAnimator" type="Node" parent="." unique_id=448642881 node_paths=PackedStringArray("Target")]
-script = ExtResource("2_udhfh")
+script = ExtResource("2_b1sg3")
 Target = NodePath("../BodySprite")
-Animations = Array[ExtResource("3_ulh73")]([ExtResource("4_khgro")])
+Animations = Array[ExtResource("3_63tjw")]([ExtResource("4_6rdus")])
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
 pixel_size = 0.00390625
 billboard = 1
-texture = ExtResource("2_yvh0v")
-script = ExtResource("3_udhfh")
+texture = ExtResource("5_qy43x")
+script = ExtResource("6_4ekfy")
 
-[node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_yvh0v")]
+[node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("7_3cnwx")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_pqs6i")
+texture = SubResource("ViewportTexture_ohnyp")
 
 [node name="DamageIndicatorManager" type="Node3D" parent="." unique_id=121784553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource("6_ulh73")
-_indicator = ExtResource("7_kdopt")
+script = ExtResource("8_5u01r")
+_indicator = ExtResource("9_2fntv")
 metadata/_custom_type_script = "uid://by1fhpgvvgq5o"
 
 [node name="DirectTargetUi3D" type="Control" parent="." unique_id=1432325586 node_paths=PackedStringArray("_visibilityNotifier", "_position", "_indexLabel", "_selectedRing")]
@@ -69,7 +69,7 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("8_kdopt")
+script = ExtResource("10_ck4kr")
 _visibilityNotifier = NodePath("../VisibleOnScreenNotifier3D")
 _position = NodePath("../DirectTargetUiPosition")
 _indexLabel = NodePath("Label")

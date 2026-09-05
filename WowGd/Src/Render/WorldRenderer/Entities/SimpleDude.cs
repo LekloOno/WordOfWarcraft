@@ -10,9 +10,11 @@ public partial class SimpleDude : EntityRender3D
     [Export] private HealthBar _healthBar = null!;
     [Export] private DamageIndicatorManager _damageIndicatorManager = null!;
 
-    public override void InitSpec(IEntity entity)
+    public override bool InitSpec(IEntity entity)
     {
         _healthBar.SetHealth(entity.Health);
         _damageIndicatorManager.SetHealth(entity.Health);
+        return true;
     }
+
 }
