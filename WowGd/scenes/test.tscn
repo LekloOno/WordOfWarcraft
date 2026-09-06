@@ -374,6 +374,7 @@ _health = NodePath("../../Physics/Player/EntityHealth")
 metadata/_custom_type_script = "uid://bl5jmlur1ki7n"
 
 [node name="WrittenInputIntercept" type="Node" parent="Debug" unique_id=488728365]
+process_mode = 4
 script = ExtResource("10_gsk6d")
 metadata/_custom_type_script = "uid://bng07rnqcnt53"
 
@@ -411,7 +412,7 @@ TeamMask = 1
 
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")
-MaxHps = 500
+MaxHps = 100
 metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 
 [node name="BodyMover" type="Node" parent="Physics/Player" unique_id=1844309947]
@@ -423,6 +424,7 @@ metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="StandardWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1727349880]
 script = ExtResource("12_c6rvn")
+_handsInputMode = 1
 metadata/_custom_type_script = "uid://fdi60jyuew2y"
 
 [node name="CursorWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1502251497]

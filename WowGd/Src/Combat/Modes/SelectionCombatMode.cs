@@ -21,12 +21,19 @@ public partial class SelectionCombatMode : CombatMode
     {
         this.GetComponents(_abilities);
 
-        if (this.TryGetComposedRecursive(out IEntity? entity))
-            _entity = entity;
+        if (!this.TryGetComposedRecursive(out IEntity? entity))
+            return;
+        
+        _entity = entity;
+
+        Enable();
     }
 
     public bool Select(int index)
     {
+        if (!Enabled)
+            return false;
+
         if (index >= _abilities.Count)
             return false;
 
@@ -41,6 +48,9 @@ public partial class SelectionCombatMode : CombatMode
 
     public bool Unselect(int index)
     {
+        if (!Enabled)
+            return false;
+            
         if (index >= _activeAbilities.Count)
             return false;
 
@@ -49,5 +59,19 @@ public partial class SelectionCombatMode : CombatMode
 
         _activeAbilities.RemoveAt(index);
         return true;
+    }
+
+    protected override void EnableSpec()
+    {
+        foreach (IAbility ability in _abilities)
+            ability.Enable();
+    }
+
+    protected override void DisableSpec()
+    {
+        foreach (IAbility ability in _abilities)
+            ability.Disable();
+
+        _activeAbilities.Clear();
     }
 }

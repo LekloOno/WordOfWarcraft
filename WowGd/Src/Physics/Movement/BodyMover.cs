@@ -30,12 +30,11 @@ public partial class BodyMover : Node
 
 		_body = body;
 		_wishDir = wishDir;
-		_wishDir.Disable();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		CurrentWishDir = _wishDir.WishDir();
+		CurrentWishDir = _enabled ? _wishDir.WishDir() : Vector2.Zero;
 
 		float currentSpeed = _body.LinearVelocity.Dot(CurrentWishDir);
 		float t = Mathf.Clamp(currentSpeed / _maxSpeed, 0f, 1f);
@@ -54,8 +53,8 @@ public partial class BodyMover : Node
 	}
 
 	public bool Enable() =>
-		DisableExt.IndempEnable(ref _enabled, () => _wishDir.Enable());
+		DisableExt.IndempEnable(ref _enabled, () => {});
 
 	public bool Disable() =>
-		DisableExt.IndempDisable(ref _enabled, () => _wishDir.Disable());
+		DisableExt.IndempDisable(ref _enabled, () => {});
 }

@@ -7,6 +7,7 @@ using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Entities;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Abilities;
 
@@ -23,6 +24,9 @@ public partial class AbilityStateMachine : Node, IAbility
     private ILaunch[]       _cancelLaunches     = [];
 
     private CancellationTokenSource? _cts;
+
+    public bool Enabled => _enabled;
+    private bool _enabled;
 
     public void Resync()
     {
@@ -46,6 +50,9 @@ public partial class AbilityStateMachine : Node, IAbility
 
     public bool Cancel(IEntity caster)
     {
+        if (!_enabled)
+            return false;
+            
         if (_cts is null)
             return false;
 
@@ -56,6 +63,9 @@ public partial class AbilityStateMachine : Node, IAbility
 
     private void Stop(ActuatePayload payload)
     {
+        if (!_enabled)
+            return;
+
         if (_cts is null)
             return;
 
@@ -66,6 +76,9 @@ public partial class AbilityStateMachine : Node, IAbility
     private TargetIntentController? _targetIntentController;
     public async void Start(IEntity caster)
     {
+        if (!_enabled)
+            return;
+            
         _cts?.Cancel();
         // STEP 1 - check preconditions
         if (!_data.StartPreconditionsDt.CheckAll(caster))
@@ -104,6 +117,9 @@ public partial class AbilityStateMachine : Node, IAbility
 
     private void OnActuated(ActuatePayload payload)
     {
+        if (!_enabled)
+            return;
+            
         // STEP 5.1 - trigger actuation launches
         _actuationLaunches.LaunchAll(payload);
 
@@ -115,22 +131,16 @@ public partial class AbilityStateMachine : Node, IAbility
             Stop(payload);
             return;
         }
-    }
-
-    public bool Enabled => throw new System.NotImplementedException();
+    }    
 
     public void AttachExternalLaunch(ILaunch launch, AbilityLaunchHook hook)
     {
         throw new System.NotImplementedException();
     }
 
-    public bool Disable()
-    {
-        throw new System.NotImplementedException();
-    }
+    public bool Disable() =>
+        DisableExt.IndempDisable(ref _enabled, () => _cts?.Cancel());
 
-    public bool Enable()
-    {
-        throw new System.NotImplementedException();
-    }    
+    public bool Enable() =>
+        DisableExt.IndempEnable(ref _enabled, () => {});
 }
