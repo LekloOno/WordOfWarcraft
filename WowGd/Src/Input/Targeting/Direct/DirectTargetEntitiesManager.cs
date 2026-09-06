@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Godot;
 using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Abilities.Targeting.TargetRules;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Combat.Targeting;
 
@@ -162,6 +163,43 @@ public partial class DirectTargetEntitiesManager : Node
 
         entity = _selected.Entity;
         return true;
+    }
+
+    public static bool TryRetrieveClosestEntity(IEntity caster, [NotNullWhen(true)] out IEntity? entity, IEnumerable<ITargetRule>? targetRules = null)
+    {
+        float best = float.PositiveInfinity;
+
+        entity = null;
+        targetRules ??= [];
+        
+        IDirectTargetUi? selected = null;
+
+        foreach (IDirectTargetUi ui in _availableTargets)
+        {
+            if (caster == ui.Entity)
+                continue;
+
+            if (!targetRules.CheckAll(caster, new(ui.Entity)))
+                continue;
+
+            float squaredDist = caster.DistanceSquaredTo(ui.Entity);
+            if (squaredDist < best)
+            {
+                selected = ui;
+                best = squaredDist;
+                entity = ui.Entity;
+            }
+        }
+
+        bool retrieved = entity != null;
+        if (retrieved)
+        {
+            Unselect();
+            _selected = selected;
+            _selected!.Select();
+        }
+
+        return retrieved;
     }
 
     public static void Unselect() =>

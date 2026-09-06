@@ -16,6 +16,8 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
     private TargetIntent? _buffered;
     private TaskCompletionSource<TargetIntent>? _pendingIntent;
 
+    private bool _defaultToNearest = true;
+
     public override void _Ready()
     {
         SetProcessUnhandledKeyInput(false);
@@ -32,6 +34,13 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
 
         if (useBuffer && _buffered is TargetIntent intent)
             return intent;
+
+        if (_defaultToNearest && DirectTargetEntitiesManager.TryRetrieveClosestEntity(caster, out IEntity? entity, rules))
+        {
+            intent = new(entity);
+            _buffered = intent;
+            return intent;
+        }
 
         var pendingIntent = new TaskCompletionSource<TargetIntent>(
             TaskCreationOptions.RunContinuationsAsynchronously);
