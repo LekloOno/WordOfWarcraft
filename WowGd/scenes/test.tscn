@@ -23,14 +23,17 @@
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://c273v4avjawkx" path="res://Src/Input/SelectionCombatModeInput.cs" id="24_q6ayx"]
+[ext_resource type="Script" uid="uid://fqpr1dnee5y2" path="res://Src/Physics/Movement/MoveModeInput.cs" id="25_376r3"]
 [ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="31_iq7xp"]
 [ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="32_p8c7m"]
 [ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="33_mftsw"]
+[ext_resource type="Script" uid="uid://dtujnvh2oxqdm" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/WishDirDashEffect.cs" id="33_qx18j"]
 [ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="34_q6ayx"]
 [ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="35_iq7xp"]
 [ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="39_q6ayx"]
 [ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="40_iq7xp"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="40_s6cx0"]
+[ext_resource type="Resource" uid="uid://ceu308hpob53h" path="res://assets/abilities/loop_rules/loop_rule_always.tres" id="40_xsg57"]
 [ext_resource type="Script" uid="uid://djomokhsknkk0" path="res://Src/Combat/Abilities/AbilityStateMachine.cs" id="41_1urli"]
 [ext_resource type="Script" uid="uid://ckalqjavqpd37" path="res://Src/Combat/Abilities/Launch/LaunchData.cs" id="42_35prk"]
 [ext_resource type="Script" uid="uid://dmt3brgj3dhih" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleResEffect.cs" id="42_376r3"]
@@ -79,6 +82,37 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
+[sub_resource type="Resource" id="Resource_wp3w3"]
+script = ExtResource("33_qx18j")
+_stength = 75.0
+metadata/_custom_type_script = "uid://dtujnvh2oxqdm"
+
+[sub_resource type="Resource" id="Resource_cgmg2"]
+script = ExtResource("47_eixnv")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_ln4r5"]
+script = ExtResource("48_68ewr")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_ydhbg"]
+script = ExtResource("44_8nvs4")
+TriggerDt = SubResource("Resource_ln4r5")
+GathererDt = SubResource("Resource_cgmg2")
+EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_wp3w3")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_ehr82"]
+script = ExtResource("42_35prk")
+EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_ydhbg")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_175km"]
+script = ExtResource("52_tbman")
+CoolDown = 1500
+TargetingLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_ehr82")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
 [sub_resource type="Resource" id="Resource_emonu"]
 script = ExtResource("46_uig8d")
 _target = 4
@@ -115,6 +149,7 @@ Id = "oui"
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_o0kuw")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_mftsw")])
+LoopRulesDt = Array[ExtResource("51_tnm51")]([ExtResource("40_xsg57")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
 [sub_resource type="Resource" id="Resource_335pd"]
@@ -131,7 +166,7 @@ metadata/_custom_type_script = "uid://b2utcesxdrfuh"
 script = ExtResource("48_68ewr")
 metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 
-[sub_resource type="Resource" id="Resource_cgmg2"]
+[sub_resource type="Resource" id="Resource_osnag"]
 script = ExtResource("44_8nvs4")
 TriggerDt = SubResource("Resource_qx18j")
 GathererDt = SubResource("Resource_xsg57")
@@ -140,7 +175,7 @@ metadata/_custom_type_script = "uid://diy1f0p7da221"
 
 [sub_resource type="Resource" id="Resource_n11rl"]
 script = ExtResource("42_35prk")
-EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_cgmg2")])
+EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_osnag")])
 metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
 [sub_resource type="Resource" id="Resource_y8o6s"]
@@ -193,6 +228,7 @@ Id = "oui"
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_eixnv")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_uig8d")])
+LoopRulesDt = Array[ExtResource("51_tnm51")]([ExtResource("40_xsg57")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
 [sub_resource type="Resource" id="Resource_n74k2"]
@@ -410,6 +446,10 @@ script = ExtResource("10_pn65j")
 IdData = SubResource("Resource_75pfo")
 TeamMask = 1
 
+[node name="StandardWishDir" type="Node" parent="Physics/Player" unique_id=1727349880]
+script = ExtResource("12_c6rvn")
+metadata/_custom_type_script = "uid://fdi60jyuew2y"
+
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")
 MaxHps = 100
@@ -421,11 +461,6 @@ _acceleration = 50.0
 _maxSpeed = 5.3
 _friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
-
-[node name="StandardWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1727349880]
-script = ExtResource("12_c6rvn")
-_handsInputMode = 1
-metadata/_custom_type_script = "uid://fdi60jyuew2y"
 
 [node name="CursorWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1502251497]
 script = ExtResource("11_xrtyr")
@@ -470,6 +505,15 @@ metadata/_custom_type_script = "uid://bjsonh2oopm3s"
 script = ExtResource("34_q6ayx")
 metadata/_custom_type_script = "uid://pux5ejw5b5kx"
 
+[node name="MoveModeInput" type="Node" parent="Physics/Player/ModesManager/MoveMode" unique_id=989797429]
+script = ExtResource("25_376r3")
+metadata/_custom_type_script = "uid://fqpr1dnee5y2"
+
+[node name="DashSpell" type="Node" parent="Physics/Player/ModesManager/MoveMode" unique_id=1050347376]
+script = ExtResource("41_1urli")
+_data = SubResource("Resource_175km")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
 [node name="MoveModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=521768474]
 script = ExtResource("35_iq7xp")
 metadata/_custom_type_script = "uid://bftjqppjm3ti3"
@@ -479,17 +523,17 @@ script = ExtResource("31_iq7xp")
 _key = 75
 metadata/_custom_type_script = "uid://8l2woqce8nl6"
 
-[node name="AbilityStateMachine" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=110559277]
+[node name="DamageSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=110559277]
 script = ExtResource("41_1urli")
 _data = SubResource("Resource_2ae6r")
 metadata/_custom_type_script = "uid://djomokhsknkk0"
 
-[node name="AbilityStateMachine2" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=1554492673]
+[node name="ResSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=1554492673]
 script = ExtResource("41_1urli")
 _data = SubResource("Resource_1urli")
 metadata/_custom_type_script = "uid://djomokhsknkk0"
 
-[node name="AbilityStateMachine3" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=501677173]
+[node name="HealSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=501677173]
 script = ExtResource("41_1urli")
 _data = SubResource("Resource_68ewr")
 metadata/_custom_type_script = "uid://djomokhsknkk0"

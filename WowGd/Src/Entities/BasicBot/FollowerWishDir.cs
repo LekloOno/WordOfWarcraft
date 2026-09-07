@@ -15,7 +15,7 @@ public partial class FollowerWishDir : Node, IWishDir
 
     public override void _Ready()
     {
-        if (!GetParent().TryGetSiblingComponent(out ITargetAcquirer? targetAcquirer))
+        if (!this.TryGetSiblingComponent(out ITargetAcquirer? targetAcquirer))
             return;
         
         _targetAcquirer = targetAcquirer;

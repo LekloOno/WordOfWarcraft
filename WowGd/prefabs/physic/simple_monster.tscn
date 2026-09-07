@@ -34,16 +34,16 @@ metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body" unique_id=2143505716]
 shape = SubResource("CircleShape2D_175km")
 
+[node name="FollowerWishDir" type="Node" parent="." unique_id=1415161567]
+script = ExtResource("5_l5v4k")
+metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
+
 [node name="BodyMover" type="Node" parent="." unique_id=537882806]
 script = ExtResource("4_h08dd")
 _acceleration = 15.0
 _maxSpeed = 2.5
 _friction = 9.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
-
-[node name="FollowerWishDir" type="Node" parent="BodyMover" unique_id=1415161567]
-script = ExtResource("5_l5v4k")
-metadata/_custom_type_script = "uid://bmetkgh2bcqgr"
 
 [node name="TargetAcquirer" type="Node" parent="." unique_id=1765758570]
 script = ExtResource("6_43w1u")
