@@ -22,9 +22,7 @@ public partial class PlayerTargetIntentDriver : Node, ITargetIntentDriver
     {
         return method switch
         {
-            TargetIntentAcquirer.Self =>
-                throw new InvalidOperationException(
-                "Unexpected self target intent request, should be handled by the state machine itself."),
+            TargetIntentAcquirer.Self => Task.FromResult(new TargetIntent(caster)),
             
             TargetIntentAcquirer.Melee =>
                 throw new NotImplementedException(),
