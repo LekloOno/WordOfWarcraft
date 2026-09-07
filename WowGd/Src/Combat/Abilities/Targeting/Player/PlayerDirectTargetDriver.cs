@@ -32,7 +32,8 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
             throw new InvalidOperationException(
                 "A target acquisition is already in progress.");
 
-        if (useBuffer && _buffered is TargetIntent intent)
+        if (useBuffer && _buffered is TargetIntent intent &&
+            (rules?.CheckAll(caster, intent) ?? true))
             return intent;
 
         if (_defaultToNearest && DirectTargetEntitiesManager.TryRetrieveClosestEntity(caster, out IEntity? entity, rules))
