@@ -17,6 +17,7 @@ public partial class DirectTargetEntitiesManager : Node
 
     private static readonly List<IDirectTargetUi> _availableTargets = [];
     private static readonly List<IDirectTargetUi> _activeTargets = [];
+    private static readonly List<IDirectTargetUi> _targets = [];
 
     private static bool _enabled = false;
     private static IEnumerable<ITargetRule> _targetRules = [];
@@ -41,12 +42,16 @@ public partial class DirectTargetEntitiesManager : Node
 
     private static void OnScreenEntered(IDirectTargetUi ui)
     {
+        _targets.Add(ui);
+        
         if (!_enabled || !TryAddEnable(ui))
             _availableTargets.Add(ui);
     }
 
     private static void OnScreenExited(IDirectTargetUi ui)
     {
+        _targets.Remove(ui);
+
         if (_enabled && TryDisable(ui))
             return;
 
@@ -174,7 +179,7 @@ public partial class DirectTargetEntitiesManager : Node
         
         IDirectTargetUi? selected = null;
 
-        foreach (IDirectTargetUi ui in _availableTargets)
+        foreach (IDirectTargetUi ui in _targets)
         {
             if (caster == ui.Entity)
                 continue;
@@ -192,6 +197,7 @@ public partial class DirectTargetEntitiesManager : Node
         }
 
         bool retrieved = entity != null;
+        
         if (retrieved)
         {
             Unselect();
