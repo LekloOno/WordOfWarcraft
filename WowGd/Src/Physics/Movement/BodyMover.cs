@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Entities;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
 
@@ -11,45 +12,41 @@ public partial class BodyMover : Node
 	[Export] private float _maxSpeed;
 	[Export] private float _friction;
 
-	private IBody _body = null!;
-	private IWishDir _wishDir = null!;
+	private IEntity _entity = null!;
+	public IBody Body => _entity.Body;
+	private IWishDir WishDir => _entity.WishDir;
 
 	public Vector2 CurrentWishDir {get; private set;}
-	public IBody Body => _body;
 
 	public bool Enabled => _enabled;
 	private bool _enabled = false;
 
 	public override void _Ready()
 	{
-		if (!this.TryGetSiblingComponent(out IBody? body))
+		if (!this.TryGetComposedRecursive(out IEntity? entity))
 			return;
 
-		if (!this.TryGetComponent(out IWishDir? wishDir))
-			return;
-
-		_body = body;
-		_wishDir = wishDir;
+		_entity = entity;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		CurrentWishDir = _enabled ? _wishDir.WishDir() : Vector2.Zero;
+		CurrentWishDir = _enabled ? WishDir.WishDir() : Vector2.Zero;
 
-		float currentSpeed = _body.LinearVelocity.Dot(CurrentWishDir);
+		float currentSpeed = Body.LinearVelocity.Dot(CurrentWishDir);
 		float t = Mathf.Clamp(currentSpeed / _maxSpeed, 0f, 1f);
 		float accelThisFrame = _acceleration * (1f - t); 
-		_body.ApplyForce(accelThisFrame * CurrentWishDir);
+		Body.ApplyForce(accelThisFrame * CurrentWishDir);
 
-		Vector2 drag = -_friction * _body.LinearVelocity;
+		Vector2 drag = -_friction * Body.LinearVelocity;
 
-		if (CurrentWishDir != Vector2.Zero)
+		if (CurrentWishDir != Vector2.Zero && currentSpeed <= _maxSpeed)
 		{
 			float communeDrag = Mathf.Max(0, drag.Dot(-CurrentWishDir));
 			drag += communeDrag * CurrentWishDir;
 		}
 
-		_body.ApplyForce(drag);
+		Body.ApplyForce(drag);
 	}
 
 	public bool Enable() =>
