@@ -14,6 +14,7 @@ namespace WowGd.Src.Combat.Abilities;
 public partial class AbilityData : Resource, IAbilityData
 {
     [Export] public string Id { get; private set; } = string.Empty;
+    [Export] public ulong CoolDown { get; private set; } = 0;
     [Export] public Array<CasterRule> StartPreconditionsDt  = [];
     [Export] public Array<LaunchData> InstantLaunchesDt     = [];
     [Export] public Array<TargetRule> TargetRulesDt         = [];

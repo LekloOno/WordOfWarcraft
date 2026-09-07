@@ -18,7 +18,7 @@ public partial class AbilityStateMachine : Node, IAbility
 
     private ILaunch[]       _instantLaunches    = [];
     private ILaunch[]       _targetingLaunches  = [];
-    private IActuator       _actuator           = null!;
+    private IActuator?       _actuator;
     private ILaunch[]       _actuationLaunches  = [];
     private ILaunch[]       _stopLaunches       = [];
     private ILaunch[]       _cancelLaunches     = [];
@@ -27,6 +27,7 @@ public partial class AbilityStateMachine : Node, IAbility
 
     public bool Enabled => _enabled;
     private bool _enabled;
+    private ulong _lastStart;
 
     public void Resync()
     {
@@ -35,12 +36,13 @@ public partial class AbilityStateMachine : Node, IAbility
 
         _instantLaunches    = _data.InstantLaunchesDt.BuildAll();
         _targetingLaunches  = _data.TargetingLaunchesDt.BuildAll();
-        _actuator           = _data.ActuatorDt.Build();
+        _actuator           = _data.ActuatorDt?.Build();
         _actuationLaunches  = _data.ActuationLaunchesDt.BuildAll();
         _stopLaunches       = _data.StopLaunchesDt.BuildAll();
         _cancelLaunches     = _data.CancelLaunchesDt.BuildAll();
 
-        _actuator.Actuated += OnActuated;
+        if (_actuator != null)
+            _actuator.Actuated += OnActuated;
     }
 
     public override void _Ready()
@@ -78,7 +80,10 @@ public partial class AbilityStateMachine : Node, IAbility
     {
         if (!_enabled)
             return;
-            
+
+        if (Time.GetTicksMsec() - _lastStart < _data.CoolDown)
+            return;
+
         _cts?.Cancel();
         // STEP 1 - check preconditions
         if (!_data.StartPreconditionsDt.CheckAll(caster))
@@ -91,6 +96,8 @@ public partial class AbilityStateMachine : Node, IAbility
 
         try
         {
+            TargetIntent intent;
+
             _targetIntentController = new(
                 caster, 
                 _data.TargetIntentAcquirer,
@@ -100,12 +107,15 @@ public partial class AbilityStateMachine : Node, IAbility
 
             _targetIntentController.RequestRefresh();
             TargetIntent targetIntent = await _targetIntentController.WaitForValidTargetAsync(_cts.Token);
+
+            _lastStart = Time.GetTicksMsec();
             
             // STEP 4 - trigger targeting launches
             _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
 
             // STEP 5 - wait for actuation completion
-            await _actuator.Actuate(caster, _targetIntentController, _cts.Token);
+            if (_actuator != null)
+                await _actuator.Actuate(caster, _targetIntentController, _cts.Token);
 
             // STEP 5.1, 5.2, 5.3 and 5.4 in OnActuated handler
         }

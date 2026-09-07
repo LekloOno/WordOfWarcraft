@@ -9,6 +9,11 @@ public interface IAbilityData
 {
     string Id { get; }
     /// <summary>
+    /// It could be a simple rule, but as it might be very common, it's simple to store and expose it independantly.
+    /// 0 means no cooldown.
+    /// </summary>
+    ulong CoolDown { get; }
+    /// <summary>
     /// The list of conditions that must be passed to move to the next step.
     /// <br/>
     /// Order does not matter, preconditions should not mutate anything.
