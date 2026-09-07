@@ -9,6 +9,7 @@ public interface IBody
     float AngularVelocity   { get; }
     
     void ApplyForce(Vector2 force);
+    void ApplyImpulse(Vector2 force);
     Rid GetRid();
     World2D GetWorld2D();
 }

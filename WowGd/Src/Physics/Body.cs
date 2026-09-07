@@ -16,4 +16,5 @@ namespace WowGd.Src.Physics;
 public partial class Body : RigidBody2D, IBody
 {
     void IBody.ApplyForce(Vector2 force) => ApplyForce(force);
+    void IBody.ApplyImpulse(Vector2 impulse) => ApplyImpulse(impulse);
 }
