@@ -37,6 +37,7 @@
 [ext_resource type="Script" uid="uid://djomokhsknkk0" path="res://Src/Combat/Abilities/AbilityStateMachine.cs" id="41_1urli"]
 [ext_resource type="Script" uid="uid://ckalqjavqpd37" path="res://Src/Combat/Abilities/Launch/LaunchData.cs" id="42_35prk"]
 [ext_resource type="Script" uid="uid://dmt3brgj3dhih" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleResEffect.cs" id="42_376r3"]
+[ext_resource type="Script" uid="uid://tr6yt483fw7q" path="res://Src/Combat/Abilities/Targeting/TargetRules/AliveTargetRule.cs" id="42_cgmg2"]
 [ext_resource type="Script" uid="uid://ckoy54dodnv5e" path="res://Src/Combat/Abilities/CasterRules/CasterRule.cs" id="43_eokji"]
 [ext_resource type="Script" uid="uid://beoj5s7ccateg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleHealEffect.cs" id="43_xsg57"]
 [ext_resource type="Script" uid="uid://diy1f0p7da221" path="res://Src/Combat/Abilities/Launch/EffectsHolders/EffectsHolderData.cs" id="44_8nvs4"]
@@ -143,9 +144,14 @@ script = ExtResource("50_vqdru")
 _actuationType = 1
 metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 
+[sub_resource type="Resource" id="Resource_qx18j"]
+script = ExtResource("42_cgmg2")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
 [sub_resource type="Resource" id="Resource_2ae6r"]
 script = ExtResource("52_tbman")
 Id = "oui"
+TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_qx18j")])
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_o0kuw")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_mftsw")])
@@ -162,13 +168,13 @@ metadata/_custom_type_script = "uid://dmt3brgj3dhih"
 script = ExtResource("47_eixnv")
 metadata/_custom_type_script = "uid://b2utcesxdrfuh"
 
-[sub_resource type="Resource" id="Resource_qx18j"]
+[sub_resource type="Resource" id="Resource_vqdru"]
 script = ExtResource("48_68ewr")
 metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 
 [sub_resource type="Resource" id="Resource_osnag"]
 script = ExtResource("44_8nvs4")
-TriggerDt = SubResource("Resource_qx18j")
+TriggerDt = SubResource("Resource_vqdru")
 GathererDt = SubResource("Resource_xsg57")
 EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_335pd")])
 metadata/_custom_type_script = "uid://diy1f0p7da221"
@@ -225,6 +231,7 @@ metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 [sub_resource type="Resource" id="Resource_68ewr"]
 script = ExtResource("52_tbman")
 Id = "oui"
+TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_qx18j")])
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_eixnv")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_uig8d")])
