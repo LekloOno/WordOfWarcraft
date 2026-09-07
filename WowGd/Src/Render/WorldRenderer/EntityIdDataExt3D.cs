@@ -22,7 +22,7 @@ public static class EntityIdDataExt3D
             if (!initializer.Init(self, out render3d))
                 return false;
 
-            render3d.Scale = Vector3.One * 2.1f;
+            render3d.Scale = Vector3.One * 1.6f;
             return true;
         }
         else if (self.IdData.Key == "player")
@@ -32,7 +32,7 @@ public static class EntityIdDataExt3D
             if (!initializer.Init(self, out render3d))
                 return false;
 
-            render3d.Scale = Vector3.One * 2.1f;
+            render3d.Scale = Vector3.One * 1.7f;
             return true;
         }
 
