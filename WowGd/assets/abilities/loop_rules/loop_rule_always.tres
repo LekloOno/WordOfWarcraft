@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="AlwaysLoopRule" format=3 uid="uid://ceu308hpob53h"]
+
+[ext_resource type="Script" uid="uid://c6jyw40ovrpfh" path="res://Src/Combat/Abilities/LoopRules/AlwaysLoopRule.cs" id="1_egs4m"]
+
+[resource]
+script = ExtResource("1_egs4m")
+metadata/_custom_type_script = "uid://c6jyw40ovrpfh"
