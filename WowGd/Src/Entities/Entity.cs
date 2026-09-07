@@ -1,8 +1,10 @@
+using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Physics;
+using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Entities;
@@ -22,6 +24,13 @@ public partial class Entity : Node, IEntity
     public IActuatorDriver ActuatorDriver { get; private set; } = null!;
     public ITargetIntentDriver TargetIntentDriver { get; private set; } = null!;
 
+    public IWishDir WishDir { get; private set; } = null!;
+
+    private readonly TaskCompletionSource _initialized =
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    public Task Initialization => _initialized.Task;
+
     public override void _Ready()
     {
         FetchBaseComponents();
@@ -31,14 +40,13 @@ public partial class Entity : Node, IEntity
 
         Health.Resurrect();
 
-        _initialized = true;
         EntitiesRegistry.Register(this);
+        _initialized.TrySetResult();
     }
 
-    private bool _initialized = false;
     public override void _EnterTree()
     {
-        if (_initialized)
+        if (_initialized.Task.IsCompleted)
             EntitiesRegistry.Register(this);
     }
 
@@ -60,6 +68,9 @@ public partial class Entity : Node, IEntity
 
         if (this.TryGetComponent(out ITargetIntentDriver? targetIntentDriver))
             TargetIntentDriver = targetIntentDriver;
+    
+        if (this.TryGetComponent(out IWishDir? wishDir))
+            WishDir = wishDir;
     }
 
     private void InitComponent(Node child)

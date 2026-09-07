@@ -2,10 +2,12 @@ using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Physics;
+using WowGd.Src.Physics.Movement.WishDir;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Entities;
 
-public interface IEntity
+public interface IEntity : IInitializable
 {
     /// <summary>
     /// Data that identifies the entity.
@@ -23,6 +25,7 @@ public interface IEntity
     /// The health of the entity.
     /// </summary>
     IEntityHealth   Health      { get; }
+    IWishDir        WishDir     { get; }
 
     IActuatorDriver     ActuatorDriver      { get; }
     ITargetIntentDriver TargetIntentDriver  { get; }
