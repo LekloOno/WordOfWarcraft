@@ -96,8 +96,6 @@ public partial class AbilityStateMachine : Node, IAbility
 
         try
         {
-            TargetIntent intent;
-
             _targetIntentController = new(
                 caster, 
                 _data.TargetIntentAcquirer,
