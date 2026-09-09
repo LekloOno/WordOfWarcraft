@@ -9,14 +9,12 @@ public interface IListenableAbility : IAbility
     event Action? Started;
     event Action? Stopped;
     event Action? Cancelled;
-    event Action? PreconditionsPassed;
-    //event Action.. PreconditionsFailed;
-    event Action<List<ILaunch>> InstantLaunchesEmitted;
+    event Action<IEnumerable<ILaunch>> InstantLaunchesEmitted;
     event Action? TargetingStarted;
     event Action? TargetingCompleted;
-    event Action<List<ILaunch>> TargetingLaunchesEmitted;
-    event Action<List<ILaunch>> ActivationLaunchesEmitted;
-    event Action? ActivationStarted;
-    event Action? ActivationCompleted;
-    event Action<List<ILaunch>> MainLaunchesEmitted;
+    event Action<IEnumerable<ILaunch>> TargetingLaunchesEmitted;
+    event Action<IEnumerable<ILaunch>> ActuationLaunchesEmitted;
+    event Action? ActuationStarted;
+    event Action? ActuationCompleted;
+    event Action<IEnumerable<ILaunch>> MainLaunchesEmitted;
 }
