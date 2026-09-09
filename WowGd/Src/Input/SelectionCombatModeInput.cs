@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using WowGd.Src.Combat.Modes;
 using WowGd.Src.Input.Hands;
@@ -5,11 +6,14 @@ using WowGd.Src.Input.Hands;
 namespace WowGd.Src.Input;
 
 [GlobalClass]
-public partial class SelectionCombatModeInput : Node, ISecondHandInputMode
+public partial class SelectionCombatModeInput : Node, ISecondHandInputMode, IListenableHandInputMode
 {
     [Export] private SelectionCombatMode _mode = null!;
 
     private bool _active;
+
+    public event Action? InputStarted;
+    public event Action? InputStopped;
 
     public override void _Ready()
     {
@@ -35,9 +39,15 @@ public partial class SelectionCombatModeInput : Node, ISecondHandInputMode
     public bool CanStart() => true;
     public bool CanStop() => true;
 
-    public void Start() =>
+    public void Start()
+    {
         _active = true;
+        InputStarted?.Invoke();
+    }
 
-    public void Stop() =>
+    public void Stop()
+    {
         _active = false;
+        InputStopped?.Invoke();
+    }
 }

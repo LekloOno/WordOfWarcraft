@@ -1,3 +1,4 @@
+using Godot;
 using WowGd.Src.Input.Hands;
 
 namespace WowGd.Src.Render.Ui.Input;
@@ -23,6 +24,10 @@ public interface IHandInputUi
     /// The input mode this ui component is tied to.
     /// </summary>
     IListenableHandInputMode InputMode { get; }
+    /// <summary>
+    /// The root node this hand input ui is represented by. Could be self.
+    /// </summary>
+    Control ControlNode { get; }
     /// <summary>
     /// Unlike Input mode themselves, hand input ui dis/enabling should always succeed.
     /// It has no reason to fail.
