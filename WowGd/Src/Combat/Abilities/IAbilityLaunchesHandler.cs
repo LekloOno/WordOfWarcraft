@@ -9,5 +9,4 @@ public interface IAbilityLaunchesHandler
     void OnInstantLaunchesEmitted(IEnumerable<ILaunch> launches);
     void OnTargetingLaunchesEmitted(IEnumerable<ILaunch> launches);
     void OnActuationLaunchesEmitted(IEnumerable<ILaunch> launches);
-    void OnMainLaunchesEmitted(IEnumerable<ILaunch> launches);
 }

@@ -18,16 +18,20 @@ public static class AbilityBinderExt
 
     public static void Bind(this IAbilityLifeCycleHandler handler, IListenableAbility ability)
     {
-        ability.Started     += handler.OnStarted;
-        ability.Stopped     += handler.OnStopped;
-        ability.Cancelled   += handler.OnCancelled;
+        ability.Started             += handler.OnStarted;
+        ability.Stopped             += handler.OnStopped;
+        ability.Cancelled           += handler.OnCancelled;
+        ability.CoolDownStarted     += handler.OnCoolDownStarted;
+        ability.CoolDownCancelled   += handler.OnCoolDownCancelled;
     }
 
     public static void Unbind(this IAbilityLifeCycleHandler handler, IListenableAbility ability)
     {
-        ability.Started     -= handler.OnStarted;
-        ability.Stopped     -= handler.OnStopped;
-        ability.Cancelled   -= handler.OnCancelled;
+        ability.Started             -= handler.OnStarted;
+        ability.Stopped             -= handler.OnStopped;
+        ability.Cancelled           -= handler.OnCancelled;
+        ability.CoolDownStarted     -= handler.OnCoolDownStarted;
+        ability.CoolDownCancelled   -= handler.OnCoolDownCancelled;
     }
 
     public static void Bind(this IAbilityInnerCycleHandler handler, IListenableAbility ability)
@@ -48,7 +52,6 @@ public static class AbilityBinderExt
 
     public static void Bind(this IAbilityLaunchesHandler handler, IListenableAbility ability)
     {
-        ability.MainLaunchesEmitted      += handler.OnMainLaunchesEmitted;
         ability.InstantLaunchesEmitted   += handler.OnInstantLaunchesEmitted;
         ability.TargetingLaunchesEmitted += handler.OnTargetingLaunchesEmitted;
         ability.ActuationLaunchesEmitted += handler.OnActuationLaunchesEmitted;
@@ -56,7 +59,6 @@ public static class AbilityBinderExt
 
     public static void Unbind(this IAbilityLaunchesHandler handler, IListenableAbility ability)
     {
-        ability.MainLaunchesEmitted      -= handler.OnMainLaunchesEmitted;
         ability.InstantLaunchesEmitted   -= handler.OnInstantLaunchesEmitted;
         ability.TargetingLaunchesEmitted -= handler.OnTargetingLaunchesEmitted;
         ability.ActuationLaunchesEmitted -= handler.OnActuationLaunchesEmitted;

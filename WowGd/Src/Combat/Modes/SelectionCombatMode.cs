@@ -17,6 +17,7 @@ public partial class SelectionCombatMode : CombatMode
     private IEntity _entity = null!;
     private readonly List<IAbility> _abilities = [];
     private readonly List<IAbility> _activeAbilities = [];
+    public IReadOnlyList<IAbility> Abilities => _abilities;
     public override void _Ready()
     {
         this.GetComponents(_abilities);

@@ -38,4 +38,6 @@ public interface IHandInputUi
     /// It has no reason to fail.
     /// </summary>
     void HideHand();
+    void SetActive();
+    void SetUnactive();
 }

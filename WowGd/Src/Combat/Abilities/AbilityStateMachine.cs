@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Godot;
 using WowGd.Src.Combat.Abilities.Actuation;
@@ -12,10 +13,11 @@ using WowGd.Src.Tools;
 namespace WowGd.Src.Combat.Abilities;
 
 [GlobalClass]
-public partial class AbilityStateMachine : Node, IAbility
+public partial class AbilityStateMachine : Node, IListenableAbility
 { 
     [Export] private AbilityData _data = null!;
 
+    public IAbilityData Data => _data;
     private ILaunch[]       _instantLaunches    = [];
     private ILaunch[]       _targetingLaunches  = [];
     private IActuator?       _actuator;
@@ -60,6 +62,9 @@ public partial class AbilityStateMachine : Node, IAbility
 
         _cts?.Cancel();
         _cancelLaunches.LaunchAll(new (caster, new(caster), 1f));
+
+        Cancelled?.Invoke();
+        CancelLaunchesEmitted?.Invoke(_cancelLaunches);
         return true;
     }
 
@@ -89,8 +94,11 @@ public partial class AbilityStateMachine : Node, IAbility
         if (!_data.StartPreconditionsDt.CheckAll(caster))
             return;
 
+        Started?.Invoke();
+
         // STEP 2 - trgger instant launches
         _instantLaunches.LaunchAll(new(caster, new(caster), 1f));
+        InstantLaunchesEmitted?.Invoke(_instantLaunches);
 
         _cts = new CancellationTokenSource();
 
@@ -104,16 +112,24 @@ public partial class AbilityStateMachine : Node, IAbility
                 _cts.Token);
 
             _targetIntentController.RequestRefresh();
+            TargetingStarted?.Invoke();
             TargetIntent targetIntent = await _targetIntentController.WaitForValidTargetAsync(_cts.Token);
+            TargetingCompleted?.Invoke();
 
             _lastStart = Time.GetTicksMsec();
+            CoolDownStarted?.Invoke(_data.CoolDown);
             
             // STEP 4 - trigger targeting launches
             _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
+            TargetingLaunchesEmitted?.Invoke(_targetingLaunches);
 
             // STEP 5 - wait for actuation completion
             if (_actuator != null)
+            {
+                ActuationStarted?.Invoke();
                 await _actuator.Actuate(caster, _targetIntentController, _cts.Token);
+                ActuationCompleted?.Invoke();
+            }
 
             // STEP 5.1, 5.2, 5.3 and 5.4 in OnActuated handler
         }
@@ -130,6 +146,7 @@ public partial class AbilityStateMachine : Node, IAbility
             
         // STEP 5.1 - trigger actuation launches
         _actuationLaunches.LaunchAll(payload);
+        ActuationLaunchesEmitted?.Invoke(_actuationLaunches);
 
         // STEP 5.2, 5.3 and 5.4 - check if current state still passes through looping conditions
         if (!_data.LoopRulesDt.CheckAll(payload) ||
@@ -151,4 +168,18 @@ public partial class AbilityStateMachine : Node, IAbility
 
     public bool Enable() =>
         DisableExt.IndempEnable(ref _enabled, () => {});
+
+    public event Action? Started;
+    public event Action? Stopped;
+    public event Action? Cancelled;
+    public event Action<IEnumerable<ILaunch>>? CancelLaunchesEmitted;
+    public event Action<ulong>? CoolDownStarted;
+    public event Action? CoolDownCancelled;
+    public event Action<IEnumerable<ILaunch>>? InstantLaunchesEmitted;
+    public event Action? TargetingStarted;
+    public event Action? TargetingCompleted;
+    public event Action<IEnumerable<ILaunch>>? TargetingLaunchesEmitted;
+    public event Action<IEnumerable<ILaunch>>? ActuationLaunchesEmitted;
+    public event Action? ActuationStarted;
+    public event Action? ActuationCompleted;
 }

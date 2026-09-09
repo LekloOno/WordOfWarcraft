@@ -1,3 +1,4 @@
+using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
 using WowGd.Src.Entities;
 using WowGd.Src.Tools;
@@ -6,6 +7,7 @@ namespace WowGd.Src.Combat.Abilities;
 
 public interface IAbility : IDisablable
 {
+    IAbilityData Data { get; }
     void Start(IEntity caster);
     bool Cancel(IEntity caster);
     /// <summary>

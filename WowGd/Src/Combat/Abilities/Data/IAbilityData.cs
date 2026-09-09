@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Godot;
 
 namespace WowGd.Src.Combat.Abilities.Data;
 
@@ -8,6 +9,7 @@ namespace WowGd.Src.Combat.Abilities.Data;
 public interface IAbilityData
 {
     string Id { get; }
+    Texture2D Icon { get; }
     /// <summary>
     /// It could be a simple rule, but as it might be very common, it's simple to store and expose it independantly.
     /// 0 means no cooldown.
