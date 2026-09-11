@@ -139,6 +139,8 @@ public partial class AbilityStateMachine : Node, IListenableAbility
             return false; 
         }
 
+        _cts?.Cancel();
+
         return true;
     }
 
