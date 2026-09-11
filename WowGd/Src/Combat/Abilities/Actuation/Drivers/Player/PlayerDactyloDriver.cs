@@ -10,7 +10,7 @@ using WowGd.Src.Input.Hands;
 namespace WowGd.Src.Combat.Abilities.Actuation.Drivers;
 
 [GlobalClass]
-public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInputMode
+public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInputMode, IListenableHandInputMode
 {
     private readonly Channel<InputEventKey> _inputChannel = Channel.CreateUnbounded<InputEventKey>();
     private readonly IWordGenerator _generator = StandardWordGeneratorFr.Instance;
@@ -19,6 +19,12 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
     public event Action<WordRequest, Word>? WordPushed;
     public event Action<WordRequest, Word>? WordCompleted;
     public event Action? Stopped;
+
+    public event Action? InputStarted;
+    public event Action? InputStopped;
+    public event Action? InputPushed;
+    public event Action? InputRemoved;
+
     private bool _processing = false;
 
     public override void _Ready()
@@ -44,7 +50,9 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
         try
         {
             _processing = true;
-            HandsInputManager.TryPushTwoHandedMode(this);
+
+            if (HandsInputManager.TryPushTwoHandedMode(this))
+                InputPushed?.Invoke();
 
             Queue<Word> wordQueue = new();
             int totalWordsToQueue = 1 + request.LookaheadCount;
@@ -96,7 +104,9 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
         finally
         {
             _processing = false;
-            HandsInputManager.TryRemoveTwoHandedMode(this);
+            if (HandsInputManager.TryRemoveTwoHandedMode(this))
+                InputRemoved?.Invoke();
+
             Stopped?.Invoke();
         }
     }
@@ -133,7 +143,10 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
     public void Start()
     {
         if (_processing)
+        {
             SetProcessUnhandledKeyInput(true);
+            InputStarted?.Invoke();
+        }
     }
 
     public bool CanStop() => true;
@@ -141,6 +154,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
     public void Stop()
     {
         SetProcessUnhandledKeyInput(false);
+        InputStopped?.Invoke();
     }
 
 }

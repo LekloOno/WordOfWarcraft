@@ -11,7 +11,7 @@ using WowGd.Src.Input.Targeting.Direct;
 
 namespace WowGd.Src.Combat.Abilities.Targeting.Player;
 
-public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
+public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, IListenableHandInputMode
 {
     private TargetIntent? _buffered;
     private TaskCompletionSource<TargetIntent>? _pendingIntent;
@@ -24,6 +24,12 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
     }
 
     private bool _processing = false;
+
+    public event Action? InputStarted;
+    public event Action? InputStopped;
+    public event Action? InputPushed;
+    public event Action? InputRemoved;
+
 
     public async Task<TargetIntent> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct, bool useBuffer = true)
     {
@@ -50,7 +56,8 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
         
         _processing = true;
         EnableTargeting(caster, rules);
-        HandsInputManager.TryPushSecondHandMode(this);
+        if (HandsInputManager.TryPushSecondHandMode(this))
+            InputPushed?.Invoke();
 
         try
         {
@@ -64,7 +71,8 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
             _processing = false;
             _pendingIntent = null;
             DisableTargeting();
-            HandsInputManager.TryRemoveSecondHandMode(this);
+            if (HandsInputManager.TryRemoveSecondHandMode(this))
+                InputRemoved?.Invoke();
         }
     }
 
@@ -124,12 +132,16 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
     public void Start()
     {
         if (_processing || BufferAcquisition)
+        {
             SetProcessUnhandledKeyInput(true);
+            InputStarted?.Invoke();
+        }
     }
     public bool CanStop() => true;
     public void Stop()
     {
         SetProcessUnhandledKeyInput(false);
+        InputStopped?.Invoke();
     }
 
     public bool BufferAcquisition { get; private set; } = false;
@@ -140,7 +152,11 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
 
         BufferAcquisition = true;
         EnableTargeting(caster, rules);
-        return HandsInputManager.TryPushSecondHandMode(this);
+        bool pushed = HandsInputManager.TryPushSecondHandMode(this);
+        if (pushed)
+            InputPushed?.Invoke();
+
+        return pushed;
     }
 
     public bool StopBufferTarget()
@@ -150,6 +166,10 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode
             
         BufferAcquisition = false;
         DisableTargeting();
-        return HandsInputManager.TryRemoveSecondHandMode(this);
+        bool removed = HandsInputManager.TryRemoveSecondHandMode(this);
+        if (removed)
+            InputRemoved?.Invoke();
+
+        return removed;
     }
 }
