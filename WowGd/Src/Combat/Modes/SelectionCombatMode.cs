@@ -39,18 +39,22 @@ public partial class SelectionCombatMode : CombatMode, IInitializable
         _initialized.TrySetResult();
     }
 
-    public bool Select(int index)
+    public async void Select(int index)
     {
         if (!Enabled)
-            return false;
+            return;
 
         if (index >= _abilities.Count)
-            return false;
+            return;
 
         IAbility ability = _abilities[index];
         _activeAbilities.Add(ability);
-        ability.Start(_entity);
-        return true;
+        bool finished = await ability.Start(_entity);
+        
+        if (finished)
+            _activeAbilities.Remove(ability);
+
+        return;
     }
 
     public bool HasActive() =>

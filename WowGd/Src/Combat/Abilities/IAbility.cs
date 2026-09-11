@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
 using WowGd.Src.Entities;
@@ -8,7 +9,7 @@ namespace WowGd.Src.Combat.Abilities;
 public interface IAbility : IDisablable
 {
     IAbilityData Data { get; }
-    void Start(IEntity caster);
+    Task<bool> Start(IEntity caster);
     bool Cancel(IEntity caster);
     /// <summary>
     /// Allows to attach  additionnal launches to different hooks of a spell cast, for example as modifier.

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Actuation;
 using WowGd.Src.Combat.Abilities.Actuators;
@@ -81,18 +82,18 @@ public partial class AbilityStateMachine : Node, IListenableAbility
     }
 
     private TargetIntentController? _targetIntentController;
-    public async void Start(IEntity caster)
+    public async Task<bool> Start(IEntity caster)
     {
         if (!_enabled)
-            return;
+            return true;
 
         if (Time.GetTicksMsec() - _lastStart < _data.CoolDown)
-            return;
+            return true;
 
         _cts?.Cancel();
         // STEP 1 - check preconditions
         if (!_data.StartPreconditionsDt.CheckAll(caster))
-            return;
+            return true;
 
         Started?.Invoke();
 
@@ -135,8 +136,10 @@ public partial class AbilityStateMachine : Node, IListenableAbility
         }
         catch (OperationCanceledException) when (_cts.IsCancellationRequested)
         {
-            // .. silence it   
+            return false; 
         }
+
+        return true;
     }
 
     private void OnActuated(ActuatePayload payload)
