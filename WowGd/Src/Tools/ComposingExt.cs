@@ -6,12 +6,12 @@ namespace WowGd.Src.Tools;
 
 public static class ComposingExt
 {
-    public static bool TryGetComposed<T>(this Node self, [NotNullWhen(true)] out T? composed)
+    public static bool TryGetComposed<T>(this Node self, [NotNullWhen(true)] out T? composed, bool warn = true)
     {
         composed = default;
         if (self.GetParent() is not T p)
         {
-            GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] parent.");
+            if (warn) GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] parent.");
             return false;
         }
 
@@ -19,7 +19,7 @@ public static class ComposingExt
         return true;
     }
 
-    public static bool TryGetComposedRecursive<T>(this Node self, [NotNullWhen(true)] out T? composed)
+    public static bool TryGetComposedRecursive<T>(this Node self, [NotNullWhen(true)] out T? composed, bool warn = true)
     {
         Node? current = self;
 
@@ -34,11 +34,11 @@ public static class ComposingExt
         } while(current is not null);
 
         composed = default;
-        GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] parent.");
+        if (warn) GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] parent.");
         return false;
     }
 
-    public static bool TryGetComponent<T>(this Node self, [NotNullWhen(true)] out T? component)
+    public static bool TryGetComponent<T>(this Node self, [NotNullWhen(true)] out T? component, bool warn = true)
     {
         component = default;
         
@@ -51,11 +51,11 @@ public static class ComposingExt
             return true;
         }
 
-        GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] child.");
+        if (warn) GD.PushError($"[{self.GetType()}] requires a [{nameof(T)}] child.");
         return false;
     }
 
-    public static bool TryGetSiblingComponent<T>(this Node self, [NotNullWhen(true)] out T? component)
+    public static bool TryGetSiblingComponent<T>(this Node self, [NotNullWhen(true)] out T? component, bool warn = true)
     {
         component = default;
 
@@ -63,14 +63,14 @@ public static class ComposingExt
 
         if (parent is null)
         {
-            GD.PushError($"Provided [{self.GetType()}] has no parent to fetch for a [{nameof(T)}] sibling.");
+            if (warn) GD.PushError($"Provided [{self.GetType()}] has no parent to fetch for a [{nameof(T)}] sibling.");
             return false;
         }
         
         if (parent.TryGetComponent<T>(out component))
             return true;
 
-        GD.PushError($"[{self.GetType()}] has no [{nameof(T)}] sibling component.");
+        if (warn) GD.PushError($"[{self.GetType()}] has no [{nameof(T)}] sibling component.");
         return false;
     }
 
@@ -98,7 +98,7 @@ public static class ComposingExt
         return component;    
     }
 
-    public static bool TryDeriveComponent<T>(this object self, [NotNullWhen(true)] out T? component)
+    public static bool TryDeriveComponent<T>(this object self, [NotNullWhen(true)] out T? component, bool warn = true)
     {
         if (self is T c)
         {
@@ -107,7 +107,7 @@ public static class ComposingExt
         }
 
         component = default;
-        GD.PushError($"[{self.GetType()}] is not a valid [{nameof(T)}] component.");
+        if (warn) GD.PushError($"[{self.GetType()}] is not a valid [{nameof(T)}] component.");
         return false;
     }
 }

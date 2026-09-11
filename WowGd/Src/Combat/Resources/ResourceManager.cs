@@ -11,7 +11,7 @@ public partial class ResourceManager : Node, IResourceManager
 
     public override void _Ready()
     {
-        if (this.TryGetComponent(out IFocus? focus))
+        if (this.TryGetComponent(out IFocus? focus, false))
             Focus = focus;
     }
 }
