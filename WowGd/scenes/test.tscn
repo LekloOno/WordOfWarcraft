@@ -20,6 +20,8 @@
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
 [ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="13_5jxlq"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="14_5jxlq"]
+[ext_resource type="Script" uid="uid://bl8lp3ttb4jor" path="res://Src/Combat/Resources/ResourceManager.cs" id="14_8nvs4"]
+[ext_resource type="Script" uid="uid://dbfmamo6b7xia" path="res://Src/Combat/Resources/FocusRes/Focus.cs" id="15_2ixbo"]
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="19_c6rvn"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://c273v4avjawkx" path="res://Src/Input/SelectionCombatModeInput.cs" id="24_q6ayx"]
@@ -467,6 +469,14 @@ TeamMask = 1
 [node name="StandardWishDir" type="Node" parent="Physics/Player" unique_id=1727349880]
 script = ExtResource("12_c6rvn")
 metadata/_custom_type_script = "uid://fdi60jyuew2y"
+
+[node name="ResourceManager" type="Node" parent="Physics/Player" unique_id=448641948]
+script = ExtResource("14_8nvs4")
+metadata/_custom_type_script = "uid://bl8lp3ttb4jor"
+
+[node name="Focus" type="Node" parent="Physics/Player/ResourceManager" unique_id=1365044413]
+script = ExtResource("15_2ixbo")
+metadata/_custom_type_script = "uid://dbfmamo6b7xia"
 
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")

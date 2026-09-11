@@ -3,6 +3,7 @@ using Godot;
 using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Physics;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
@@ -20,6 +21,7 @@ public partial class Entity : Node, IEntity
 
     public IBody Body {get; private set;} = null!;
     public IEntityHealth Health { get; private set; } = EnvironmentHealth.Instance;
+    public IResourceManager ResourceManager { get; private set; } = null!;
 
     public IActuatorDriver ActuatorDriver { get; private set; } = null!;
     public ITargetIntentDriver TargetIntentDriver { get; private set; } = null!;
@@ -59,6 +61,9 @@ public partial class Entity : Node, IEntity
     {
         if (this.TryGetComponent(out IEntityHealth? health))
             Health = health;
+
+        if (this.TryGetComponent(out IResourceManager? resourceManager))
+            ResourceManager = resourceManager;
 
         if (this.TryGetComponent(out IBody? body))
             Body = body;

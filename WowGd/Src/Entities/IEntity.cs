@@ -1,6 +1,7 @@
 using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Physics;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
@@ -12,20 +13,21 @@ public interface IEntity : IInitializable
     /// <summary>
     /// Data that identifies the entity.
     /// </summary>
-    EntityIdData    IdData      { get; }
+    EntityIdData        IdData              { get; }
     /// <summary>
     /// Allows to regroup entities into teams.
     /// </summary>
-    uint            TeamMask    { get; }
+    uint                TeamMask            { get; }
     /// <summary>
     /// The physical body of the entity, notably defines its position.
     /// </summary>
-    IBody           Body        { get; }
+    IBody               Body                { get; }
     /// <summary>
     /// The health of the entity.
     /// </summary>
-    IEntityHealth   Health      { get; }
-    IWishDir        WishDir     { get; }
+    IEntityHealth       Health              { get; }
+    IResourceManager    ResourceManager     { get; }
+    IWishDir            WishDir             { get; }
 
     IActuatorDriver     ActuatorDriver      { get; }
     ITargetIntentDriver TargetIntentDriver  { get; }
