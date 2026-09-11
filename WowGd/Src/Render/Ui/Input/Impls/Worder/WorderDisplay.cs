@@ -6,12 +6,12 @@ using WowGd.Src.Dactylo.Generators;
 using WowGd.Src.Dactylo.Worders;
 using WowGd.Src.Render.Animation.TweenTools;
 
-namespace WowGd.Src.Render.Ui;
+namespace WowGd.Src.Render.Ui.Input.Impls.Worder;
 
 [GlobalClass]
 public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHandler
 {
-	[Export] private HFlowContainer _container = null!;
+	[Export] private HFlowContainer _wordsContainer = null!;
 	[Export] private Control _caret = null!;
 	[Export] private TweenSettings _caretTweenSettings = null!;
 	[Export] private TweenSettings _lineFadeSettings = null!;
@@ -30,8 +30,9 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 	public override void _Ready()
 	{
 		_caret.TopLevel = true;
-		_container.SortChildren += OnContainerSorted;
+		_wordsContainer.SortChildren += OnContainerSorted;
 		this.Bind(Driver);
+		ReadyHandInput();
 	}
 
 	private void OnContainerSorted()
@@ -99,7 +100,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 	{
 		WordDisplay wd = new(word);
 		wd.UpdateDisplay();
-		_container.AddChild(wd);
+		_wordsContainer.AddChild(wd);
 	}
 
 	private void UpdateCursor(int idx)
@@ -115,8 +116,6 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 			return;
 
 		_caretTween = CreateTween();
-
-
 
 		_caretTweenSettings.TweenProperty(_caretTween, _caret, _targetCaretPosition, "global_position");
 	}
@@ -136,9 +135,9 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 			caretOffset.Y = value;
 			_caret.OffsetTransformPosition = caretOffset;
 
-			Vector2 containerOffset = _container.OffsetTransformPosition;
+			Vector2 containerOffset = _wordsContainer.OffsetTransformPosition;
 			containerOffset.Y = value;
-			_container.OffsetTransformPosition = containerOffset;
+			_wordsContainer.OffsetTransformPosition = containerOffset;
 
 			if (_fadingLine == null)
 				return;
@@ -198,7 +197,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 			Alignment = BoxContainer.AlignmentMode.Center,
 		};
 
-		foreach (Node node in _container.GetChildren())
+		foreach (Node node in _wordsContainer.GetChildren())
 		{
 			if (node is not WordDisplay wd || (nextYpos = wd.GlobalPosition.Y) != yPos)
 				return fadingLine;
@@ -229,7 +228,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 		if (_current != null)
 			this.Unbind(_current.Word);
 
-		_current = _container.GetChild(_idx) as WordDisplay;
+		_current = _wordsContainer.GetChild(_idx) as WordDisplay;
 
 		if (_current != null)
 			this.Bind(_current.Word);
@@ -237,7 +236,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 		UpdateCursor(-1);
 
 		float yPos;
-		if (_container.GetChild(0) is Control control &&
+		if (_wordsContainer.GetChild(0) is Control control &&
 			(yPos = control.GlobalPosition.Y) != _current?.GlobalPosition.Y)
 			FadeLine(yPos);
 
@@ -249,7 +248,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 	{
 		WordDisplay wd = new(word);
 		wd.UpdateDisplay();
-		_container.AddChild(wd);
+		_wordsContainer.AddChild(wd);
 	}
 
 	public void OnWordCompleted(WordRequest req, Word word)
@@ -257,7 +256,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 		UpdateCursor(-1);
 
 		float yPos;
-		if (_container.GetChild(0) is Control control &&
+		if (_wordsContainer.GetChild(0) is Control control &&
 			(yPos = control.GlobalPosition.Y) != _current?.GlobalPosition.Y)
 			FadeLine(yPos);
 
@@ -271,7 +270,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 
 		_current = null;
 
-		foreach (Node node in _container.GetChildren())
+		foreach (Node node in _wordsContainer.GetChildren())
 			node.QueueFree();
 
 		_idx = 0;

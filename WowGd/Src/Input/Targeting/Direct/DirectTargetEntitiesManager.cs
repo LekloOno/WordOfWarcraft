@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
 using Godot;
 using WowGd.Src.Combat.Abilities.Data;
-using WowGd.Src.Combat.Abilities.Targeting.TargetRules;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Combat.Targeting;
 
@@ -102,6 +102,18 @@ public partial class DirectTargetEntitiesManager : Node
         Instance.SetPhysicsProcess(true);
 
         return true;
+    }
+
+    public static void Hide()
+    {
+        foreach (IDirectTargetUi targetUi in _activeTargets)
+            targetUi.Disable();
+    }
+
+    public static void Show()
+    {
+        foreach (IDirectTargetUi targetUi in _activeTargets)
+            targetUi.Enable();
     }
 
     private static bool TryDisable(IDirectTargetUi ui)

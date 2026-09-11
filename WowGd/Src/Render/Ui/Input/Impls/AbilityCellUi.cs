@@ -7,8 +7,12 @@ namespace WowGd.Src.Render.Ui.Input;
 [GlobalClass]
 public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
 {
-    [Export] private TextureRect    _iconTexture = null!;
-    [Export] private Label          _inputLabel = null!;
+    [Export] private TextureRect    _iconTexture    = null!;
+    [Export] private Label          _inputLabel     = null!;
+    [Export] private ColorRect      _unactiveLayer  = null!;
+    [Export] private Range          _cooldownLayer  = null!;
+
+    private Tween? _cooldownTween;
     private IListenableAbility _ability = null!;
     public IListenableAbility Ability
     {
@@ -40,24 +44,41 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
             _inputLabel.Text = key;
     }
 
-    public void OnCancelled()
+    public override void _Ready()
     {
-        
+        _cooldownLayer.Value = 0f;
     }
 
-    public void OnStarted()
+    public void SetActive()
     {
+        _unactiveLayer.Hide();
+        _inputLabel.Show();
     }
 
-    public void OnStopped()
+    public void SetUnactive()
     {
+        _inputLabel.Hide();
+        _unactiveLayer.Show();
     }
+
+    public void OnCancelled() { }
+    public void OnStarted() { }
+    public void OnStopped() { }
 
     public void OnCoolDownStarted(ulong cooldown)
     {
+        _cooldownTween?.Kill();
+
+        _cooldownLayer.Value = 1f;
+
+        _cooldownTween = CreateTween();
+        _cooldownTween.TweenProperty(_cooldownLayer, "value", 0f, cooldown / 1000f);
     }
 
     public void OnCoolDownCancelled()
     {
+        _cooldownTween?.Kill();
+
+        _cooldownLayer.Value = 0f;
     }
 }

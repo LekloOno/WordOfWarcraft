@@ -1,7 +1,7 @@
 using Godot;
 using WowGd.Src.Dactylo.Generators;
 
-namespace WowGd.Src.Render.Ui;
+namespace WowGd.Src.Render.Ui.Input.Impls.Worder;
 
 public partial class WordDisplay : RichTextLabel, IWordHandler
 {
