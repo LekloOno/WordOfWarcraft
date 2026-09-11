@@ -1,4 +1,3 @@
-using Godot;
 using WowGd.Src.Input.Hands;
 
 namespace WowGd.Src.Render.Ui.Input;
@@ -12,11 +11,6 @@ public interface IHandInputUi
     /// </summary>
     IHandsInputUiContext Context { get; }
     /// <summary>
-    /// The hand this Ui's input mode is tied to.
-    /// We do not depict it as strict generic type for now, I don't think the stricness is required for a pure UI component. 
-    /// </summary>
-    HandsEnum Hand { get; }
-    /// <summary>
     /// The kind of docking to use for that Ui.
     /// </summary>
     HandInputDocking Docking { get; }
@@ -24,10 +18,6 @@ public interface IHandInputUi
     /// The input mode this ui component is tied to.
     /// </summary>
     IListenableHandInputMode InputMode { get; }
-    /// <summary>
-    /// The root node this hand input ui is represented by. Could be self.
-    /// </summary>
-    Control ControlNode { get; }
     /// <summary>
     /// Unlike Input mode themselves, hand input ui dis/enabling should always succeed.
     /// It has no reason to fail.
