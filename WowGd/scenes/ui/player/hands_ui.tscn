@@ -1,0 +1,181 @@
+[gd_scene format=3 uid="uid://cenhb5a0iyp3m"]
+
+[ext_resource type="Script" uid="uid://d3die7shwuki7" path="res://Src/Render/Ui/Worder/WorderDisplay.cs" id="1_h7dqs"]
+[ext_resource type="Script" uid="uid://d2w4iu1tv0nfb" path="res://Src/Render/Ui/Input/SelectionCombatModeUi.cs" id="2_pxu16"]
+[ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="2_xr0no"]
+[ext_resource type="Script" uid="uid://dvx2j0rc8pog7" path="res://Src/Render/Ui/Input/DirectTargetUi.cs" id="3_bscv6"]
+[ext_resource type="PackedScene" uid="uid://c3vb3cta8kus5" path="res://scenes/ui/player/ability/ability_container.tscn" id="3_gk4il"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pdwa4"]
+bg_color = Color(0.18000486, 0.1800049, 0.18000478, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8tqe"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bscv6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pxu16"]
+
+[sub_resource type="Resource" id="Resource_8isll"]
+script = ExtResource("2_xr0no")
+AnimationTime = 0.2
+TransitionType = 3
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_7ctsh"]
+script = ExtResource("2_xr0no")
+AnimationTime = 0.5
+TransitionType = 3
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_bkx2g"]
+script = ExtResource("2_xr0no")
+AnimationTime = 0.5
+TransitionType = 3
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lswdd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgmg2"]
+bg_color = Color(0.11372549, 0.11372549, 0.11372549, 0.44705883)
+
+[node name="HandUi" type="MarginContainer" unique_id=1311631644]
+custom_minimum_size = Vector2(400, 100)
+custom_maximum_size = Vector2(800, 200)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Panel" type="Panel" parent="." unique_id=647279235]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pdwa4")
+
+[node name="SplitHands" type="HBoxContainer" parent="." unique_id=1271505701]
+layout_mode = 2
+
+[node name="FirstHandContainer" type="PanelContainer" parent="SplitHands" unique_id=147972111]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_a8tqe")
+
+[node name="MarginContainer" type="MarginContainer" parent="SplitHands/FirstHandContainer" unique_id=515196636]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="SecondHandContainer" type="PanelContainer" parent="SplitHands" unique_id=1738595673]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bscv6")
+
+[node name="MarginContainer" type="MarginContainer" parent="SplitHands/SecondHandContainer" unique_id=35026675]
+clip_contents = true
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="SelectionCombatModeUi" type="Node" parent="SplitHands/SecondHandContainer/MarginContainer" unique_id=1590346106 node_paths=PackedStringArray("_abilitiesContainer")]
+script = ExtResource("2_pxu16")
+_abilitiesContainer = NodePath("../AbilitiesContainer")
+metadata/_custom_type_script = "uid://d2w4iu1tv0nfb"
+
+[node name="AbilitiesContainer" type="GridContainer" parent="SplitHands/SecondHandContainer/MarginContainer" unique_id=469560539]
+layout_mode = 2
+columns = 5
+
+[node name="AbilityContainer" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=977881292 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer2" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=327440919 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer3" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1944140568 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer4" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1860171050 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer5" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=435173183 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer6" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=181211166 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer7" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1841165267 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer8" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=2046676821 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer9" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=305480506 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="AbilityContainer10" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1873097915 instance=ExtResource("3_gk4il")]
+layout_mode = 2
+
+[node name="DirectTargetUi" type="Node" parent="SplitHands/SecondHandContainer" unique_id=1410443815]
+script = ExtResource("3_bscv6")
+metadata/_custom_type_script = "uid://dvx2j0rc8pog7"
+
+[node name="TwoHands" type="PanelContainer" parent="." unique_id=1452728785]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pxu16")
+
+[node name="WorderDisplay" type="Node" parent="TwoHands" unique_id=1279793655 node_paths=PackedStringArray("_wordsContainer", "_caret", "ControlNode", "_unactiveLayer", "_caretColor")]
+script = ExtResource("1_h7dqs")
+_wordsContainer = NodePath("../DactyloContainer/HFlowContainer")
+_caret = NodePath("../DactyloContainer/Caret")
+_caretTweenSettings = SubResource("Resource_8isll")
+_lineFadeSettings = SubResource("Resource_7ctsh")
+_returnOffsetSettings = SubResource("Resource_bkx2g")
+ControlNode = NodePath("../DactyloContainer")
+_unactiveLayer = NodePath("../DactyloContainer/Panel")
+_caretColor = NodePath("../DactyloContainer/Caret/ColorRect")
+_caretActiveColor = Color(0.99999994, 0.62532383, 0.36127993, 1)
+_caretUnactiveColor = Color(0.76240367, 0.76240367, 0.76240367, 1)
+metadata/_custom_type_script = "uid://d3die7shwuki7"
+
+[node name="DactyloContainer" type="PanelContainer" parent="TwoHands" unique_id=1644090231]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_lswdd")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="TwoHands/DactyloContainer" unique_id=537945774]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+alignment = 1
+
+[node name="Caret" type="MarginContainer" parent="TwoHands/DactyloContainer" unique_id=477241916]
+custom_minimum_size = Vector2(1, 23)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+offset_transform_enabled = true
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_bottom = 1
+
+[node name="ColorRect" type="ColorRect" parent="TwoHands/DactyloContainer/Caret" unique_id=827623656]
+layout_mode = 2
+color = Color(0.99999994, 0.62532383, 0.36127993, 1)
+
+[node name="Panel" type="Panel" parent="TwoHands/DactyloContainer" unique_id=876141217]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cgmg2")

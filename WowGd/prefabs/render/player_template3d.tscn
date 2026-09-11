@@ -1,22 +1,25 @@
 [gd_scene format=3 uid="uid://bllobiaogxwwt"]
 
-[ext_resource type="PackedScene" uid="uid://i66k0ntru8ev" path="res://scenes/ui/player/player_ui.tscn" id="1_h0a4m"]
 [ext_resource type="Script" uid="uid://dtt2vmek6bw1c" path="res://Src/Render/WorldRenderer/Entities/ComplexPlayer.cs" id="2_cgjug"]
 [ext_resource type="PackedScene" uid="uid://tb2k4gfi3asl" path="res://prefabs/render/entity_template3d.tscn" id="2_n78br"]
+[ext_resource type="PackedScene" uid="uid://dhrx2ownhc8cd" path="res://scenes/ui/player/player_ui_v2.tscn" id="3_n78br"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_n78br"]
 viewport_path = NodePath("SubViewport")
 
-[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_healthBar") instance=ExtResource("2_n78br")]
+[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_healthBar") instance=ExtResource("2_n78br")]
 script = ExtResource("2_cgjug")
-_worder = NodePath("PlayerUi/MarginContainer/BottomContainer/DactyloContainer")
-_healthBar = NodePath("PlayerUi/MarginContainer/BottomContainer/HealthBarContainer/HealthBar")
+_worder = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/TwoHands/WorderDisplay")
+_selectionCombatModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/MarginContainer/SelectionCombatModeUi")
+_directTargetModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/DirectTargetUi")
+_healthBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HealthBarContainer/HealthBar")
 
-[node name="PlayerUi" parent="." index="0" unique_id=1593580968 instance=ExtResource("1_h0a4m")]
+[node name="PlayerUi2" parent="." index="0" unique_id=1593580968 instance=ExtResource("3_n78br")]
 
 [node name="HealthBar" parent="." index="3" unique_id=650881374]
 visible = false
 texture = SubResource("ViewportTexture_n78br")
 
-[editable path="PlayerUi"]
+[editable path="PlayerUi2"]
+[editable path="PlayerUi2/MarginContainer/VBoxContainer/HandUi"]
 [editable path="HealthBar"]

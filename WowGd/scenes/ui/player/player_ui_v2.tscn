@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://dhrx2ownhc8cd"]
+
+[ext_resource type="PackedScene" uid="uid://cenhb5a0iyp3m" path="res://scenes/ui/player/hands_ui.tscn" id="1_qjxtb"]
+[ext_resource type="PackedScene" uid="uid://c3vb3cta8kus5" path="res://scenes/ui/player/ability/ability_container.tscn" id="3_gk4il"]
+[ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/render/health/health_bar.tscn" id="4_tfaou"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_846yy"]
+
+[node name="PlayerUi" type="Control" unique_id=1593580968]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1311631644]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 320
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 320
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=2129950288]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="HandUi" parent="MarginContainer/VBoxContainer" unique_id=839347118 instance=ExtResource("1_qjxtb")]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SelectionCombatModeUi" parent="MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/MarginContainer" parent_id_path=PackedInt32Array(839347118, 35026675) index="0" unique_id=1590346106]
+_cellUiTemplate = ExtResource("3_gk4il")
+
+[node name="HealthBarContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=537550551]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_846yy")
+
+[node name="HealthBar" parent="MarginContainer/VBoxContainer/HealthBarContainer" unique_id=1048134132 instance=ExtResource("4_tfaou")]
+custom_maximum_size = Vector2(400, 100)
+layout_mode = 2
+
+[editable path="MarginContainer/VBoxContainer/HandUi"]
