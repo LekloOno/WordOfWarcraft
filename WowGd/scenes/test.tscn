@@ -12,9 +12,9 @@
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="9_n74k2"]
 [ext_resource type="Script" uid="uid://bl5jmlur1ki7n" path="res://Src/Debug/SelfHarmDbg.cs" id="9_si7kk"]
 [ext_resource type="Script" uid="uid://bng07rnqcnt53" path="res://Src/Debug/WrittenInputIntercept.cs" id="10_gsk6d"]
-[ext_resource type="Script" uid="uid://cfm24npuh7ybu" path="res://Src/Entities/Entity.cs" id="10_pn65j"]
 [ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/physic/simple_monster.tscn" id="10_y81of"]
 [ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="11_4k8fq"]
+[ext_resource type="Script" uid="uid://dr3n7mycos7rq" path="res://Src/Entities/ClientEntity.cs" id="11_cgmg2"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="11_xrtyr"]
 [ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="12_c6rvn"]
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="12_daiq8"]
@@ -35,6 +35,7 @@
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="40_s6cx0"]
 [ext_resource type="Resource" uid="uid://ceu308hpob53h" path="res://assets/abilities/loop_rules/loop_rule_always.tres" id="40_xsg57"]
 [ext_resource type="Script" uid="uid://djomokhsknkk0" path="res://Src/Combat/Abilities/AbilityStateMachine.cs" id="41_1urli"]
+[ext_resource type="Texture2D" uid="uid://cflr0o44cowv7" path="res://assets/sprites/abilities/placeholders/FireMage_Free/FireMage_11.png" id="41_35prk"]
 [ext_resource type="Script" uid="uid://ckalqjavqpd37" path="res://Src/Combat/Abilities/Launch/LaunchData.cs" id="42_35prk"]
 [ext_resource type="Script" uid="uid://dmt3brgj3dhih" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleResEffect.cs" id="42_376r3"]
 [ext_resource type="Script" uid="uid://tr6yt483fw7q" path="res://Src/Combat/Abilities/Targeting/TargetRules/AliveTargetRule.cs" id="42_cgmg2"]
@@ -44,7 +45,9 @@
 [ext_resource type="Script" uid="uid://3kt2gisdc54v" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/Effect.cs" id="45_2ixbo"]
 [ext_resource type="Script" uid="uid://by0aobke5dswx" path="res://Src/Input/Targeting/Direct/DirectInputBufferTrigger.cs" id="45_335pd"]
 [ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="45_376r3"]
+[ext_resource type="Texture2D" uid="uid://bm8khn4xyvtiu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_28.png" id="45_eokji"]
 [ext_resource type="Script" uid="uid://ctj8xarphtj3u" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleDamageEffect.cs" id="46_uig8d"]
+[ext_resource type="Texture2D" uid="uid://c10juxdrquxhp" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_36.png" id="47_8nvs4"]
 [ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="47_eixnv"]
 [ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="48_68ewr"]
 [ext_resource type="Script" uid="uid://xxo1vwasspl1" path="res://Src/Combat/Abilities/Targeting/TargetRules/TargetRule.cs" id="49_osnag"]
@@ -75,7 +78,7 @@ size = Vector3(12, 8, 0.5)
 background_mode = 1
 background_color = Color(0.64561886, 0.870362, 1, 1)
 
-[sub_resource type="Resource" id="Resource_75pfo"]
+[sub_resource type="Resource" id="Resource_nwaa2"]
 script = ExtResource("11_4k8fq")
 Key = "player"
 metadata/_custom_type_script = "uid://defda3606ges4"
@@ -151,6 +154,7 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 [sub_resource type="Resource" id="Resource_2ae6r"]
 script = ExtResource("52_tbman")
 Id = "oui"
+Icon = ExtResource("41_35prk")
 TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_qx18j")])
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_o0kuw")
@@ -192,6 +196,7 @@ metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 [sub_resource type="Resource" id="Resource_1urli"]
 script = ExtResource("52_tbman")
 Id = "oui"
+Icon = ExtResource("45_eokji")
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_y8o6s")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_n11rl")])
@@ -231,6 +236,7 @@ metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 [sub_resource type="Resource" id="Resource_68ewr"]
 script = ExtResource("52_tbman")
 Id = "oui"
+Icon = ExtResource("47_8nvs4")
 TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_qx18j")])
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_eixnv")
@@ -448,9 +454,11 @@ position = Vector2(0.515, 4.895)
 [node name="Body" parent="Physics/Entity5" index="0" unique_id=1471660406]
 position = Vector2(5.32, 2.845)
 
-[node name="Player" type="Node" parent="Physics" unique_id=162077607]
-script = ExtResource("10_pn65j")
-IdData = SubResource("Resource_75pfo")
+[node name="Player" type="Node" parent="Physics" unique_id=162077607 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput")]
+script = ExtResource("11_cgmg2")
+DactyloDriver = NodePath("PlayerDactyloDriver")
+SelectionModeInput = NodePath("SelectionCombatModeInput")
+IdData = SubResource("Resource_nwaa2")
 TeamMask = 1
 
 [node name="StandardWishDir" type="Node" parent="Physics/Player" unique_id=1727349880]
@@ -495,9 +503,9 @@ metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Player/Body" unique_id=1440208240]
 shape = SubResource("CircleShape2D_175km")
 
-[node name="SelectionCombatModeInput" type="Node" parent="Physics/Player" unique_id=1688767281 node_paths=PackedStringArray("_mode")]
+[node name="SelectionCombatModeInput" type="Node" parent="Physics/Player" unique_id=1688767281 node_paths=PackedStringArray("Mode")]
 script = ExtResource("24_q6ayx")
-_mode = NodePath("../ModesManager/SelectionCombatMode")
+Mode = NodePath("../ModesManager/SelectionCombatMode")
 metadata/_custom_type_script = "uid://c273v4avjawkx"
 
 [node name="ModesManager" type="Node" parent="Physics/Player" unique_id=2097076642]
