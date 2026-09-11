@@ -6,21 +6,21 @@ namespace WowGd.Src.Combat.Resources.FocusRes;
 [GlobalClass]
 public partial class Focus : Node, IFocus
 {
-    [Export] public int BaseFocus { get; private set; } = 50;
+    [Export] public int Base { get; private set; } = 50;
     /// <summary>
     /// Later used with possible modifiers. For now, keep it simple.
     /// </summary>
-    public int MaxFocus => BaseFocus;
-    public int CurrentFocus { get; private set; }
+    public int Max => Base;
+    public int Current { get; private set; }
 
     public event Action<int>? Consumed;
     public event Action<int>? Generated;
 
     public bool Consume(int fp, out int overflow)
     {
-        int consumed = Math.Min(fp, CurrentFocus);
+        int consumed = Math.Min(fp, Current);
         overflow = fp - consumed;
-        CurrentFocus -= consumed;
+        Current -= consumed;
 
         Consumed?.Invoke(consumed);
 
@@ -29,9 +29,9 @@ public partial class Focus : Node, IFocus
 
     public bool Generate(int fp, out int overflow)
     {
-        int generated = Math.Min(fp, BaseFocus - CurrentFocus);
+        int generated = Math.Min(fp, Base - Current);
         overflow = fp - generated;
-        CurrentFocus += generated;
+        Current += generated;
 
         Generated?.Invoke(generated);
     

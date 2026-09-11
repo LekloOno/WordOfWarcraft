@@ -24,6 +24,6 @@ public partial class SingleFocusEffect : SingleAbilityEffect
         if (fp > 0)
             entity.ResourceManager.Focus?.Generate(fp, out _);
         else
-            entity.ResourceManager.Focus?.Consume(fp, out _);
+            entity.ResourceManager.Focus?.Consume(-fp, out _);
     }
 }

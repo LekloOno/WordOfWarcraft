@@ -22,14 +22,14 @@ public static class CasterResourceRuleExt
 
     private static bool Compare(
         this ResourceComparison comparison,
-        float right,
-        float left)
+        float left,
+        float right)
     {
         return comparison switch
         {
-            ResourceComparison.Less  => left < right,
+            ResourceComparison.Less  => left <= right,
             ResourceComparison.Equal => left == right,
-            ResourceComparison.More  => left > right,
+            ResourceComparison.More  => left >= right,
 
             _ => throw new ArgumentOutOfRangeException(nameof(comparison))
         };

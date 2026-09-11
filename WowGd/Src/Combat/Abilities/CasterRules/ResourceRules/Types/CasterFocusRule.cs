@@ -14,6 +14,6 @@ public partial class CasterFocusRule : CasterResourceRule
         if (caster.ResourceManager.Focus is not IFocus focus)
             return false;
 
-        return this.Compare(focus.CurrentFocus, focus.MaxFocus, focus.BaseFocus);
+        return this.Compare(focus.Current, focus.Max, focus.Base);
     }
 }
