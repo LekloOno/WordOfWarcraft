@@ -50,9 +50,7 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
         {
             if (@event is InputEventKey keyEvent)
             {
-                GD.Print("me");
                 _inputLabel.Text = keyEvent.LocalizedKeyName();
-                GD.Print(_inputLabel.Text);
                 return;
             }
         }

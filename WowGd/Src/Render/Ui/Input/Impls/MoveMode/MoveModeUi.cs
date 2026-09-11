@@ -4,13 +4,17 @@ using WowGd.Src.Input.Hands;
 using WowGd.Src.Physics.Movement;
 using WowGd.Src.Render.WorldRenderer.Entities;
 
-namespace WowGd.Src.Render.Ui.Input.Impls;
+namespace WowGd.Src.Render.Ui.Input.Impls.MoveMode;
 
 [GlobalClass]
 public partial class MoveModeUi : Node, IHandInputUi
 {
     [Export] private Control _container = null!;
     [Export] private AbilityCellUi _movementUi = null!;
+    [Export] private WasdCellUi _up = null!;
+    [Export] private WasdCellUi _down = null!;
+    [Export] private WasdCellUi _left = null!;
+    [Export] private WasdCellUi _right = null!;
 
     private MoveModeInput _moveModeInput = null!;
     [Export] public MoveModeInput MoveModeInput
@@ -60,10 +64,18 @@ public partial class MoveModeUi : Node, IHandInputUi
     public void SetActive()
     {
         _movementUi.SetActive();
+        _up.SetActive();
+        _down.SetActive();
+        _left.SetActive();
+        _right.SetActive();
     }
 
     public void SetUnactive()
     {
         _movementUi.SetUnactive();
+        _up.SetUnactive();
+        _down.SetUnactive();
+        _left.SetUnactive();
+        _right.SetUnactive();
     }
 }

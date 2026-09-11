@@ -6,10 +6,10 @@ namespace WowGd.Src.Input.Generators;
 [GlobalClass]
 public partial class StandardKeyGenerator : Node, IVec2InputGenerator
 {
-    public const string UP      = "move_up";
-    public const string DOWN    = "move_down";
-    public const string LEFT    = "move_left";
-    public const string RIGHT   = "move_right";
+    public const string Up      = "move_up";
+    public const string Down    = "move_down";
+    public const string Left    = "move_left";
+    public const string Right   = "move_right";
 
     private Vector2 _walkAxis = Vector2.Zero;
 
@@ -22,7 +22,7 @@ public partial class StandardKeyGenerator : Node, IVec2InputGenerator
 
     public override void _Process(double delta)
     {
-        _walkAxis = Godot.Input.GetVector(LEFT, RIGHT, UP, DOWN);
+        _walkAxis = Godot.Input.GetVector(Left, Right, Up, Down);
     }
 
     public bool Retrieve(out Vector2 vec)

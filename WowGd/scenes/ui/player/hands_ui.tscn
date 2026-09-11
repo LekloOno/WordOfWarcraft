@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://cenhb5a0iyp3m"]
 
 [ext_resource type="Script" uid="uid://d3die7shwuki7" path="res://Src/Render/Ui/Input/Impls/Worder/WorderDisplay.cs" id="1_h7dqs"]
-[ext_resource type="Script" uid="uid://d045ap703l2vq" path="res://Src/Render/Ui/Input/Impls/MoveModeUi.cs" id="1_u3203"]
+[ext_resource type="Script" uid="uid://d045ap703l2vq" path="res://Src/Render/Ui/Input/Impls/MoveMode/MoveModeUi.cs" id="1_u3203"]
 [ext_resource type="PackedScene" uid="uid://c3vb3cta8kus5" path="res://scenes/ui/player/ability/ability_container.tscn" id="2_a8tqe"]
 [ext_resource type="Script" uid="uid://d2w4iu1tv0nfb" path="res://Src/Render/Ui/Input/Impls/SelectionCombatModeUi.cs" id="2_pxu16"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="2_xr0no"]
 [ext_resource type="Script" uid="uid://dvx2j0rc8pog7" path="res://Src/Render/Ui/Input/Impls/DirectTargetUi.cs" id="3_bscv6"]
+[ext_resource type="PackedScene" uid="uid://cn8v03u1axfwi" path="res://scenes/ui/player/movement/wasd_container.tscn" id="3_u3203"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pdwa4"]
 bg_color = Color(0.18000486, 0.1800049, 0.18000478, 1)
@@ -77,10 +78,14 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
-[node name="MoveModeUi" type="Node" parent="SplitHands/FirstHandContainer/MarginContainer" unique_id=764347980 node_paths=PackedStringArray("_container", "_movementUi")]
+[node name="MoveModeUi" type="Node" parent="SplitHands/FirstHandContainer/MarginContainer" unique_id=764347980 node_paths=PackedStringArray("_container", "_movementUi", "_up", "_down", "_left", "_right")]
 script = ExtResource("1_u3203")
 _container = NodePath("../PanelContainer")
 _movementUi = NodePath("../PanelContainer/Summon/MovementAbility")
+_up = NodePath("../PanelContainer/WASD/Up")
+_down = NodePath("../PanelContainer/WASD/HBoxContainer/Down")
+_left = NodePath("../PanelContainer/WASD/HBoxContainer/Left")
+_right = NodePath("../PanelContainer/WASD/HBoxContainer/Right")
 metadata/_custom_type_script = "uid://d045ap703l2vq"
 
 [node name="PanelContainer" type="MarginContainer" parent="SplitHands/FirstHandContainer/MarginContainer" unique_id=652040232]
@@ -115,7 +120,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
 
-[node name="Z" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=1973575121 instance=ExtResource("2_a8tqe")]
+[node name="Up" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=1469888641 instance=ExtResource("3_u3203")]
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=30540964]
@@ -123,14 +128,17 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Q" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1085229094 instance=ExtResource("2_a8tqe")]
+[node name="Left" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1262633889 instance=ExtResource("3_u3203")]
 layout_mode = 2
+_direction = 2
 
-[node name="S" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=117663297 instance=ExtResource("2_a8tqe")]
+[node name="Down" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1928656782 instance=ExtResource("3_u3203")]
 layout_mode = 2
+_direction = 1
 
-[node name="D" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1568067698 instance=ExtResource("2_a8tqe")]
+[node name="Right" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1010706032 instance=ExtResource("3_u3203")]
 layout_mode = 2
+_direction = 3
 
 [node name="SecondHandContainer" type="PanelContainer" parent="SplitHands" unique_id=1738595673]
 layout_mode = 2

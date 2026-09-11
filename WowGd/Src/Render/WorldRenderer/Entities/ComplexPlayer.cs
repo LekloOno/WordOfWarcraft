@@ -2,6 +2,7 @@ using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Player;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Input.Impls;
+using WowGd.Src.Render.Ui.Input.Impls.MoveMode;
 using WowGd.Src.Render.Ui.Input.Impls.Worder;
 
 namespace WowGd.Src.Render.WorldRenderer.Entities;
