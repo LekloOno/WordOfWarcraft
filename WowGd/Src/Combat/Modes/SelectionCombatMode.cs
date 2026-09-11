@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities;
 using WowGd.Src.Entities;
@@ -12,12 +13,19 @@ namespace WowGd.Src.Combat.Modes;
 /// Abilities themselves might however be tied to specific trigger behaviors, like dactylography actions.
 /// </summary>
 [GlobalClass]
-public partial class SelectionCombatMode : CombatMode
+public partial class SelectionCombatMode : CombatMode, IInitializable
 {
     private IEntity _entity = null!;
     private readonly List<IAbility> _abilities = [];
     private readonly List<IAbility> _activeAbilities = [];
     public IReadOnlyList<IAbility> Abilities => _abilities;
+
+    private readonly TaskCompletionSource _initialized =
+        new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    public Task Initialization => _initialized.Task;
+
+
     public override void _Ready()
     {
         this.GetComponents(_abilities);
@@ -28,6 +36,7 @@ public partial class SelectionCombatMode : CombatMode
         _entity = entity;
 
         Enable();
+        _initialized.TrySetResult();
     }
 
     public bool Select(int index)
