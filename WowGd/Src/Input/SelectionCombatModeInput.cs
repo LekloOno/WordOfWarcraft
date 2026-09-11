@@ -8,24 +8,28 @@ namespace WowGd.Src.Input;
 [GlobalClass]
 public partial class SelectionCombatModeInput : Node, ISecondHandInputMode, IListenableHandInputMode
 {
-    [Export] private SelectionCombatMode _mode = null!;
+    [Export] public SelectionCombatMode Mode { get; private set; } = null!;
 
     private bool _active;
 
     public event Action? InputStarted;
     public event Action? InputStopped;
+    public event Action? InputPushed;
+    public event Action? InputRemoved;
+
 
     public override void _Ready()
     {
-        HandsInputManager.TryPushSecondHandMode(this);
+        if (HandsInputManager.TryPushSecondHandMode(this))
+            InputPushed?.Invoke();
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
     {
-        if (_mode.HasActive())
+        if (Mode.HasActive())
         {
             if (@event.IsActionPressed("ability_cancel"))
-                _mode.Unselect(0);  // ad-hoc, this is wip, this would suppose no one else is interracting with the selection
+                Mode.Unselect(0);  // ad-hoc, this is wip, this would suppose no one else is interracting with the selection
             return;
         }
 
@@ -33,7 +37,7 @@ public partial class SelectionCombatModeInput : Node, ISecondHandInputMode, ILis
             return;
 
         if (@event.TryGetAbilityIndex(out int index))
-            _mode.Select(index);
+            Mode.Select(index);
     }
 
     public bool CanStart() => true;
