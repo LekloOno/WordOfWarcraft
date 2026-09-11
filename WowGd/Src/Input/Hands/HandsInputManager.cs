@@ -23,6 +23,12 @@ public static class HandsInputManager
     private static readonly List<IFirstHandInputMode> _firstHand = [];
     private static readonly List<ISecondHandInputMode> _secondHand = [];
 
+    public static IReadOnlyList<IFirstHandInputMode> FirstHand => _firstHand;
+    public static IReadOnlyList<ISecondHandInputMode> SecondHand => _secondHand;
+
+    public static event Action<IHandInputMode>? ModeStarted;
+    public static event Action<IHandInputMode>? ModeStopped;
+
     public static bool TryPushFirstHandMode(IFirstHandInputMode mode)
     {
         if (mode is ITwoHandedInputMode)
@@ -146,9 +152,9 @@ public static class HandsInputManager
         foreach (var m in toStart) if (!m.CanStart())
             return false;
 
-        foreach (var m in toStop) m.Stop();
+        foreach (var m in toStop) { m.Stop(); ModeStopped?.Invoke(m); }
         onCommit();
-        foreach (var m in toStart) m.Start();
+        foreach (var m in toStart) { m.Start(); ModeStarted?.Invoke(m); }
         return true;
     }
 
