@@ -1,5 +1,6 @@
 using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Input;
+using WowGd.Src.Physics.Movement;
 
 namespace WowGd.Src.Entities;
 
@@ -10,4 +11,5 @@ public interface IClientEntity : IEntity
 {
     PlayerDactyloDriver         DactyloDriver       { get; }
     SelectionCombatModeInput    SelectionModeInput  { get; }
+    MoveModeInput               MoveModeInput       { get; }
 }

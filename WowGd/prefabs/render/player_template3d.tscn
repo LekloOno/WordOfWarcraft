@@ -7,11 +7,12 @@
 [sub_resource type="ViewportTexture" id="ViewportTexture_n78br"]
 viewport_path = NodePath("SubViewport")
 
-[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_healthBar") instance=ExtResource("2_n78br")]
+[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_moveModeUi", "_healthBar") instance=ExtResource("2_n78br")]
 script = ExtResource("2_cgjug")
 _worder = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/TwoHands/WorderDisplay")
 _selectionCombatModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/MarginContainer/SelectionCombatModeUi")
 _directTargetModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/DirectTargetUi")
+_moveModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/MoveModeUi")
 _healthBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HealthBarContainer/HealthBar")
 
 [node name="PlayerUi2" parent="." index="0" unique_id=1593580968 instance=ExtResource("3_n78br")]

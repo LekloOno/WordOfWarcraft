@@ -17,6 +17,9 @@ public partial class ComplexPlayer : SimpleDude
     [Export]
     private DirectTargetUi? _directTargetModeUi;
 
+    [Export]
+    private MoveModeUi? _moveModeUi;
+
     public override bool InitSpec(IEntity entity)
     {
         if (entity is not IClientEntity clientEntity)
@@ -34,6 +37,9 @@ public partial class ComplexPlayer : SimpleDude
 
             _directTargetModeUi.TargetDriver = pDriver;
         }
+
+        if (_moveModeUi != null)
+            _moveModeUi.MoveModeInput = clientEntity.MoveModeInput;
 
         return base.InitSpec(entity);
     }

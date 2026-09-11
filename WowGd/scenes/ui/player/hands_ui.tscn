@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://cenhb5a0iyp3m"]
 
-[ext_resource type="Script" uid="uid://d3die7shwuki7" path="res://Src/Render/Ui/Worder/WorderDisplay.cs" id="1_h7dqs"]
-[ext_resource type="Script" uid="uid://d2w4iu1tv0nfb" path="res://Src/Render/Ui/Input/SelectionCombatModeUi.cs" id="2_pxu16"]
+[ext_resource type="Script" uid="uid://d3die7shwuki7" path="res://Src/Render/Ui/Input/Impls/Worder/WorderDisplay.cs" id="1_h7dqs"]
+[ext_resource type="Script" uid="uid://d045ap703l2vq" path="res://Src/Render/Ui/Input/Impls/MoveModeUi.cs" id="1_u3203"]
+[ext_resource type="PackedScene" uid="uid://c3vb3cta8kus5" path="res://scenes/ui/player/ability/ability_container.tscn" id="2_a8tqe"]
+[ext_resource type="Script" uid="uid://d2w4iu1tv0nfb" path="res://Src/Render/Ui/Input/Impls/SelectionCombatModeUi.cs" id="2_pxu16"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="2_xr0no"]
-[ext_resource type="Script" uid="uid://dvx2j0rc8pog7" path="res://Src/Render/Ui/Input/DirectTargetUi.cs" id="3_bscv6"]
-[ext_resource type="PackedScene" uid="uid://c3vb3cta8kus5" path="res://scenes/ui/player/ability/ability_container.tscn" id="3_gk4il"]
+[ext_resource type="Script" uid="uid://dvx2j0rc8pog7" path="res://Src/Render/Ui/Input/Impls/DirectTargetUi.cs" id="3_bscv6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pdwa4"]
 bg_color = Color(0.18000486, 0.1800049, 0.18000478, 1)
@@ -42,7 +43,7 @@ metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 bg_color = Color(0.11372549, 0.11372549, 0.11372549, 0.44705883)
 
 [node name="HandUi" type="MarginContainer" unique_id=1311631644]
-custom_minimum_size = Vector2(400, 100)
+custom_minimum_size = Vector2(400, 160)
 custom_maximum_size = Vector2(800, 200)
 anchors_preset = 15
 anchor_right = 1.0
@@ -76,6 +77,61 @@ theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 5
 
+[node name="MoveModeUi" type="Node" parent="SplitHands/FirstHandContainer/MarginContainer" unique_id=764347980 node_paths=PackedStringArray("_container", "_movementUi")]
+script = ExtResource("1_u3203")
+_container = NodePath("../PanelContainer")
+_movementUi = NodePath("../PanelContainer/Summon/MovementAbility")
+metadata/_custom_type_script = "uid://d045ap703l2vq"
+
+[node name="PanelContainer" type="MarginContainer" parent="SplitHands/FirstHandContainer/MarginContainer" unique_id=652040232]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 12
+
+[node name="Summon" type="VBoxContainer" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer" unique_id=2040582624]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/Summon" unique_id=547200251]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Dodge" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/Summon/HBoxContainer" unique_id=327440919 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+
+[node name="Lock" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/Summon/HBoxContainer" unique_id=1875090053 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+
+[node name="MovementAbility" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/Summon" unique_id=1523569054 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="WASD" type="VBoxContainer" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer" unique_id=1885711284]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="Z" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=1973575121 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=30540964]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Q" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1085229094 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+
+[node name="S" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=117663297 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+
+[node name="D" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1568067698 instance=ExtResource("2_a8tqe")]
+layout_mode = 2
+
 [node name="SecondHandContainer" type="PanelContainer" parent="SplitHands" unique_id=1738595673]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -91,41 +147,50 @@ theme_override_constants/margin_bottom = 5
 
 [node name="SelectionCombatModeUi" type="Node" parent="SplitHands/SecondHandContainer/MarginContainer" unique_id=1590346106 node_paths=PackedStringArray("_abilitiesContainer")]
 script = ExtResource("2_pxu16")
-_abilitiesContainer = NodePath("../AbilitiesContainer")
+_abilitiesContainer = NodePath("../MarginContainer/AbilitiesContainer")
 metadata/_custom_type_script = "uid://d2w4iu1tv0nfb"
 
-[node name="AbilitiesContainer" type="GridContainer" parent="SplitHands/SecondHandContainer/MarginContainer" unique_id=469560539]
+[node name="MarginContainer" type="MarginContainer" parent="SplitHands/SecondHandContainer/MarginContainer" unique_id=1572086000]
 layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 15
+
+[node name="AbilitiesContainer" type="GridContainer" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer" unique_id=469560539]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 columns = 5
 
-[node name="AbilityContainer" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=977881292 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=1882033528 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer2" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=327440919 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer2" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=137433285 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer3" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1944140568 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer3" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=295366097 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer4" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1860171050 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer4" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=538600083 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer5" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=435173183 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer5" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=489384013 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer6" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=181211166 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer6" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=1678655744 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer7" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1841165267 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer7" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=38751726 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer8" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=2046676821 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer8" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=1843565882 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer9" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=305480506 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer9" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=1920800012 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
-[node name="AbilityContainer10" parent="SplitHands/SecondHandContainer/MarginContainer/AbilitiesContainer" unique_id=1873097915 instance=ExtResource("3_gk4il")]
+[node name="AbilityContainer10" parent="SplitHands/SecondHandContainer/MarginContainer/MarginContainer/AbilitiesContainer" unique_id=732975120 instance=ExtResource("2_a8tqe")]
 layout_mode = 2
 
 [node name="DirectTargetUi" type="Node" parent="SplitHands/SecondHandContainer" unique_id=1410443815]

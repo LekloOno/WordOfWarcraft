@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="20_n74k2"]
 [ext_resource type="Script" uid="uid://c273v4avjawkx" path="res://Src/Input/SelectionCombatModeInput.cs" id="24_q6ayx"]
 [ext_resource type="Script" uid="uid://fqpr1dnee5y2" path="res://Src/Physics/Movement/MoveModeInput.cs" id="25_376r3"]
+[ext_resource type="Texture2D" uid="uid://c6l3cnukhrcn1" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_13.png" id="29_35prk"]
 [ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="31_iq7xp"]
 [ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="32_p8c7m"]
 [ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="33_mftsw"]
@@ -113,6 +114,7 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
 [sub_resource type="Resource" id="Resource_175km"]
 script = ExtResource("52_tbman")
+Icon = ExtResource("29_35prk")
 CoolDown = 1500
 TargetingLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_ehr82")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
@@ -454,10 +456,11 @@ position = Vector2(0.515, 4.895)
 [node name="Body" parent="Physics/Entity5" index="0" unique_id=1471660406]
 position = Vector2(5.32, 2.845)
 
-[node name="Player" type="Node" parent="Physics" unique_id=162077607 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput")]
+[node name="Player" type="Node" parent="Physics" unique_id=162077607 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput", "MoveModeInput")]
 script = ExtResource("11_cgmg2")
 DactyloDriver = NodePath("PlayerDactyloDriver")
 SelectionModeInput = NodePath("SelectionCombatModeInput")
+MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
 IdData = SubResource("Resource_nwaa2")
 TeamMask = 1
 

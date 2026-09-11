@@ -2,7 +2,7 @@ using Godot;
 using WowGd.Src.Combat.Abilities;
 using WowGd.Src.Input;
 
-namespace WowGd.Src.Render.Ui.Input;
+namespace WowGd.Src.Render.Ui.Input.Impls;
 
 [GlobalClass]
 public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
@@ -42,6 +42,20 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
     {
         if (abilityIndex.TryGetAbilityFirstKey(out string key))
             _inputLabel.Text = key;
+    }
+
+    public void SetInput(string actionName)
+    {
+        foreach (var @event in InputMap.ActionGetEvents(actionName))
+        {
+            if (@event is InputEventKey keyEvent)
+            {
+                GD.Print("me");
+                _inputLabel.Text = keyEvent.LocalizedKeyName();
+                GD.Print(_inputLabel.Text);
+                return;
+            }
+        }
     }
 
     public override void _Ready()

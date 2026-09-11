@@ -9,7 +9,7 @@ namespace WowGd.Src.Physics.Movement;
 public partial class MoveMode : Node
 {
 	private BodyMover _mover = null!;
-	private IAbility? _movementAbility;
+	public IAbility? MovementAbility { get; private set; }
 	private IEntity _entity = null!;
 
 	public bool Enabled => _enabled;
@@ -30,7 +30,7 @@ public partial class MoveMode : Node
 			return;
 
 		if (this.TryGetComponent(out IAbility? movementAbility))
-			_movementAbility = movementAbility;
+			MovementAbility = movementAbility;
 
 		_active = true;
 		DoEnable();
@@ -38,7 +38,7 @@ public partial class MoveMode : Node
 
 	public void StartMovementAbility()
 	{
-		_movementAbility?.Start(_entity);
+		MovementAbility?.Start(_entity);
 	}
 
 	public void Lock()
@@ -66,12 +66,12 @@ public partial class MoveMode : Node
 	private void DoEnable()
 	{
 		_mover.Enable();
-		_movementAbility?.Enable();
+		MovementAbility?.Enable();
 	}
 
 	private void DoDisable()
 	{
 		_mover.Disable();
-		_movementAbility?.Disable();
+		MovementAbility?.Disable();
 	}
 }

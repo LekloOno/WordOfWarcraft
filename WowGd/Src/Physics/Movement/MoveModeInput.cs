@@ -10,7 +10,7 @@ namespace WowGd.Src.Physics.Movement;
 public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandInputMode
 {
     private IEntity _entity = null!;
-    private MoveMode _mode = null!;
+    public MoveMode Mode { get; private set; } = null!;
 
     public event Action? InputStarted;
     public event Action? InputStopped;
@@ -23,7 +23,7 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
     public override async void _Ready()
     {
         if (this.TryGetComposed(out MoveMode? mode))
-            _mode = mode;
+            Mode = mode;
 
         if (!this.TryGetComposedRecursive(out IEntity? entity))
             return;
@@ -52,10 +52,10 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
     public override void _UnhandledKeyInput(InputEvent @event)
     {
         if (@event.IsMovementAbilityPressed())
-            _mode.StartMovementAbility();
+            Mode.StartMovementAbility();
         else if (@event.IsLockingPressed())
-            _mode.Lock();
+            Mode.Lock();
         else if (@event.IsDodgingPressed())
-            _mode.Dodge();
+            Mode.Dodge();
     }
 }
