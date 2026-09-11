@@ -2,9 +2,44 @@
 
 [ext_resource type="PackedScene" uid="uid://cenhb5a0iyp3m" path="res://scenes/ui/player/hands_ui.tscn" id="1_qjxtb"]
 [ext_resource type="PackedScene" uid="uid://c3vb3cta8kus5" path="res://scenes/ui/player/ability/ability_container.tscn" id="3_gk4il"]
+[ext_resource type="PackedScene" uid="uid://cdfr1ddgxwdf6" path="res://prefabs/render/health/standard_resource_bar.tscn" id="4_h7dqs"]
 [ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/render/health/health_bar.tscn" id="4_tfaou"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_846yy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xr0no"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gk4il"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tfaou"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j03ro"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
 
 [node name="PlayerUi" type="Control" unique_id=1593580968]
 layout_mode = 3
@@ -35,15 +70,30 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 10
 
+[node name="Up" parent="MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" parent_id_path=PackedInt32Array(839347118, 1885711284) index="0" unique_id=1469888641]
+_pressedStyle = SubResource("StyleBoxFlat_xr0no")
+
+[node name="Left" parent="MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(839347118, 30540964) index="0" unique_id=1262633889]
+_pressedStyle = SubResource("StyleBoxFlat_gk4il")
+
+[node name="Down" parent="MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(839347118, 30540964) index="1" unique_id=1928656782]
+_pressedStyle = SubResource("StyleBoxFlat_tfaou")
+
+[node name="Right" parent="MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(839347118, 30540964) index="2" unique_id=1010706032]
+_pressedStyle = SubResource("StyleBoxFlat_j03ro")
+
 [node name="SelectionCombatModeUi" parent="MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/MarginContainer" parent_id_path=PackedInt32Array(839347118, 35026675) index="0" unique_id=1590346106]
 _cellUiTemplate = ExtResource("3_gk4il")
 
-[node name="HealthBarContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer" unique_id=537550551]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=275248594]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_846yy")
+alignment = 1
 
-[node name="HealthBar" parent="MarginContainer/VBoxContainer/HealthBarContainer" unique_id=1048134132 instance=ExtResource("4_tfaou")]
+[node name="HealthBar" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1048134132 instance=ExtResource("4_tfaou")]
 custom_maximum_size = Vector2(400, 100)
+layout_mode = 2
+
+[node name="Focus" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1899683689 instance=ExtResource("4_h7dqs")]
 layout_mode = 2
 
 [editable path="MarginContainer/VBoxContainer/HandUi"]

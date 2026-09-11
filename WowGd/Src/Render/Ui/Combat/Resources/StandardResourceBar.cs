@@ -1,10 +1,12 @@
 using Godot;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
+using WowGd.Src.Combat.Resources.FocusRes;
 
 namespace WowGd.Src.Render.Ui.Combat.Health;
 
 [GlobalClass]
-public partial class HealthBar : Control, IEntityHealthHandler
+public partial class StandardResourceBar : Control, IStandardResourceHandler
 {
     [Export] private ProgressBar _body = null!;
     [Export] private ProgressBar _tail = null!;
@@ -12,11 +14,11 @@ public partial class HealthBar : Control, IEntityHealthHandler
     [Export] private Tween.TransitionType _tailAnimation;
 
     private Tween? _tailTween;
-    private IEntityHealth _health = null!;
+    private IStandardResource _resource = null!;
 
     public override void _Ready()
     {
-        if (_health != null)
+        if (_resource != null)
             Init();
     }
 
@@ -25,20 +27,20 @@ public partial class HealthBar : Control, IEntityHealthHandler
         _tailTween?.Kill();
 
         _body.MinValue = _tail.MinValue = 0f;
-        _body.MaxValue = _tail.MaxValue = _health.MaxHps;
-        _body.Value = _tail.Value = _health.CurrentHps;
+        _body.MaxValue = _tail.MaxValue = _resource.Max;
+        _body.Value = _tail.Value = _resource.Current;
     }
 
-    public void SetHealth(IEntityHealth health)
+    public void SetResource(IStandardResource resource)
     {
-        if (_health == health)
+        if (_resource == resource)
             return;
 
-        if (_health != null)
-            this.Unbind(_health);
+        if (_resource != null)
+            this.Unbind(_resource);
 
-        _health = health;
-        this.Bind(_health);
+        _resource = resource;
+        this.Bind(_resource);
 
         _tailTween?.Kill();
 
@@ -46,7 +48,7 @@ public partial class HealthBar : Control, IEntityHealthHandler
             Init();
     }
 
-    public void Damage(float currentHealth)
+    public void Consume(float currentHealth)
     {
         _body.Value = currentHealth;
 
@@ -55,7 +57,7 @@ public partial class HealthBar : Control, IEntityHealthHandler
         _tailTween.TweenProperty(_tail, "value", _body.Value, _tailSpeed).SetTrans(_tailAnimation);
     }
 
-    public void Heal(float currentHealth)
+    public void Generate(float currentHealth)
     {
         _body.Value = currentHealth;
 
@@ -67,14 +69,9 @@ public partial class HealthBar : Control, IEntityHealthHandler
         _tailTween.TweenProperty(_tail, "value", _body.Value, _tailSpeed).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
     }
 
-    public void OnDied() {}
+    public void OnConsumed(int rp) =>
+        Consume(_resource.Current);
 
-    public void OnDamaged(int hp) =>
-        Damage(_health.CurrentHps);
-
-    public void OnHealed(int hp) =>
-        Heal(_health.CurrentHps);
-
-    public void OnResurrected(int hp) =>
-        Heal(_health.CurrentHps);
+    public void OnGenerated(int rp) =>
+        Generate(_resource.Current);
 }

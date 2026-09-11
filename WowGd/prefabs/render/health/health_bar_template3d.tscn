@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://byd256lw7uyjm"]
 
 [ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/render/health/health_bar.tscn" id="1_ilny6"]
+[ext_resource type="PackedScene" uid="uid://cdfr1ddgxwdf6" path="res://prefabs/render/health/standard_resource_bar.tscn" id="2_foam2"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_evht8"]
 viewport_path = NodePath("SubViewport")
@@ -13,4 +14,22 @@ texture = SubResource("ViewportTexture_evht8")
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1568086297]
 transparent_bg = true
 
-[node name="HealthBar" parent="SubViewport" unique_id=1048134132 instance=ExtResource("1_ilny6")]
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport" unique_id=578920617]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -34.0
+offset_right = 128.0
+offset_bottom = 34.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="HealthBar" parent="SubViewport/VBoxContainer" unique_id=1048134132 instance=ExtResource("1_ilny6")]
+layout_mode = 2
+
+[node name="FocusBar" parent="SubViewport/VBoxContainer" unique_id=1899683689 instance=ExtResource("2_foam2")]
+layout_mode = 2

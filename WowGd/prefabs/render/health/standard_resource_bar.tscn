@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://cdfr1ddgxwdf6"]
+
+[ext_resource type="Script" uid="uid://k0vjeqmns3cm" path="res://Src/Render/Ui/Combat/Resources/StandardResourceBar.cs" id="1_llosa"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eurhh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqnaj"]
+bg_color = Color(0, 0, 0, 0.34509805)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_30skv"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_175km"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lswdd"]
+bg_color = Color(0.26420894, 0.51368487, 0.9147746, 1)
+
+[node name="ResourceBar" type="PanelContainer" unique_id=1899683689 node_paths=PackedStringArray("_body", "_tail")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -16.0
+offset_right = 128.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_eurhh")
+script = ExtResource("1_llosa")
+_body = NodePath("Body")
+_tail = NodePath("Tail")
+_tailSpeed = 0.5
+_tailAnimation = 6
+
+[node name="Tail" type="ProgressBar" parent="." unique_id=1316591671]
+custom_minimum_size = Vector2(256, 32)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_xqnaj")
+theme_override_styles/fill = SubResource("StyleBoxFlat_30skv")
+value = 65.63
+show_percentage = false
+
+[node name="Body" type="ProgressBar" parent="." unique_id=514407313]
+custom_minimum_size = Vector2(256, 32)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_175km")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lswdd")
+value = 34.24
+show_percentage = false

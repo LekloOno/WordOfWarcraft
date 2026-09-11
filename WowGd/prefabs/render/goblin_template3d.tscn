@@ -27,10 +27,11 @@ outer_radius = 0.534
 rings = 8
 ring_segments = 8
 
-[node name="EntityRender3D2" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager", "_directTargetUi")]
+[node name="EntityRender3D2" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_focusBar", "_damageIndicatorManager", "_directTargetUi")]
 script = ExtResource("1_hiiaf")
 _bodySprite = NodePath("BodySprite")
-_healthBar = NodePath("HealthBar/SubViewport/HealthBar")
+_healthBar = NodePath("HealthBar/SubViewport/VBoxContainer/HealthBar")
+_focusBar = NodePath("HealthBar/SubViewport/VBoxContainer/FocusBar")
 _damageIndicatorManager = NodePath("DamageIndicatorManager")
 _directTargetUi = NodePath("DirectTargetUi3D")
 

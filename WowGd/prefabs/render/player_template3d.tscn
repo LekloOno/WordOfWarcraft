@@ -4,22 +4,71 @@
 [ext_resource type="PackedScene" uid="uid://tb2k4gfi3asl" path="res://prefabs/render/entity_template3d.tscn" id="2_n78br"]
 [ext_resource type="PackedScene" uid="uid://dhrx2ownhc8cd" path="res://scenes/ui/player/player_ui_v2.tscn" id="3_n78br"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_n78br"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n78br"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgjug"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nwaa2"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5444"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_d0vlm"]
 viewport_path = NodePath("SubViewport")
 
-[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_moveModeUi", "_healthBar") instance=ExtResource("2_n78br")]
+[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_moveModeUi", "_healthBar", "_focusBar") instance=ExtResource("2_n78br")]
 script = ExtResource("2_cgjug")
 _worder = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/TwoHands/WorderDisplay")
 _selectionCombatModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/MarginContainer/SelectionCombatModeUi")
 _directTargetModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/DirectTargetUi")
 _moveModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/MoveModeUi")
-_healthBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HealthBarContainer/HealthBar")
+_healthBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HBoxContainer/HealthBar")
+_focusBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HBoxContainer/Focus")
 
 [node name="PlayerUi2" parent="." index="0" unique_id=1593580968 instance=ExtResource("3_n78br")]
 
+[node name="Up" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" parent_id_path=PackedInt32Array(1593580968, 839347118, 1885711284) index="0" unique_id=1469888641]
+_pressedStyle = SubResource("StyleBoxFlat_n78br")
+
+[node name="Left" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="0" unique_id=1262633889]
+_pressedStyle = SubResource("StyleBoxFlat_cgjug")
+
+[node name="Down" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="1" unique_id=1928656782]
+_pressedStyle = SubResource("StyleBoxFlat_nwaa2")
+
+[node name="Right" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="2" unique_id=1010706032]
+_pressedStyle = SubResource("StyleBoxFlat_k5444")
+
 [node name="HealthBar" parent="." index="3" unique_id=650881374]
 visible = false
-texture = SubResource("ViewportTexture_n78br")
+texture = SubResource("ViewportTexture_d0vlm")
 
 [editable path="PlayerUi2"]
 [editable path="PlayerUi2/MarginContainer/VBoxContainer/HandUi"]
