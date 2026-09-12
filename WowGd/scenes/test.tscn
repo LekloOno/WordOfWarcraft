@@ -58,7 +58,6 @@
 [ext_resource type="Script" uid="uid://xxo1vwasspl1" path="res://Src/Combat/Abilities/Targeting/TargetRules/TargetRule.cs" id="49_osnag"]
 [ext_resource type="Texture2D" uid="uid://ins4kvbqcwu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_29.png" id="50_2ixbo"]
 [ext_resource type="Script" uid="uid://dpigjmfyxn2c0" path="res://Src/Combat/Abilities/Actuators/WordActuatorData.cs" id="50_vqdru"]
-[ext_resource type="Script" uid="uid://c6jyw40ovrpfh" path="res://Src/Combat/Abilities/LoopRules/AlwaysLoopRule.cs" id="51_2ixbo"]
 [ext_resource type="Script" uid="uid://d2qv3p843380o" path="res://Src/Combat/Abilities/LoopRules/LoopRule.cs" id="51_tnm51"]
 [ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilityData.cs" id="52_tbman"]
 [ext_resource type="Script" uid="uid://do3m8sny4khm" path="res://Src/Combat/Abilities/CasterRules/ResourceRules/Types/CasterFocusRule.cs" id="55_osnag"]
@@ -202,62 +201,20 @@ script = ExtResource("50_vqdru")
 _actuationType = 1
 metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 
+[sub_resource type="Resource" id="Resource_68ewr"]
+script = ExtResource("42_cgmg2")
+_alive = false
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
 [sub_resource type="Resource" id="Resource_1urli"]
 script = ExtResource("52_tbman")
 Id = "oui"
 Icon = ExtResource("45_eokji")
+CoolDown = 10000
+TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_68ewr")])
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_y8o6s")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_n11rl")])
-metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
-
-[sub_resource type="Resource" id="Resource_3w526"]
-script = ExtResource("43_xsg57")
-_target = 7
-metadata/_custom_type_script = "uid://beoj5s7ccateg"
-
-[sub_resource type="Resource" id="Resource_80m0l"]
-script = ExtResource("47_eixnv")
-metadata/_custom_type_script = "uid://b2utcesxdrfuh"
-
-[sub_resource type="Resource" id="Resource_hpsc0"]
-script = ExtResource("48_68ewr")
-metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
-
-[sub_resource type="Resource" id="Resource_tgrws"]
-script = ExtResource("44_8nvs4")
-TriggerDt = SubResource("Resource_hpsc0")
-GathererDt = SubResource("Resource_80m0l")
-EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_3w526")])
-metadata/_custom_type_script = "uid://diy1f0p7da221"
-
-[sub_resource type="Resource" id="Resource_g2gmo"]
-script = ExtResource("42_35prk")
-EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_tgrws")])
-metadata/_custom_type_script = "uid://ckalqjavqpd37"
-
-[sub_resource type="Resource" id="Resource_1d0gi"]
-script = ExtResource("50_vqdru")
-_actuationType = 1
-metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
-
-[sub_resource type="Resource" id="Resource_c05ib"]
-script = ExtResource("51_2ixbo")
-metadata/_custom_type_script = "uid://c6jyw40ovrpfh"
-
-[sub_resource type="Resource" id="Resource_4amwq"]
-script = ExtResource("42_cgmg2")
-metadata/_custom_type_script = "uid://tr6yt483fw7q"
-
-[sub_resource type="Resource" id="Resource_nwu0k"]
-script = ExtResource("52_tbman")
-Id = "oui"
-Icon = ExtResource("47_8nvs4")
-TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_4amwq")])
-TargetIntentAcquirer = 2
-ActuatorDt = SubResource("Resource_1d0gi")
-ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_g2gmo")])
-LoopRulesDt = Array[ExtResource("51_tnm51")]([SubResource("Resource_c05ib")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
 [sub_resource type="Resource" id="Resource_23ucx"]
@@ -290,7 +247,7 @@ script = ExtResource("50_vqdru")
 _actuationType = 1
 metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 
-[sub_resource type="Resource" id="Resource_68ewr"]
+[sub_resource type="Resource" id="Resource_elqqf"]
 script = ExtResource("52_tbman")
 Id = "oui"
 Icon = ExtResource("50_2ixbo")
@@ -299,9 +256,61 @@ ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_uig8
 LoopRulesDt = Array[ExtResource("51_tnm51")]([ExtResource("40_xsg57")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
-[sub_resource type="Resource" id="Resource_itbbc"]
+[sub_resource type="Resource" id="Resource_3t5ks"]
 script = ExtResource("55_osnag")
 Amount = 10.0
+Comparison = 2
+metadata/_custom_type_script = "uid://do3m8sny4khm"
+
+[sub_resource type="Resource" id="Resource_4amwq"]
+script = ExtResource("42_cgmg2")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_3w526"]
+script = ExtResource("43_xsg57")
+_target = 7
+metadata/_custom_type_script = "uid://beoj5s7ccateg"
+
+[sub_resource type="Resource" id="Resource_gwri7"]
+script = ExtResource("49_8nvs4")
+_focus = -10.0
+_launcher = true
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_80m0l"]
+script = ExtResource("47_eixnv")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_hpsc0"]
+script = ExtResource("48_68ewr")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_tgrws"]
+script = ExtResource("44_8nvs4")
+TriggerDt = SubResource("Resource_hpsc0")
+GathererDt = SubResource("Resource_80m0l")
+EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_3w526"), SubResource("Resource_gwri7")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_g2gmo"]
+script = ExtResource("42_35prk")
+EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_tgrws")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_nwu0k"]
+script = ExtResource("52_tbman")
+Id = "oui"
+Icon = ExtResource("47_8nvs4")
+CoolDown = 1000
+StartPreconditionsDt = Array[ExtResource("43_eokji")]([SubResource("Resource_3t5ks")])
+TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_4amwq")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_g2gmo")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_itbbc"]
+script = ExtResource("55_osnag")
+Amount = 20.0
 Comparison = 2
 metadata/_custom_type_script = "uid://do3m8sny4khm"
 
@@ -311,14 +320,14 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 
 [sub_resource type="Resource" id="Resource_yuwb2"]
 script = ExtResource("49_8nvs4")
-_focus = -10.0
+_focus = -20.0
 _launcher = true
 metadata/_custom_type_script = "uid://cb1glnpals704"
 
 [sub_resource type="Resource" id="Resource_xfgcb"]
 script = ExtResource("46_uig8d")
 _hp = 35.0
-_target = 7
+_target = 4
 metadata/_custom_type_script = "uid://ctj8xarphtj3u"
 
 [sub_resource type="Resource" id="Resource_vs3tm"]
@@ -665,14 +674,14 @@ script = ExtResource("41_1urli")
 _data = SubResource("Resource_1urli")
 metadata/_custom_type_script = "uid://djomokhsknkk0"
 
+[node name="FocusMode" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=40905122]
+script = ExtResource("41_1urli")
+_data = SubResource("Resource_elqqf")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
 [node name="HealSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=501677173]
 script = ExtResource("41_1urli")
 _data = SubResource("Resource_nwu0k")
-metadata/_custom_type_script = "uid://djomokhsknkk0"
-
-[node name="FocusMode" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=40905122]
-script = ExtResource("41_1urli")
-_data = SubResource("Resource_68ewr")
 metadata/_custom_type_script = "uid://djomokhsknkk0"
 
 [node name="FocusAttack" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=719257606]
