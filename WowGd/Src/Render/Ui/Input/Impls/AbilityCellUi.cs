@@ -1,5 +1,6 @@
 using Godot;
 using WowGd.Src.Combat.Abilities;
+using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Input;
 
 namespace WowGd.Src.Render.Ui.Input.Impls;
@@ -59,18 +60,21 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
     public override void _Ready()
     {
         _cooldownLayer.Value = 0f;
+        SetPhysicsProcess(false);
     }
 
     public void SetActive()
     {
         _unactiveLayer.Hide();
         _inputLabel.Show();
+        SetPhysicsProcess(_ability.Data.StartPreconditions.Count > 0);
     }
 
     public void SetUnactive()
     {
         _inputLabel.Hide();
         _unactiveLayer.Show();
+        SetPhysicsProcess(false);
     }
 
     public void OnCancelled() { }
@@ -92,5 +96,12 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
         _cooldownTween?.Kill();
 
         _cooldownLayer.Value = 0f;
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        // LAZY ALERT - client info entity, it's late, im tired, i should have a proper referencing instead
+        // Besides, we should later find a better event based mechanism.
+        _unactiveLayer.Visible = !_ability.Data.StartPreconditions.CheckAll(ClientInfo.Entity);
     }
 }
