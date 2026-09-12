@@ -2,6 +2,7 @@ using Godot;
 using WowGd.Src.Combat.Resources.FocusRes;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Combat.Health;
+using WowGd.Src.Render.Ui.Combat.Resource;
 
 namespace WowGd.Src.Render.WorldRenderer.Entities;
 

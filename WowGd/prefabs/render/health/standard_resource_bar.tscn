@@ -1,8 +1,16 @@
 [gd_scene format=3 uid="uid://cdfr1ddgxwdf6"]
 
 [ext_resource type="Script" uid="uid://k0vjeqmns3cm" path="res://Src/Render/Ui/Combat/Resources/StandardResourceBar.cs" id="1_llosa"]
+[ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="2_8j82x"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_eurhh"]
+
+[sub_resource type="Resource" id="Resource_68ewr"]
+script = ExtResource("2_8j82x")
+AnimationTime = 0.3
+TransitionType = 3
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xqnaj"]
 bg_color = Color(0, 0, 0, 0.34509805)
@@ -34,6 +42,7 @@ _body = NodePath("Body")
 _tail = NodePath("Tail")
 _tailSpeed = 0.5
 _tailAnimation = 6
+_bodyTweenSettings = SubResource("Resource_68ewr")
 
 [node name="Tail" type="ProgressBar" parent="." unique_id=1316591671]
 custom_minimum_size = Vector2(256, 32)

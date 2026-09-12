@@ -1,9 +1,9 @@
 using Godot;
-using WowGd.Src.Combat.Health;
 using WowGd.Src.Combat.Resources;
 using WowGd.Src.Combat.Resources.FocusRes;
+using WowGd.Src.Render.Animation.TweenTools;
 
-namespace WowGd.Src.Render.Ui.Combat.Health;
+namespace WowGd.Src.Render.Ui.Combat.Resource;
 
 [GlobalClass]
 public partial class StandardResourceBar : Control, IStandardResourceHandler
@@ -12,8 +12,10 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
     [Export] private ProgressBar _tail = null!;
     [Export] private float _tailSpeed;
     [Export] private Tween.TransitionType _tailAnimation;
+    [Export] private TweenSettings _bodyTweenSettings = null!;
 
     private Tween? _tailTween;
+    private Tween? _bodyTween;
     private IStandardResource _resource = null!;
 
     public override void _Ready()
@@ -50,23 +52,34 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
 
     public void Consume(float currentHealth)
     {
-        _body.Value = currentHealth;
+        //_bodyTween?.Kill();
+
+        //_body.Value = currentHealth;
 
         _tailTween?.Kill();
         _tailTween = CreateTween();
-        _tailTween.TweenProperty(_tail, "value", _body.Value, _tailSpeed).SetTrans(_tailAnimation);
+        _tailTween.TweenProperty(_tail, "value", currentHealth, _tailSpeed).SetTrans(_tailAnimation);
+
+        _bodyTween?.Kill();
+
+        _bodyTween = CreateTween();
+        _bodyTweenSettings.TweenProperty(_bodyTween, _body, currentHealth, "value");
     }
 
     public void Generate(float currentHealth)
     {
-        _body.Value = currentHealth;
-
         _tailTween?.Kill();
 
         _tail.Value = Mathf.Max(_tail.Value, _body.Value);
 
         _tailTween = CreateTween();
-        _tailTween.TweenProperty(_tail, "value", _body.Value, _tailSpeed).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
+        _tailTween.TweenProperty(_tail, "value", currentHealth, _tailSpeed).SetTrans(Tween.TransitionType.Linear).SetEase(Tween.EaseType.InOut);
+
+
+        _bodyTween?.Kill();
+
+        _bodyTween = CreateTween();
+        _bodyTweenSettings.TweenProperty(_bodyTween, _body, currentHealth, "value");
     }
 
     public void OnConsumed(int rp) =>
