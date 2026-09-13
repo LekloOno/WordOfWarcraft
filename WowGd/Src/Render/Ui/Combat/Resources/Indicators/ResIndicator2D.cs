@@ -3,11 +3,12 @@ using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Render.Animation.TweenTools;
 
-namespace WowGd.Src.Render.Ui.Combat.Health;
+namespace WowGd.Src.Render.Ui.Combat.Resources.Indicators;
 
-[GlobalClass]
-public partial class DamageIndicator2D : Label, IDamageIndicator
+public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
+    where T: IResIndicatorColor
 {
+    [Export] private Label          _label = null!;
     [Export] private Vector2        _startScale;
     [Export] private Vector2        _randomOffsetRange = new (0.5f, 0.5f);
     [Export] private float          _gravity = 9.81f;
@@ -19,15 +20,11 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
     [Export] private float _holdDelay = 0.5f;
     [Export] private TweenSettings  _fadeOutSettings  = null!;
 
-    [Export] private DamageIndicatorColor _allyColors = null!;
-    [Export] private DamageIndicatorColor _selfColors = null!;
-    [Export] private DamageIndicatorColor _enemyColors = null!;
+    public abstract IResIndicatorRelationColors<T> RelationColors { get; }
 
-    private DamageIndicatorColor _activeColors = null!;
+    protected T _activeColors = default!;
 
     [Export] private Curve _scaleCurve = null!;
-    [Export] private float _deadScale       = 1f;
-    [Export] private float _resurrectScale  = 1f;
 
     private Tween? _scaleTween;
     private Tween? _fadeTween;
@@ -35,32 +32,20 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
 
     private Vector3 _worldPosition;
 
-    public void OnDamaged(int hp)
+    public void SetText(string text) => _label.Text = text;
+
+    public void OnConsumed(int rp)
     {
-        Text = $"{hp}";
-        Modulate = _activeColors.DamageColor;
-        StartAnimation(_scaleCurve.Sample(hp));
+        SetText($"-{rp}");
+        Modulate = _activeColors.ConsumedColor;
+        StartAnimation(_scaleCurve.Sample(rp));
     }
 
-    public void OnDied()
+    public void OnGenerated(int rp)
     {
-        Text = "Dead";
-        Modulate = _activeColors.DeadColor;
-        StartAnimation(_deadScale);
-    }
-
-    public void OnHealed(int hp)
-    {
-        Text = $"{hp}";
-        Modulate = _activeColors.HealColor;
-        StartAnimation(_scaleCurve.Sample(hp));
-    }
-
-    public void OnResurrected(int hp)
-    {
-        Text = "Resurrected";
-        Modulate = _activeColors.ResColor;
-        StartAnimation(_resurrectScale);
+        SetText($"{rp}");
+        Modulate = _activeColors.GeneratedColor;
+        StartAnimation(_scaleCurve.Sample(rp));
     }
 
     public override void _Process(double delta)
@@ -83,15 +68,15 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
 
     private Vector2 _velocity;
 
-    private void StartAnimation(float targetScale)
+    protected void StartAnimation(float targetScale)
     {
         _velocity = InitVelocity();
         
         Scale = _startScale;
         
-        Color selfMod = SelfModulate;
-        selfMod.A = 0f;
-        SelfModulate = selfMod;
+        Color mod = Modulate;
+        mod.A = 0f;
+        Modulate = mod;
 
         _scaleTween?.Kill();
         _fadeTween?.Kill();
@@ -105,12 +90,12 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
         float rot = (float)_rotateInSettings.Value!.Value * rotDir;
 
         _scaleInSettings.TweenProperty( _scaleTween,    this, propertyPath: "scale", value: Vector2.One * targetScale);
-        _fadeInSettings.TweenProperty(  _fadeTween,     this, propertyPath: "self_modulate:a");
+        _fadeInSettings.TweenProperty(  _fadeTween,     this, propertyPath: "modulate:a");
         _rotateInSettings.TweenProperty(_rotateTween,   this, propertyPath: "rotation_degrees", value: rot);
 
         _fadeTween.TweenInterval(_holdDelay);
         
-        _fadeOutSettings.TweenProperty( _fadeTween,     this, propertyPath: "self_modulate:a");
+        _fadeOutSettings.TweenProperty( _fadeTween,     this, propertyPath: "modulate:a");
 
         _fadeTween.Finished += QueueFree;
     }
@@ -140,14 +125,6 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
         _worldPosition.Y += (Random.Shared.NextSingle() - 0.5f) * _randomOffsetRange.Y;
     }
 
-    public void SetClientRelation(TargetRelation relation)
-    {
-        _activeColors = relation switch
-        {
-            TargetRelation.Self => _selfColors,
-            TargetRelation.Ally => _allyColors,
-            TargetRelation.Enemy => _enemyColors,
-            _ => _enemyColors,
-        };
-    }
+    public void SetClientRelation(TargetRelation relation) =>
+        _activeColors = RelationColors.GetColor(relation);
 }

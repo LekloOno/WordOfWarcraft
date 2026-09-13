@@ -1,7 +1,7 @@
 using Godot;
 using WowGd.Src.Combat.Health;
 
-namespace WowGd.Src.Render.Ui.Combat.Health;
+namespace WowGd.Src.Render.Ui.Combat.Resources.Bars;
 
 [GlobalClass]
 public partial class HealthBar : Control, IEntityHealthHandler
@@ -69,10 +69,10 @@ public partial class HealthBar : Control, IEntityHealthHandler
 
     public void OnDied() {}
 
-    public void OnDamaged(int hp) =>
+    public void OnConsumed(int hp) =>
         Damage(_health.CurrentHps);
 
-    public void OnHealed(int hp) =>
+    public void OnGenerated(int hp) =>
         Heal(_health.CurrentHps);
 
     public void OnResurrected(int hp) =>

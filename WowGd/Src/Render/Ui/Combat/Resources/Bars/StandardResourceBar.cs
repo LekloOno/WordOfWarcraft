@@ -3,7 +3,7 @@ using WowGd.Src.Combat.Resources;
 using WowGd.Src.Combat.Resources.FocusRes;
 using WowGd.Src.Render.Animation.TweenTools;
 
-namespace WowGd.Src.Render.Ui.Combat.Resource;
+namespace WowGd.Src.Render.Ui.Combat.Resources.Bars;
 
 [GlobalClass]
 public partial class StandardResourceBar : Control, IStandardResourceHandler

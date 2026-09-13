@@ -12,6 +12,6 @@ public partial class CombatModeHealthHandler : HealthHandler<CombatMode>
     public override void OnDied() =>
         _component.Disable();
 
-    public override void OnDamaged(int hp) {}
-    public override void OnHealed(int hp) {}
+    public override void OnConsumed(int hp) {}
+    public override void OnGenerated(int hp) {}
 }

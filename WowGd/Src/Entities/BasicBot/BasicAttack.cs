@@ -51,8 +51,8 @@ public partial class BasicAttack : Node, IEntityHealthHandler
         SetPhysicsProcess(false);
     }
 
-    public void OnDamaged(int hp) {}
-    public void OnHealed(int hp) {}
+    public void OnConsumed(int hp) {}
+    public void OnGenerated(int hp) {}
 
     public void OnResurrected(int hp)
     {

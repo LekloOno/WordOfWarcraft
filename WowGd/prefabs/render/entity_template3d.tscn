@@ -7,12 +7,15 @@
 [ext_resource type="Texture2D" uid="uid://bohr8qp6rgkk" path="res://assets/sprites/entities/player.png" id="5_qy43x"]
 [ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="6_4ekfy"]
 [ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="7_3cnwx"]
-[ext_resource type="Script" uid="uid://by1fhpgvvgq5o" path="res://Src/Render/Ui/Combat/Health/DamageIndicatorManager.cs" id="8_5u01r"]
+[ext_resource type="Script" uid="uid://b11rsu4oqoyxp" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/DamageIndicatorManager.cs" id="8_5u01r"]
+[ext_resource type="Script" uid="uid://b1430s7qxuwa6" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/ResourceIndicatorSuperManager.cs" id="8_b1sg3"]
 [ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="9_2fntv"]
 [ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="10_ck4kr"]
+[ext_resource type="Script" uid="uid://d3rcq5hxburvo" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/FocusIndicatorManager.cs" id="11_6rdus"]
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="11_w2bcy"]
+[ext_resource type="PackedScene" uid="uid://cnfhvc3f4cdqq" path="res://prefabs/render/indicators/focus_indicator2d.tscn" id="12_qy43x"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ohnyp"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_4ekfy"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_175km"]
@@ -31,11 +34,10 @@ outer_radius = 0.534
 rings = 8
 ring_segments = 8
 
-[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_damageIndicatorManager", "_directTargetUi")]
+[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_indicatorSuperManager", "_directTargetUi")]
 script = ExtResource("1_ohnyp")
 _bodySprite = NodePath("BodySprite")
-_healthBar = NodePath("HealthBar/SubViewport/HealthBar")
-_damageIndicatorManager = NodePath("DamageIndicatorManager")
+_indicatorSuperManager = NodePath("ResourceIndicatorSuperManager")
 _directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="TweenAnimator" type="Node" parent="." unique_id=448642881 node_paths=PackedStringArray("Target")]
@@ -52,13 +54,22 @@ script = ExtResource("6_4ekfy")
 
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("7_3cnwx")]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_ohnyp")
+texture = SubResource("ViewportTexture_4ekfy")
 
-[node name="DamageIndicatorManager" type="Node3D" parent="." unique_id=121784553]
+[node name="ResourceIndicatorSuperManager" type="Node3D" parent="." unique_id=924827885]
+script = ExtResource("8_b1sg3")
+metadata/_custom_type_script = "uid://b1430s7qxuwa6"
+
+[node name="DamageIndicatorManager" type="Node3D" parent="ResourceIndicatorSuperManager" unique_id=121784553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource("8_5u01r")
 _indicator = ExtResource("9_2fntv")
-metadata/_custom_type_script = "uid://by1fhpgvvgq5o"
+
+[node name="FocusIndicatorManager" type="Node3D" parent="ResourceIndicatorSuperManager" unique_id=1475631406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("11_6rdus")
+_indicator = ExtResource("12_qy43x")
+metadata/_custom_type_script = "uid://d3rcq5hxburvo"
 
 [node name="DirectTargetUi3D" type="Control" parent="." unique_id=1432325586 node_paths=PackedStringArray("_visibilityNotifier", "_position", "_indexLabel", "_selectedRing")]
 layout_mode = 3

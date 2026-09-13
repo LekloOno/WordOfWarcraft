@@ -12,8 +12,8 @@ public partial class MoverHealthHandler : HealthHandler<BodyMover>
         set => _component = value;
     }
 
-    public override void OnDamaged(int hp) {}
-    public override void OnHealed(int hp) {}
+    public override void OnConsumed(int hp) {}
+    public override void OnGenerated(int hp) {}
 
     public override void OnResurrected(int hp) =>
         Mover.Enable();

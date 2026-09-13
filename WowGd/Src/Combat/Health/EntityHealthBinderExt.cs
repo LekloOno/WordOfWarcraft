@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Combat.Resources;
 
 namespace WowGd.Src.Combat.Health;
 
@@ -10,16 +11,16 @@ public static class EntityHealthBinderExt
     public static void Bind(this IEntityHealthHandler handler, IEntityHealth health)
     {
         health.Died         += handler.OnDied;
-        health.Damaged      += handler.OnDamaged;
-        health.Healed       += handler.OnHealed;
+        health.Damaged      += handler.OnConsumed;
+        health.Healed       += handler.OnGenerated;
         health.Resurrected  += handler.OnResurrected;
     }
 
     public static void Unbind(this IEntityHealthHandler handler, IEntityHealth health)
     {
         health.Died         -= handler.OnDied;
-        health.Damaged      -= handler.OnDamaged;
-        health.Healed       -= handler.OnHealed;
+        health.Damaged      -= handler.OnConsumed;
+        health.Healed       -= handler.OnGenerated;
         health.Resurrected  -= handler.OnResurrected;
     }
 

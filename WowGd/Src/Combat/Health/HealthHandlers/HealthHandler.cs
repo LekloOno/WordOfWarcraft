@@ -16,8 +16,8 @@ public abstract partial class HealthHandler<T> : Node, IEntityHealthHandler
     }
 
     protected virtual void SpecReady() {}
-    public abstract void OnDamaged(int hp);
+    public abstract void OnConsumed(int hp);
     public abstract void OnDied();
-    public abstract void OnHealed(int hp);
+    public abstract void OnGenerated(int hp);
     public abstract void OnResurrected(int hp);
 }

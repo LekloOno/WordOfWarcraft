@@ -15,7 +15,7 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
             this.Bind(_health);
     }
 
-    public void OnDamaged(int hp)
+    public void OnConsumed(int hp)
     {
 		GD.Print($"Hit sent !\t {_health.CurrentHps} (-{hp})");
     }
@@ -25,7 +25,7 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
         GD.Print($"Final blow !");
     }
 
-    public void OnHealed(int hp)
+    public void OnGenerated(int hp)
     {
         GD.Print($"Healed !\t {_health.CurrentHps} (+{hp})");
     }

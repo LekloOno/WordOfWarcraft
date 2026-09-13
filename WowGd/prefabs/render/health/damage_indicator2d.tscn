@@ -1,17 +1,35 @@
 [gd_scene format=3 uid="uid://b1e2yxeffyx3c"]
 
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="1_sorfg"]
-[ext_resource type="Script" uid="uid://cmmi1f8h5kalk" path="res://Src/Render/Ui/Combat/Health/DamageIndicator2D.cs" id="2_sorfg"]
+[ext_resource type="Script" uid="uid://cmmi1f8h5kalk" path="res://Src/Render/Ui/Combat/Resources/Indicators/Health/DamageIndicator2D.cs" id="2_sorfg"]
 [ext_resource type="Script" uid="uid://d0pwdq7a28vss" path="res://Src/Render/Animation/TweenTools/Value/Vector2TweenValue.cs" id="3_sorfg"]
+[ext_resource type="Script" uid="uid://d0mdp30sa8th4" path="res://Src/Render/Ui/Combat/Resources/Indicators/Health/DamageIndicatorRelationColors.cs" id="4_gahpw"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="4_yqq3u"]
 [ext_resource type="Script" uid="uid://qoydsswh3nis" path="res://Src/Render/Animation/TweenTools/Value/FloatTweenValue.cs" id="5_kku2r"]
-[ext_resource type="Script" uid="uid://jmvr6db8j6dr" path="res://Src/Render/Ui/Combat/Health/DamageIndicatorColor.cs" id="6_thth2"]
+[ext_resource type="Script" uid="uid://jmvr6db8j6dr" path="res://Src/Render/Ui/Combat/Resources/Indicators/Health/DamageIndicatorColor.cs" id="6_thth2"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_175km"]
-font = ExtResource("1_sorfg")
-font_size = 56
-outline_size = 6
-outline_color = Color(0, 0, 0, 1)
+[sub_resource type="Resource" id="Resource_da3l0"]
+script = ExtResource("6_thth2")
+ResColor = Color(0.92941177, 0.92941177, 0.3137255, 1)
+DeadColor = Color(0.41069764, 0.046696834, 0.10339189, 1)
+ConsumedColor = Color(0.78431374, 0.09019608, 0.05882353, 1)
+GeneratedColor = Color(0.17254902, 0.70980394, 0.13725491, 1)
+metadata/_custom_type_script = "uid://jmvr6db8j6dr"
+
+[sub_resource type="Resource" id="Resource_5kurf"]
+script = ExtResource("6_thth2")
+ResColor = Color(0.92941177, 0.92941177, 0.3137255, 1)
+DeadColor = Color(0.41069764, 0.046696834, 0.10339189, 1)
+ConsumedColor = Color(1, 1, 1, 1)
+GeneratedColor = Color(0.39238524, 0.7962001, 0.33288467, 1)
+metadata/_custom_type_script = "uid://jmvr6db8j6dr"
+
+[sub_resource type="Resource" id="Resource_yg4hu"]
+script = ExtResource("4_gahpw")
+Self = SubResource("Resource_da3l0")
+Ally = SubResource("Resource_da3l0")
+Enemy = SubResource("Resource_5kurf")
+metadata/_custom_type_script = "uid://d0mdp30sa8th4"
 
 [sub_resource type="Resource" id="Resource_sorfg"]
 script = ExtResource("3_sorfg")
@@ -50,57 +68,45 @@ EaseType = 1
 Value = SubResource("Resource_kku2r")
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
-[sub_resource type="Resource" id="Resource_da3l0"]
+[sub_resource type="Resource" id="Resource_s4d4d"]
 script = ExtResource("5_kku2r")
 metadata/_custom_type_script = "uid://qoydsswh3nis"
 
 [sub_resource type="Resource" id="Resource_wcp3p"]
 script = ExtResource("4_yqq3u")
 AnimationTime = 0.4
-Value = SubResource("Resource_da3l0")
+Value = SubResource("Resource_s4d4d")
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
-
-[sub_resource type="Resource" id="Resource_xsg57"]
-script = ExtResource("6_thth2")
-DamageColor = Color(0.9490196, 0, 0, 1)
-HealColor = Color(0.38732332, 0.8333899, 0.34116867, 1)
-ResColor = Color(1, 0.9019608, 0, 1)
-DeadColor = Color(0.39106378, 4.061032e-07, 1.4439226e-07, 1)
-metadata/_custom_type_script = "uid://jmvr6db8j6dr"
-
-[sub_resource type="Resource" id="Resource_sv06i"]
-script = ExtResource("6_thth2")
-DamageColor = Color(1, 1, 1, 1)
-HealColor = Color(0.38732332, 0.8333899, 0.34116867, 1)
-ResColor = Color(1, 0.9019608, 0, 1)
-DeadColor = Color(0.39106378, 4.061032e-07, 1.4439226e-07, 1)
-metadata/_custom_type_script = "uid://jmvr6db8j6dr"
 
 [sub_resource type="Curve" id="Curve_2wdd6"]
 _limits = [0.4, 1.0, 0.0, 100.0]
 _data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(100, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[node name="DamageIndicator" type="Label" unique_id=1553857763]
+[sub_resource type="LabelSettings" id="LabelSettings_175km"]
+font = ExtResource("1_sorfg")
+font_size = 56
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" unique_id=957226034 node_paths=PackedStringArray("_label")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -45.5
-offset_right = 40.0
-offset_bottom = 45.5
+offset_left = -35.0
+offset_top = -39.5
+offset_right = 35.0
+offset_bottom = 39.5
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
-size_flags_horizontal = 6
-size_flags_vertical = 6
-text = "69"
-label_settings = SubResource("LabelSettings_175km")
-horizontal_alignment = 1
-vertical_alignment = 1
 script = ExtResource("2_sorfg")
+_relationColors = SubResource("Resource_yg4hu")
+_deadScale = 0.4
+_resurrectScale = 0.4
+_label = NodePath("DamageIndicator")
 _gravity = 6.0
 _launchStrength = 2.6
 _scaleInSettings = SubResource("Resource_thth2")
@@ -108,10 +114,13 @@ _fadeInSettings = SubResource("Resource_yqq3u")
 _rotateInSettings = SubResource("Resource_fii0t")
 _holdDelay = 0.2
 _fadeOutSettings = SubResource("Resource_wcp3p")
-_allyColors = SubResource("Resource_xsg57")
-_selfColors = SubResource("Resource_xsg57")
-_enemyColors = SubResource("Resource_sv06i")
 _scaleCurve = SubResource("Curve_2wdd6")
-_deadScale = 0.4
-_resurrectScale = 0.4
-metadata/_custom_type_script = "uid://cmmi1f8h5kalk"
+
+[node name="DamageIndicator" type="Label" parent="." unique_id=1779011724]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "69"
+label_settings = SubResource("LabelSettings_175km")
+horizontal_alignment = 1
+vertical_alignment = 1

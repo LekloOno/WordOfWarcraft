@@ -65,6 +65,6 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
         SetProcessUnhandledKeyInput(true);
     }
 
-    public void OnDamaged(int hp) {}
-    public void OnHealed(int hp) {}
+    public void OnConsumed(int hp) {}
+    public void OnGenerated(int hp) {}
 }

@@ -1,9 +1,9 @@
+using WowGd.Src.Combat.Resources;
+
 namespace WowGd.Src.Combat.Health;
 
-public interface IEntityHealthHandler
+public interface IEntityHealthHandler : IStandardResourceHandler
 {
     void OnDied();
-    void OnDamaged(int hp);
-    void OnHealed(int hp);
     void OnResurrected(int hp);
 }
