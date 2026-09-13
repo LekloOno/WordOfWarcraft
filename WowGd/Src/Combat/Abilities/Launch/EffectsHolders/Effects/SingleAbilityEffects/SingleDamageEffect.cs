@@ -19,5 +19,5 @@ public partial class SingleDamageEffect : SingleAbilityEffect
         Damage(entity, actuateWeight);
 
     private void Damage(IEntity entity, float size) =>
-        entity.Health.Damage(Mathf.FloorToInt(_hp * size));
+        entity.Health.Consume(Mathf.FloorToInt(_hp * size), out _);
 }

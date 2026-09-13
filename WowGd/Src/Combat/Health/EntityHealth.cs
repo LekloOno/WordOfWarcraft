@@ -6,14 +6,15 @@ namespace WowGd.Src.Combat.Health;
 [GlobalClass]
 public partial class EntityHealth : Node, IEntityHealth
 {
-    [Export] public int MaxHps { get; private set; } = 50;
+    [Export] public int Base { get; private set; } = 50;
+    public int Max => Base;
 
-    public event Action<int>?   Damaged;
-    public event Action<int>?   Healed;
+    public event Action<int>?   Consumed;
+    public event Action<int>?   Generated;
     public event Action?        Died;
     public event Action<int>?   Resurrected;
 
-    public int CurrentHps { get; private set; }
+    public int Current { get; private set; }
 
     public bool Resurrect(int? hp = null)
     {
@@ -24,46 +25,54 @@ public partial class EntityHealth : Node, IEntityHealth
         if (hp == 0)
             return false;
 
-        hp ??= MaxHps;
-        CurrentHps = (int)hp;
+        hp ??= Max;
+        Current = (int)hp;
 
-        Resurrected?.Invoke(CurrentHps);
+        Resurrected?.Invoke(Current);
 
         return true;
     }
 
-    public bool Damage(int hp)
+    public bool Consume(int hp, out int overflow)
     {
+        overflow = hp;
+
         if (Dead())
             return true;
 
         if (hp <= 0)
             return false;
 
-        CurrentHps -= hp;
-        Damaged?.Invoke(hp);
+        int consumed = Math.Min(hp, Current);
+        overflow = hp - consumed;
+        Current -= consumed;
+
+        Consumed?.Invoke(hp);
 
         bool dead = Dead();
-        if (dead)
+        if (Dead())
             Died?.Invoke();
 
-        return dead;
+        return !dead;
     }
 
-    public bool Heal(int hp)
+    public bool Generate(int hp, out int overflow)
     {
+        overflow = hp;
         if (Dead())
             return false;
 
         if (hp <= 0)
             return false;
 
-        int max  = MaxHps - CurrentHps;
-        int heal = Math.Min(max, hp);
-        CurrentHps += heal;
-        Healed?.Invoke(hp);
+        int generated = Math.Min(hp, Max - Current);
+        overflow = hp - generated;
+        Current += generated;
+
+        Generated?.Invoke(hp);
+        
         return true;
     }
 
-    public bool Dead() => CurrentHps <= 0;
+    public bool Dead() => Current <= 0;
 }

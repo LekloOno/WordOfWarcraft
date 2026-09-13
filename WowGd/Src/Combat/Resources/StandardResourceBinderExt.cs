@@ -1,4 +1,4 @@
-namespace WowGd.Src.Combat.Resources.FocusRes;
+namespace WowGd.Src.Combat.Resources;
 
 public static class StandardResourceBinderExt
 {

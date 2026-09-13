@@ -6,16 +6,25 @@ public class EnvironmentHealth : IEntityHealth
 {
     public readonly static EnvironmentHealth Instance = new();
 
-    public int MaxHps => 0;
-    public int CurrentHps => 0;
+    public int Base => 0;
+    public int Max => 0;
+    public int Current => 0;
 
-    public event Action<int>?   Damaged;
-    public event Action<int>?   Healed;
+    public event Action<int>?   Consumed;
+    public event Action<int>?   Generated;
     public event Action?        Died;
     public event Action<int>?   Resurrected;
 
-    public bool Damage(int hp) => false;
     public bool Dead() => false;
-    public bool Heal(int hp) => false;
     public bool Resurrect(int? hp) => false;
+    public bool Consume(int hp, out int overflow)
+    {
+        overflow = hp;
+        return false;
+    }
+    public bool Generate(int hp, out int overflow)
+    {
+        overflow = hp;
+        return false;
+    }
 }

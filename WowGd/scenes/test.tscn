@@ -593,7 +593,7 @@ metadata/_custom_type_script = "uid://dbfmamo6b7xia"
 
 [node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=110375331]
 script = ExtResource("9_n74k2")
-MaxHps = 100
+Base = 100
 metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 
 [node name="BodyMover" type="Node" parent="Physics/Player" unique_id=1844309947]

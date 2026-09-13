@@ -11,17 +11,17 @@ public static class EntityHealthBinderExt
     public static void Bind(this IEntityHealthHandler handler, IEntityHealth health)
     {
         health.Died         += handler.OnDied;
-        health.Damaged      += handler.OnConsumed;
-        health.Healed       += handler.OnGenerated;
         health.Resurrected  += handler.OnResurrected;
+
+        (handler as IStandardResourceHandler).Bind(health);
     }
 
     public static void Unbind(this IEntityHealthHandler handler, IEntityHealth health)
     {
         health.Died         -= handler.OnDied;
-        health.Damaged      -= handler.OnConsumed;
-        health.Healed       -= handler.OnGenerated;
         health.Resurrected  -= handler.OnResurrected;
+
+        (handler as IStandardResourceHandler).Unbind(health);
     }
 
     public static void BindChildren(this Node self, IEntityHealth health)

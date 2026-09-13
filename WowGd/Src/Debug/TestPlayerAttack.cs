@@ -45,14 +45,14 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
         foreach (IEntity target in targets)
-            target.Health.Heal(_hp);
+            target.Health.Generate(_hp, out _);
     }
 
     private void Attack()
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
         foreach (IEntity target in targets)
-            target.Health.Damage(_hp);
+            target.Health.Consume(_hp, out _);
     }
 
     public void OnDied()

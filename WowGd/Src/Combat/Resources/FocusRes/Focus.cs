@@ -29,7 +29,7 @@ public partial class Focus : Node, IFocus
 
     public bool Generate(int fp, out int overflow)
     {
-        int generated = Math.Min(fp, Base - Current);
+        int generated = Math.Min(fp, Max - Current);
         overflow = fp - generated;
         Current += generated;
 

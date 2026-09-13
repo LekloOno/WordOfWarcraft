@@ -17,7 +17,7 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
 
     public void OnConsumed(int hp)
     {
-		GD.Print($"Hit sent !\t {_health.CurrentHps} (-{hp})");
+		GD.Print($"Hit sent !\t {_health.Current} (-{hp})");
     }
 
     public void OnDied()
@@ -27,11 +27,11 @@ public partial class EntityHealthLogger : Node, IEntityHealthHandler
 
     public void OnGenerated(int hp)
     {
-        GD.Print($"Healed !\t {_health.CurrentHps} (+{hp})");
+        GD.Print($"Healed !\t {_health.Current} (+{hp})");
     }
 
     public void OnResurrected(int hp)
     {
-        GD.Print($"Resurrected.\t hp: {_health.CurrentHps}");
+        GD.Print($"Resurrected.\t hp: {_health.Current}");
     }
 }

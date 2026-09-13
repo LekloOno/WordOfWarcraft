@@ -19,5 +19,5 @@ public partial class SingleHealEffect : SingleAbilityEffect
         Heal(entity, actuateWeight);
 
     private void Heal(IEntity entity, float size) =>
-        entity.Health.Heal(Mathf.FloorToInt(_hp * size));
+        entity.Health.Generate(Mathf.FloorToInt(_hp * size), out _);
 }

@@ -42,7 +42,7 @@ public partial class BasicAttack : Node, IEntityHealthHandler
         if ((_entity.Body.GlobalPosition - target.Body.GlobalPosition).LengthSquared() > _attackRange * _attackRange)
             return;
 
-        target.Health.Damage(_attackDmg);
+        target.Health.Consume(_attackDmg, out _);
         _acc = 0f;
     }
 

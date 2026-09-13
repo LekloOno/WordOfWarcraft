@@ -25,8 +25,8 @@ public partial class HealthBar : Control, IEntityHealthHandler
         _tailTween?.Kill();
 
         _body.MinValue = _tail.MinValue = 0f;
-        _body.MaxValue = _tail.MaxValue = _health.MaxHps;
-        _body.Value = _tail.Value = _health.CurrentHps;
+        _body.MaxValue = _tail.MaxValue = _health.Max;
+        _body.Value = _tail.Value = _health.Current;
     }
 
     public void SetHealth(IEntityHealth health)
@@ -70,11 +70,11 @@ public partial class HealthBar : Control, IEntityHealthHandler
     public void OnDied() {}
 
     public void OnConsumed(int hp) =>
-        Damage(_health.CurrentHps);
+        Damage(_health.Current);
 
     public void OnGenerated(int hp) =>
-        Heal(_health.CurrentHps);
+        Heal(_health.Current);
 
     public void OnResurrected(int hp) =>
-        Heal(_health.CurrentHps);
+        Heal(_health.Current);
 }

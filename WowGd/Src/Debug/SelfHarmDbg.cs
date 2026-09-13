@@ -15,9 +15,9 @@ public partial class SelfHarmDbg : Node
 		if (@event is InputEventKey keyEvent && keyEvent.Pressed)
 		{
 			if (keyEvent.Keycode == Key.O)
-				_health.Damage(_damageHp);
+				_health.Consume(_damageHp, out _);
 			else if (keyEvent.Keycode == Key.P)
-				_health.Heal(_healHp);
+				_health.Generate(_healHp, out _);
 			else if (keyEvent.Keycode == Key.R)
 				_health.Resurrect();
 		}
