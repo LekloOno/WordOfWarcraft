@@ -13,6 +13,42 @@ bg_color = Color(0.18000486, 0.1800049, 0.18000478, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8tqe"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u3203"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mnrok"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lr1kx"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e3pcc"]
+resource_local_to_scene = true
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bscv6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pxu16"]
@@ -122,6 +158,7 @@ size_flags_vertical = 8
 
 [node name="Up" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=1469888641 instance=ExtResource("3_u3203")]
 layout_mode = 2
+_pressedStyle = SubResource("StyleBoxFlat_u3203")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" unique_id=30540964]
 layout_mode = 2
@@ -131,14 +168,17 @@ size_flags_vertical = 4
 [node name="Left" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1262633889 instance=ExtResource("3_u3203")]
 layout_mode = 2
 _direction = 2
+_pressedStyle = SubResource("StyleBoxFlat_mnrok")
 
 [node name="Down" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1928656782 instance=ExtResource("3_u3203")]
 layout_mode = 2
 _direction = 1
+_pressedStyle = SubResource("StyleBoxFlat_lr1kx")
 
 [node name="Right" parent="SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" unique_id=1010706032 instance=ExtResource("3_u3203")]
 layout_mode = 2
 _direction = 3
+_pressedStyle = SubResource("StyleBoxFlat_e3pcc")
 
 [node name="SecondHandContainer" type="PanelContainer" parent="SplitHands" unique_id=1738595673]
 layout_mode = 2

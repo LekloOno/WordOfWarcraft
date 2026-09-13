@@ -153,9 +153,16 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 
 	private void FadeLine(float yPos)
 	{
+		if (_returnOffsetTween != null)
+		{
+			LineFaded();
+			_returnOffsetTween.Finished -= LineFaded;
+			_returnOffsetTween.Kill();
+		}
+
 		_fadingLine = BuildLine(yPos, out float nextYPos, out int fadedChildren);
-		AddChild(_fadingLine);
-		MoveChild(_fadingLine, 0);
+		ControlNode.AddChild(_fadingLine);
+		ControlNode.MoveChild(_fadingLine, 0);
 
 		_idx -= fadedChildren;
 		LineOffset = nextYPos - yPos;
@@ -165,12 +172,6 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 		_lineFadeTween = CreateTween();
 
 		_lineFadeSettings.TweenProperty(_lineFadeTween, _fadingLine, 0f, "modulate:a");
-
-		if (_returnOffsetTween != null)
-		{
-			_returnOffsetTween.Finished -= LineFaded;
-			_returnOffsetTween.Kill();
-		}
 
 		_returnOffsetTween = CreateTween();
 		_returnOffsetTween.Finished += LineFaded;
@@ -183,6 +184,7 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 	{
 		_lineFadeTween?.Kill();
 		_fadingLine?.QueueFree();
+		_fadingLine = null;
 		LineOffset = 0;
 	}
 
@@ -195,6 +197,9 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 		{
 			OffsetTransformEnabled = true,
 			Alignment = BoxContainer.AlignmentMode.Center,
+			SizeFlagsHorizontal = _wordsContainer.SizeFlagsHorizontal,
+			SizeFlagsVertical = _wordsContainer.SizeFlagsVertical,
+			CustomMinimumSize = _wordsContainer.CustomMinimumSize,
 		};
 
 		foreach (Node node in _wordsContainer.GetChildren())
@@ -253,13 +258,6 @@ public partial class WorderDisplay : Node, IPlayerDactyloDriverHandler, IWordHan
 
 	public void OnWordCompleted(WordRequest req, Word word)
 	{
-		UpdateCursor(-1);
-
-		float yPos;
-		if (_wordsContainer.GetChild(0) is Control control &&
-			(yPos = control.GlobalPosition.Y) != _current?.GlobalPosition.Y)
-			FadeLine(yPos);
-
 		StartNext();
 	}
 
