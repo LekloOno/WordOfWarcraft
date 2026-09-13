@@ -9,6 +9,10 @@ namespace WowGd.Src.Render.Ui.Combat.Health;
 public partial class DamageIndicator2D : Label, IDamageIndicator
 {
     [Export] private Vector2        _startScale;
+    [Export] private Vector2        _randomOffsetRange = new (0.5f, 0.5f);
+    [Export] private float          _gravity = 9.81f;
+    [Export] private float          _launchStrength = 3.5f;
+    [Export] private float          _launchAngleRange = 100f;
     [Export] private TweenSettings  _scaleInSettings  = null!;
     [Export] private TweenSettings  _fadeInSettings   = null!;
     [Export] private TweenSettings  _rotateInSettings = null!;
@@ -67,8 +71,22 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
         Position -= Size/2f;
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+        float dt = (float) delta;
+
+        _velocity -= Vector2.Down * _gravity * dt;
+
+        _worldPosition.X += _velocity.X * dt;
+        _worldPosition.Y += _velocity.Y * dt;
+    }
+
+    private Vector2 _velocity;
+
     private void StartAnimation(float targetScale)
     {
+        _velocity = InitVelocity();
+        
         Scale = _startScale;
         
         Color selfMod = SelfModulate;
@@ -97,9 +115,29 @@ public partial class DamageIndicator2D : Label, IDamageIndicator
         _fadeTween.Finished += QueueFree;
     }
 
+    private Vector2 InitVelocity()
+    {
+        if (_launchStrength == 0f)
+            return Vector2.Zero;
+
+        if (_launchAngleRange == 0f)
+            return Vector2.Up * _launchStrength;
+        
+        float angle = (Random.Shared.NextSingle() - 0.5f) * _launchAngleRange;
+        angle = Mathf.DegToRad(angle);
+
+        return new Vector2(
+            Mathf.Sin(angle) * _launchStrength,
+            Mathf.Cos(angle) * _launchStrength
+        );
+    }
+
     public void SetWorldPosition(Vector3 worldPosition)
     {
         _worldPosition = worldPosition;
+
+        _worldPosition.X += (Random.Shared.NextSingle() - 0.5f) * _randomOffsetRange.X;
+        _worldPosition.Y += (Random.Shared.NextSingle() - 0.5f) * _randomOffsetRange.Y;
     }
 
     public void SetClientRelation(TargetRelation relation)
