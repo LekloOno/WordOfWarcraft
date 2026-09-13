@@ -537,6 +537,8 @@ script = ExtResource("7_44saj")
 [node name="SelfHarmDbg" type="Node" parent="Debug" unique_id=1375118869 node_paths=PackedStringArray("_health")]
 script = ExtResource("9_si7kk")
 _health = NodePath("../../Physics/Player/EntityHealth")
+_damageHp = 0
+_healHp = 0
 metadata/_custom_type_script = "uid://bl5jmlur1ki7n"
 
 [node name="WrittenInputIntercept" type="Node" parent="Debug" unique_id=488728365]

@@ -26,7 +26,10 @@ public partial class EntityHealth : Node, IEntityHealth
             return false;
 
         hp ??= Max;
-        Current = (int)hp;
+        if (hp is int target)
+            Current = Mathf.Min(target, Max);
+        else
+            Current = Max;
 
         Resurrected?.Invoke(Current);
 
@@ -70,7 +73,7 @@ public partial class EntityHealth : Node, IEntityHealth
         Current += generated;
 
         Generated?.Invoke(hp);
-        
+
         return true;
     }
 
