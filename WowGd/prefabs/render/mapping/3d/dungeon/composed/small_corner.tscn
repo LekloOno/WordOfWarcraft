@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://bjhxqdprwd4dv"]
+
+[ext_resource type="PackedScene" uid="uid://c4y535uxrwc17" path="res://prefabs/render/mapping/3d/dungeon/gate_metal.tscn" id="2_c0udv"]
+[ext_resource type="PackedScene" uid="uid://btwfryg8s1n0s" path="res://prefabs/render/mapping/3d/dungeon/pillar.tscn" id="3_5mi5c"]
+[ext_resource type="PackedScene" uid="uid://co38ay6oqhytf" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor.glb" id="3_cq2aq"]
+
+[node name="SmallCorner3" type="Node3D" unique_id=1368827673]
+
+[node name="template-floor10" parent="." unique_id=1374157066 instance=ExtResource("3_cq2aq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="template-floor20" parent="." unique_id=1266374688 instance=ExtResource("3_cq2aq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+
+[node name="template-floor22" parent="." unique_id=327937795 instance=ExtResource("3_cq2aq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+
+[node name="template-floor21" parent="." unique_id=1860382790 instance=ExtResource("3_cq2aq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)
+
+[node name="GateMetal" parent="." unique_id=1146017403 instance=ExtResource("2_c0udv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 8)
+
+[node name="GateMetal2" parent="." unique_id=515000623 instance=ExtResource("2_c0udv")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, 6)
+
+[node name="Pillar5" parent="." unique_id=11397589 instance=ExtResource("3_5mi5c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
+
+[node name="Pillar6" parent="." unique_id=1443235956 instance=ExtResource("3_5mi5c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+
+[node name="Pillar7" parent="." unique_id=1592674287 instance=ExtResource("3_5mi5c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 4)
+
+[node name="Pillar8" parent="." unique_id=182381134 instance=ExtResource("3_5mi5c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)

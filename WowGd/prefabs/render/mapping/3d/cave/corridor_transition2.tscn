@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://c5m3pbvyqme48"]
+
+[ext_resource type="PackedScene" uid="uid://dceopvvoquglg" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/corridor-transition.glb" id="1_xp4xg"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xp4xg"]
+size = Vector3(1.2, 0.5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cx01q"]
+size = Vector3(1.3000001, 0.5, 3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_06k6s"]
+size = Vector3(2, 0.5, 1)
+
+[node name="CorridorTransition2" type="Node3D" unique_id=1626204194]
+
+[node name="CollisionShape3D12" type="CollisionShape3D" parent="." unique_id=699396730]
+transform = Transform3D(1.9470721e-07, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 1.9470721e-07, -3.5, 0.25, -1.3999999)
+shape = SubResource("BoxShape3D_xp4xg")
+
+[node name="CollisionShape3D16" type="CollisionShape3D" parent="." unique_id=1857669473]
+transform = Transform3D(1.9470721e-07, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 1.9470721e-07, -3.5, 0.25, 1.4000001)
+shape = SubResource("BoxShape3D_xp4xg")
+
+[node name="CollisionShape3D11" type="CollisionShape3D" parent="." unique_id=831645643]
+transform = Transform3D(1.9470721e-07, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 1.9470721e-07, 0.5, 0.25, 3.35)
+shape = SubResource("BoxShape3D_cx01q")
+
+[node name="CollisionShape3D13" type="CollisionShape3D" parent="." unique_id=1075735037]
+transform = Transform3D(1.9470721e-07, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 1.9470721e-07, 0.49999985, 0.25, -3.35)
+shape = SubResource("BoxShape3D_cx01q")
+
+[node name="CollisionShape3D14" type="CollisionShape3D" parent="." unique_id=302915652]
+transform = Transform3D(1.9470721e-07, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 1.9470721e-07, -1.5, 0.25, 3)
+shape = SubResource("BoxShape3D_06k6s")
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="." unique_id=1790864832]
+transform = Transform3D(1.9470721e-07, 0, 1.0000001, 0, 1, 0, -1.0000001, 0, 1.9470721e-07, -1.5, 0.25, -3)
+shape = SubResource("BoxShape3D_06k6s")
+
+[node name="corridor-transition2" parent="." unique_id=1196325430 instance=ExtResource("1_xp4xg")]

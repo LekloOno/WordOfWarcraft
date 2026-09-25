@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c13h576hfme6x"]
+
+[ext_resource type="PackedScene" uid="uid://c5kfs65m4mj52" path="res://assets/placeholders/free/kenney_modular_dungeon/template-corner.glb" id="1_q12ow"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_175km"]
+size = Vector3(1.4, 0.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ea0lm"]
+size = Vector3(1.5, 0.5, 2.5)
+
+[node name="Corner" type="Node3D" unique_id=1790219014]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1071346878]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 0.25, -1.5)
+shape = SubResource("BoxShape3D_175km")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=120843009]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.5, 0.25, 1.3)
+shape = SubResource("BoxShape3D_175km")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=1002456379]
+transform = Transform3D(0.7071067, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.7071067, 0.2778174, 0.25, 0.28994945)
+shape = SubResource("BoxShape3D_ea0lm")
+
+[node name="template-corner2" parent="." unique_id=2084574319 instance=ExtResource("1_q12ow")]

@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dod8p0p0wcfns"]
+
+[ext_resource type="PackedScene" uid="uid://dyujxohwgk8m1" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-corner.glb" id="1_a1faf"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_175km"]
+size = Vector3(1.4, 0.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ea0lm"]
+size = Vector3(1.5, 0.5, 2.5)
+
+[node name="Corner" type="Node3D" unique_id=1790219014]
+
+[node name="template-corner3" parent="." unique_id=109904864 instance=ExtResource("1_a1faf")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1071346878]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.3, 0.25, -1.5)
+shape = SubResource("BoxShape3D_175km")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=120843009]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.5, 0.25, 1.3)
+shape = SubResource("BoxShape3D_175km")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=1002456379]
+transform = Transform3D(0.7071067, 0, -0.7071068, 0, 1, 0, 0.7071068, 0, 0.7071067, 0.2778174, 0.25, 0.28994945)
+shape = SubResource("BoxShape3D_ea0lm")

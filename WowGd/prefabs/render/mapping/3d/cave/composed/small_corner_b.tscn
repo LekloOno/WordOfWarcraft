@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://c6a2jpifdsr4n"]
+
+[ext_resource type="PackedScene" uid="uid://co38ay6oqhytf" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor.glb" id="1_hfc43"]
+[ext_resource type="PackedScene" uid="uid://bolibghpuro47" path="res://prefabs/render/mapping/3d/cave/wall_corner.tscn" id="2_oaf31"]
+[ext_resource type="PackedScene" uid="uid://dod8p0p0wcfns" path="res://prefabs/render/mapping/3d/cave/corner.tscn" id="3_vt1sx"]
+[ext_resource type="PackedScene" uid="uid://cufoxjok8l06v" path="res://prefabs/render/mapping/3d/cave/pillar.tscn" id="4_bsi7c"]
+
+[node name="SmallCornerB" type="Node3D" unique_id=580816296]
+
+[node name="template-floor11" parent="." unique_id=1374157066 instance=ExtResource("1_hfc43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="template-floor16" parent="." unique_id=943849698 instance=ExtResource("1_hfc43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+
+[node name="template-floor17" parent="." unique_id=1957879907 instance=ExtResource("1_hfc43")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+
+[node name="WallCorner7" parent="." unique_id=251523034 instance=ExtResource("2_oaf31")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, 6, 0, -6)
+
+[node name="WallCorner8" parent="." unique_id=355484839 instance=ExtResource("2_oaf31")]
+transform = Transform3D(1, 0, -1.7484555e-07, 0, 1, 0, 1.7484555e-07, 0, 1, 6, 0, -6)
+
+[node name="WallCorner9" parent="." unique_id=125810009 instance=ExtResource("2_oaf31")]
+transform = Transform3D(-2.1855693e-07, 0, -1, 0, 1, 0, 1, 0, -2.1855693e-07, 6, 0, -6)
+
+[node name="WallCorner22" parent="." unique_id=1645108017 instance=ExtResource("2_oaf31")]
+transform = Transform3D(-2.1855695e-07, 0, -1, 0, 1, 0, 1, 0, -2.1855695e-07, 10, 0, -1.9999995)
+
+[node name="WallCorner23" parent="." unique_id=152743313 instance=ExtResource("2_oaf31")]
+transform = Transform3D(-1, 0, 2.6226832e-07, 0, 1, 0, -2.6226832e-07, 0, -1, 10, 0, -1.9999995)
+
+[node name="WallCorner24" parent="." unique_id=1191503483 instance=ExtResource("2_oaf31")]
+transform = Transform3D(3.059797e-07, 0, 1, 0, 1, 0, -1, 0, 3.059797e-07, 10, 0, -1.9999995)
+
+[node name="Corner3" parent="." unique_id=1790219014 instance=ExtResource("3_vt1sx")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, 8, 0, -3.999999)
+
+[node name="Pillar" parent="." unique_id=11397589 instance=ExtResource("4_bsi7c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -2)

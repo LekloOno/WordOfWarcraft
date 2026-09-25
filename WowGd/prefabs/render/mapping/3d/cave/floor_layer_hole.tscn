@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://fighml8jejap"]
+
+[ext_resource type="PackedScene" uid="uid://b4gwmhlr7ha3h" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor-layer-hole.glb" id="1_ipbg2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dwgpn"]
+size = Vector3(0.4, 0.5, 0.4)
+
+[node name="FloorLayerHole" type="Node3D" unique_id=2093071720]
+
+[node name="CollisionShape3D21" type="CollisionShape3D" parent="." unique_id=1849857157]
+transform = Transform3D(-1.0000001, 0, 4.3711402e-08, 0, 1, 0, -4.3711402e-08, 0, -1.0000001, 1.500001, 0.24999976, -1.5000019)
+shape = SubResource("BoxShape3D_dwgpn")
+
+[node name="CollisionShape3D22" type="CollisionShape3D" parent="." unique_id=1387212838]
+transform = Transform3D(-1.0000001, 0, 4.3711402e-08, 0, 1, 0, -4.3711402e-08, 0, -1.0000001, 1.500001, 0.24999976, 1.4999981)
+shape = SubResource("BoxShape3D_dwgpn")
+
+[node name="CollisionShape3D23" type="CollisionShape3D" parent="." unique_id=1272609147]
+transform = Transform3D(-1.0000001, 0, 4.3711402e-08, 0, 1, 0, -4.3711402e-08, 0, -1.0000001, -1.499999, 0.24999976, 1.4999981)
+shape = SubResource("BoxShape3D_dwgpn")
+
+[node name="CollisionShape3D24" type="CollisionShape3D" parent="." unique_id=986959673]
+transform = Transform3D(-1.0000001, 0, 4.3711402e-08, 0, 1, 0, -4.3711402e-08, 0, -1.0000001, -1.499999, 0.24999976, -1.5000019)
+shape = SubResource("BoxShape3D_dwgpn")
+
+[node name="template-floor-layer-hole2" parent="." unique_id=290375625 instance=ExtResource("1_ipbg2")]
+transform = Transform3D(1, 1.4901161e-08, 1.4901161e-08, -1.4901161e-08, 1, 0, -1.4901161e-08, -2.220446e-16, 1, 0, 0, 0)

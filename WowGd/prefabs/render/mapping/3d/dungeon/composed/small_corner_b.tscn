@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bhumabsdmhg76"]
+
+[ext_resource type="PackedScene" uid="uid://co38ay6oqhytf" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor.glb" id="1_sdjqx"]
+[ext_resource type="PackedScene" uid="uid://btwfryg8s1n0s" path="res://prefabs/render/mapping/3d/dungeon/pillar.tscn" id="2_1p8xo"]
+[ext_resource type="PackedScene" uid="uid://c13h576hfme6x" path="res://prefabs/render/mapping/3d/dungeon/corner.tscn" id="3_4njfo"]
+
+[node name="SmallCornerB" type="Node3D" unique_id=580816296]
+
+[node name="template-floor11" parent="." unique_id=1374157066 instance=ExtResource("1_sdjqx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="template-floor12" parent="." unique_id=261468136 instance=ExtResource("1_sdjqx")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, 8, 0, -4)
+
+[node name="template-floor16" parent="." unique_id=943849698 instance=ExtResource("1_sdjqx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, -4)
+
+[node name="template-floor17" parent="." unique_id=1957879907 instance=ExtResource("1_sdjqx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+
+[node name="Pillar2" parent="." unique_id=11397589 instance=ExtResource("2_1p8xo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -2)
+
+[node name="Corner" parent="." unique_id=1790219014 instance=ExtResource("3_4njfo")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, -4)
+
+[node name="Pillar" parent="." unique_id=1631467443 instance=ExtResource("2_1p8xo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -2)
+
+[node name="Pillar3" parent="." unique_id=1363329520 instance=ExtResource("2_1p8xo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -6)

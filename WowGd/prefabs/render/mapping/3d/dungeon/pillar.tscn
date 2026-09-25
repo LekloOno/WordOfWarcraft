@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://btwfryg8s1n0s"]
+
+[ext_resource type="PackedScene" uid="uid://302a14cf0nvs" path="res://assets/placeholders/free/kenney_modular_dungeon/template-wall-corner.glb" id="1_pgq8m"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_63tnq"]
+height = 1.25
+radius = 1.0
+
+[node name="Pillar" type="Node3D" unique_id=11397589]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1847558552]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4901161e-08, 0.625, 0)
+shape = SubResource("CylinderShape3D_63tnq")
+
+[node name="template-wall-corner6" parent="." unique_id=1064958834 instance=ExtResource("1_pgq8m")]
+
+[node name="template-wall-corner7" parent="." unique_id=496229084 instance=ExtResource("1_pgq8m")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="template-wall-corner8" parent="." unique_id=1970677177 instance=ExtResource("1_pgq8m")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="template-wall-corner9" parent="." unique_id=1657805087 instance=ExtResource("1_pgq8m")]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, 0, 0, 0)

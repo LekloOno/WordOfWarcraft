@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://brr3jx78qi8da"]
+
+[ext_resource type="PackedScene" uid="uid://b6fs8p8isi0p3" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-wall.glb" id="1_vd6dw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vd6dw"]
+size = Vector3(1.4, 0.5, 4)
+
+[node name="Wall" type="Node3D" unique_id=686308454]
+
+[node name="CollisionShape3D8" type="CollisionShape3D" parent="." unique_id=1205494254]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -8.742277e-09, 0.25, -0.7)
+shape = SubResource("BoxShape3D_vd6dw")
+
+[node name="template-wall2" parent="." unique_id=281556569 instance=ExtResource("1_vd6dw")]

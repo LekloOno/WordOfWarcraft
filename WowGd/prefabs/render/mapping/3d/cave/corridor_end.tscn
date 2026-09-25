@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://xli6vfmirlf3"]
+
+[ext_resource type="PackedScene" uid="uid://btnpn2jbq1dta" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/corridor-end.glb" id="1_bo17k"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n57st"]
+size = Vector3(4, 0.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4c7te"]
+size = Vector3(4, 0.5, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sgubk"]
+size = Vector3(1, 0.5, 2)
+
+[node name="CorridorEnd" type="Node3D" unique_id=1756285243]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1967294326]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0.25, 1.5)
+shape = SubResource("BoxShape3D_n57st")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="." unique_id=448872046]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0.25, -1.5)
+shape = SubResource("BoxShape3D_4c7te")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="." unique_id=1798387518]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -1.5, 0.25, -1.7484558e-07)
+shape = SubResource("BoxShape3D_sgubk")
+
+[node name="corridor-end2" parent="." unique_id=484681410 instance=ExtResource("1_bo17k")]

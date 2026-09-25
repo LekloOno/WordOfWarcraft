@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bp8ohy3kalc75"]
+
+[ext_resource type="PackedScene" uid="uid://cqqrc6ensuyw4" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-detail.glb" id="1_hef1p"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_t2xld"]
+radius = 1.2
+
+[node name="Detail" type="Node3D" unique_id=1267116072]
+
+[node name="template-detail2" parent="." unique_id=1410561436 instance=ExtResource("1_hef1p")]
+
+[node name="CollisionShape3D20" type="CollisionShape3D" parent="." unique_id=621278747]
+transform = Transform3D(-1.3113419e-07, 0, -1.0000002, 0, 1, 0, 1.0000002, 0, -1.3113419e-07, 0, 0, 0)
+shape = SubResource("CylinderShape3D_t2xld")

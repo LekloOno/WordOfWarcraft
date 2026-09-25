@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://d26du6cbyaifl"]
+
+[ext_resource type="PackedScene" uid="uid://bktwra4t6ynsy" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/gate-metal-bars.glb" id="1_c4xhx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_175km"]
+size = Vector3(4.4, 0.5, 1.4)
+
+[node name="GateMetal" type="Node3D" unique_id=1146017403]
+
+[node name="gate-metal-bars2" parent="." unique_id=737796358 instance=ExtResource("1_c4xhx")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1907143997]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9604645e-08, 0.25, 5.9604645e-08)
+shape = SubResource("BoxShape3D_175km")

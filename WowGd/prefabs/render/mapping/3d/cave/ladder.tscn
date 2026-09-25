@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dyu7m1vownms8"]
+
+[ext_resource type="PackedScene" uid="uid://vasn2506ow6p" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/ladder.glb" id="1_fb7qa"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4o4w8"]
+size = Vector3(1.2, 0.5, 0.4)
+
+[node name="Ladder" type="Node3D" unique_id=386630490]
+
+[node name="CollisionShape3D25" type="CollisionShape3D" parent="." unique_id=588732440]
+transform = Transform3D(-1.0000001, 0, 4.37114e-08, 0, 1, 0, -4.37114e-08, 0, -1.0000001, 9.536743e-07, 0.25, -9.536743e-07)
+shape = SubResource("BoxShape3D_4o4w8")
+
+[node name="ladder2" parent="." unique_id=6168595 instance=ExtResource("1_fb7qa")]

@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://brv07meti1mfh"]
+
+[ext_resource type="PackedScene" uid="uid://cufoxjok8l06v" path="res://prefabs/render/mapping/3d/cave/pillar.tscn" id="1_enrlf"]
+[ext_resource type="PackedScene" uid="uid://d26du6cbyaifl" path="res://prefabs/render/mapping/3d/cave/gate_metal.tscn" id="2_rysk7"]
+[ext_resource type="PackedScene" uid="uid://co38ay6oqhytf" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor.glb" id="3_rysk7"]
+
+[node name="SmallCorner3" type="Node3D" unique_id=1368827673]
+
+[node name="Pillar4" parent="." unique_id=11397589 instance=ExtResource("1_enrlf")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4, 0, 3.9999995)
+
+[node name="Pillar" parent="." unique_id=1229164068 instance=ExtResource("1_enrlf")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, 7.999999)
+
+[node name="Pillar2" parent="." unique_id=230534328 instance=ExtResource("1_enrlf")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, 3.9999995)
+
+[node name="Pillar3" parent="." unique_id=2626186 instance=ExtResource("1_enrlf")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 4.0000005, 0, 8)
+
+[node name="GateMetal" parent="." unique_id=1146017403 instance=ExtResource("2_rysk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 8)
+
+[node name="GateMetal2" parent="." unique_id=573944164 instance=ExtResource("2_rysk7")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 8, 0, 6)
+
+[node name="template-floor10" parent="." unique_id=1374157066 instance=ExtResource("3_rysk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2)
+
+[node name="template-floor20" parent="." unique_id=1266374688 instance=ExtResource("3_rysk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 2)
+
+[node name="template-floor22" parent="." unique_id=327937795 instance=ExtResource("3_rysk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 6)
+
+[node name="template-floor21" parent="." unique_id=1860382790 instance=ExtResource("3_rysk7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 6)

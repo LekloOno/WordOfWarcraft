@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://dre5of3l0dm8n"]
+
+[ext_resource type="PackedScene" uid="uid://bd05tfldruewp" path="res://assets/placeholders/free/kenney_modular_dungeon/room-large.glb" id="1_txb8l"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_obhme"]
+radius = 1.2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_obhme"]
+size = Vector3(1.4, 0.5, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jd2i0"]
+size = Vector3(1, 0.5, 1)
+
+[node name="RoomLarge" type="Node3D" unique_id=929674137]
+
+[node name="room-large3" parent="." unique_id=29632947 instance=ExtResource("1_txb8l")]
+
+[node name="Collisions" type="Node3D" parent="." unique_id=116798698]
+
+[node name="CollisionShape3D20" type="CollisionShape3D" parent="Collisions" unique_id=201639201]
+transform = Transform3D(-1.3113419e-07, 0, -1.0000002, 0, 1, 0, 1.0000002, 0, -1.3113419e-07, 1.7000017, 0.8, -1.9499979)
+shape = SubResource("CylinderShape3D_obhme")
+
+[node name="Wall" type="Node3D" parent="Collisions" unique_id=1142858375]
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Collisions/Wall" unique_id=2013237728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3, 0.25, 4)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Collisions/Wall" unique_id=1191164812]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 4, 0.25, 9.3)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Collisions/Wall" unique_id=231584495]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 7.5, 0.25, 8.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Collisions/Wall" unique_id=1150348297]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 8.5, 0.25, 7.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="Wall2" type="Node3D" parent="Collisions" unique_id=535984894]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Collisions/Wall2" unique_id=170546112]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3, 0.25, 4)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Collisions/Wall2" unique_id=327634436]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 4, 0.25, 9.3)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Collisions/Wall2" unique_id=913866087]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 7.5, 0.25, 8.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Collisions/Wall2" unique_id=1712319124]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 8.5, 0.25, 7.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="Wall3" type="Node3D" parent="Collisions" unique_id=1829058485]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Collisions/Wall3" unique_id=965625526]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3, 0.25, 4)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Collisions/Wall3" unique_id=1909237034]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 3.9999998, 0.25, 9.3)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Collisions/Wall3" unique_id=550543107]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 7.5, 0.25, 8.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Collisions/Wall3" unique_id=1183695618]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 8.5, 0.25, 7.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="Wall4" type="Node3D" parent="Collisions" unique_id=212395370]
+transform = Transform3D(1.3113416e-07, 0, 1, 0, 1, 0, -1, 0, 1.3113416e-07, 0, 0, 0)
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Collisions/Wall4" unique_id=1214243361]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.3, 0.25, 4)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Collisions/Wall4" unique_id=1869334259]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 3.9999998, 0.25, 9.3)
+shape = SubResource("BoxShape3D_obhme")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Collisions/Wall4" unique_id=1103729512]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 7.5, 0.25, 8.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="CollisionShape3D7" type="CollisionShape3D" parent="Collisions/Wall4" unique_id=258328802]
+transform = Transform3D(0, 0, -1.0000001, 0, 1, 0, 1.0000001, 0, 0, 8.5, 0.25, 7.5)
+shape = SubResource("BoxShape3D_jd2i0")
+
+[node name="Lights" type="Node3D" parent="." unique_id=1352565618]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" unique_id=1948577074]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.8000001, 7)
+light_color = Color(0.14509805, 0.92156863, 0.3019608, 1)
+light_energy = 1.5
+omni_range = 10.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Lights" unique_id=2115874674]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.2, -4)
+light_color = Color(0.97465366, 0.8090643, 0.587189, 1)
+light_energy = 3.0
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D3" type="OmniLight3D" parent="Lights" unique_id=1007058183]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.2, 6)
+light_color = Color(0.97465366, 0.8090643, 0.587189, 1)
+light_energy = 3.0
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Lights" unique_id=1596358745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.2, -4)
+light_color = Color(0.99554294, 0.9594341, 0.91434735, 1)
+light_energy = 3.0
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" unique_id=1786452338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1.2, 1)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="Lights" unique_id=438349098]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, 1)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+omni_range = 3.0
+omni_attenuation = 0.8

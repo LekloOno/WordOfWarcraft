@@ -1,0 +1,778 @@
+[gd_scene format=3 uid="uid://cwbe7bd0eowbj"]
+
+[ext_resource type="LightmapGIData" uid="uid://gcda1x8yvoe6" path="res://scenes/light_maps/test3.lmbake" id="1_42bxd"]
+[ext_resource type="Script" uid="uid://d4m3xvc6ylan5" path="res://Src/Debug/CollisionShapeBuilder.cs" id="2_2663l"]
+[ext_resource type="Script" uid="uid://dkbr282rb0aq" path="res://Src/Render/WorldRenderer/WorldRenderer3D.cs" id="3_imk6l"]
+[ext_resource type="PackedScene" uid="uid://bq7tjkfbxi8c4" path="res://prefabs/render/mapping/3d/dungeon/composed/wide_corner.tscn" id="3_sdhh7"]
+[ext_resource type="PackedScene" uid="uid://bjhxqdprwd4dv" path="res://prefabs/render/mapping/3d/dungeon/composed/small_corner.tscn" id="5_42bxd"]
+[ext_resource type="PackedScene" uid="uid://bhumabsdmhg76" path="res://prefabs/render/mapping/3d/dungeon/composed/small_corner_b.tscn" id="6_v6sbx"]
+[ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="10_vvbw7"]
+[ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/physic/simple_monster.tscn" id="11_7dokv"]
+[ext_resource type="Script" uid="uid://dr3n7mycos7rq" path="res://Src/Entities/ClientEntity.cs" id="12_xj0aj"]
+[ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="13_r7rur"]
+[ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="14_7335w"]
+[ext_resource type="Script" uid="uid://bl8lp3ttb4jor" path="res://Src/Combat/Resources/ResourceManager.cs" id="15_3n1kq"]
+[ext_resource type="Script" uid="uid://dbfmamo6b7xia" path="res://Src/Combat/Resources/FocusRes/Focus.cs" id="16_yscs2"]
+[ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="17_xg7px"]
+[ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="18_wf8it"]
+[ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="19_jnipx"]
+[ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="20_wux3n"]
+[ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="21_gc6n7"]
+[ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="22_1m6rf"]
+[ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="23_y55nh"]
+[ext_resource type="Script" uid="uid://c273v4avjawkx" path="res://Src/Input/SelectionCombatModeInput.cs" id="24_opre3"]
+[ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="25_moo7m"]
+[ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="26_14wqt"]
+[ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="27_5njv7"]
+[ext_resource type="Script" uid="uid://fqpr1dnee5y2" path="res://Src/Physics/Movement/MoveModeInput.cs" id="28_p4pj0"]
+[ext_resource type="Script" uid="uid://djomokhsknkk0" path="res://Src/Combat/Abilities/AbilityStateMachine.cs" id="29_kd30o"]
+[ext_resource type="Script" uid="uid://ckalqjavqpd37" path="res://Src/Combat/Abilities/Launch/LaunchData.cs" id="30_m14we"]
+[ext_resource type="Script" uid="uid://ckoy54dodnv5e" path="res://Src/Combat/Abilities/CasterRules/CasterRule.cs" id="31_3einj"]
+[ext_resource type="Texture2D" uid="uid://c6l3cnukhrcn1" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_13.png" id="32_b8wqb"]
+[ext_resource type="Script" uid="uid://d2qv3p843380o" path="res://Src/Combat/Abilities/LoopRules/LoopRule.cs" id="33_tttrf"]
+[ext_resource type="Script" uid="uid://xxo1vwasspl1" path="res://Src/Combat/Abilities/Targeting/TargetRules/TargetRule.cs" id="34_nq2p8"]
+[ext_resource type="Script" uid="uid://diy1f0p7da221" path="res://Src/Combat/Abilities/Launch/EffectsHolders/EffectsHolderData.cs" id="35_6gkkb"]
+[ext_resource type="Script" uid="uid://3kt2gisdc54v" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/Effect.cs" id="36_ug8v4"]
+[ext_resource type="Script" uid="uid://dtujnvh2oxqdm" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/WishDirDashEffect.cs" id="37_6ix52"]
+[ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="38_uxttn"]
+[ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="39_07f7t"]
+[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilityData.cs" id="40_dd17h"]
+[ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="41_3b4eq"]
+[ext_resource type="Script" uid="uid://bplv858g76r4d" path="res://Src/Combat/Abilities/Targeting/TargetRules/LosTargetRule.cs" id="41_42bxd"]
+[ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="42_ceoyl"]
+[ext_resource type="Script" uid="uid://ctj8xarphtj3u" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleDamageEffect.cs" id="43_tf0ja"]
+[ext_resource type="Script" uid="uid://dpigjmfyxn2c0" path="res://Src/Combat/Abilities/Actuators/WordActuatorData.cs" id="44_yp38u"]
+[ext_resource type="Texture2D" uid="uid://cflr0o44cowv7" path="res://assets/sprites/abilities/placeholders/FireMage_Free/FireMage_11.png" id="45_im50r"]
+[ext_resource type="Resource" uid="uid://ceu308hpob53h" path="res://assets/abilities/loop_rules/loop_rule_always.tres" id="46_nbcvc"]
+[ext_resource type="Script" uid="uid://tr6yt483fw7q" path="res://Src/Combat/Abilities/Targeting/TargetRules/AliveTargetRule.cs" id="47_sx1gl"]
+[ext_resource type="Script" uid="uid://dmt3brgj3dhih" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleResEffect.cs" id="48_v0p4k"]
+[ext_resource type="Texture2D" uid="uid://bm8khn4xyvtiu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_28.png" id="49_5hvw2"]
+[ext_resource type="Script" uid="uid://cb1glnpals704" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleFocusEffect.cs" id="50_3cuy6"]
+[ext_resource type="Texture2D" uid="uid://ins4kvbqcwu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_29.png" id="51_1o6nu"]
+[ext_resource type="Texture2D" uid="uid://c10juxdrquxhp" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_36.png" id="52_xpt32"]
+[ext_resource type="Script" uid="uid://do3m8sny4khm" path="res://Src/Combat/Abilities/CasterRules/ResourceRules/Types/CasterFocusRule.cs" id="53_xs0qd"]
+[ext_resource type="Script" uid="uid://beoj5s7ccateg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleHealEffect.cs" id="54_lucrr"]
+[ext_resource type="Texture2D" uid="uid://bqxnlv2uovw6k" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png" id="55_36mb3"]
+[ext_resource type="Texture2D" uid="uid://bcg5yyrd6224n" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_7.png" id="56_gsehh"]
+[ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="57_5jk8v"]
+[ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="58_uggyt"]
+[ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="59_r3sbs"]
+[ext_resource type="Script" uid="uid://by0aobke5dswx" path="res://Src/Input/Targeting/Direct/DirectInputBufferTrigger.cs" id="60_75nqs"]
+[ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="61_klu6q"]
+[ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="62_fdxxn"]
+[ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="63_oilj3"]
+[ext_resource type="PackedScene" uid="uid://fighml8jejap" path="res://prefabs/render/mapping/3d/cave/floor_layer_hole.tscn" id="68_7pwph"]
+[ext_resource type="PackedScene" uid="uid://0cl71x3fpf06" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor-layer.glb" id="69_t1xho"]
+
+[sub_resource type="Environment" id="Environment_h3svd"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.7241422, 0.71741486, 0.98638767, 1)
+ambient_light_energy = 0.46
+
+[sub_resource type="Resource" id="Resource_u78jf"]
+script = ExtResource("13_r7rur")
+Key = "player"
+metadata/_custom_type_script = "uid://defda3606ges4"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rlms2"]
+radius = 0.4
+
+[sub_resource type="Resource" id="Resource_wp3w3"]
+script = ExtResource("37_6ix52")
+_stength = 75.0
+metadata/_custom_type_script = "uid://dtujnvh2oxqdm"
+
+[sub_resource type="Resource" id="Resource_cgmg2"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_ln4r5"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_ydhbg"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_ln4r5")
+GathererDt = SubResource("Resource_cgmg2")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_wp3w3")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_ehr82"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_ydhbg")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_6uhcd"]
+script = ExtResource("40_dd17h")
+Icon = ExtResource("32_b8wqb")
+CoolDown = 1500
+TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_ehr82")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_emonu"]
+script = ExtResource("43_tf0ja")
+_target = 4
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_s6cx0"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_iq7xp"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_q6ayx"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_iq7xp")
+GathererDt = SubResource("Resource_s6cx0")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_emonu")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_v6sbx"]
+script = ExtResource("41_42bxd")
+metadata/_custom_type_script = "uid://bplv858g76r4d"
+
+[sub_resource type="Resource" id="Resource_mftsw"]
+script = ExtResource("30_m14we")
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_v6sbx")])
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_q6ayx")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_o0kuw"]
+script = ExtResource("44_yp38u")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
+[sub_resource type="Resource" id="Resource_qx18j"]
+script = ExtResource("47_sx1gl")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_sdhh7"]
+script = ExtResource("41_42bxd")
+metadata/_custom_type_script = "uid://bplv858g76r4d"
+
+[sub_resource type="Resource" id="Resource_p5jn6"]
+script = ExtResource("40_dd17h")
+Id = "oui"
+Icon = ExtResource("45_im50r")
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_qx18j"), SubResource("Resource_sdhh7")])
+TargetIntentAcquirer = 2
+ActuatorDt = SubResource("Resource_o0kuw")
+ActuationLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_mftsw")])
+LoopRulesDt = Array[ExtResource("33_tttrf")]([ExtResource("46_nbcvc")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_335pd"]
+script = ExtResource("48_v0p4k")
+_hp = 50.0
+_target = 7
+metadata/_custom_type_script = "uid://dmt3brgj3dhih"
+
+[sub_resource type="Resource" id="Resource_xsg57"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_vqdru"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_osnag"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_vqdru")
+GathererDt = SubResource("Resource_xsg57")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_335pd")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_n11rl"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_osnag")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_y8o6s"]
+script = ExtResource("44_yp38u")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
+[sub_resource type="Resource" id="Resource_68ewr"]
+script = ExtResource("47_sx1gl")
+_alive = false
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_6u4ov"]
+script = ExtResource("40_dd17h")
+Id = "oui"
+Icon = ExtResource("49_5hvw2")
+CoolDown = 10000
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_68ewr")])
+TargetIntentAcquirer = 2
+ActuatorDt = SubResource("Resource_y8o6s")
+ActuationLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_n11rl")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_23ucx"]
+script = ExtResource("50_3cuy6")
+_target = 1
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_eokji"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_8nvs4"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_tnm51"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_8nvs4")
+GathererDt = SubResource("Resource_eokji")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_23ucx")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_uig8d"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_tnm51")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_eixnv"]
+script = ExtResource("44_yp38u")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
+[sub_resource type="Resource" id="Resource_rtdfa"]
+script = ExtResource("40_dd17h")
+Id = "oui"
+Icon = ExtResource("51_1o6nu")
+ActuatorDt = SubResource("Resource_eixnv")
+ActuationLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_uig8d")])
+LoopRulesDt = Array[ExtResource("33_tttrf")]([ExtResource("46_nbcvc")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_3t5ks"]
+script = ExtResource("53_xs0qd")
+Amount = 10.0
+Comparison = 2
+metadata/_custom_type_script = "uid://do3m8sny4khm"
+
+[sub_resource type="Resource" id="Resource_4amwq"]
+script = ExtResource("47_sx1gl")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_3w526"]
+script = ExtResource("54_lucrr")
+_target = 7
+metadata/_custom_type_script = "uid://beoj5s7ccateg"
+
+[sub_resource type="Resource" id="Resource_gwri7"]
+script = ExtResource("50_3cuy6")
+_focus = -10.0
+_launcher = true
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_80m0l"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_hpsc0"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_tgrws"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_hpsc0")
+GathererDt = SubResource("Resource_80m0l")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_3w526"), SubResource("Resource_gwri7")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_g2gmo"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_tgrws")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_nkon8"]
+script = ExtResource("40_dd17h")
+Id = "oui"
+Icon = ExtResource("52_xpt32")
+CoolDown = 1000
+StartPreconditionsDt = Array[ExtResource("31_3einj")]([SubResource("Resource_3t5ks")])
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_4amwq")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_g2gmo")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_itbbc"]
+script = ExtResource("53_xs0qd")
+Amount = 20.0
+Comparison = 2
+metadata/_custom_type_script = "uid://do3m8sny4khm"
+
+[sub_resource type="Resource" id="Resource_8pbqr"]
+script = ExtResource("47_sx1gl")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_yuwb2"]
+script = ExtResource("50_3cuy6")
+_focus = -20.0
+_launcher = true
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_xfgcb"]
+script = ExtResource("43_tf0ja")
+_hp = 35.0
+_target = 4
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_vs3tm"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_vspyu"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_2w7nf"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_vspyu")
+GathererDt = SubResource("Resource_vs3tm")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_yuwb2"), SubResource("Resource_xfgcb")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_ugxyt"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_2w7nf")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_mwko4"]
+script = ExtResource("40_dd17h")
+Id = "oui"
+Icon = ExtResource("55_36mb3")
+CoolDown = 4000
+StartPreconditionsDt = Array[ExtResource("31_3einj")]([SubResource("Resource_itbbc")])
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_8pbqr"), SubResource("Resource_sdhh7")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_ugxyt")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_mjgbv"]
+script = ExtResource("47_sx1gl")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_i5x3u"]
+script = ExtResource("43_tf0ja")
+_hp = 99999.0
+_target = 7
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_mvdx5"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_mlju8"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_csknu"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_mlju8")
+GathererDt = SubResource("Resource_mvdx5")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_i5x3u")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_nx2ev"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_csknu")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_3lfvi"]
+script = ExtResource("40_dd17h")
+Id = "oui"
+Icon = ExtResource("56_gsehh")
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_mjgbv")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_nx2ev")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_uif08"]
+script = ExtResource("63_oilj3")
+Speed = 20.0
+VelDamping = 50.0
+metadata/_custom_type_script = "uid://cxvoblnwrx032"
+
+[sub_resource type="Resource" id="Resource_ykc0m"]
+script = ExtResource("63_oilj3")
+Speed = 2.5
+VelDamping = 6.0
+metadata/_custom_type_script = "uid://cxvoblnwrx032"
+
+[node name="Node3D" type="Node3D" unique_id=1036701696]
+
+[node name="LightmapGI" type="LightmapGI" parent="." unique_id=231018911]
+visible = false
+light_data = ExtResource("1_42bxd")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=951112394]
+environment = SubResource("Environment_h3svd")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=405895038]
+transform = Transform3D(-5.9604645e-08, 0.9659258, 0.2588191, -7.450581e-09, -0.25881907, 0.9659258, 1, 5.9604645e-08, -2.9802322e-08, 0, 8, 0)
+light_color = Color(0.9219413, 0.75796145, 0.71943885, 1)
+light_energy = 0.6
+shadow_enabled = true
+sky_mode = 1
+
+[node name="Terrain" type="Node3D" parent="." unique_id=117315387 node_paths=PackedStringArray("_physics2d")]
+script = ExtResource("2_2663l")
+_physics2d = NodePath("../Physics/World")
+
+[node name="WideCorner" parent="Terrain" unique_id=693920542 instance=ExtResource("3_sdhh7")]
+
+[node name="WideCorner2" parent="Terrain" unique_id=848082079 instance=ExtResource("3_sdhh7")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="WideCorner3" parent="Terrain" unique_id=1236532981 instance=ExtResource("3_sdhh7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="WideCorner4" parent="Terrain" unique_id=1648628819 instance=ExtResource("3_sdhh7")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="WorldRenderer3D" type="Node3D" parent="Terrain" unique_id=863706690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 1)
+top_level = true
+script = ExtResource("3_imk6l")
+metadata/_custom_type_script = "uid://dkbr282rb0aq"
+
+[node name="SmallCorner" parent="Terrain" unique_id=1368827673 instance=ExtResource("5_42bxd")]
+
+[node name="SmallCorner2" parent="Terrain" unique_id=1986444737 instance=ExtResource("5_42bxd")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+
+[node name="SmallCorner3" parent="Terrain" unique_id=1844233349 instance=ExtResource("5_42bxd")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 0)
+
+[node name="SmallCornerB" parent="Terrain" unique_id=580816296 instance=ExtResource("6_v6sbx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+
+[node name="Node2DRender3D" type="Node3D" parent="." unique_id=1573887591 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
+transform = Transform3D(0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, 0.7071067, 0, 4.7683716e-07, 3.000001)
+script = ExtResource("10_vvbw7")
+_node = NodePath("../Physics/RadiusFollower")
+ProcessType = 0
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Camera3D" type="Camera3D" parent="Node2DRender3D" unique_id=2095000205]
+transform = Transform3D(1, 0, 0, 0, 0.7313537, 0.6819984, 0, -0.6819984, 0.7313537, 0, 9.5, 8.5)
+fov = 60.0
+size = 12.0
+
+[node name="Physics" type="Node" parent="." unique_id=1653195501]
+
+[node name="Entity" parent="Physics" unique_id=907940979 instance=ExtResource("11_7dokv")]
+
+[node name="Body" parent="Physics/Entity" index="0" unique_id=1471660406]
+position = Vector2(-3.87, -2.44)
+
+[node name="Entity2" parent="Physics" unique_id=1603257803 instance=ExtResource("11_7dokv")]
+
+[node name="Body" parent="Physics/Entity2" index="0" unique_id=1471660406]
+position = Vector2(5.04, -3.325)
+
+[node name="Entity3" parent="Physics" unique_id=1708262692 instance=ExtResource("11_7dokv")]
+
+[node name="Body" parent="Physics/Entity3" index="0" unique_id=1471660406]
+position = Vector2(0.515, -5.375)
+
+[node name="Entity4" parent="Physics" unique_id=399954406 instance=ExtResource("11_7dokv")]
+
+[node name="Body" parent="Physics/Entity4" index="0" unique_id=1471660406]
+position = Vector2(0.515, 4.895)
+
+[node name="Entity5" parent="Physics" unique_id=1794363684 instance=ExtResource("11_7dokv")]
+
+[node name="Body" parent="Physics/Entity5" index="0" unique_id=1471660406]
+position = Vector2(5.32, 2.845)
+
+[node name="Player" type="Node" parent="Physics" unique_id=538130689 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput", "MoveModeInput")]
+script = ExtResource("12_xj0aj")
+DactyloDriver = NodePath("PlayerDactyloDriver")
+SelectionModeInput = NodePath("SelectionCombatModeInput")
+MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
+IdData = SubResource("Resource_u78jf")
+TeamMask = 1
+
+[node name="StandardWishDir" type="Node" parent="Physics/Player" unique_id=2118355509]
+script = ExtResource("14_7335w")
+metadata/_custom_type_script = "uid://fdi60jyuew2y"
+
+[node name="ResourceManager" type="Node" parent="Physics/Player" unique_id=936864154]
+script = ExtResource("15_3n1kq")
+metadata/_custom_type_script = "uid://bl8lp3ttb4jor"
+
+[node name="Focus" type="Node" parent="Physics/Player/ResourceManager" unique_id=146660970]
+script = ExtResource("16_yscs2")
+metadata/_custom_type_script = "uid://dbfmamo6b7xia"
+
+[node name="EntityHealth" type="Node" parent="Physics/Player" unique_id=1766748954]
+script = ExtResource("17_xg7px")
+Base = 100
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="BodyMover" type="Node" parent="Physics/Player" unique_id=524548435]
+script = ExtResource("18_wf8it")
+_acceleration = 50.0
+_maxSpeed = 3.6
+_friction = 15.0
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="CursorWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1767082103]
+script = ExtResource("19_jnipx")
+metadata/_custom_type_script = "uid://ciu72damg3lg6"
+
+[node name="Cursor" type="Node2D" parent="Physics/Player/BodyMover/CursorWishDir" unique_id=154806504]
+script = ExtResource("20_wux3n")
+metadata/_custom_type_script = "uid://dro2y37vij5qd"
+
+[node name="SwappableCursorMover" type="Node" parent="Physics/Player/BodyMover/CursorWishDir/Cursor" unique_id=1431588520]
+script = ExtResource("21_gc6n7")
+Type = 1
+metadata/_custom_type_script = "uid://b1cu3p8irox5s"
+
+[node name="SwappableCursorConfirm" type="Node" parent="Physics/Player/BodyMover/CursorWishDir/Cursor" unique_id=646699951]
+script = ExtResource("22_1m6rf")
+Type = 1
+metadata/_custom_type_script = "uid://hlchubm80yhc"
+
+[node name="Body" type="RigidBody2D" parent="Physics/Player" unique_id=2005985111]
+gravity_scale = 0.0
+script = ExtResource("23_y55nh")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Physics/Player/Body" unique_id=1092870395]
+shape = SubResource("CircleShape2D_rlms2")
+
+[node name="SelectionCombatModeInput" type="Node" parent="Physics/Player" unique_id=101572507 node_paths=PackedStringArray("Mode")]
+script = ExtResource("24_opre3")
+Mode = NodePath("../ModesManager/SelectionCombatMode")
+metadata/_custom_type_script = "uid://c273v4avjawkx"
+
+[node name="ModesManager" type="Node" parent="Physics/Player" unique_id=637620378]
+script = ExtResource("25_moo7m")
+metadata/_custom_type_script = "uid://bgf68riiwyila"
+
+[node name="ModePicker" type="Node" parent="Physics/Player/ModesManager" unique_id=483613602]
+script = ExtResource("26_14wqt")
+metadata/_custom_type_script = "uid://bjsonh2oopm3s"
+
+[node name="MoveMode" type="Node" parent="Physics/Player/ModesManager" unique_id=668757931]
+script = ExtResource("27_5njv7")
+metadata/_custom_type_script = "uid://pux5ejw5b5kx"
+
+[node name="MoveModeInput" type="Node" parent="Physics/Player/ModesManager/MoveMode" unique_id=1576990410]
+script = ExtResource("28_p4pj0")
+metadata/_custom_type_script = "uid://fqpr1dnee5y2"
+
+[node name="DashSpell" type="Node" parent="Physics/Player/ModesManager/MoveMode" unique_id=868542424]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_6uhcd")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="MoveModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=1550584923]
+script = ExtResource("41_3b4eq")
+metadata/_custom_type_script = "uid://bftjqppjm3ti3"
+
+[node name="SelectionCombatMode" type="Node" parent="Physics/Player/ModesManager" unique_id=272802244]
+script = ExtResource("42_ceoyl")
+_key = 75
+metadata/_custom_type_script = "uid://8l2woqce8nl6"
+
+[node name="DamageSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=149091378]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_p5jn6")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="ResSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=551396164]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_6u4ov")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="FocusMode" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=716045415]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_rtdfa")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="HealSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=1828389879]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_nkon8")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="FocusAttack" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=85101592]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_mwko4")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="KillSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=664080968]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_3lfvi")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="CombatModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=1539686371]
+script = ExtResource("57_5jk8v")
+metadata/_custom_type_script = "uid://dj0sj1thojqst"
+
+[node name="PlayerTargetIntentDriver" type="Node" parent="Physics/Player" unique_id=1615514985]
+script = ExtResource("58_uggyt")
+metadata/_custom_type_script = "uid://b54uw6fk4ndjr"
+
+[node name="PlayerDactyloDriver" type="Node" parent="Physics/Player" unique_id=153410178]
+script = ExtResource("59_r3sbs")
+metadata/_custom_type_script = "uid://cvln6rapoqvqg"
+
+[node name="DirectInputBufferTrigger" type="Node" parent="Physics/Player" unique_id=652658924 node_paths=PackedStringArray("_targetIntentDrive")]
+script = ExtResource("60_75nqs")
+_targetIntentDrive = NodePath("../PlayerTargetIntentDriver")
+metadata/_custom_type_script = "uid://by0aobke5dswx"
+
+[node name="ClientMarker" type="Node" parent="Physics/Player" unique_id=1660520031]
+script = ExtResource("61_klu6q")
+metadata/_custom_type_script = "uid://4ma6ga1bxmpu"
+
+[node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1291784488 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
+script = ExtResource("62_fdxxn")
+_radius = 0.18
+_lookTriggerRadius = 0.12
+_lookDistance = 0.2
+CenterVelDamperData = SubResource("Resource_uif08")
+LookVelDamperData = SubResource("Resource_ykc0m")
+_node = NodePath("../Player/Body")
+metadata/_custom_type_script = "uid://yu3jttiip8tv"
+
+[node name="World" type="Node2D" parent="Physics" unique_id=1719085259]
+
+[node name="Lights" type="Node3D" parent="." unique_id=2055598055]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Lights" unique_id=1523608435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.8000001, 7)
+light_color = Color(0.14509805, 0.92156863, 0.3019608, 1)
+light_energy = 1.5
+light_bake_mode = 1
+omni_range = 10.0
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="Lights" unique_id=1751517283]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1.2, -5)
+light_color = Color(0.97465366, 0.8090643, 0.587189, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D4" type="OmniLight3D" parent="Lights" unique_id=1509974275]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.2, -4)
+light_color = Color(0.99554294, 0.9594341, 0.91434735, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D6" type="OmniLight3D" parent="Lights" unique_id=363740158]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, 1)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 3.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D5" type="OmniLight3D" parent="Lights" unique_id=949611690]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1.2, 1)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D7" type="OmniLight3D" parent="Lights" unique_id=1958412321]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.2, 1)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D14" type="OmniLight3D" parent="Lights" unique_id=372915461]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 1.2, 12)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D15" type="OmniLight3D" parent="Lights" unique_id=1975195022]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1.2, -10)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D8" type="OmniLight3D" parent="Lights" unique_id=1366574400]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.0000002, 1.2, -7)
+visible = false
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="OmniLight3D10" type="OmniLight3D" parent="Lights" unique_id=344980929]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 14, 5.2999997, -6)
+light_color = Color(0.9775036, 0.00021326735, 0.187814, 1)
+light_energy = 5.0
+light_bake_mode = 1
+omni_attenuation = 0.8
+
+[node name="OmniLight3D11" type="OmniLight3D" parent="Lights" unique_id=4230299]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -10, 5.2999997, 8)
+light_color = Color(0.9775036, 0.00021326735, 0.187814, 1)
+light_energy = 5.0
+light_bake_mode = 1
+omni_attenuation = 0.8
+
+[node name="OmniLight3D12" type="OmniLight3D" parent="Lights" unique_id=1054175428]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 9, 5.2999997, -11)
+light_color = Color(9.62615e-08, 0.68400073, 0.7821108, 1)
+light_energy = 5.0
+light_bake_mode = 1
+omni_attenuation = 0.8
+
+[node name="OmniLight3D13" type="OmniLight3D" parent="Lights" unique_id=269953064]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5, 5.2999997, 13)
+light_color = Color(9.62615e-08, 0.68400073, 0.7821108, 1)
+light_energy = 5.0
+light_bake_mode = 1
+omni_attenuation = 0.8
+
+[node name="OmniLight3D9" type="OmniLight3D" parent="Lights" unique_id=1214663968]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 1.9999996, 1.2, 9)
+light_color = Color(1, 0.9529412, 0.30980393, 1)
+light_energy = 3.0
+light_bake_mode = 1
+omni_range = 4.0
+omni_attenuation = 0.8
+
+[node name="FloorLayerHole" parent="." unique_id=2093071720 instance=ExtResource("68_7pwph")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 13, 0, -13)
+
+[node name="template-floor-layer2" parent="." unique_id=1816621393 instance=ExtResource("69_t1xho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -6)
+
+[node name="template-floor-layer3" parent="." unique_id=1480237602 instance=ExtResource("69_t1xho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -6)
+
+[editable path="Physics/Entity"]
+[editable path="Physics/Entity2"]
+[editable path="Physics/Entity3"]
+[editable path="Physics/Entity4"]
+[editable path="Physics/Entity5"]
