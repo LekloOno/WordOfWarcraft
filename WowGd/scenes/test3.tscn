@@ -544,8 +544,8 @@ script = ExtResource("22_1m6rf")
 Type = 1
 metadata/_custom_type_script = "uid://hlchubm80yhc"
 
-[node name="Body" type="RigidBody2D" parent="Physics/Player" unique_id=2005985111]
-gravity_scale = 0.0
+[node name="Body" type="CharacterBody2D" parent="Physics/Player" unique_id=1492479332]
+motion_mode = 1
 script = ExtResource("23_y55nh")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 

@@ -27,8 +27,7 @@ IdData = SubResource("Resource_4k8fq")
 TeamMask = 2
 metadata/_custom_type_script = "uid://cfm24npuh7ybu"
 
-[node name="Body" type="RigidBody2D" parent="." unique_id=1471660406]
-gravity_scale = 0.0
+[node name="Body" type="CharacterBody2D" parent="." unique_id=546788964]
 script = ExtResource("3_1w3fa")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 

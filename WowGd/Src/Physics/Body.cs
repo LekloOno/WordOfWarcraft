@@ -13,8 +13,31 @@ namespace WowGd.Src.Physics;
 /// Fully separating the logic can only be a good thing anyways.
 /// </summary>
 [GlobalClass]
-public partial class Body : RigidBody2D, IBody
+public partial class Body : CharacterBody2D, IBody
 {
-    void IBody.ApplyForce(Vector2 force) => ApplyForce(force);
-    void IBody.ApplyImpulse(Vector2 impulse) => ApplyImpulse(impulse);
+    public Vector2 LinearVelocity => Velocity;
+
+    private Vector2 _frameForces;
+
+    void IBody.ApplyForce(Vector2 force)
+    {
+        _frameForces += force;
+    }
+
+    void IBody.ApplyImpulse(Vector2 impulse)
+    {
+        Velocity += impulse;
+    }
+
+    public override void _Ready()
+    {
+        MotionMode = MotionModeEnum.Floating;
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        Velocity += _frameForces * (float) delta;
+        _frameForces = Vector2.Zero;
+        MoveAndSlide();
+    }
 }
