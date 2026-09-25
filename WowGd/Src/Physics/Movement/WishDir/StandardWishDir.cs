@@ -8,6 +8,7 @@ namespace WowGd.Src.Physics.Movement.WishDir;
 public partial class StandardWishDir : Node, IWishDir
 {
     [Export] private HandsEnum _handsInputMode = HandsEnum.None;
+    [Export] private bool _rotateWithCamera = true;
     private StandardKeyGenerator _generator = new();
 
     public override void _Ready()
@@ -27,8 +28,19 @@ public partial class StandardWishDir : Node, IWishDir
 
     public Vector2 WishDir()
     {
-        _generator.Retrieve(out Vector2 wishDir);
-        return wishDir;
+        if (!_generator.Retrieve(out Vector2 keyDir))
+            return Vector2.Zero;
+
+        if (!_rotateWithCamera)
+            return keyDir;
+
+        if (GetViewport().GetCamera3D() is Camera3D camera3D)
+            return keyDir.Rotated(-camera3D.GlobalRotation.Y);
+
+        if (GetViewport().GetCamera2D() is Camera2D camera2D)
+            return keyDir.Rotated(-camera2D.GlobalRotation);
+
+        return keyDir;
     }
 
     public bool Disable()
