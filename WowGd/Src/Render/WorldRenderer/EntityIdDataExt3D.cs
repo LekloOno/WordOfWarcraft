@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Render.WorldRenderer.Entities;
 
 namespace WowGd.Src.Render.WorldRenderer;
 
@@ -22,7 +21,7 @@ public static class EntityIdDataExt3D
             if (!initializer.Init(self, out render3d))
                 return false;
 
-            render3d.Scale = Vector3.One * 1.6f;
+            //render3d.Scale = Vector3.One * 1.6f;
             return true;
         }
         else if (self.IdData.Key == "player")
@@ -32,7 +31,7 @@ public static class EntityIdDataExt3D
             if (!initializer.Init(self, out render3d))
                 return false;
 
-            render3d.Scale = Vector3.One * 1.7f;
+            //render3d.Scale = Vector3.One * 1.7f;
             return true;
         }
 
