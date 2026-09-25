@@ -14,8 +14,14 @@
 [ext_resource type="Script" uid="uid://d3rcq5hxburvo" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/FocusIndicatorManager.cs" id="11_6rdus"]
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="11_w2bcy"]
 [ext_resource type="PackedScene" uid="uid://cnfhvc3f4cdqq" path="res://prefabs/render/indicators/focus_indicator2d.tscn" id="12_qy43x"]
+[ext_resource type="Texture2D" uid="uid://d1wxv50xf6qyw" path="res://assets/sprites/entities/simple_shadow.png" id="15_qy43x"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4ekfy"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sdhh7"]
+transparency = 1
+albedo_texture = ExtResource("5_qy43x")
+billboard_mode = 1
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_qy43x"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_175km"]
@@ -46,15 +52,18 @@ Target = NodePath("../BodySprite")
 Animations = Array[ExtResource("3_63tjw")]([ExtResource("4_6rdus")])
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-pixel_size = 0.00390625
+sorting_offset = 1.0
+material_override = SubResource("StandardMaterial3D_sdhh7")
+offset = Vector2(0, 110)
+pixel_size = 0.00703125
 billboard = 1
 texture = ExtResource("5_qy43x")
 script = ExtResource("6_4ekfy")
+Height = 1.8
 
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("7_3cnwx")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_4ekfy")
+offset = Vector2(0, 650)
+texture = SubResource("ViewportTexture_qy43x")
 
 [node name="ResourceIndicatorSuperManager" type="Node3D" parent="." unique_id=924827885]
 script = ExtResource("8_b1sg3")
@@ -114,7 +123,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 aabb = AABB(-0.5, 0, -0.5, 1, 1.2, 1)
 
 [node name="Selection" type="MeshInstance3D" parent="." unique_id=1936362996]
+sorting_offset = -1.0
 material_override = SubResource("StandardMaterial3D_pqs6i")
 mesh = SubResource("TorusMesh_qq3tl")
+
+[node name="Shadow" type="Sprite3D" parent="." unique_id=2067103702]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, 0, 0, 0)
+sorting_offset = 1.0
+modulate = Color(1, 1, 1, 0.4627451)
+texture = ExtResource("15_qy43x")
 
 [editable path="HealthBar"]

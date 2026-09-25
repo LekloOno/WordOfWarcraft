@@ -3,13 +3,20 @@
 [ext_resource type="Script" uid="uid://s1duq848di8" path="res://Src/Render/WorldRenderer/Entities/SimpleGoblin.cs" id="1_hiiaf"]
 [ext_resource type="Texture2D" uid="uid://b8vejflhxk2lc" path="res://assets/sprites/entities/goblin.png" id="2_qcrgf"]
 [ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="3_hbpfo"]
+[ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="3_owfsr"]
 [ext_resource type="Script" uid="uid://b11rsu4oqoyxp" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/DamageIndicatorManager.cs" id="4_hbpfo"]
 [ext_resource type="Script" uid="uid://b1430s7qxuwa6" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/ResourceIndicatorSuperManager.cs" id="4_o7elv"]
 [ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="5_4pern"]
 [ext_resource type="Script" uid="uid://cj7dp4rbvvn06" path="res://Src/Render/Ui/Combat/Targeting/DirectTargetUi3D.cs" id="6_23ucx"]
 [ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="7_o7elv"]
+[ext_resource type="Texture2D" uid="uid://d1wxv50xf6qyw" path="res://assets/sprites/entities/simple_shadow.png" id="9_l17jm"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_o7elv"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_owfsr"]
+transparency = 1
+albedo_texture = ExtResource("2_qcrgf")
+billboard_mode = 1
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4sp7t"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_owfsr"]
@@ -37,13 +44,18 @@ _indicatorSuperManager = NodePath("ResourceIndicatorSuperManager")
 _directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
-transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, 0, 0.4, 0)
+sorting_offset = 1.0
+material_override = SubResource("StandardMaterial3D_owfsr")
+offset = Vector2(0, 120)
+pixel_size = 0.006640625
 billboard = 1
 texture = ExtResource("2_qcrgf")
+script = ExtResource("3_owfsr")
+Height = 1.7
 
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_hbpfo")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 1.1, 0)
-texture = SubResource("ViewportTexture_o7elv")
+offset = Vector2(0, 600)
+texture = SubResource("ViewportTexture_4sp7t")
 
 [node name="ResourceIndicatorSuperManager" type="Node3D" parent="." unique_id=116487015]
 script = ExtResource("4_o7elv")
@@ -98,7 +110,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 aabb = AABB(-0.5, 0, -0.5, 1, 1.2, 1)
 
 [node name="Selection" type="MeshInstance3D" parent="." unique_id=401441254]
+sorting_offset = -1.0
 material_override = SubResource("StandardMaterial3D_lswdd")
 mesh = SubResource("TorusMesh_175km")
+
+[node name="Shadow" type="Sprite3D" parent="." unique_id=789248788]
+transform = Transform3D(2, 0, 0, 0, -8.742278e-08, 2, 0, -2, -8.742278e-08, 0, 0, 0)
+sorting_offset = 1.0
+modulate = Color(1, 1, 1, 0.4627451)
+texture = ExtResource("9_l17jm")
 
 [editable path="HealthBar"]

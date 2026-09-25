@@ -54,6 +54,9 @@ _focusBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HBoxContainer/Focu
 
 [node name="PlayerUi2" parent="." index="0" unique_id=1593580968 instance=ExtResource("3_n78br")]
 
+[node name="MarginContainer" parent="PlayerUi2" index="0" unique_id=1311631644]
+pivot_offset_ratio = Vector2(0.5, 1)
+
 [node name="Up" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" parent_id_path=PackedInt32Array(1593580968, 839347118, 1885711284) index="0" unique_id=1469888641]
 _pressedStyle = SubResource("StyleBoxFlat_n78br")
 
