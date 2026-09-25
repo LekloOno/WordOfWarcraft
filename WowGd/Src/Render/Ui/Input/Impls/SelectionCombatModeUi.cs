@@ -89,9 +89,9 @@ public partial class SelectionCombatModeUi : Node, IHandInputUi
             if (idx >= SelectionMode.Abilities.Count)
                 return;
 
-            if (SelectionMode.Abilities[idx] is not IListenableAbility listenable)
+            if (SelectionMode.Abilities[idx] is not IAbility listenable)
             {
-                GD.PushWarning($"Ability {SelectionMode.Abilities[idx]} in selection mode does not implement {nameof(IListenableAbility)}, which is required for {nameof(SelectionCombatModeUi)} to work properly.");
+                GD.PushWarning($"Ability {SelectionMode.Abilities[idx]} in selection mode does not implement {nameof(IAbility)}, which is required for {nameof(SelectionCombatModeUi)} to work properly.");
                 continue;
             }
 

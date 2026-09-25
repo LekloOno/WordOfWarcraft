@@ -59,7 +59,7 @@
 [ext_resource type="Texture2D" uid="uid://ins4kvbqcwu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_29.png" id="50_2ixbo"]
 [ext_resource type="Script" uid="uid://dpigjmfyxn2c0" path="res://Src/Combat/Abilities/Actuators/WordActuatorData.cs" id="50_vqdru"]
 [ext_resource type="Script" uid="uid://d2qv3p843380o" path="res://Src/Combat/Abilities/LoopRules/LoopRule.cs" id="51_tnm51"]
-[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilityData.cs" id="52_tbman"]
+[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilitySmData.cs" id="52_tbman"]
 [ext_resource type="Script" uid="uid://do3m8sny4khm" path="res://Src/Combat/Abilities/CasterRules/ResourceRules/Types/CasterFocusRule.cs" id="55_osnag"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_74lek"]
@@ -67,7 +67,7 @@ shading_mode = 0
 albedo_color = Color(0.93922454, 0.84406716, 0.60705805, 1)
 
 [sub_resource type="QuadMesh" id="QuadMesh_175km"]
-size = Vector2(50, 10)
+size = Vector2(50, 50)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_175km"]
 render_priority = -1
@@ -121,7 +121,6 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 [sub_resource type="Resource" id="Resource_175km"]
 script = ExtResource("52_tbman")
 Icon = ExtResource("29_35prk")
-CoolDown = 1500
 TargetingLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_ehr82")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
@@ -150,7 +149,7 @@ script = ExtResource("42_35prk")
 EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_q6ayx")])
 metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
-[sub_resource type="Resource" id="Resource_o0kuw"]
+[sub_resource type="Resource" id="Resource_tdgre"]
 script = ExtResource("50_vqdru")
 _actuationType = 1
 metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
@@ -165,7 +164,7 @@ Id = "oui"
 Icon = ExtResource("41_35prk")
 TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_qx18j")])
 TargetIntentAcquirer = 2
-ActuatorDt = SubResource("Resource_o0kuw")
+ActuatorDt = SubResource("Resource_tdgre")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_mftsw")])
 LoopRulesDt = Array[ExtResource("51_tnm51")]([ExtResource("40_xsg57")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
@@ -196,7 +195,7 @@ script = ExtResource("42_35prk")
 EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_osnag")])
 metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
-[sub_resource type="Resource" id="Resource_y8o6s"]
+[sub_resource type="Resource" id="Resource_c0b3m"]
 script = ExtResource("50_vqdru")
 _actuationType = 1
 metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
@@ -210,10 +209,9 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 script = ExtResource("52_tbman")
 Id = "oui"
 Icon = ExtResource("45_eokji")
-CoolDown = 10000
 TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_68ewr")])
 TargetIntentAcquirer = 2
-ActuatorDt = SubResource("Resource_y8o6s")
+ActuatorDt = SubResource("Resource_c0b3m")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_n11rl")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
@@ -242,7 +240,7 @@ script = ExtResource("42_35prk")
 EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_tnm51")])
 metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
-[sub_resource type="Resource" id="Resource_eixnv"]
+[sub_resource type="Resource" id="Resource_qfy4l"]
 script = ExtResource("50_vqdru")
 _actuationType = 1
 metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
@@ -251,7 +249,7 @@ metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
 script = ExtResource("52_tbman")
 Id = "oui"
 Icon = ExtResource("50_2ixbo")
-ActuatorDt = SubResource("Resource_eixnv")
+ActuatorDt = SubResource("Resource_qfy4l")
 ActuationLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_uig8d")])
 LoopRulesDt = Array[ExtResource("51_tnm51")]([ExtResource("40_xsg57")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
@@ -301,7 +299,6 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 script = ExtResource("52_tbman")
 Id = "oui"
 Icon = ExtResource("47_8nvs4")
-CoolDown = 1000
 StartPreconditionsDt = Array[ExtResource("43_eokji")]([SubResource("Resource_3t5ks")])
 TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_4amwq")])
 TargetIntentAcquirer = 2
@@ -354,7 +351,6 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 script = ExtResource("52_tbman")
 Id = "oui"
 Icon = ExtResource("49_eokji")
-CoolDown = 4000
 StartPreconditionsDt = Array[ExtResource("43_eokji")]([SubResource("Resource_itbbc")])
 TargetRulesDt = Array[ExtResource("49_osnag")]([SubResource("Resource_8pbqr")])
 TargetIntentAcquirer = 2
@@ -412,103 +408,103 @@ shape = SubResource("BoxShape3D_175km")
 
 [node name="Tree2" type="Sprite3D" parent="Terrain" unique_id=1879480110]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.3999996, 2.35, -2.5)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("5_gv2t6")
 
 [node name="Tree4" type="Sprite3D" parent="Terrain" unique_id=549852988]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6000004, 2.35, -3.5)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("5_gv2t6")
 
 [node name="Tree3" type="Sprite3D" parent="Terrain" unique_id=339992621]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.6000004, 2.35, 3.3999999)
 modulate = Color(0.92535293, 0.9253528, 0.9253529, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("5_gv2t6")
 
 [node name="Tree" type="Sprite3D" parent="Terrain" unique_id=1547253807]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2999998, 2.35, 0.5999999)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("5_gv2t6")
 
 [node name="Bush3" type="Sprite3D" parent="Terrain" unique_id=739716644]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.6999999, 0.39999998, 1.7)
 modulate = Color(0.4108109, 0.7113688, 0.40181136, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush4" type="Sprite3D" parent="Terrain" unique_id=1059637074]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -1.9999999, 0.39999998, -3.2)
 modulate = Color(0.34657735, 0.61132216, 0.3364663, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush2" type="Sprite3D" parent="Terrain" unique_id=594869457]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2, 0.39999998, 1.3000001)
 modulate = Color(0.3317085, 0.7279724, 0.32756048, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush5" type="Sprite3D" parent="Terrain" unique_id=404990658]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 2.3, 0.39999998, 2.4)
 modulate = Color(0.39155024, 0.7665795, 0.39683557, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush" type="Sprite3D" parent="Terrain" unique_id=1766717020]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.4000002, 0.39999998, 2.2000003)
 modulate = Color(0.4070153, 0.6533228, 0.2988561, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Bush6" type="Sprite3D" parent="Terrain" unique_id=197191922]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.8, 0.39999998, -1.3999997)
 modulate = Color(0.4070153, 0.6533228, 0.2988561, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock" type="Sprite3D" parent="Terrain" unique_id=1590277796]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 5.3, 0.39999998, -2.6000001)
 modulate = Color(0.6255971, 0.6255971, 0.6255971, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock4" type="Sprite3D" parent="Terrain" unique_id=1119622648]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.3000002, 0.39999998, -2.6000001)
 modulate = Color(0.6255971, 0.6255971, 0.6255971, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock2" type="Sprite3D" parent="Terrain" unique_id=855985598]
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 7.3, 0.59999996, -4.1)
 modulate = Color(0.59313357, 0.5931336, 0.5931334, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock5" type="Sprite3D" parent="Terrain" unique_id=579919330]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -3.6999998, 0.99999994, -4.2999997)
 modulate = Color(0.7204674, 0.7204675, 0.7204674, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
 [node name="Rock3" type="Sprite3D" parent="Terrain" unique_id=1055022399]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -6.7, 0.9, -2.6999998)
 modulate = Color(0.5370113, 0.5370113, 0.5370113, 1)
-billboard = 2
+billboard = 1
 texture_filter = 0
 texture = ExtResource("2_iyx0m")
 
@@ -601,7 +597,7 @@ metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 [node name="BodyMover" type="Node" parent="Physics/Player" unique_id=1844309947]
 script = ExtResource("9_ajshl")
 _acceleration = 50.0
-_maxSpeed = 5.3
+_maxSpeed = 3.6
 _friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 

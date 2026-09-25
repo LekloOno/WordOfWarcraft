@@ -34,7 +34,7 @@ public partial class MoveModeUi : Node, IHandInputUi
 
             this.BindToContext();
 
-            if (_moveModeInput.Mode.MovementAbility is IListenableAbility listenable)
+            if (_moveModeInput.Mode.MovementAbility is IAbility listenable)
             {
                 _movementUi.Ability = listenable;
                 _movementUi.SetInput(MoveModeInputExt.MovementAbility);

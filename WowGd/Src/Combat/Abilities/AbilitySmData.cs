@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using Godot.Collections;
 using WowGd.Src.Combat.Abilities.Actuators;
+using WowGd.Src.Combat.Abilities.Behaviors.Data;
 using WowGd.Src.Combat.Abilities.CasterRules;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
@@ -11,11 +12,11 @@ using WowGd.Src.Combat.Abilities.Targeting.TargetRules;
 namespace WowGd.Src.Combat.Abilities;
 
 [GlobalClass]
-public partial class AbilityData : Resource, IAbilityData
+public partial class AbilitySmData : Resource, IAbilitySmData
 {
     [Export] public string Id { get; private set; } = string.Empty;
     [Export] public Texture2D Icon { get; private set; } = null!;
-    [Export] public ulong CoolDown { get; private set; } = 0;
+    [Export] public ulong Base { get; private set; } = 0;
     [Export] public Array<CasterRule> StartPreconditionsDt  = [];
     [Export] public Array<LaunchData> InstantLaunchesDt     = [];
     [Export] public Array<TargetRule> TargetRulesDt         = [];

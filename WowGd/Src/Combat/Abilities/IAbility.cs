@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
@@ -19,6 +20,13 @@ public interface IAbility : IDisablable
     /// <param name="launch"></param>
     /// <param name="hook"></param>
     void AttachExternalLaunch(ILaunch launch, AbilityLaunchHook hook);
+
+    event Action? Started;
+    event Action? Stopped;
+    event Action? Cancelled;
+    
+    event Action? TargetingStarted;
+    event Action? TargetingCompleted;
 }
 
 public enum AbilityLaunchHook

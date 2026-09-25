@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Actuation;
 using WowGd.Src.Combat.Abilities.Actuators;
+using WowGd.Src.Combat.Abilities.Behaviors;
+using WowGd.Src.Combat.Abilities.Behaviors.Data;
+using WowGd.Src.Combat.Abilities.CoolDowns;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
 using WowGd.Src.Combat.Abilities.Targeting;
@@ -14,9 +17,24 @@ using WowGd.Src.Tools;
 namespace WowGd.Src.Combat.Abilities;
 
 [GlobalClass]
-public partial class AbilityStateMachine : Node, IListenableAbility
+public partial class AbilityStateMachine : Node,
+    IAbility,
+    IActuableAbility,
+    ICancelLaunchable,
+    ICoolDownable,
+    IInstantLaunchableAbility,
+    IStopLaunchable,
+    ITargetLaunchable
 { 
-    [Export] private AbilityData _data = null!;
+    [Export] private AbilitySmData _data = null!;
+
+    public IActuableData ActuableData => _data;
+    public ICancelLaunchableData CancelLaunchableData => _data;
+    public IInstantLaunchableData InstantLaunchableData => _data;
+    public IStopLaunchableData StopLaunchableData => _data;
+    public ITargetLaunchableData TargetLaunchableData => _data;
+    private ICoolDown _coolDown = null!;
+    public ICoolDown CoolDown => _coolDown;
 
     public IAbilityData Data => _data;
     private ILaunch[]       _instantLaunches    = [];
@@ -30,7 +48,6 @@ public partial class AbilityStateMachine : Node, IListenableAbility
 
     public bool Enabled => _enabled;
     private bool _enabled;
-    private ulong _lastStart;
 
     public void Resync()
     {
@@ -43,6 +60,7 @@ public partial class AbilityStateMachine : Node, IListenableAbility
         _actuationLaunches  = _data.ActuationLaunchesDt.BuildAll();
         _stopLaunches       = _data.StopLaunchesDt.BuildAll();
         _cancelLaunches     = _data.CancelLaunchesDt.BuildAll();
+        _coolDown           = new CoolDown(_data);
 
         if (_actuator != null)
             _actuator.Actuated += OnActuated;
@@ -87,7 +105,7 @@ public partial class AbilityStateMachine : Node, IListenableAbility
         if (!_enabled)
             return true;
 
-        if (Time.GetTicksMsec() - _lastStart < _data.CoolDown)
+        if (!CoolDown.Completed())
             return true;
 
         _cts?.Cancel();
@@ -117,12 +135,11 @@ public partial class AbilityStateMachine : Node, IListenableAbility
             TargetIntent targetIntent = await _targetIntentController.WaitForValidTargetAsync(_cts.Token);
             TargetingCompleted?.Invoke();
 
-            _lastStart = Time.GetTicksMsec();
-            CoolDownStarted?.Invoke(_data.CoolDown);
+            CoolDown.StartCd();
             
             // STEP 4 - trigger targeting launches
             _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
-            TargetingLaunchesEmitted?.Invoke(_targetingLaunches);
+            TargetLaunchesEmitted?.Invoke(_targetingLaunches);
 
             // STEP 5 - wait for actuation completion
             if (_actuator != null)
@@ -177,14 +194,13 @@ public partial class AbilityStateMachine : Node, IListenableAbility
     public event Action? Started;
     public event Action? Stopped;
     public event Action? Cancelled;
-    public event Action<IEnumerable<ILaunch>>? CancelLaunchesEmitted;
-    public event Action<ulong>? CoolDownStarted;
-    public event Action? CoolDownCancelled;
-    public event Action<IEnumerable<ILaunch>>? InstantLaunchesEmitted;
     public event Action? TargetingStarted;
     public event Action? TargetingCompleted;
-    public event Action<IEnumerable<ILaunch>>? TargetingLaunchesEmitted;
     public event Action<IEnumerable<ILaunch>>? ActuationLaunchesEmitted;
     public event Action? ActuationStarted;
     public event Action? ActuationCompleted;
+    public event Action<IEnumerable<ILaunch>>? CancelLaunchesEmitted;
+    public event Action<IEnumerable<ILaunch>>? InstantLaunchesEmitted;
+    public event Action<IEnumerable<ILaunch>>? StopLaunchesEmitted;
+    public event Action<IEnumerable<ILaunch>>? TargetLaunchesEmitted;
 }

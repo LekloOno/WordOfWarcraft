@@ -36,7 +36,7 @@
 [ext_resource type="Script" uid="uid://dtujnvh2oxqdm" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/WishDirDashEffect.cs" id="37_6ix52"]
 [ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="38_uxttn"]
 [ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="39_07f7t"]
-[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilityData.cs" id="40_dd17h"]
+[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilitySmData.cs" id="40_dd17h"]
 [ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="41_3b4eq"]
 [ext_resource type="Script" uid="uid://bplv858g76r4d" path="res://Src/Combat/Abilities/Targeting/TargetRules/LosTargetRule.cs" id="41_42bxd"]
 [ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="42_ceoyl"]
@@ -106,7 +106,7 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 [sub_resource type="Resource" id="Resource_6uhcd"]
 script = ExtResource("40_dd17h")
 Icon = ExtResource("32_b8wqb")
-CoolDown = 1500
+Base = 2000
 TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_ehr82")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
@@ -204,7 +204,6 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 script = ExtResource("40_dd17h")
 Id = "oui"
 Icon = ExtResource("49_5hvw2")
-CoolDown = 10000
 TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_68ewr")])
 TargetIntentAcquirer = 2
 ActuatorDt = SubResource("Resource_y8o6s")
@@ -252,7 +251,7 @@ metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
 [sub_resource type="Resource" id="Resource_3t5ks"]
 script = ExtResource("53_xs0qd")
-Amount = 10.0
+Amount = 20.0
 Comparison = 2
 metadata/_custom_type_script = "uid://do3m8sny4khm"
 
@@ -262,12 +261,13 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 
 [sub_resource type="Resource" id="Resource_3w526"]
 script = ExtResource("54_lucrr")
+_hp = 20.0
 _target = 7
 metadata/_custom_type_script = "uid://beoj5s7ccateg"
 
 [sub_resource type="Resource" id="Resource_gwri7"]
 script = ExtResource("50_3cuy6")
-_focus = -10.0
+_focus = -20.0
 _launcher = true
 metadata/_custom_type_script = "uid://cb1glnpals704"
 
@@ -295,7 +295,7 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 script = ExtResource("40_dd17h")
 Id = "oui"
 Icon = ExtResource("52_xpt32")
-CoolDown = 1000
+Base = 2000
 StartPreconditionsDt = Array[ExtResource("31_3einj")]([SubResource("Resource_3t5ks")])
 TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_4amwq")])
 TargetIntentAcquirer = 2
@@ -348,7 +348,7 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 script = ExtResource("40_dd17h")
 Id = "oui"
 Icon = ExtResource("55_36mb3")
-CoolDown = 4000
+Base = 5000
 StartPreconditionsDt = Array[ExtResource("31_3einj")]([SubResource("Resource_itbbc")])
 TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_8pbqr"), SubResource("Resource_sdhh7")])
 TargetIntentAcquirer = 2

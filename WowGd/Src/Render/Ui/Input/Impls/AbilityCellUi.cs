@@ -1,12 +1,16 @@
 using Godot;
 using WowGd.Src.Combat.Abilities;
+using WowGd.Src.Combat.Abilities.CoolDowns.EventData;
 using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Abilities.Handlers;
 using WowGd.Src.Input;
 
 namespace WowGd.Src.Render.Ui.Input.Impls;
 
 [GlobalClass]
-public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
+public partial class AbilityCellUi : Control,
+    IAbilityHandler,
+    ICoolDownHandler
 {
     [Export] private TextureRect    _iconTexture    = null!;
     [Export] private Label          _inputLabel     = null!;
@@ -14,8 +18,8 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
     [Export] private Range          _cooldownLayer  = null!;
 
     private Tween? _cooldownTween;
-    private IListenableAbility _ability = null!;
-    public IListenableAbility Ability
+    private IAbility _ability = null!;
+    public IAbility Ability
     {
         get => _ability;
         set
@@ -24,17 +28,17 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
                 return;
 
             if (_ability != null)
-                this.Unbind(_ability);
+                this.TryUnbindAll(_ability);
 
             _ability = value;
-            this.Bind(_ability);
+            this.TryBindAll(_ability);
 
             _iconTexture.Texture = _ability.Data.Icon;
         }
     }
 
     public AbilityCellUi() { }
-    public AbilityCellUi(IListenableAbility ability)
+    public AbilityCellUi(IAbility ability)
     {
         Ability = ability;
     }
@@ -77,25 +81,34 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
         SetPhysicsProcess(false);
     }
 
-    public void OnCancelled() { }
-    public void OnStarted() { }
-    public void OnStopped() { }
-
-    public void OnCoolDownStarted(ulong cooldown)
+    public void OnCdStartedAt(CoolDownEventData cdData)
     {
-        _cooldownTween?.Kill();
-
-        _cooldownLayer.Value = 1f;
-
-        _cooldownTween = CreateTween();
-        _cooldownTween.TweenProperty(_cooldownLayer, "value", 0f, cooldown / 1000f);
+        StartTweenFor(cdData.Base, cdData.Effective);
     }
 
-    public void OnCoolDownCancelled()
+    private void StartTweenFor(ulong @base, ulong effective)
     {
         _cooldownTween?.Kill();
+        _cooldownLayer.Value = Mathf.Min(effective / @base, 1f);
 
+        _cooldownTween = CreateTween();
+        _cooldownTween.TweenProperty(_cooldownLayer, "value", 0f, effective / 1000f);
+    }
+
+    public void OnCdCompleted(CoolDownCompletion completion)
+    {
+        _cooldownTween?.Kill();
         _cooldownLayer.Value = 0f;
+    }
+
+    public void OnCdReduced(CoolDownModification cdReduction)
+    {
+        StartTweenFor(cdReduction.Base, cdReduction.Effective);
+    }
+
+    public void OnCdEnlengthed(CoolDownModification cdElongation)
+    {
+        StartTweenFor(cdElongation.Base, cdElongation.Effective);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -104,4 +117,11 @@ public partial class AbilityCellUi : Control, IAbilityLifeCycleHandler
         // Besides, we should later find a better event based mechanism.
         _unactiveLayer.Visible = !_ability.Data.StartPreconditions.CheckAll(ClientInfo.Entity);
     }
+
+    public void OnCancelled() { }
+    public void OnStarted() { }
+    public void OnStopped() { }
+
+    public void OnTargetingStarted() { }
+    public void OnTargetingCompleted() { }
 }
