@@ -100,12 +100,13 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         if (Friction == 0f)
             return Vector2.Zero;
 
+		Vector2 drag = -Friction * Body.Inertia;
+        
         Vector2 currentWishDir = MovementChannels.HasFlag(MovementChannels.Internal) ?
             _internal.WishDir.WishDir() :
             Vector2.Zero;
 
 		float currentSpeed = Body.Inertia.Dot(currentWishDir);
-		Vector2 drag = -Friction * Body.Inertia;
 
 		if (currentWishDir != Vector2.Zero && currentSpeed <= _internal.MaxSpeed)
 		{
