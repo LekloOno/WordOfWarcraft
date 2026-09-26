@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
 public class InternalContributor : IContributor
@@ -8,10 +10,12 @@ public class InternalContributor : IContributor
 
     public InternalLayer Current { get; private set; } = null!;
 
-    public void SetOverride(InternalLayer @override)
+    public InternalLayer? SetOverride(InternalLayer @override)
     {
+        InternalLayer? prev = _override;
         _override = @override;
         Current = @override;
+        return prev;
     }
 
     public void UnsetOverride()
@@ -22,12 +26,15 @@ public class InternalContributor : IContributor
         _override = null;
     }
 
-    public void SetTackle(InternalLayer tackle)
+    public InternalLayer? SetTackle(InternalLayer tackle)
     {
+        InternalLayer? prev = _tackle;
         _tackle = tackle;
 
         if (Current != _override)
             Current = tackle;
+
+        return prev;
     }
 
     public void UnsetTackle()

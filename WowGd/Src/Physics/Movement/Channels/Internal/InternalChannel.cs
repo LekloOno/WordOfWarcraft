@@ -51,11 +51,13 @@ public class InternalChannel : IContributorChannel
                 return true;    // -- Skip
 
             case InternalPriority.Tackle :
-                layers.SetTackle(contrib);
+                if (layers.SetTackle(contrib) is InternalLayer prevTackle)
+                    _registeredContribs.Remove(prevTackle);
                 break;
 
             case InternalPriority.Override :
-                layers.SetOverride(contrib);
+                if (layers.SetOverride(contrib) is InternalLayer prevOverride)
+                    _registeredContribs.Remove(prevOverride);
                 break;
 
             default :
