@@ -1,5 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
 public class InternalContributor : IContributor
