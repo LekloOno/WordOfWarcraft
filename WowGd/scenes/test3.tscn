@@ -82,7 +82,7 @@ radius = 0.4
 [sub_resource type="Resource" id="Resource_v6sbx"]
 script = ExtResource("34_v6sbx")
 Distance = 2.0
-Duration = 0.15
+Duration = 0.18
 metadata/_custom_type_script = "uid://ctujmsl0phxx6"
 
 [sub_resource type="Resource" id="Resource_wp3w3"]

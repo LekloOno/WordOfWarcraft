@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement.Status;
 
@@ -38,18 +39,11 @@ public class StatusQueryRegister
 
     private void IncrementRequesters(MovementStatus flags)
     {
-        uint bits = (uint)flags;
-
         MovementStatus enabled = 0;
 
-        while (bits != 0)
-        {
-            int index = BitOperations.TrailingZeroCount(bits);
+        foreach (int index in BitFlags.Enumerate((uint)flags))
             if (++_requesters[index] == 1)
                 enabled |= (MovementStatus)(1u << index);
-                
-            bits &= bits - 1;
-        }
 
         State |= enabled;
         Enabled?.Invoke(enabled);
@@ -61,14 +55,9 @@ public class StatusQueryRegister
 
         MovementStatus disabled = 0;
 
-        while (bits != 0)
-        {
-            int index = BitOperations.TrailingZeroCount(bits);
+        foreach (int index in BitFlags.Enumerate((uint)flags))
             if (--_requesters[index] == 0)
                 disabled |= (MovementStatus)(1u << index);
-
-            bits &= bits - 1;
-        }
 
         State &= ~disabled;
         Disabled?.Invoke(disabled);

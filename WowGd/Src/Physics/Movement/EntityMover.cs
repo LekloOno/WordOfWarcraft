@@ -7,6 +7,7 @@ using WowGd.Src.Physics.Movement.Channels;
 using WowGd.Src.Physics.Movement.Channels.Additive;
 using WowGd.Src.Physics.Movement.Channels.Internal;
 using WowGd.Src.Physics.Movement.Status;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement;
 
@@ -49,13 +50,8 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     {
         MovementChannels disabled = status.ToMovementChannels();
 
-        uint bits = (uint)disabled;
-        while (bits != 0)
-        {
-            int index = System.Numerics.BitOperations.TrailingZeroCount(bits);
-            _contributorChannels[index].Close(); 
-            bits &= bits - 1;
-        }
+        foreach (int index in BitFlags.Enumerate((uint)disabled))
+            _contributorChannels[index].Close();
 
         MovementChannels &= ~disabled;
 
@@ -69,13 +65,8 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     {
         MovementChannels enabled = status.ToMovementChannels();
 
-        uint bits = (uint)enabled;
-        while (bits != 0)
-        {
-            int index = System.Numerics.BitOperations.TrailingZeroCount(bits);
-            _contributorChannels[index].Open(); 
-            bits &= bits - 1;
-        }
+        foreach (int index in BitFlags.Enumerate((uint)enabled))
+            _contributorChannels[index].Open();
 
         MovementChannels |= enabled;
 
@@ -89,15 +80,10 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     {
         float Friction = _internal.FrictionBase;
 
-        uint bits = (uint)MovementChannels;
         Contribution contrib = new();
 
-        while (bits != 0)
-        {
-            int index = System.Numerics.BitOperations.TrailingZeroCount(bits);
-            contrib += _contributorChannels[index].GetContribution(this, delta); 
-            bits &= bits - 1;
-        }
+        foreach (int index in BitFlags.Enumerate((uint)MovementChannels))
+            contrib += _contributorChannels[index].GetContribution(this, delta);
 
         while (_removeQueued.TryDequeue(out (MovementChannels, IContributor) queued))
             RemoveContributor(queued.Item1, queued.Item2);
