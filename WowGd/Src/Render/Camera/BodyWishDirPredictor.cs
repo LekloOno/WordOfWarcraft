@@ -1,5 +1,5 @@
 using Godot;
-using WowGd.Src.Physics.Movement.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Render.Camera;

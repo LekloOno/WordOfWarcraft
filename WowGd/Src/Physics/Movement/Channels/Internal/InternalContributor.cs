@@ -1,17 +1,14 @@
-using Godot;
-using WowGd.Src.Physics.Movement.Channels;
+namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
-namespace WowGd.Src.Physics.Movement.Internal;
-
-public class InternalMovementLayers : IMovementContributor
+public class InternalContributor : IContributor
 {
-    private InternalMovementLayer? _override;
-    private InternalMovementLayer? _tackle;
-    private InternalMovementLayer _base = null!;
+    private InternalLayer? _override;
+    private InternalLayer? _tackle;
+    private InternalLayer _base = null!;
 
-    public InternalMovementLayer Current { get; private set; } = null!;
+    public InternalLayer Current { get; private set; } = null!;
 
-    public void SetOverride(InternalMovementLayer @override)
+    public void SetOverride(InternalLayer @override)
     {
         _override = @override;
         Current = @override;
@@ -25,7 +22,7 @@ public class InternalMovementLayers : IMovementContributor
         _override = null;
     }
 
-    public void SetTackle(InternalMovementLayer tackle)
+    public void SetTackle(InternalLayer tackle)
     {
         _tackle = tackle;
 
@@ -41,7 +38,7 @@ public class InternalMovementLayers : IMovementContributor
         _tackle = null;
     }
 
-    public void SetBase(InternalMovementLayer @base)
+    public void SetBase(InternalLayer @base)
     {
         if (Current == _base)
             Current = @base;
@@ -49,8 +46,8 @@ public class InternalMovementLayers : IMovementContributor
         _base = @base;
     }
 
-    public void GetContribution(EntityMover mover, float delta, out Vector2 force, out float frictionRatio) =>
-        Current.GetContribution(mover, delta, out force, out frictionRatio);
+    public Contribution GetContribution(EntityMover mover, float delta) =>
+        Current.GetContribution(mover, delta);
 
     public void OnChannelClosed()
     {

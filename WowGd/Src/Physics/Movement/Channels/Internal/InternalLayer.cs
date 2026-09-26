@@ -1,9 +1,9 @@
 using Godot;
 using WowGd.Src.Physics.Movement.WishDir;
 
-namespace WowGd.Src.Physics.Movement.Internal;
+namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
-public abstract partial class InternalMovementLayer : Node, IInternalMovementLayer
+public abstract partial class InternalLayer : Node, IInternalLayer
 {
     [Export] public float FrictionBase { get; private set;}
     /// <summary>
@@ -12,13 +12,13 @@ public abstract partial class InternalMovementLayer : Node, IInternalMovementLay
     [Export] public float MaxSpeed { get; private set;}
     public abstract IWishDir WishDir { get; }
 
-    public void GetContribution(EntityMover mover, float delta, out Vector2 force, out float frictionRatio)
+    public Contribution GetContribution(EntityMover mover, float delta)
     {
-        force = GetForce(mover, delta);
-        frictionRatio = 1f;
+        GetForce(mover, delta, out Vector2? accel, out Vector2? raw);
+        return new(accel, raw);
     }
 
-    protected abstract Vector2 GetForce(EntityMover mover, float delta);
+    protected abstract void GetForce(EntityMover mover, float delta, out Vector2? accel, out Vector2? raw);
 
     public abstract void OnChannelClosed();
     public abstract void OnChannelOpened();

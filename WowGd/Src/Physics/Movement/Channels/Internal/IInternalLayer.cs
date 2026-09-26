@@ -1,9 +1,8 @@
-using WowGd.Src.Physics.Movement.Channels;
 using WowGd.Src.Physics.Movement.WishDir;
 
-namespace WowGd.Src.Physics.Movement.Internal;
+namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
-public interface IInternalMovementLayer : IMovementContributor
+public interface IInternalLayer : IContributor
 {
     float FrictionBase { get; } 
     /// <summary>

@@ -3,10 +3,10 @@ using WowGd.Src.Entities;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
 
-namespace WowGd.Src.Physics.Movement.Internal;
+namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
 [GlobalClass]
-public partial class BodyMover : InternalMovementLayer
+public partial class BodyMover : InternalLayer
 {
 	[Export] private float _acceleration;
 	[Export] private bool _ground = true;
@@ -27,10 +27,10 @@ public partial class BodyMover : InternalMovementLayer
 
 		_entity = entity;
 		
-		if (_ground)
-			_entity.EntityMover.Internal.GroundInternal.SetBase(this);
-		else
-			_entity.EntityMover.Internal.AirInternal.SetBase(this);
+		InternalPriority priority = InternalPriority.Base |
+			(_ground ? InternalPriority.Grounded : 0);
+
+		_entity.EntityMover.AddContributor(MovementChannels.Internal, this, (uint)priority);
 	}
 
 	public bool Enable() =>
@@ -39,15 +39,16 @@ public partial class BodyMover : InternalMovementLayer
 	public bool Disable() =>
 		DisableExt.IndempDisable(ref _enabled, () => {});
 
-	protected override Vector2 GetForce(EntityMover mover, float delta)
+	protected override void GetForce(EntityMover mover, float delta, out Vector2? accel, out Vector2? raw)
 	{
 		CurrentWishDir = _enabled ? WishDir.WishDir() : Vector2.Zero;
 
-		float currentSpeed = Body.LinearVelocity.Dot(CurrentWishDir);
+		float currentSpeed = Body.Inertia.Dot(CurrentWishDir);
 		float t = Mathf.Clamp(currentSpeed / MaxSpeed, 0f, 1f);
 		float accelThisFrame = _acceleration * (1f - t);
-		Vector2 f = accelThisFrame * CurrentWishDir * delta; 
-		return Body.LinearVelocity + f;
+		
+		accel = accelThisFrame * CurrentWishDir * delta;
+		raw = null;
 	}
 
 	public override void OnChannelClosed() { }

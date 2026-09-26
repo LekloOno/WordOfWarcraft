@@ -1,7 +1,7 @@
 using Godot;
 using WowGd.Src.Combat.Abilities;
 using WowGd.Src.Entities;
-using WowGd.Src.Physics.Movement.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement;

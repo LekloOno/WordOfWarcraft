@@ -1,5 +1,5 @@
 using Godot;
-using WowGd.Src.Physics.Movement.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal;
 
 namespace WowGd.Src.Combat.Health.Handlers;
 

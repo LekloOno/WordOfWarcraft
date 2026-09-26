@@ -4,7 +4,8 @@ using Godot;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Entities;
 using WowGd.Src.Physics.Movement.Channels;
-using WowGd.Src.Physics.Movement.Internal;
+using WowGd.Src.Physics.Movement.Channels.Additive;
+using WowGd.Src.Physics.Movement.Channels.Internal;
 using WowGd.Src.Physics.Movement.Status;
 
 namespace WowGd.Src.Physics.Movement;
@@ -23,11 +24,11 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     public StatusQueryRegister StatusChannels => _statusChannels;
     private readonly StatusQueryRegister _statusChannels = new();
 
-    private readonly List<IMovementContributor>[] _contributorChannels =
-        new List<IMovementContributor>[Enum.GetValues<MovementChannels>().Length];
+    private readonly IContributorChannel[] _contributorChannels =
+        new IContributorChannel[Enum.GetValues<MovementChannels>().Length];
 
-    public InternalMovement Internal => _internal;
-    private readonly InternalMovement _internal = new();
+    public InternalChannel Internal => _internal;
+    private readonly InternalChannel _internal = new();
 
     public EntityMover(IEntity entity)
     {
@@ -36,11 +37,11 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         _statusChannels.Disabled += OnDisabled;
 
         for (int i = 0; i < Enum.GetValues<MovementChannels>().Length; i ++)
-            _contributorChannels[i] = [];
+            _contributorChannels[i] = new AdditiveChannel();
 
         int internalIndex = System.Numerics.BitOperations.TrailingZeroCount((int) MovementChannels.Internal);
 
-        _contributorChannels[internalIndex] = [_internal];
+        _contributorChannels[internalIndex] = _internal;
         _internal.SetGrounded();
     }
 
@@ -73,31 +74,22 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         float Friction = _internal.FrictionBase;
 
         uint bits = (uint)MovementChannels;
-
-        Vector2 forces = Vector2.Zero;
-        float frictionRatio = 1f;
+        Contribution contrib = new();
 
         while (bits != 0)
         {
             int index = System.Numerics.BitOperations.TrailingZeroCount(bits);
-            
-            foreach (IMovementContributor contributor in _contributorChannels[index])
-            {
-                contributor.GetContribution(this, delta, out Vector2 force, out float friction);
-                forces += force;
-                frictionRatio *= friction;
-            }
-
+            contrib += _contributorChannels[index].GetContribution(this, delta); 
             bits &= bits - 1;
         }
 
-        while (_removeQueued.TryDequeue(out (MovementChannels, IMovementContributor) queued))
+        while (_removeQueued.TryDequeue(out (MovementChannels, IContributor) queued))
             RemoveContributor(queued.Item1, queued.Item2);
 
-        Body.SetVelocity(forces);
-        Vector2 drag = GetDrag(Friction * frictionRatio);
-        Body.SetVelocity(Body.LinearVelocity + drag * delta);
-        //Body.ApplyForce(drag);
+        Body.AddRawForce(contrib.RawVelocity);
+        Body.Accelerate(contrib.Acceleration);
+        Vector2 drag = GetDrag(Friction * contrib.FrictionRatio);
+        Body.Accelerate(drag * delta);
     }
 
     private Vector2 GetDrag(float Friction)
@@ -109,8 +101,8 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
             _internal.WishDir.WishDir() :
             Vector2.Zero;
 
-		float currentSpeed = Body.LinearVelocity.Dot(currentWishDir);
-		Vector2 drag = -Friction * Body.LinearVelocity;
+		float currentSpeed = Body.Inertia.Dot(currentWishDir);
+		Vector2 drag = -Friction * Body.Inertia;
 
 		if (currentWishDir != Vector2.Zero && currentSpeed <= _internal.MaxSpeed)
 		{
@@ -121,7 +113,7 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
 		return drag;
     }
 
-    public bool AddContributor(MovementChannels channel, IMovementContributor contributor, bool strict = false)
+    public bool AddContributor(MovementChannels channel, IContributor contributor, uint priority, bool strict = false)
     {
         if (strict && !MovementChannels.HasFlag(channel))
             return false;
@@ -131,22 +123,21 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         if (index >= Enum.GetValues<MovementChannels>().Length)
             return false;
 
-        _contributorChannels[index].Add(contributor);
-        return true;
+        return _contributorChannels[index].AddContributor(contributor, priority);
     }
 
-    public bool RemoveContributor(MovementChannels channel, IMovementContributor contributor)
+    public bool RemoveContributor(MovementChannels channel, IContributor contributor)
     {
         int index = System.Numerics.BitOperations.TrailingZeroCount((uint)channel);
         
         if (index >= Enum.GetValues<MovementChannels>().Length)
             return false;
 
-        return _contributorChannels[index].Remove(contributor);
+        return _contributorChannels[index].RemoveContributor(contributor);
     }
 
-    private readonly Queue<(MovementChannels, IMovementContributor)> _removeQueued = [];
-    public void QueueRemoveContributor(MovementChannels channel, IMovementContributor contributor) =>
+    private readonly Queue<(MovementChannels, IContributor)> _removeQueued = [];
+    public void QueueRemoveContributor(MovementChannels channel, IContributor contributor) =>
         _removeQueued.Enqueue((channel, contributor));
 
     public void OnDied()

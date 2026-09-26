@@ -15,19 +15,16 @@ namespace WowGd.Src.Physics;
 [GlobalClass]
 public partial class Body : CharacterBody2D, IBody
 {
-    public Vector2 LinearVelocity => Velocity;
+    public Vector2 RawVelocity  { get; private set; }
+    public Vector2 Inertia      { get; private set; }
 
-    private Vector2 _frameForces;
+    private Vector2 _rawVelocityBuffer;
 
-    void IBody.ApplyForce(Vector2 force)
-    {
-        _frameForces += force;
-    }
+    public void AddRawForce(Vector2 raw) =>
+        _rawVelocityBuffer += raw;
 
-    void IBody.ApplyImpulse(Vector2 impulse)
-    {
-        Velocity += impulse;
-    }
+    public void Accelerate(Vector2 accel) =>
+        Inertia += accel;
 
     public override void _Ready()
     {
@@ -36,8 +33,10 @@ public partial class Body : CharacterBody2D, IBody
 
     public override void _PhysicsProcess(double delta)
     {
-        //Velocity = _frameForces;
-        //_frameForces = Vector2.Zero;
+        RawVelocity = _rawVelocityBuffer;
+        _rawVelocityBuffer = Vector2.Zero;
+
+        Velocity = Inertia + RawVelocity;
         MoveAndSlide();
     }
 }
