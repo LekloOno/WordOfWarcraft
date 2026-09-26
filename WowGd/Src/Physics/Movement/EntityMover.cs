@@ -49,6 +49,14 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     {
         MovementChannels disabled = status.ToMovementChannels();
 
+        uint bits = (uint)disabled;
+        while (bits != 0)
+        {
+            int index = System.Numerics.BitOperations.TrailingZeroCount(bits);
+            _contributorChannels[index].Close(); 
+            bits &= bits - 1;
+        }
+
         MovementChannels &= ~disabled;
 
         if (_statusChannels.State.Airborne())
@@ -60,6 +68,14 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     private void OnEnabled(MovementStatus status)
     {
         MovementChannels enabled = status.ToMovementChannels();
+
+        uint bits = (uint)enabled;
+        while (bits != 0)
+        {
+            int index = System.Numerics.BitOperations.TrailingZeroCount(bits);
+            _contributorChannels[index].Open(); 
+            bits &= bits - 1;
+        }
 
         MovementChannels |= enabled;
 
