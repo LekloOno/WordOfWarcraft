@@ -55,11 +55,7 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
             _contributorChannels[index].Close();
 
         MovementChannels &= ~disabled;
-
-        if (_statusChannels.State.Airborne())
-            _internal.SetAirborne();
-        else
-            _internal.SetGrounded();
+        UpdateInternal();
     }
 
     private void OnEnabled(MovementStatus status)
@@ -70,7 +66,11 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
             _contributorChannels[index].Open();
 
         MovementChannels |= enabled;
+        UpdateInternal();
+    }
 
+    private void UpdateInternal()
+    {
         if (_statusChannels.State.Airborne())
             _internal.SetAirborne();
         else
@@ -101,7 +101,7 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
             return Vector2.Zero;
 
 		Vector2 drag = -Friction * Body.Inertia;
-        
+
         Vector2 currentWishDir = MovementChannels.HasFlag(MovementChannels.Internal) ?
             _internal.WishDir.WishDir() :
             Vector2.Zero;
