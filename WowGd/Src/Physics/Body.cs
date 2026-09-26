@@ -36,8 +36,8 @@ public partial class Body : CharacterBody2D, IBody
 
     public override void _PhysicsProcess(double delta)
     {
-        Velocity += _frameForces * (float) delta;
-        _frameForces = Vector2.Zero;
+        //Velocity = _frameForces;
+        //_frameForces = Vector2.Zero;
         MoveAndSlide();
     }
 }

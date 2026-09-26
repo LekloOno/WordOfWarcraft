@@ -5,6 +5,7 @@ using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Combat.Resources;
 using WowGd.Src.Physics;
+using WowGd.Src.Physics.Movement;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
 
@@ -28,10 +29,15 @@ public partial class Entity : Node, IEntity
 
     public IWishDir WishDir { get; private set; } = null!;
 
+    private EntityMover _entityMover;
+    public IEntityMover EntityMover => _entityMover;
+
     private readonly TaskCompletionSource _initialized =
         new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public Task Initialization => _initialized.Task;
+
+    public Entity() { _entityMover = new(this); }
 
     public override void _Ready()
     {
@@ -39,6 +45,8 @@ public partial class Entity : Node, IEntity
 
         foreach (Node child in GetChildren())
             InitComponent(child);
+
+        _entityMover.Bind(Health);
 
         Health.Resurrect();
 
@@ -84,5 +92,10 @@ public partial class Entity : Node, IEntity
             bindable.Bind(Health);
         if (child is IEntityHealthHandler healthHandler)
             healthHandler.Bind(Health);
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        _entityMover.RunChannels((float) delta);
     }
 }

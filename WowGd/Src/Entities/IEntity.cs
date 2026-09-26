@@ -3,6 +3,7 @@ using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Combat.Resources;
 using WowGd.Src.Physics;
+using WowGd.Src.Physics.Movement;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
 
@@ -31,4 +32,6 @@ public interface IEntity : IInitializable
 
     IActuatorDriver     ActuatorDriver      { get; }
     ITargetIntentDriver TargetIntentDriver  { get; }
+
+    IEntityMover        EntityMover         { get; }
 }

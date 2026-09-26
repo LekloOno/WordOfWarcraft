@@ -7,11 +7,25 @@ namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects;
 public partial class WishDirDashEffect : Effect
 {
     public override string Id => "wish_dir_effect_dash";
-    [Export] private float _stength = 5f;
-
-    public override bool Apply(TargetsPayload targetsPayload)
+    [Export] public DashData DashData
     {
-        targetsPayload.Launcher.Body.ApplyImpulse(_stength * targetsPayload.Launcher.WishDir.WishDir());
-        return true;
+        get => _dashData;
+        set
+        {
+            if (_dashData == value)
+                return;
+
+            _dashData = value;
+            _dash = new(_dashData);
+        }
     }
+    
+    private DashData _dashData = null!;
+
+    private Dash _dash = null!;
+
+    public WishDirDashEffect() { _dash = new(_dashData); }
+
+    public override bool Apply(TargetsPayload targetsPayload) =>
+        _dash.StartTo(targetsPayload.Launcher.WishDir.WishDir(), targetsPayload.Launcher.EntityMover);
 }

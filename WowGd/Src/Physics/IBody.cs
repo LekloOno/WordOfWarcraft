@@ -9,6 +9,7 @@ public interface IBody
     
     void ApplyForce(Vector2 force);
     void ApplyImpulse(Vector2 force);
+    void SetVelocity(Vector2 vel);
     Rid GetRid();
     World2D GetWorld2D();
 }
