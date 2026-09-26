@@ -25,6 +25,7 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     public StatusQueryRegister StatusChannels => _statusChannels;
     private readonly StatusQueryRegister _statusChannels = new();
 
+    private readonly int _channels = Enum.GetValues<MovementChannels>().Length;
     private readonly IContributorChannel[] _contributorChannels =
         new IContributorChannel[Enum.GetValues<MovementChannels>().Length];
 
@@ -115,27 +116,43 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
 		return drag;
     }
 
-    public bool AddContributor(MovementChannels channel, IContributor contributor, uint priority, bool strict = false)
+    public ChannelSubResult AddContributor(MovementChannels channel, IContributor contributor, uint priority, bool strict = false)
     {
-        if (strict && !MovementChannels.HasFlag(channel))
-            return false;
-
         int index = System.Numerics.BitOperations.TrailingZeroCount((uint)channel);
         
-        if (index >= Enum.GetValues<MovementChannels>().Length)
-            return false;
+        if (index >= _channels)
+            return ChannelSubResult.None;
 
-        return _contributorChannels[index].AddContributor(contributor, priority);
+        bool opened = MovementChannels.HasFlag(channel);
+
+        if (strict && !opened)
+            return ChannelSubResult.None;
+
+        ChannelSubResult result = opened
+            ? ChannelSubResult.ChannelOpened
+            : ChannelSubResult.None;
+
+        if (_contributorChannels[index].AddContributor(contributor, priority))
+            result |= ChannelSubResult.Success;
+
+        return result;
     }
 
-    public bool RemoveContributor(MovementChannels channel, IContributor contributor)
+    public ChannelSubResult RemoveContributor(MovementChannels channel, IContributor contributor)
     {
         int index = System.Numerics.BitOperations.TrailingZeroCount((uint)channel);
         
-        if (index >= Enum.GetValues<MovementChannels>().Length)
-            return false;
+        if (index >= _channels)
+            return ChannelSubResult.None;
 
-        return _contributorChannels[index].RemoveContributor(contributor);
+        ChannelSubResult result = MovementChannels.HasFlag(channel)
+            ? ChannelSubResult.ChannelOpened
+            : ChannelSubResult.None;
+
+        if (_contributorChannels[index].RemoveContributor(contributor))
+            result |= ChannelSubResult.Success;
+
+        return result;
     }
 
     private readonly Queue<(MovementChannels, IContributor)> _removeQueued = [];

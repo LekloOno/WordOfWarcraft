@@ -17,6 +17,6 @@ public interface IEntityMover
     /// <param name="priority"></param>
     /// <param name="strict">Whether the contributor should only be added when the target channel is already available.</param>
     /// <returns>Whether the contributor was added.</returns>
-    bool AddContributor(MovementChannels channel, IContributor contributor, uint priority, bool strict = false);
-    bool RemoveContributor(MovementChannels channel, IContributor contributor);
+    ChannelSubResult AddContributor(MovementChannels channel, IContributor contributor, uint priority, bool strict = false);
+    ChannelSubResult RemoveContributor(MovementChannels channel, IContributor contributor);
 }

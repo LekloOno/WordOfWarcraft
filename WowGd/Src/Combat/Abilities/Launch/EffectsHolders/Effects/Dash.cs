@@ -14,7 +14,7 @@ public class Dash(DashData data) : IContributor
     {
         _direction = direction;
         _elapsed = 0f;
-        return mover.AddContributor(MovementChannels.External, this, 0, strict);
+        return mover.AddContributor(MovementChannels.External, this, 0, strict).HasFlag(ChannelSubResult.Success);
     }
 
     public Contribution GetContribution(EntityMover mover, float delta)
