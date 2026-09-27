@@ -13,6 +13,7 @@ public abstract partial class SingleAbilityEffect : Effect
 {
     [Export] private bool _launcher;
     [Export] private TargetRelation _target;
+    [Export] private EffectWeighting _weighting = EffectWeighting.Actuate | EffectWeighting.Gather;
 
     public override bool Apply(TargetsPayload targetsPayload)
     {
@@ -23,13 +24,18 @@ public abstract partial class SingleAbilityEffect : Effect
             return true;
 
         targetsPayload.Apply(
-            _target.HasSelf() ? Effect : null,
-            _target.HasAlly() ? Effect : null,
-            _target.HasEnemy() ? Effect : null
+            _target.HasSelf() ? ResolveEffect : null,
+            _target.HasAlly() ? ResolveEffect : null,
+            _target.HasEnemy() ? ResolveEffect : null
         );
 
         return true;
     }
+
+    private void ResolveEffect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
+        Effect(entity, IsDirect,
+            _weighting.HasFlag(EffectWeighting.Gather)  ? gatherWeight  : 1f,
+            _weighting.HasFlag(EffectWeighting.Actuate) ? actuateWeight : 1f);
 
     public abstract void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight);
     public abstract void LauncherEffect(IEntity entity, float actuateWeight);
