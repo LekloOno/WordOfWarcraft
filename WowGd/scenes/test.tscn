@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://5imopu02t7y3" path="res://assets/sprites/world/trees/tree.png" id="5_gv2t6"]
 [ext_resource type="Script" uid="uid://ci37j55i0s46e" path="res://Src/Debug/GridKeyDbgConfig.cs" id="7_44saj"]
 [ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="7_ajshl"]
-[ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/BodyMover.cs" id="9_ajshl"]
+[ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/Channels/Internal/BodyMover.cs" id="9_ajshl"]
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="9_n74k2"]
 [ext_resource type="Script" uid="uid://bl5jmlur1ki7n" path="res://Src/Debug/SelfHarmDbg.cs" id="9_si7kk"]
 [ext_resource type="Script" uid="uid://bng07rnqcnt53" path="res://Src/Debug/WrittenInputIntercept.cs" id="10_gsk6d"]
@@ -30,9 +30,12 @@
 [ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="31_iq7xp"]
 [ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="32_p8c7m"]
 [ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="33_mftsw"]
-[ext_resource type="Script" uid="uid://dtujnvh2oxqdm" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/WishDirDashEffect.cs" id="33_qx18j"]
 [ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="34_q6ayx"]
 [ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="35_iq7xp"]
+[ext_resource type="Script" uid="uid://dxm4snkmay15w" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/AccelerationData.cs" id="36_tnm51"]
+[ext_resource type="Script" uid="uid://bx8avv7d2o33t" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/ImpulseData.cs" id="37_tbman"]
+[ext_resource type="Script" uid="uid://ou6rb2kwsfxl" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/TranslationData.cs" id="38_gwri7"]
+[ext_resource type="Script" uid="uid://c6dworxii6xbg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/ExternalMoveEffect.cs" id="39_3t5ks"]
 [ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="39_q6ayx"]
 [ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="40_iq7xp"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="40_s6cx0"]
@@ -93,10 +96,24 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_wp3w3"]
-script = ExtResource("33_qx18j")
-_stength = 75.0
-metadata/_custom_type_script = "uid://dtujnvh2oxqdm"
+[sub_resource type="Resource" id="Resource_7pwph"]
+script = ExtResource("36_tnm51")
+
+[sub_resource type="Resource" id="Resource_xj0aj"]
+script = ExtResource("37_tbman")
+
+[sub_resource type="Resource" id="Resource_r7rur"]
+script = ExtResource("38_gwri7")
+_duration = 0.18
+
+[sub_resource type="Resource" id="Resource_7dokv"]
+script = ExtResource("39_3t5ks")
+MoveMode = 1
+_impulseData = SubResource("Resource_xj0aj")
+_translationData = SubResource("Resource_r7rur")
+_accelerationData = SubResource("Resource_7pwph")
+_launcher = true
+metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
 [sub_resource type="Resource" id="Resource_cgmg2"]
 script = ExtResource("47_eixnv")
@@ -110,7 +127,7 @@ metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 script = ExtResource("44_8nvs4")
 TriggerDt = SubResource("Resource_ln4r5")
 GathererDt = SubResource("Resource_cgmg2")
-EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_wp3w3")])
+EffectsDt = Array[ExtResource("45_2ixbo")]([SubResource("Resource_7dokv")])
 metadata/_custom_type_script = "uid://diy1f0p7da221"
 
 [sub_resource type="Resource" id="Resource_ehr82"]
@@ -118,9 +135,10 @@ script = ExtResource("42_35prk")
 EffectsHoldersDt = Array[ExtResource("44_8nvs4")]([SubResource("Resource_ydhbg")])
 metadata/_custom_type_script = "uid://ckalqjavqpd37"
 
-[sub_resource type="Resource" id="Resource_175km"]
+[sub_resource type="Resource" id="Resource_ho4wr"]
 script = ExtResource("52_tbman")
 Icon = ExtResource("29_35prk")
+Base = 2000
 TargetingLaunchesDt = Array[ExtResource("42_35prk")]([SubResource("Resource_ehr82")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
@@ -546,27 +564,27 @@ metadata/_custom_type_script = "uid://bng07rnqcnt53"
 
 [node name="Entity" parent="Physics" unique_id=907940979 instance=ExtResource("10_y81of")]
 
-[node name="Body" parent="Physics/Entity" index="0" unique_id=1471660406]
+[node name="Body" parent="Physics/Entity" index="0" unique_id=546788964]
 position = Vector2(-3.87, -2.44)
 
 [node name="Entity2" parent="Physics" unique_id=1107404198 instance=ExtResource("10_y81of")]
 
-[node name="Body" parent="Physics/Entity2" index="0" unique_id=1471660406]
+[node name="Body" parent="Physics/Entity2" index="0" unique_id=546788964]
 position = Vector2(5.04, -3.325)
 
 [node name="Entity3" parent="Physics" unique_id=316724499 instance=ExtResource("10_y81of")]
 
-[node name="Body" parent="Physics/Entity3" index="0" unique_id=1471660406]
+[node name="Body" parent="Physics/Entity3" index="0" unique_id=546788964]
 position = Vector2(0.515, -5.375)
 
 [node name="Entity4" parent="Physics" unique_id=478880223 instance=ExtResource("10_y81of")]
 
-[node name="Body" parent="Physics/Entity4" index="0" unique_id=1471660406]
+[node name="Body" parent="Physics/Entity4" index="0" unique_id=546788964]
 position = Vector2(0.515, 4.895)
 
 [node name="Entity5" parent="Physics" unique_id=605564891 instance=ExtResource("10_y81of")]
 
-[node name="Body" parent="Physics/Entity5" index="0" unique_id=1471660406]
+[node name="Body" parent="Physics/Entity5" index="0" unique_id=546788964]
 position = Vector2(5.32, 2.845)
 
 [node name="Player" type="Node" parent="Physics" unique_id=162077607 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput", "MoveModeInput")]
@@ -597,8 +615,6 @@ metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 [node name="BodyMover" type="Node" parent="Physics/Player" unique_id=1844309947]
 script = ExtResource("9_ajshl")
 _acceleration = 50.0
-_maxSpeed = 3.6
-_friction = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="CursorWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1502251497]
@@ -650,7 +666,7 @@ metadata/_custom_type_script = "uid://fqpr1dnee5y2"
 
 [node name="DashSpell" type="Node" parent="Physics/Player/ModesManager/MoveMode" unique_id=1050347376]
 script = ExtResource("41_1urli")
-_data = SubResource("Resource_175km")
+_data = SubResource("Resource_ho4wr")
 metadata/_custom_type_script = "uid://djomokhsknkk0"
 
 [node name="MoveModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=521768474]
