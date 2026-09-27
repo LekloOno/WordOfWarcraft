@@ -23,20 +23,31 @@ public abstract partial class SingleAbilityEffect : Effect
         if (_target == TargetRelation.None)
             return true;
 
+        void solver(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
+            ResolveEffect(targetsPayload.Launcher, entity, IsDirect, gatherWeight, actuateWeight);
+
         targetsPayload.Apply(
-            _target.HasSelf() ? ResolveEffect : null,
-            _target.HasAlly() ? ResolveEffect : null,
-            _target.HasEnemy() ? ResolveEffect : null
+            _target.HasSelf()  ? solver : null,
+            _target.HasAlly()  ? solver : null,
+            _target.HasEnemy() ? solver : null
         );
 
         return true;
     }
 
-    private void ResolveEffect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        Effect(entity, IsDirect,
+    private void ResolveEffect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight) =>
+        Effect(launcher, target, IsDirect,
             _weighting.HasFlag(EffectWeighting.Gather)  ? gatherWeight  : 1f,
             _weighting.HasFlag(EffectWeighting.Actuate) ? actuateWeight : 1f);
 
-    public abstract void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight);
-    public abstract void LauncherEffect(IEntity entity, float actuateWeight);
+    public abstract void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight);
+
+    public virtual void LauncherEffect(IEntity entity, float actuateWeight) =>
+        Effect(
+            launcher: entity,
+            target: entity,
+            IsDirect: true,
+            gatherWeight: 1f,
+            actuateWeight
+        );
 }

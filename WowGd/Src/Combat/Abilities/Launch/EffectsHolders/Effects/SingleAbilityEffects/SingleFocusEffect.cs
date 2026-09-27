@@ -12,18 +12,12 @@ public partial class SingleFocusEffect : SingleAbilityEffect
     public override string Id => "effect_single_focus";
     [Export] private float _focus = 10f;
 
-    public override void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        AffectFocus(entity, gatherWeight * actuateWeight);
-
-    public override void LauncherEffect(IEntity entity, float actuateWeight) =>
-        AffectFocus(entity, actuateWeight);
-
-    private void AffectFocus(IEntity entity, float size)
+    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight)
     {
-        int fp = Mathf.FloorToInt(_focus * size);
+        int fp = Mathf.FloorToInt(_focus * gatherWeight * actuateWeight);
         if (fp > 0)
-            entity.ResourceManager.Focus?.Generate(fp, out _);
+            target.ResourceManager.Focus?.Generate(fp, out _);
         else
-            entity.ResourceManager.Focus?.Consume(-fp, out _);
+            target.ResourceManager.Focus?.Consume(-fp, out _);
     }
 }

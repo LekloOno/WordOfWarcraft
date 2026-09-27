@@ -12,12 +12,6 @@ public partial class SingleHealEffect : SingleAbilityEffect
     public override string Id => "effect_single_heal";
     [Export] private float _hp = 10f;
 
-    public override void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        Heal(entity, gatherWeight * actuateWeight);
-
-    public override void LauncherEffect(IEntity entity, float actuateWeight) =>
-        Heal(entity, actuateWeight);
-
-    private void Heal(IEntity entity, float size) =>
-        entity.Health.Generate(Mathf.FloorToInt(_hp * size), out _);
+    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight) =>
+        target.Health.Generate(Mathf.FloorToInt(_hp * gatherWeight * actuateWeight), out _);
 }

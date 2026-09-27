@@ -12,9 +12,9 @@ public partial class MovementStatusEffect : SingleAbilityEffect
     [Export] private MovementStatus _movementStatus;
     [Export] private float _duration;
 
-    public override void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight)
+    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight)
     {
-        entity.EntityMover.StatusChannels.Query(this, _movementStatus, out _);
+        target.EntityMover.StatusChannels.Query(this, _movementStatus, out _);
         
         if (!StaticTree.TryGetTree(out SceneTree? tree))
             return;
@@ -22,9 +22,6 @@ public partial class MovementStatusEffect : SingleAbilityEffect
         float duration = _duration * gatherWeight * actuateWeight;
 
         tree.CreateTimer(duration).Timeout +=
-            () => entity.EntityMover.StatusChannels.Unquery(this, _movementStatus, out _);
+            () => target.EntityMover.StatusChannels.Unquery(this, _movementStatus, out _);
     }
-
-    public override void LauncherEffect(IEntity entity, float actuateWeight) =>
-        Effect(entity, true, 1f, actuateWeight);
 }

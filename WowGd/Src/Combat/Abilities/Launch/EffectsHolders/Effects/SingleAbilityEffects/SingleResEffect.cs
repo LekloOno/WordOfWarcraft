@@ -12,15 +12,9 @@ public partial class SingleResEffect : SingleAbilityEffect
     public override string Id => "effect_single_resurrect";
     [Export] private float _hp = 10f;
 
-    public override void Effect(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        Resurrect(entity, gatherWeight * actuateWeight);
-
-    public override void LauncherEffect(IEntity entity, float actuateWeight) =>
-        Resurrect(entity, actuateWeight);
-
-    private void Resurrect(IEntity entity, float size)
+    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight)
     {
-        int? hp = _hp > 0 ? Mathf.FloorToInt(_hp * size) : null;
-        entity.Health.Resurrect(hp);
+        int? hp = _hp > 0 ? Mathf.FloorToInt(_hp * gatherWeight * actuateWeight) : null;
+        target.Health.Resurrect(hp);
     }
 }
