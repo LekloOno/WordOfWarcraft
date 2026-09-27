@@ -29,8 +29,6 @@ public partial class MovementStatusEffect : SingleAbilityEffect
             () => entity.EntityMover.StatusChannels.Unquery(this, _movementStatus, out _);
     }
 
-    public override void LauncherEffect(IEntity entity, float actuateWeight)
-    {
-        entity.EntityMover.StatusChannels.Query(this, _movementStatus, out _);
-    }
+    public override void LauncherEffect(IEntity entity, float actuateWeight) =>
+        Effect(entity, true, 1f, actuateWeight);
 }
