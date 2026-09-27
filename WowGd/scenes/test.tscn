@@ -96,22 +96,21 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_175km"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_7pwph"]
+[sub_resource type="Resource" id="Resource_1d0gi"]
 script = ExtResource("36_tnm51")
 
-[sub_resource type="Resource" id="Resource_xj0aj"]
+[sub_resource type="Resource" id="Resource_c05ib"]
 script = ExtResource("37_tbman")
 
-[sub_resource type="Resource" id="Resource_r7rur"]
+[sub_resource type="Resource" id="Resource_6rksj"]
 script = ExtResource("38_gwri7")
-_duration = 0.18
 
 [sub_resource type="Resource" id="Resource_7dokv"]
 script = ExtResource("39_3t5ks")
 MoveMode = 1
-_impulseData = SubResource("Resource_xj0aj")
-_translationData = SubResource("Resource_r7rur")
-_accelerationData = SubResource("Resource_7pwph")
+_impulseData = SubResource("Resource_c05ib")
+_translationData = SubResource("Resource_6rksj")
+_accelerationData = SubResource("Resource_1d0gi")
 _launcher = true
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -593,7 +592,7 @@ DactyloDriver = NodePath("PlayerDactyloDriver")
 SelectionModeInput = NodePath("SelectionCombatModeInput")
 MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
 IdData = SubResource("Resource_nwaa2")
-TeamMask = 1
+TeamMask = 2
 
 [node name="StandardWishDir" type="Node" parent="Physics/Player" unique_id=1727349880]
 script = ExtResource("12_c6rvn")
@@ -635,8 +634,7 @@ script = ExtResource("14_5jxlq")
 Type = 1
 metadata/_custom_type_script = "uid://hlchubm80yhc"
 
-[node name="Body" type="RigidBody2D" parent="Physics/Player" unique_id=39715753]
-gravity_scale = 0.0
+[node name="Body" type="CharacterBody2D" parent="Physics/Player" unique_id=1556898819]
 script = ExtResource("7_ajshl")
 metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
 

@@ -571,7 +571,7 @@ DactyloDriver = NodePath("PlayerDactyloDriver")
 SelectionModeInput = NodePath("SelectionCombatModeInput")
 MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
 IdData = SubResource("Resource_u78jf")
-TeamMask = 1
+TeamMask = 2
 
 [node name="StandardWishDir" type="Node" parent="Physics/Player" unique_id=2118355509]
 script = ExtResource("14_7335w")

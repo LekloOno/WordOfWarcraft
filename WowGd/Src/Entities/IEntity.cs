@@ -18,7 +18,7 @@ public interface IEntity : IInitializable
     /// <summary>
     /// Allows to regroup entities into teams.
     /// </summary>
-    uint                TeamMask            { get; }
+    TeamMask            TeamMask            { get; }
     /// <summary>
     /// The physical body of the entity, notably defines its position.
     /// </summary>

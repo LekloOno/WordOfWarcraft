@@ -15,28 +15,28 @@ namespace WowGd.Src.Physics;
 [GlobalClass]
 public partial class Body : CharacterBody2D, IBody
 {
-    public Vector2 RawVelocity  { get; private set; }
-    public Vector2 Inertia      { get; private set; }
+	public Vector2 RawVelocity  { get; private set; }
+	public Vector2 Inertia      { get; private set; }
 
-    private Vector2 _rawVelocityBuffer;
+	private Vector2 _rawVelocityBuffer;
 
-    public void AddRawForce(Vector2 raw) =>
-        _rawVelocityBuffer += raw;
+	public void AddRawForce(Vector2 raw) =>
+		_rawVelocityBuffer += raw;
 
-    public void Accelerate(Vector2 accel) =>
-        Inertia += accel;
+	public void Accelerate(Vector2 accel) =>
+		Inertia += accel;
 
-    public override void _Ready()
-    {
-        MotionMode = MotionModeEnum.Floating;
-    }
+	public override void _Ready()
+	{
+		MotionMode = MotionModeEnum.Floating;
+	}
 
-    public override void _PhysicsProcess(double delta)
-    {
-        RawVelocity = _rawVelocityBuffer;
-        _rawVelocityBuffer = Vector2.Zero;
+	public override void _PhysicsProcess(double delta)
+	{
+		RawVelocity = _rawVelocityBuffer;
+		_rawVelocityBuffer = Vector2.Zero;
 
-        Velocity = Inertia + RawVelocity;
-        MoveAndSlide();
-    }
+		Velocity = Inertia + RawVelocity;
+		MoveAndSlide();
+	}
 }

@@ -6,7 +6,7 @@ namespace WowGd.Src.Entities;
 
 public static partial class EntitiesRegistry
 {
-    public static bool TryGetClosestTarget(this IEntity self, [NotNullWhen(true)] out IEntity? target, uint targetTeamMask = uint.MaxValue, bool excludeSelf = true)
+    public static bool TryGetClosestTarget(this IEntity self, [NotNullWhen(true)] out IEntity? target, TeamMask targetTeamMask = (TeamMask)ushort.MaxValue, bool excludeSelf = true)
     {
         target = null;
         float closestSquaredDist = float.PositiveInfinity;
@@ -30,7 +30,7 @@ public static partial class EntitiesRegistry
         return target != null;
     }
 
-    public static bool TryGetTarget(this IEntity self, [NotNullWhen(true)] out IEntity? target, uint targetTeamMask = uint.MaxValue, bool excludeSelf = true)
+    public static bool TryGetTarget(this IEntity self, [NotNullWhen(true)] out IEntity? target, TeamMask targetTeamMask = (TeamMask)ushort.MaxValue, bool excludeSelf = true)
     {
         foreach (IEntity entity in EntitiesRegistry.Entities)
         {
@@ -48,7 +48,7 @@ public static partial class EntitiesRegistry
         return false;
     }
 
-    public static ICollection<IEntity> GetTargetsInRange(this IEntity self, float range, uint targetTeamMask = uint.MaxValue, bool excludeSelf = true)
+    public static ICollection<IEntity> GetTargetsInRange(this IEntity self, float range, TeamMask targetTeamMask = (TeamMask)ushort.MaxValue, bool excludeSelf = true)
     {
         ICollection<IEntity> inRange = [];
         float rangeSquared = range * range;

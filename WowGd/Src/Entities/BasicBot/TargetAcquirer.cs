@@ -9,7 +9,7 @@ public partial class TargetAcquirer : Node, ITargetAcquirer
     private static uint _count = 0;
 
     private readonly uint _id = _count ++;
-    [Export(PropertyHint.Layers2DPhysics)] private uint _targetTeamMask; 
+    [Export] private TeamMask _targetTeamMask; 
     public bool Enabled => _enabled;
 
     private bool _enabled = true;

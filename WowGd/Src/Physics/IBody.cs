@@ -25,4 +25,7 @@ public interface IBody
 
     Rid GetRid();
     World2D GetWorld2D();
+
+    uint CollisionLayer     { get; set; }
+    uint CollisionMask      { get; set; }
 }

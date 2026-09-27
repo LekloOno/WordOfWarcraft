@@ -17,8 +17,8 @@ public partial class Entity : Node, IEntity
     [Export]
     public EntityIdData IdData {get; private set;} = null!;
 
-    [Export(PropertyHint.Layers2DPhysics)]
-    public uint TeamMask {get; private set;}
+    [Export]
+    public TeamMask TeamMask {get; private set;}
 
     public IBody Body {get; private set;} = null!;
     public IEntityHealth Health { get; private set; } = EnvironmentHealth.Instance;
@@ -74,7 +74,11 @@ public partial class Entity : Node, IEntity
             ResourceManager = resourceManager;
 
         if (this.TryGetComponent(out IBody? body))
+        {
             Body = body;
+            Body.CollisionLayer = TeamMask.ToCollisionLayer();
+            Body.CollisionMask  = TeamMask.ToCollisionMask();
+        }
 
         if (this.TryGetComponent(out IActuatorDriver? actuatorDriver))
             ActuatorDriver = actuatorDriver;

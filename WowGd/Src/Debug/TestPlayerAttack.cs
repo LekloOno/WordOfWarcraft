@@ -9,7 +9,7 @@ namespace WowGd.Src.Debug;
 [GlobalClass]
 public partial class TestPlayerAttack : Node, IEntityHealthHandler
 {
-    [Export(PropertyHint.Layers2DPhysics)] private uint _targetTeamMask;
+    [Export] private TeamMask _targetTeamMask;
     [Export] private float _range   = 3f;
     [Export] private int   _hp      = 10;
 
