@@ -8,21 +8,21 @@ public enum MovementStatus
     /// <summary>
     /// Hinders internal movements.
     /// </summary>
-    Immobilized = 1 << 1,
+    Immobilized = 1 << 0,
     /// <summary>
     /// Hinders external movements.
     /// </summary>
-    Stabilized  = 1 << 2,
+    Stabilized  = 1 << 1,
     /// <summary>
     /// Hinders warp movements.
     /// </summary>
-    Unwarped    = 1 << 3,
+    Unwarped    = 1 << 2,
     /// <summary>
     /// Switches internal movement handler.
     /// </summary>
-    Airborne    = 1 << 4,
+    Airborne    = 1 << 3,
     /// <summary>
     /// Overrides Airborne.
     /// </summary>
-    Anchored    = 1 << 5,
+    Anchored    = 1 << 4,
 }
