@@ -24,7 +24,7 @@ public class AdditiveChannel : IContributorChannel
     public void Close()
     {
         foreach (IContributor contributor in _contributors)
-            contributor.OnChannelOpened();
+            contributor.OnChannelClosed();
     }
 
     public bool AddContributor(IContributor contributor, uint priority)
