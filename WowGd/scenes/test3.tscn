@@ -55,7 +55,9 @@
 [ext_resource type="Script" uid="uid://beoj5s7ccateg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleHealEffect.cs" id="54_lucrr"]
 [ext_resource type="Texture2D" uid="uid://bqxnlv2uovw6k" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png" id="55_36mb3"]
 [ext_resource type="Texture2D" uid="uid://bcg5yyrd6224n" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_7.png" id="56_gsehh"]
+[ext_resource type="Texture2D" uid="uid://cfhuqyvvnk04j" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_17.png" id="56_imk6l"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="57_5jk8v"]
+[ext_resource type="Script" uid="uid://ce6rjnnq7n2l8" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/MovementStatusEffect.cs" id="57_gceff"]
 [ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="58_uggyt"]
 [ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="59_r3sbs"]
 [ext_resource type="Script" uid="uid://by0aobke5dswx" path="res://Src/Input/Targeting/Direct/DirectInputBufferTrigger.cs" id="60_75nqs"]
@@ -401,6 +403,41 @@ TargetIntentAcquirer = 2
 TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_nx2ev")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
+[sub_resource type="Resource" id="Resource_gy7v3"]
+script = ExtResource("57_gceff")
+_movementStatus = 2
+_duration = 2.0
+_target = 7
+metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
+
+[sub_resource type="Resource" id="Resource_q1303"]
+script = ExtResource("38_uxttn")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_7yorm"]
+script = ExtResource("39_07f7t")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_2ae6r"]
+script = ExtResource("35_6gkkb")
+TriggerDt = SubResource("Resource_7yorm")
+GathererDt = SubResource("Resource_q1303")
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_gy7v3")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_lswdd"]
+script = ExtResource("30_m14we")
+EffectsHoldersDt = Array[ExtResource("35_6gkkb")]([SubResource("Resource_2ae6r")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_175km"]
+script = ExtResource("40_dd17h")
+Icon = ExtResource("56_imk6l")
+Base = 1000
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_lswdd")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
 [sub_resource type="Resource" id="Resource_uif08"]
 script = ExtResource("63_oilj3")
 Speed = 20.0
@@ -623,6 +660,11 @@ metadata/_custom_type_script = "uid://djomokhsknkk0"
 [node name="KillSpell" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=664080968]
 script = ExtResource("29_kd30o")
 _data = SubResource("Resource_3lfvi")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="Root" type="Node" parent="Physics/Player/ModesManager/SelectionCombatMode" unique_id=486575194]
+script = ExtResource("29_kd30o")
+_data = SubResource("Resource_175km")
 metadata/_custom_type_script = "uid://djomokhsknkk0"
 
 [node name="CombatModeHealthHandler" type="Node" parent="Physics/Player/ModesManager" unique_id=1539686371]
