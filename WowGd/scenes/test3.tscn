@@ -381,7 +381,7 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 
 [sub_resource type="Resource" id="Resource_i5x3u"]
 script = ExtResource("43_tf0ja")
-_hp = 99999.0
+_hp = 9999.0
 _target = 7
 metadata/_custom_type_script = "uid://ctj8xarphtj3u"
 
@@ -525,7 +525,7 @@ metadata/_custom_type_script = "uid://ckalqjavqpd37"
 [sub_resource type="Resource" id="Resource_gc6n7"]
 script = ExtResource("40_dd17h")
 Icon = ExtResource("60_t1xho")
-Base = 1000
+Base = 8000
 StartPreconditionsDt = Array[ExtResource("31_3einj")]([SubResource("Resource_y55nh")])
 TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_wux3n")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"

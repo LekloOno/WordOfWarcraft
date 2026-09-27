@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="4_yqq3u"]
 [ext_resource type="Script" uid="uid://qoydsswh3nis" path="res://Src/Render/Animation/TweenTools/Value/FloatTweenValue.cs" id="5_kku2r"]
 [ext_resource type="Script" uid="uid://jmvr6db8j6dr" path="res://Src/Render/Ui/Combat/Resources/Indicators/Health/DamageIndicatorColor.cs" id="6_thth2"]
+[ext_resource type="Script" uid="uid://il7nciag3oe5" path="res://Src/Tools/Curve/Float/TrueLogCurve.cs" id="7_yqq3u"]
 
 [sub_resource type="Resource" id="Resource_da3l0"]
 script = ExtResource("6_thth2")
@@ -78,10 +79,12 @@ AnimationTime = 0.4
 Value = SubResource("Resource_s4d4d")
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
-[sub_resource type="Curve" id="Curve_2wdd6"]
-_limits = [0.4, 1.0, 0.0, 100.0]
-_data = [Vector2(0, 0.4), 0.0, 0.0, 0, 0, Vector2(100, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="Resource" id="Resource_sv06i"]
+script = ExtResource("7_yqq3u")
+_nullOutput = 0.4
+_referenceInput = 10000.0
+_referenceOutput = 1.2
+metadata/_custom_type_script = "uid://il7nciag3oe5"
 
 [sub_resource type="LabelSettings" id="LabelSettings_175km"]
 font = ExtResource("1_sorfg")
@@ -114,7 +117,7 @@ _fadeInSettings = SubResource("Resource_yqq3u")
 _rotateInSettings = SubResource("Resource_fii0t")
 _holdDelay = 0.2
 _fadeOutSettings = SubResource("Resource_wcp3p")
-_scaleCurve = SubResource("Curve_2wdd6")
+_scaleCurve = SubResource("Resource_sv06i")
 
 [node name="DamageIndicator" type="Label" parent="." unique_id=1779011724]
 layout_mode = 2

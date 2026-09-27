@@ -3,6 +3,7 @@ using System.Globalization;
 using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Render.Animation.TweenTools;
+using WowGd.Src.Tools.Curve.Float;
 
 namespace WowGd.Src.Render.Ui.Combat.Resources.Indicators;
 
@@ -25,7 +26,7 @@ public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
 
     protected T _activeColors = default!;
 
-    [Export] private Curve _scaleCurve = null!;
+    [Export] private FloatCurveSampler _scaleCurve = null!;
 
     private Tween? _scaleTween;
     private Tween? _fadeTween;
