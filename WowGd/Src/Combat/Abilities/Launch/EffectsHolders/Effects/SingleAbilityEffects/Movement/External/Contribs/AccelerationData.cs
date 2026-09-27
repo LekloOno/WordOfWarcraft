@@ -6,8 +6,10 @@ namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbility
 [GlobalClass]
 public partial class AccelerationData : Resource, IMoveContribData
 {
-    [Export] private float _acceleration = 2f;
-    [Export] private float _duration = 1f;
+    [Export(PropertyHint.Range, "0,100,0.1,or_greater,exp")]
+    private float _acceleration = 2f;
+    [Export(PropertyHint.Range, "0,2,0.1,or_greater,exp")]
+    private float _duration = 1f;
     [Export] private AccelerationWeighting _weighting =
         AccelerationWeighting.Acceleration | AccelerationWeighting.Duration;
 

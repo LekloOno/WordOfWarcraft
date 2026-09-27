@@ -17,8 +17,6 @@ public partial class ExternalMoveEffect : SingleAbilityEffect
 {
     public override string Id => "effect_impulse";
     
-    [Export(PropertyHint.Range, "0,100,0.1,or_greater,exp")]
-    private float _strength = 15f;
     [Export] private ExternalMoveDirection _moveDirection = ExternalMoveDirection.Push;
     [Export] public ExternalMoveMode MoveMode
     {
