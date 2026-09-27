@@ -16,7 +16,7 @@ public readonly struct Contribution(
     public readonly Contribution Add(Contribution b) =>
         new(Acceleration    + b.Acceleration,
             RawVelocity     + b.RawVelocity,
-            FrictionRatio   + b.FrictionRatio);
+            FrictionRatio   * b.FrictionRatio);
 
     public static Contribution operator +(Contribution a, Contribution b) =>
         a.Add(b);
