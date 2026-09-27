@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Godot;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement.Status;
