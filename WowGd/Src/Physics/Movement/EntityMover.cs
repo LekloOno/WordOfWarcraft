@@ -35,8 +35,8 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     public EntityMover(IEntity entity)
     {
         _entity = entity;
-        _statusChannels.Enabled  += OnEnabled;
-        _statusChannels.Disabled += OnDisabled;
+        _statusChannels.Enabled  += OnStatusEnabled;
+        _statusChannels.Disabled += OnStatusDisabled;
 
         for (int i = 0; i < Enum.GetValues<MovementChannels>().Length; i ++)
             _contributorChannels[i] = new AdditiveChannel();
@@ -47,25 +47,25 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         _internal.SetGrounded();
     }
 
-    private void OnDisabled(MovementStatus status)
+    private void OnStatusDisabled(MovementStatus status)
     {
-        MovementChannels disabled = status.ToMovementChannels();
+        MovementChannels opened = status.ToMovementChannels();
 
-        foreach (int index in BitFlags.Enumerate((uint)disabled))
-            _contributorChannels[index].Close();
+        foreach (int index in BitFlags.Enumerate((uint)opened))
+            _contributorChannels[index].Open();
 
-        MovementChannels &= ~disabled;
+        MovementChannels |= opened;
         UpdateInternal();
     }
 
-    private void OnEnabled(MovementStatus status)
+    private void OnStatusEnabled(MovementStatus status)
     {
-        MovementChannels enabled = status.ToMovementChannels();
+        MovementChannels closed = status.ToMovementChannels();
 
-        foreach (int index in BitFlags.Enumerate((uint)enabled))
-            _contributorChannels[index].Open();
+        foreach (int index in BitFlags.Enumerate((uint)closed))
+            _contributorChannels[index].Close();
 
-        MovementChannels |= enabled;
+        MovementChannels &= ~closed;
         UpdateInternal();
     }
 
