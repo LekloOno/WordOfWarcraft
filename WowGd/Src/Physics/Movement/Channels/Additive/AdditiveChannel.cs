@@ -8,7 +8,7 @@ public class AdditiveChannel : IContributorChannel
 
     public Contribution GetContribution(EntityMover mover, float delta)
     {
-        Contribution contrib = default;
+        Contribution contrib = new();
         foreach (IContributor contributor in _contributors)
             contrib += contributor.GetContribution(mover, delta);
 
