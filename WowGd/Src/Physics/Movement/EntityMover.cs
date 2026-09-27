@@ -162,12 +162,12 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
 
     public void OnDied()
     {
-        MovementChannels &= ~MovementChannels.Internal;
+        StatusChannels.Query(this, MovementStatus.Immobilized | MovementStatus.Anchored, out _);
     }
 
     public void OnResurrected(int hp)
     {
-        MovementChannels |= MovementChannels.Internal;
+        StatusChannels.Unquery(this);
     }
 
     public void OnConsumed(int fp) { }
