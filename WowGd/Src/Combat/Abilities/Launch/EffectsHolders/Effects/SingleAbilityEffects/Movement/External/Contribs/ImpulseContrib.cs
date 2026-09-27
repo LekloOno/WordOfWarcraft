@@ -2,7 +2,7 @@ using Godot;
 using WowGd.Src.Physics.Movement;
 using WowGd.Src.Physics.Movement.Channels;
 
-namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects.Movement.Impulse;
+namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects.Movement.External.Contribs;
 
 public class ImpulseContrib(IEntityMover mover, Vector2 direction, float strength, bool strict = false) : IContributor
 {

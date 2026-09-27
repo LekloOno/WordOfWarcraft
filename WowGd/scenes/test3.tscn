@@ -58,9 +58,12 @@
 [ext_resource type="Texture2D" uid="uid://cfhuqyvvnk04j" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_17.png" id="56_imk6l"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="57_5jk8v"]
 [ext_resource type="Script" uid="uid://ce6rjnnq7n2l8" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/MovementStatusEffect.cs" id="57_gceff"]
-[ext_resource type="Script" uid="uid://c6dworxii6xbg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/Impulse/ImpulseEffect.cs" id="58_gceff"]
+[ext_resource type="Script" uid="uid://dxm4snkmay15w" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/AccelerationData.cs" id="58_7pwph"]
+[ext_resource type="Script" uid="uid://c6dworxii6xbg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/ExternalMoveEffect.cs" id="58_gceff"]
 [ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="58_uggyt"]
+[ext_resource type="Script" uid="uid://bx8avv7d2o33t" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/ImpulseData.cs" id="59_7pwph"]
 [ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="59_r3sbs"]
+[ext_resource type="Script" uid="uid://ou6rb2kwsfxl" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/TranslationData.cs" id="59_t1xho"]
 [ext_resource type="Script" uid="uid://by0aobke5dswx" path="res://Src/Input/Targeting/Direct/DirectInputBufferTrigger.cs" id="60_75nqs"]
 [ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="61_klu6q"]
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="62_fdxxn"]
@@ -406,14 +409,31 @@ metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
 [sub_resource type="Resource" id="Resource_gy7v3"]
 script = ExtResource("57_gceff")
-_movementStatus = 2
+_movementStatus = 1
 _duration = 2.0
 _target = 7
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
-[sub_resource type="Resource" id="Resource_gceff"]
-script = ExtResource("58_gceff")
+[sub_resource type="Resource" id="Resource_t1xho"]
+script = ExtResource("58_7pwph")
+_acceleration = 5.0
+_duration = 2.0
+
+[sub_resource type="Resource" id="Resource_hycdf"]
+script = ExtResource("59_7pwph")
 _strength = 25.0
+
+[sub_resource type="Resource" id="Resource_vvbw7"]
+script = ExtResource("59_t1xho")
+_distance = 4.0
+_duration = 4.0
+
+[sub_resource type="Resource" id="Resource_7dokv"]
+script = ExtResource("58_gceff")
+_moveDirection = 1
+_impulseData = SubResource("Resource_hycdf")
+_translationData = SubResource("Resource_vvbw7")
+_accelerationData = SubResource("Resource_t1xho")
 _target = 6
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -429,7 +449,7 @@ metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 script = ExtResource("35_6gkkb")
 TriggerDt = SubResource("Resource_7yorm")
 GathererDt = SubResource("Resource_q1303")
-EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_gy7v3"), SubResource("Resource_gceff")])
+EffectsDt = Array[ExtResource("36_ug8v4")]([SubResource("Resource_gy7v3"), SubResource("Resource_7dokv")])
 metadata/_custom_type_script = "uid://diy1f0p7da221"
 
 [sub_resource type="Resource" id="Resource_lswdd"]
