@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Render.Animation.TweenTools;
@@ -33,17 +34,19 @@ public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
     private Vector3 _worldPosition;
 
     public void SetText(string text) => _label.Text = text;
+    public void SetValueText(int value) =>
+        SetText($"{value.ToString("#,0", CultureInfo.GetCultureInfo("fr-FR"))}");
 
     public void OnConsumed(int rp)
     {
-        SetText($"-{rp}");
+        SetValueText(-rp);
         Modulate = _activeColors.ConsumedColor;
         StartAnimation(_scaleCurve.Sample(rp));
     }
 
     public void OnGenerated(int rp)
     {
-        SetText($"{rp}");
+        SetValueText(rp);
         Modulate = _activeColors.GeneratedColor;
         StartAnimation(_scaleCurve.Sample(rp));
     }
