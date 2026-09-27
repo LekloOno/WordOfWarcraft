@@ -280,19 +280,19 @@ La façon dont les états interragissent avec les canaux de mouvements découle 
 
 Son fonctionnement est plutôt simple.
 
-Tous les états sont par défaut inactifs. N'importe qui peut demander à lever/relâcher des [MovementStatus](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/MovementStatus.cs) via [`Query`](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L17-L26)/[`Unquery`](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L28-L37).
+Tous les états sont par défaut inactifs. N'importe qui peut demander à lever/relâcher des [MovementStatus](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/MovementStatus.cs) via [`Query`](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L32-L42)/[`Unquery`](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L57-L92).
 
 ## Registre de requêteurs
 
 Quand un requêteur demande à lever un état, il est enregistré dans un [registre de requêteurs](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L10).
 
 Ce registre de requêteurs permet de garantir deux choses :
-1. Un requêteur ne peut faire qu'une requête à la fois.
+1. Un requêteur ne peut faire qu'une requête par état (flag) à la fois.
 2. Une requête est toujours annulée de manière atomique - ce qui est annulé correspondra toujours effectievement à ce qui a été fait, et il n'est pas possible d'annuler quelque chose qui n'a pas été fait.
 
 Ainsi :
-1. Une nouvelle requête est [refusée si le requêteur est déjà présent](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L19-L20) dans le registre.
-2. L'annulation de requête se fait par simple identité du requêteur. Si le requêteur n'est pas présent dans le registre, [rien n'est fait](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L30-L31). Sinon, on peut retrouver la requête qui avait été [faîtes par identité, et l'annuler](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L30-L34).
+1. Une nouvelle requête ne déclenche l'incrémentation et la notification [que pour les flags effectivement nouveaux](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L34-L39) dans le registre.
+2. L'annulation de requête se fait par simple identité du requêteur. Si le requêteur n'est pas présent dans le registre, [rien n'est fait](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L59-60). Sinon, [seuls les états effectivement présents, retrouvés par identité](https://github.com/LekloOno/WordOfWarcraft/blob/main/WowGd/Src/Physics/Movement/Status/StatusQueryRegister.cs#L59-L70) sont annulés.
 
 ## Registre de requêtes
 
