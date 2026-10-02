@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Godot;
 
 namespace WowGd.Src.Physics;
@@ -17,6 +19,8 @@ public partial class Body : CharacterBody2D, IBody
 {
 	public Vector2 RawVelocity  { get; private set; }
 	public Vector2 Inertia      { get; private set; }
+	public IEnumerable<CollisionShape2D> CollisionShapes => _collisionShapes;
+	private readonly List<CollisionShape2D> _collisionShapes = [];
 
 	private Vector2 _rawVelocityBuffer;
 
@@ -29,6 +33,10 @@ public partial class Body : CharacterBody2D, IBody
 	public override void _Ready()
 	{
 		MotionMode = MotionModeEnum.Floating;
+
+		foreach (Node child in GetChildren())
+			if (child is CollisionShape2D shape)
+				_collisionShapes.Add(shape);
 	}
 
 	public override void _PhysicsProcess(double delta)

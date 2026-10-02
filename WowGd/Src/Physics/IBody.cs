@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 namespace WowGd.Src.Physics;
@@ -28,4 +29,6 @@ public interface IBody
 
     uint CollisionLayer     { get; set; }
     uint CollisionMask      { get; set; }
+
+    IEnumerable<CollisionShape2D> CollisionShapes { get; }
 }
