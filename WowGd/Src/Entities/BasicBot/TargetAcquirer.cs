@@ -25,14 +25,14 @@ public partial class TargetAcquirer : Node, ITargetAcquirer
             _entity = entity;
     }
 
-    private const uint TargetUpdateMask = 15;
+    private const uint TargetUpdateMask = 0xf;
     public override void _PhysicsProcess(double delta)
     {
-        bool processTick =
-            (TargetUpdateMask & Engine.GetPhysicsFrames()) ==
-            (TargetUpdateMask & _id);
-
-        if (processTick)
+        if (IsProcessTick())
             _entity.TryGetClosestTarget(out _target, _targetTeamMask);
     }
+
+    public bool IsProcessTick() =>
+        (TargetUpdateMask & Engine.GetPhysicsFrames()) ==
+        (TargetUpdateMask & _id);
 }
