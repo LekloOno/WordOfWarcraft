@@ -1,4 +1,8 @@
+using System.Threading;
+using System.Threading.Tasks;
 using Godot;
+using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Tools;
 
@@ -14,16 +18,10 @@ public partial class BasicAttack : Node, IEntityHealthHandler
     public bool Enabled => _enabled;
     private bool _enabled = true;
 
-    private ITargetAcquirer _targetAcquirer = null!;
     private IEntity _entity = null!;
 
     public override void _Ready()
     {
-        if (!this.TryGetSiblingComponent(out ITargetAcquirer? targetAcquirer))
-            return;
-        
-        _targetAcquirer = targetAcquirer;
-
         if (this.TryGetComposedRecursive(out IEntity? entity))
             _entity = entity;
     }
@@ -33,22 +31,45 @@ public partial class BasicAttack : Node, IEntityHealthHandler
     {
         _acc += (float) delta;
 
-        if (_targetAcquirer.Target is not IEntity target)
-            return;
+        if (_attackCd <= _acc)
+            StartAttack();            
+    }
 
-        if (_attackCd > _acc)
-            return;
+    private CancellationTokenSource? _cts;
+    private async void StartAttack()
+    {
+        SetPhysicsProcess(false);
 
-        if ((_entity.Body.GlobalPosition - target.Body.GlobalPosition).LengthSquared() > _attackRange * _attackRange)
-            return;
+        _cts?.Cancel();
+        _cts = new();
+
+        CancellationToken token = _cts.Token;
+
+        IEntity? target;
+        TargetIntent intent = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Direct, token);
+
+        while(!intent.TryGetEntity(out target) ||
+            _entity.DistanceSquaredTo(target) > _attackRange * _attackRange)
+        {
+            await Task.Delay(500);
+            if (token.IsCancellationRequested)
+                return;
+                
+            intent = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Direct, token);
+        }
 
         target.Health.Consume(_attackDmg, out _);
         _acc = 0f;
+
+        _cts = null;
+
+        SetPhysicsProcess(true);
     }
 
     public void OnDied()
     {
         SetPhysicsProcess(false);
+        _cts?.Cancel();
     }
 
     public void OnConsumed(int hp) {}
