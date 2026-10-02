@@ -1,8 +1,9 @@
 using Godot;
-using WowGd.Src.Physics.Movement.WishDir;
+using WowGd.Src.Entities;
+using WowGd.Src.Entities.BasicBot;
 using WowGd.Src.Tools;
 
-namespace WowGd.Src.Entities.BasicBot;
+namespace WowGd.Src.Physics.Movement.WishDir;
 
 [GlobalClass]
 public partial class FollowerWishDir : Node, IWishDir
