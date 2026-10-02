@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://bq8ecys6t711p" path="res://Src/Combat/Abilities/Targeting/Ai/BasicAiTargetIntentDriver.cs" id="10_ehr82"]
 [ext_resource type="Script" uid="uid://cstlfeopg7en0" path="res://Src/Combat/Abilities/Actuation/Drivers/BasicAiActuatorDriver.cs" id="11_ydhbg"]
 [ext_resource type="Script" uid="uid://wdlkcyoao1y3" path="res://Src/Entities/BasicBot/BasicTackle.cs" id="13_ln4r5"]
+[ext_resource type="Script" uid="uid://u1q0ceaxrw3t" path="res://Src/Entities/Stats/Statistics.cs" id="14_wp3w3"]
 
 [sub_resource type="Resource" id="Resource_4k8fq"]
 script = ExtResource("2_cloog")
@@ -80,3 +81,9 @@ script = ExtResource("13_ln4r5")
 _tackleSpeed = 0.9
 _tackleDuration = 3.0
 metadata/_custom_type_script = "uid://wdlkcyoao1y3"
+
+[node name="Statistics" type="Node" parent="." unique_id=1077159617]
+script = ExtResource("14_wp3w3")
+_baseDodge = 15
+_baseTackle = 25
+metadata/_custom_type_script = "uid://u1q0ceaxrw3t"

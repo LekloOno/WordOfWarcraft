@@ -70,6 +70,7 @@
 [ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="62_fdxxn"]
 [ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="63_oilj3"]
 [ext_resource type="PackedScene" uid="uid://fighml8jejap" path="res://prefabs/render/mapping/3d/cave/floor_layer_hole.tscn" id="68_7pwph"]
+[ext_resource type="Script" uid="uid://u1q0ceaxrw3t" path="res://Src/Entities/Stats/Statistics.cs" id="68_vvbw7"]
 [ext_resource type="PackedScene" uid="uid://0cl71x3fpf06" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor-layer.glb" id="69_t1xho"]
 
 [sub_resource type="Environment" id="Environment_h3svd"]
@@ -86,21 +87,21 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_rlms2"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_t1xho"]
+[sub_resource type="Resource" id="Resource_xj0aj"]
 script = ExtResource("58_7pwph")
 
-[sub_resource type="Resource" id="Resource_hycdf"]
+[sub_resource type="Resource" id="Resource_r7rur"]
 script = ExtResource("59_7pwph")
 
-[sub_resource type="Resource" id="Resource_vvbw7"]
+[sub_resource type="Resource" id="Resource_moo7m"]
 script = ExtResource("59_t1xho")
 
 [sub_resource type="Resource" id="Resource_7dokv"]
 script = ExtResource("58_gceff")
 MoveMode = 1
-_impulseData = SubResource("Resource_hycdf")
-_translationData = SubResource("Resource_vvbw7")
-_accelerationData = SubResource("Resource_t1xho")
+_impulseData = SubResource("Resource_r7rur")
+_translationData = SubResource("Resource_moo7m")
+_accelerationData = SubResource("Resource_xj0aj")
 _launcher = true
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -427,21 +428,21 @@ _duration = 2.0
 _target = 7
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
-[sub_resource type="Resource" id="Resource_xj0aj"]
+[sub_resource type="Resource" id="Resource_14wqt"]
 script = ExtResource("58_7pwph")
 
-[sub_resource type="Resource" id="Resource_r7rur"]
+[sub_resource type="Resource" id="Resource_5njv7"]
 script = ExtResource("59_7pwph")
 
-[sub_resource type="Resource" id="Resource_moo7m"]
+[sub_resource type="Resource" id="Resource_p4pj0"]
 script = ExtResource("59_t1xho")
 
 [sub_resource type="Resource" id="Resource_7335w"]
 script = ExtResource("58_gceff")
 _moveDirection = 1
-_impulseData = SubResource("Resource_r7rur")
-_translationData = SubResource("Resource_moo7m")
-_accelerationData = SubResource("Resource_xj0aj")
+_impulseData = SubResource("Resource_5njv7")
+_translationData = SubResource("Resource_p4pj0")
+_accelerationData = SubResource("Resource_14wqt")
 _target = 6
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -486,20 +487,20 @@ _duration = 4.0
 _target = 4
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
-[sub_resource type="Resource" id="Resource_14wqt"]
+[sub_resource type="Resource" id="Resource_kd30o"]
 script = ExtResource("58_7pwph")
 
-[sub_resource type="Resource" id="Resource_5njv7"]
+[sub_resource type="Resource" id="Resource_m14we"]
 script = ExtResource("59_7pwph")
 
-[sub_resource type="Resource" id="Resource_p4pj0"]
+[sub_resource type="Resource" id="Resource_3einj"]
 script = ExtResource("59_t1xho")
 
 [sub_resource type="Resource" id="Resource_yscs2"]
 script = ExtResource("58_gceff")
-_impulseData = SubResource("Resource_5njv7")
-_translationData = SubResource("Resource_p4pj0")
-_accelerationData = SubResource("Resource_14wqt")
+_impulseData = SubResource("Resource_m14we")
+_translationData = SubResource("Resource_3einj")
+_accelerationData = SubResource("Resource_kd30o")
 _target = 4
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -798,6 +799,12 @@ metadata/_custom_type_script = "uid://by0aobke5dswx"
 [node name="ClientMarker" type="Node" parent="Physics/Player" unique_id=1660520031]
 script = ExtResource("61_klu6q")
 metadata/_custom_type_script = "uid://4ma6ga1bxmpu"
+
+[node name="Statistics" type="Node" parent="Physics/Player" unique_id=301613098]
+script = ExtResource("68_vvbw7")
+_baseDodge = 20
+_baseTackle = 25
+metadata/_custom_type_script = "uid://u1q0ceaxrw3t"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1291784488 node_paths=PackedStringArray("_node")]
 physics_interpolation_mode = 2

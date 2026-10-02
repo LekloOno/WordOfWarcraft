@@ -4,6 +4,7 @@ using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Combat.Resources;
+using WowGd.Src.Entities.Stats;
 using WowGd.Src.Physics;
 using WowGd.Src.Physics.Movement;
 using WowGd.Src.Physics.Movement.WishDir;
@@ -36,6 +37,9 @@ public partial class Entity : Node, IEntity
         new(TaskCreationOptions.RunContinuationsAsynchronously);
 
     public Task Initialization => _initialized.Task;
+
+    public IStatistics Statistics { get; private set; } = null!;
+
 
     public override void _Ready()
     {
@@ -87,6 +91,9 @@ public partial class Entity : Node, IEntity
     
         if (this.TryGetComponent(out IWishDir? wishDir))
             WishDir = wishDir;
+
+        if (this.TryGetComponent(out IStatistics? statistics))
+            Statistics = statistics;
     }
 
     private void InitComponent(Node child)
