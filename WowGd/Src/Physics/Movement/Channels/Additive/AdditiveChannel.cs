@@ -33,15 +33,6 @@ public class AdditiveChannel : IContributorChannel
         return true;
     }
 
-    public bool RemoveContributor(IContributor contributor)
-    {
-        int index = _contributors.IndexOf(contributor);
-
-        if (index < 0)
-            return false;
-        
-        _contributors[index] = _contributors[^1];
-        _contributors.RemoveAt(_contributors.Count - 1);
-        return true;
-    }
+    public bool RemoveContributor(IContributor contributor) =>
+        _contributors.SwapRemove(contributor);
 }
