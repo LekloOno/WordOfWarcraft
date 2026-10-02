@@ -6,6 +6,7 @@ using WowGd.Src.Entities;
 using WowGd.Src.Physics.Movement.Channels;
 using WowGd.Src.Physics.Movement.Channels.Additive;
 using WowGd.Src.Physics.Movement.Channels.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 using WowGd.Src.Physics.Movement.Status;
 using WowGd.Src.Tools;
 
@@ -29,8 +30,8 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     private readonly IContributorChannel[] _contributorChannels =
         new IContributorChannel[Enum.GetValues<MovementChannels>().Length];
 
-    public InternalChannel Internal => _internal;
-    private readonly InternalChannel _internal = new();
+    public InternalChannel Internal { get; }
+    public DynamicTackleNode DynamicTackleNode { get; }
 
     public EntityMover(IEntity entity)
     {
@@ -38,13 +39,16 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         _statusChannels.Enabled  += OnStatusEnabled;
         _statusChannels.Disabled += OnStatusDisabled;
 
+        DynamicTackleNode = new(entity);
+
         for (int i = 0; i < Enum.GetValues<MovementChannels>().Length; i ++)
             _contributorChannels[i] = new AdditiveChannel();
 
         int internalIndex = System.Numerics.BitOperations.TrailingZeroCount((int) MovementChannels.Internal);
 
-        _contributorChannels[internalIndex] = _internal;
-        _internal.SetGrounded();
+        Internal = new(entity.WishDir, true);
+        _contributorChannels[internalIndex] = Internal;
+        Internal.SetGrounded();
     }
 
     private void OnStatusDisabled(MovementStatus status)
@@ -65,6 +69,9 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
         foreach (int index in BitFlags.Enumerate((uint)closed))
             _contributorChannels[index].Close();
 
+        if (DynamicTackleNode.IsTackling && !status.CanTackle())
+            DynamicTackleNode.ReleaseTackle();
+
         MovementChannels &= ~closed;
         UpdateInternal();
     }
@@ -72,14 +79,14 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     private void UpdateInternal()
     {
         if (_statusChannels.State.Airborne())
-            _internal.SetAirborne();
+            Internal.SetAirborne();
         else
-            _internal.SetGrounded();
+            Internal.SetGrounded();
     }
 
     public void RunChannels(float delta)
     {
-        float Friction = _internal.FrictionBase;
+        float Friction = Internal.FrictionBase;
 
         Contribution contrib = new();
 
@@ -103,12 +110,11 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
 		Vector2 drag = -Friction * Body.Inertia;
 
         Vector2 currentWishDir = MovementChannels.HasFlag(MovementChannels.Internal) ?
-            _internal.WishDir.WishDir() :
-            Vector2.Zero;
+            Internal.WishDir : Vector2.Zero;
 
 		float currentSpeed = Body.Inertia.Dot(currentWishDir);
 
-		if (currentWishDir != Vector2.Zero && currentSpeed <= _internal.MaxSpeed)
+		if (currentWishDir != Vector2.Zero && currentSpeed <= Internal.MaxSpeed)
 		{
 			float communeDrag = Mathf.Max(0, drag.Dot(-currentWishDir));
 			drag += communeDrag * currentWishDir;

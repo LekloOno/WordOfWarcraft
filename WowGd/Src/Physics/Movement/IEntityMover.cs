@@ -1,11 +1,13 @@
 using WowGd.Src.Physics.Movement.Channels;
 using WowGd.Src.Physics.Movement.Channels.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 using WowGd.Src.Physics.Movement.Status;
 
 namespace WowGd.Src.Physics.Movement;
 
 public interface IEntityMover
 {
+    DynamicTackleNode DynamicTackleNode { get; }
     StatusQueryRegister StatusChannels { get; }
     MovementChannels MovementChannels { get; }
     InternalChannel Internal { get; }

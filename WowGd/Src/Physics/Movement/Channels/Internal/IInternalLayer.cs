@@ -1,13 +1,15 @@
-using WowGd.Src.Physics.Movement.WishDir;
+using Godot;
 
 namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
-public interface IInternalLayer : IContributor
+public interface IInternalLayer
 {
-    float FrictionBase { get; } 
-    /// <summary>
-    /// Below this speed, and when WishDir is aligned with the entity velocity, friction can be discarded.
-    /// </summary>
-    float MaxSpeed { get; }
-    IWishDir WishDir { get; }
+    Contribution GetContribution(Vector2 wishDir, EntityMover mover, float delta);
+    void OnChannelClosed();
+    void OnChannelOpened();
+
+    IInternalContributor? SetContributor(int index, IInternalContributor contributor);
+    IInternalContributor? UnsetContributor(int index);
+
+    IInternalContributor? Active {get;}
 }

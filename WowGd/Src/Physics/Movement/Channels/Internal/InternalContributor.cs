@@ -1,70 +1,29 @@
+using System;
+using Godot;
+using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
+
 namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
-public class InternalContributor : IContributor
+public abstract partial class InternalContributor : Node, IInternalContributor
 {
-    private InternalLayer? _override;
-    private InternalLayer? _tackle;
-    private InternalLayer _base = null!;
+    [Export] public float FrictionBase { get; private set;}
+    /// <summary>
+    /// Below this speed, and when WishDir is aligned with the entity velocity, friction can be discarded.
+    /// </summary>
+    [Export] public float BaseSpeed { get; private set; } = 2.5f;
+    
+    public float MaxSpeed => MathF.Min(BaseSpeed, DynamicTackleNode.EffectiveLimit);
+    public Vector2 WishDir { private get; set; }
 
-    public InternalLayer Current { get; private set; } = null!;
-
-    public InternalLayer? SetOverride(InternalLayer @override)
+    public Contribution GetContribution(EntityMover mover, float delta)
     {
-        InternalLayer? prev = _override;
-        _override = @override;
-        Current = @override;
-        return prev;
+        GetForces(new(mover, MaxSpeed, WishDir), delta, out Vector2? accel, out Vector2? raw);
+        return new(accel, raw);
     }
 
-    public void UnsetOverride()
-    {
-        if (Current == _override)
-            Current = _tackle ?? _base;
+    public abstract DynamicTackleNode DynamicTackleNode { get; }
+    protected abstract void GetForces(InternalLayerInput input, float delta, out Vector2? accel, out Vector2? raw);
 
-        _override = null;
-    }
-
-    public InternalLayer? SetTackle(InternalLayer tackle)
-    {
-        InternalLayer? prev = _tackle;
-        _tackle = tackle;
-
-        if (Current != _override)
-            Current = tackle;
-
-        return prev;
-    }
-
-    public void UnsetTackle()
-    {
-        if (Current == _tackle)
-            Current = _base;
-
-        _tackle = null;
-    }
-
-    public void SetBase(InternalLayer @base)
-    {
-        if (Current == _base)
-            Current = @base;
-            
-        _base = @base;
-    }
-
-    public Contribution GetContribution(EntityMover mover, float delta) =>
-        Current.GetContribution(mover, delta);
-
-    public void OnChannelClosed()
-    {
-        _override?.OnChannelClosed();
-        _tackle?.OnChannelClosed();
-        _base.OnChannelClosed();
-    }
-
-    public void OnChannelOpened()
-    {
-        _override?.OnChannelOpened();
-        _tackle?.OnChannelOpened();
-        _base.OnChannelOpened();
-    }
+    public abstract void OnChannelClosed();
+    public abstract void OnChannelOpened();
 }

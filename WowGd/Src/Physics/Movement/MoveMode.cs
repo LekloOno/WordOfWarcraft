@@ -1,7 +1,15 @@
+using System.Collections.Generic;
+using System.Threading;
 using Godot;
 using WowGd.Src.Combat.Abilities;
+using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Abilities.Targeting;
+using WowGd.Src.Combat.Abilities.Targeting.Payload;
+using WowGd.Src.Combat.Abilities.Targeting.TargetRules;
 using WowGd.Src.Entities;
 using WowGd.Src.Physics.Movement.Channels.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
+using WowGd.Src.Physics.Movement.Status;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement;
@@ -42,10 +50,32 @@ public partial class MoveMode : Node
 		MovementAbility?.Start(_entity);
 	}
 
-	public void Lock()
+	private CancellationTokenSource? _cts;
+	private readonly IEnumerable<ITargetRule> _tackleTargetRules = [new RelationTargetRule(TargetRelation.Enemy)];
+	public async void Tackle()
 	{
-		GD.Print("we be lockin");
+		IEntityMover entityMover = _entity.EntityMover;
+
+		if (entityMover.DynamicTackleNode.IsTackling)
+		{
+			entityMover.DynamicTackleNode.ReleaseTackle();
+			return;
+		}
+
+		if (!entityMover.StatusChannels.State.CanTackle())
+			return;
+
+		_cts?.Cancel();
+		_cts = new();
+
+		TargetIntent intent = await _entity.TargetIntentDriver.RetrieveTargetIntent(
+			_entity, TargetIntentAcquirer.Direct, _cts.Token, _tackleTargetRules);
+
+		entityMover.DynamicTackleNode.StartTackle(intent.Entity!, 1f);
 	}
+
+	public void CancelTackleTargeting() =>
+		_cts?.Cancel();
 
 	public void Dodge()
 	{

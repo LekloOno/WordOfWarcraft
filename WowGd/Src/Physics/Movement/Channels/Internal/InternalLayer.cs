@@ -1,25 +1,77 @@
 using Godot;
-using WowGd.Src.Physics.Movement.WishDir;
 
 namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
-public abstract partial class InternalLayer : Node, IInternalLayer
+public class InternalLayer : IInternalLayer
 {
-    [Export] public float FrictionBase { get; private set;}
-    /// <summary>
-    /// Below this speed, and when WishDir is aligned with the entity velocity, friction can be discarded.
-    /// </summary>
-    [Export] public float MaxSpeed { get; private set;}
-    public abstract IWishDir WishDir { get; }
+    public IInternalContributor? Active { get; private set; } = null;
+    
+    private readonly IInternalContributor?[] _layers = new IInternalContributor[8];
+    private int _topIndex = -1;
 
-    public Contribution GetContribution(EntityMover mover, float delta)
+    public InternalLayer() {}
+    public InternalLayer(IInternalContributor @base) : this()
     {
-        GetForce(mover, delta, out Vector2? accel, out Vector2? raw);
-        return new(accel, raw);
+        _layers[0] = @base;
+        Active = @base;
+        _topIndex = 0;
     }
 
-    protected abstract void GetForce(EntityMover mover, float delta, out Vector2? accel, out Vector2? raw);
+    public Contribution GetContribution(Vector2 wishDir, EntityMover mover, float delta)
+    {
+        if (Active is null)
+            return new();
 
-    public abstract void OnChannelClosed();
-    public abstract void OnChannelOpened();
+        Active.WishDir = wishDir;
+        return Active.GetContribution(mover, delta);
+    }
+
+    public void OnChannelClosed()
+    {
+        foreach (IInternalContributor? layer in _layers)
+            layer?.OnChannelClosed();
+    }
+
+    public void OnChannelOpened()
+    {
+        foreach (IInternalContributor? layer in _layers)
+            layer?.OnChannelOpened();
+    }
+
+    public IInternalContributor? SetContributor(int index, IInternalContributor contributor)
+    {
+        IInternalContributor? prev = _layers[index];
+        _layers[index] = contributor;
+
+        if (index < _topIndex)
+            return prev;
+
+        Active = contributor;
+        _topIndex = index;
+        return prev;
+    }
+
+    public IInternalContributor? UnsetContributor(int index)
+    {
+        IInternalContributor? prev = _layers[index];
+        _layers[index] = null;
+
+        if (index != _topIndex)
+            return prev;
+
+        for (var i = index - 1; i >= 0; i--)
+        {
+            if (_layers[i] is not null)
+            {
+                _topIndex = i;
+                Active = _layers[i];
+                return prev;
+            }
+        }
+
+        _topIndex = -1;
+        Active = null;
+
+        return prev;
+    }
 }

@@ -53,9 +53,11 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
     {
         if (@event.IsMovementAbilityPressed())
             Mode.StartMovementAbility();
-        else if (@event.IsLockingPressed())
-            Mode.Lock();
+        else if (@event.IsTacklePressed())
+            Mode.Tackle();
         else if (@event.IsDodgingPressed())
             Mode.Dodge();
+        else if (@event.IsActionPressed("ability_cancel"))
+            Mode.CancelTackleTargeting();
     }
 }

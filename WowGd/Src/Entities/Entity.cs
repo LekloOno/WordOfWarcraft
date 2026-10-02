@@ -29,7 +29,7 @@ public partial class Entity : Node, IEntity
 
     public IWishDir WishDir { get; private set; } = null!;
 
-    private EntityMover _entityMover;
+    private EntityMover _entityMover = null!;
     public IEntityMover EntityMover => _entityMover;
 
     private readonly TaskCompletionSource _initialized =
@@ -37,11 +37,10 @@ public partial class Entity : Node, IEntity
 
     public Task Initialization => _initialized.Task;
 
-    public Entity() { _entityMover = new(this); }
-
     public override void _Ready()
     {
         FetchBaseComponents();
+        _entityMover = new(this);
 
         foreach (Node child in GetChildren())
             InitComponent(child);

@@ -52,6 +52,7 @@
 [ext_resource type="Script" uid="uid://do3m8sny4khm" path="res://Src/Combat/Abilities/CasterRules/ResourceRules/Types/CasterFocusRule.cs" id="53_xs0qd"]
 [ext_resource type="Script" uid="uid://beoj5s7ccateg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleHealEffect.cs" id="54_lucrr"]
 [ext_resource type="Texture2D" uid="uid://bqxnlv2uovw6k" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png" id="55_36mb3"]
+[ext_resource type="Script" uid="uid://bmahds0wdxok7" path="res://Src/Combat/Abilities/Targeting/TargetRules/RelationTargetRule.cs" id="55_hycdf"]
 [ext_resource type="Texture2D" uid="uid://bcg5yyrd6224n" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_7.png" id="56_gsehh"]
 [ext_resource type="Texture2D" uid="uid://cfhuqyvvnk04j" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_17.png" id="56_imk6l"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="57_5jk8v"]
@@ -85,21 +86,21 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_rlms2"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_7pwph"]
+[sub_resource type="Resource" id="Resource_t1xho"]
 script = ExtResource("58_7pwph")
 
-[sub_resource type="Resource" id="Resource_t1xho"]
+[sub_resource type="Resource" id="Resource_hycdf"]
 script = ExtResource("59_7pwph")
 
-[sub_resource type="Resource" id="Resource_hycdf"]
+[sub_resource type="Resource" id="Resource_vvbw7"]
 script = ExtResource("59_t1xho")
 
 [sub_resource type="Resource" id="Resource_7dokv"]
 script = ExtResource("58_gceff")
 MoveMode = 1
-_impulseData = SubResource("Resource_t1xho")
-_translationData = SubResource("Resource_hycdf")
-_accelerationData = SubResource("Resource_7pwph")
+_impulseData = SubResource("Resource_hycdf")
+_translationData = SubResource("Resource_vvbw7")
+_accelerationData = SubResource("Resource_t1xho")
 _launcher = true
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -279,6 +280,11 @@ metadata/_custom_type_script = "uid://do3m8sny4khm"
 script = ExtResource("47_sx1gl")
 metadata/_custom_type_script = "uid://tr6yt483fw7q"
 
+[sub_resource type="Resource" id="Resource_wp3w3"]
+script = ExtResource("55_hycdf")
+_relation = 3
+metadata/_custom_type_script = "uid://bmahds0wdxok7"
+
 [sub_resource type="Resource" id="Resource_3w526"]
 script = ExtResource("54_lucrr")
 _hp = 20.0
@@ -317,7 +323,7 @@ Id = "oui"
 Icon = ExtResource("52_xpt32")
 Base = 2000
 StartPreconditionsDt = Array[ExtResource("31_3einj")]([SubResource("Resource_3t5ks")])
-TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_4amwq")])
+TargetRulesDt = Array[ExtResource("34_nq2p8")]([SubResource("Resource_4amwq"), SubResource("Resource_wp3w3")])
 TargetIntentAcquirer = 2
 TargetingLaunchesDt = Array[ExtResource("30_m14we")]([SubResource("Resource_g2gmo")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
@@ -421,22 +427,21 @@ _duration = 2.0
 _target = 7
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
-[sub_resource type="Resource" id="Resource_vvbw7"]
+[sub_resource type="Resource" id="Resource_xj0aj"]
 script = ExtResource("58_7pwph")
 
-[sub_resource type="Resource" id="Resource_xj0aj"]
-script = ExtResource("59_7pwph")
-_strength = 25.0
-
 [sub_resource type="Resource" id="Resource_r7rur"]
+script = ExtResource("59_7pwph")
+
+[sub_resource type="Resource" id="Resource_moo7m"]
 script = ExtResource("59_t1xho")
 
 [sub_resource type="Resource" id="Resource_7335w"]
 script = ExtResource("58_gceff")
 _moveDirection = 1
-_impulseData = SubResource("Resource_xj0aj")
-_translationData = SubResource("Resource_r7rur")
-_accelerationData = SubResource("Resource_vvbw7")
+_impulseData = SubResource("Resource_r7rur")
+_translationData = SubResource("Resource_moo7m")
+_accelerationData = SubResource("Resource_xj0aj")
 _target = 6
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -481,11 +486,20 @@ _duration = 4.0
 _target = 4
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
+[sub_resource type="Resource" id="Resource_14wqt"]
+script = ExtResource("58_7pwph")
+
+[sub_resource type="Resource" id="Resource_5njv7"]
+script = ExtResource("59_7pwph")
+
+[sub_resource type="Resource" id="Resource_p4pj0"]
+script = ExtResource("59_t1xho")
+
 [sub_resource type="Resource" id="Resource_yscs2"]
 script = ExtResource("58_gceff")
-_impulseData = SubResource("Resource_xj0aj")
-_translationData = SubResource("Resource_r7rur")
-_accelerationData = SubResource("Resource_vvbw7")
+_impulseData = SubResource("Resource_5njv7")
+_translationData = SubResource("Resource_p4pj0")
+_accelerationData = SubResource("Resource_14wqt")
 _target = 4
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -659,7 +673,7 @@ metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 script = ExtResource("18_wf8it")
 _acceleration = 50.0
 FrictionBase = 15.0
-MaxSpeed = 3.6
+BaseSpeed = 3.6
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="CursorWishDir" type="Node" parent="Physics/Player/BodyMover" unique_id=1767082103]
