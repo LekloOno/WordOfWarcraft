@@ -21,6 +21,9 @@ public static class MovementStatusExt
     public static bool Anchored(this MovementStatus status) =>
         status.HasFlag(MovementStatus.Anchored);
 
+    public static bool CanTackle(this MovementStatus status) =>
+        (status & (MovementStatus.Immobilized | MovementStatus.Airborne)) == 0;
+
     public static MovementChannels ToMovementChannels(this MovementStatus status)
     {
         MovementChannels channels = 0;
