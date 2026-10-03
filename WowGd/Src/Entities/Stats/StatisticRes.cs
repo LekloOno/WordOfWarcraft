@@ -1,37 +1,35 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using Godot;
 
 namespace WowGd.Src.Entities.Stats;
 
 [Tool]
-public abstract partial class StatisticRes<T> : Resource
-    where T: struct
+public abstract partial class StatisticRes<TVal, TStat> : Resource
+    where TVal: INumber<TVal>
+    where TStat: IStatistic<TVal>
 {
     public StatisticRes() { }
-    public StatisticRes(T @base) : this() { _base = @base; }  
+    public StatisticRes(TVal @base) : this() { _base = @base; }  
 
-    protected T _base;
+    protected TVal _base = default!;
     public readonly List<BoundStatistic> _boundStats = [];
 
-    protected T GetBase => _base;
-    protected void SetBase(T value)
+    protected TVal GetBase => _base;
+    protected void SetBase(TVal value)
     {
-        if (EqualityComparer<T>.Default.Equals(_base, value))
+        if (EqualityComparer<TVal>.Default.Equals(_base, value))
             return;
 
         _base = value;
         foreach (BoundStatistic stat in _boundStats)
-            stat.Base = value;
+            stat.Stat.Base = value;
     }
 
-    public class BoundStatistic(StatisticRes<T> res, IStatistic<T> stat) : IDisposable, IStatistic<T>
+    public class BoundStatistic(StatisticRes<TVal, TStat> res, TStat stat) : IDisposable
     {
-        public T Base { get => stat.Base; set => stat.Base = value; }
-        public T Current => stat.Current;
-
-        public IDisposable? AddModifier(IModifier<T> modifier) =>
-            stat.AddModifier(modifier);
+        public readonly TStat Stat = stat;
 
         public void Dispose()
         {
@@ -40,9 +38,11 @@ public abstract partial class StatisticRes<T> : Resource
         }
     }
 
+    protected abstract TStat BuildStat(TVal @base);
+
     public BoundStatistic BindStat()
     {
-        BoundStatistic stat = new(this, new Statistic<T>(_base));
+        BoundStatistic stat = new(this, BuildStat(_base));
         _boundStats.Add(stat);
         return stat;
     }

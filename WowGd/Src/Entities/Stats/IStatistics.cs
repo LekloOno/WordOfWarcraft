@@ -1,8 +1,10 @@
+using WowGd.Src.Entities.Stats.Bucketing;
+
 namespace WowGd.Src.Entities.Stats;
 
 public interface IStatistics
 {
-    IStatistic<int> Dodge   { get; }
-    IStatistic<int> Tackle  { get; }
-    IStatistic<int> Speed   { get; }
+    IBucketedStat<int> Dodge   { get; }
+    IBucketedStat<int> Tackle  { get; }
+    IBucketedStat<int> Speed   { get; }
 }

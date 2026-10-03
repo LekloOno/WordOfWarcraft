@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Entities.Stats.Bucketing;
 
 namespace WowGd.Src.Entities.Stats;
 
@@ -9,9 +10,9 @@ public partial class Statistics : Node, IStatistics
     [Export] private StatisticResInt _baseDodge  = new(0);
     [Export] private StatisticResInt _baseSpeed  = new(30);
 
-    public IStatistic<int> Dodge    => _dodge;
-    public IStatistic<int> Tackle   => _tackle;
-    public IStatistic<int> Speed    => _speed;
+    public IBucketedStat<int> Dodge  => _dodge.Stat;
+    public IBucketedStat<int> Tackle => _tackle.Stat;
+    public IBucketedStat<int> Speed  => _speed.Stat;
 
     private StatisticResInt.BoundStatistic _dodge   = null!;
     private StatisticResInt.BoundStatistic _tackle  = null!;
