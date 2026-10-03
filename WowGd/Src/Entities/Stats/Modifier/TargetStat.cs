@@ -16,8 +16,8 @@ public static class TargetStatExt
         return target switch
         {
             TargetStat.Tackle => entity.Statistics.Tackle,
-            TargetStat.Dodge => entity.Statistics.Tackle,
-            TargetStat.Speed => entity.Statistics.Tackle,
+            TargetStat.Dodge => entity.Statistics.Dodge,
+            TargetStat.Speed => entity.Statistics.Speed,
             _ => throw new System.IndexOutOfRangeException(),
         };
     }
