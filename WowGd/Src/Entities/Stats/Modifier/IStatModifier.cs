@@ -4,5 +4,5 @@ namespace WowGd.Src.Entities.Stats.Modifier;
 
 public interface IStatModifier
 {
-    IDisposable? ApplyTo(IEntity entity);
+    IDisposable? ApplyTo(IEntity entity, float weight);
 }

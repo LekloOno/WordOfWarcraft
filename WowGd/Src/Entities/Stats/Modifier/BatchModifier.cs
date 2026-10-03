@@ -9,12 +9,15 @@ public partial class BatchModifier : StatModifier
 {
     [Export] private Godot.Collections.Array<SingleStatModifier> _modifiers = [];
 
-    public override IDisposable? ApplyTo(IEntity entity)
+    public override IDisposable? ApplyTo(IEntity entity, float weight)
     {
         List<IDisposable> handles = [];
         foreach (SingleStatModifier val in _modifiers)
-            if (val.ApplyTo(entity) is IDisposable handle)
+            if (val.ApplyTo(entity, weight) is IDisposable handle)
                 handles.Add(handle);
+
+        if (handles.Count == 0)
+            return null;
 
         return new BatchModifierHandle(handles);
     }

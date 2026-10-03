@@ -7,5 +7,5 @@ namespace WowGd.Src.Entities.Stats.Modifier;
 [GlobalClass]
 public abstract partial class StatModifier : Resource, IStatModifier
 {
-    public abstract IDisposable? ApplyTo(IEntity entity);
+    public abstract IDisposable? ApplyTo(IEntity entity, float weight);
 }

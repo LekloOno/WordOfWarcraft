@@ -51,8 +51,11 @@
 [ext_resource type="Texture2D" uid="uid://bqxnlv2uovw6k" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png" id="49_vjpnc"]
 [ext_resource type="Texture2D" uid="uid://bcg5yyrd6224n" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_7.png" id="50_a4blw"]
 [ext_resource type="Texture2D" uid="uid://cfhuqyvvnk04j" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_17.png" id="51_cfqh2"]
+[ext_resource type="Script" uid="uid://bisjn2v4n4vlu" path="res://Src/Entities/Stats/Modifier/SingleStatModifier.cs" id="52_k2b5b"]
 [ext_resource type="Script" uid="uid://ce6rjnnq7n2l8" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/MovementStatusEffect.cs" id="52_n6gq7"]
+[ext_resource type="Script" uid="uid://c5fd42nlc6dwi" path="res://Src/Entities/Stats/Modifier/BatchModifier.cs" id="53_qewp4"]
 [ext_resource type="Texture2D" uid="uid://bbio1xqk0qfdw" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_32.png" id="53_vo0d8"]
+[ext_resource type="Script" uid="uid://b5qwvmhcv4ew" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleStatsEffect.cs" id="54_h8dry"]
 [ext_resource type="Script" uid="uid://hwe5y4wn5sah" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/RadiusGathererData.cs" id="54_uoox7"]
 [ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="55_r8cxm"]
 [ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="56_286bw"]
@@ -404,13 +407,6 @@ TargetIntentAcquirer = 2
 TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_nx2ev")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
-[sub_resource type="Resource" id="Resource_gy7v3"]
-script = ExtResource("52_n6gq7")
-_movementStatus = 1
-_duration = 2.0
-_target = 7
-metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
-
 [sub_resource type="Resource" id="Resource_k2b5b"]
 script = ExtResource("26_iiwpk")
 
@@ -429,6 +425,50 @@ _accelerationData = SubResource("Resource_k2b5b")
 _target = 6
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
+[sub_resource type="Resource" id="Resource_ivc2v"]
+script = ExtResource("52_k2b5b")
+Target = 2
+Flat = false
+Value = -10
+Multiplier = -0.5
+metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
+
+[sub_resource type="Resource" id="Resource_umxrf"]
+script = ExtResource("53_qewp4")
+_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_ivc2v")])
+metadata/_custom_type_script = "uid://c5fd42nlc6dwi"
+
+[sub_resource type="Resource" id="Resource_1ks5w"]
+script = ExtResource("54_h8dry")
+_modifiers = SubResource("Resource_umxrf")
+_duration = 3.0
+_target = 4
+metadata/_custom_type_script = "uid://b5qwvmhcv4ew"
+
+[sub_resource type="Resource" id="Resource_q72cs"]
+script = ExtResource("52_k2b5b")
+Target = 2
+Flat = false
+metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
+
+[sub_resource type="Resource" id="Resource_s12lk"]
+script = ExtResource("52_k2b5b")
+Target = 1
+Value = 50
+metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
+
+[sub_resource type="Resource" id="Resource_tk2o0"]
+script = ExtResource("53_qewp4")
+_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_q72cs"), SubResource("Resource_s12lk")])
+metadata/_custom_type_script = "uid://c5fd42nlc6dwi"
+
+[sub_resource type="Resource" id="Resource_aflbg"]
+script = ExtResource("54_h8dry")
+_modifiers = SubResource("Resource_tk2o0")
+_duration = 3.0
+_target = 1
+metadata/_custom_type_script = "uid://b5qwvmhcv4ew"
+
 [sub_resource type="Resource" id="Resource_q1303"]
 script = ExtResource("30_vkvdf")
 metadata/_custom_type_script = "uid://b2utcesxdrfuh"
@@ -441,7 +481,7 @@ metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 script = ExtResource("24_rw8uc")
 TriggerDt = SubResource("Resource_7yorm")
 GathererDt = SubResource("Resource_q1303")
-EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_gy7v3"), SubResource("Resource_7335w")])
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_7335w"), SubResource("Resource_1ks5w"), SubResource("Resource_aflbg")])
 metadata/_custom_type_script = "uid://diy1f0p7da221"
 
 [sub_resource type="Resource" id="Resource_lswdd"]
@@ -571,7 +611,6 @@ metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 script = ExtResource("7_l5be3")
 _acceleration = 50.0
 FrictionBase = 15.0
-BaseSpeed = 3.6
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="CursorWishDir" type="Node" parent="BodyMover" unique_id=330959096]

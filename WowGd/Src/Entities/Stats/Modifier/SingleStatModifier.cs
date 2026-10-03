@@ -25,9 +25,9 @@ public partial class SingleStatModifier : StatModifier
 
     private bool _flat = true;
 
-    public override IDisposable? ApplyTo(IEntity entity) => _flat
-        ? Target.GetStat(entity).Buckets.AddFlatModifier(Value)
-        : Target.GetStat(entity).Buckets.AddLayerModifier(Multiplier, _layer);
+    public override IDisposable? ApplyTo(IEntity entity, float weight) => _flat
+        ? Target.GetStat(entity).Buckets.AddFlatModifier(Mathf.FloorToInt(Value * weight))
+        : Target.GetStat(entity).Buckets.AddLayerModifier(Multiplier * weight, _layer);
 
     public override void _ValidateProperty(Godot.Collections.Dictionary property)
     {
