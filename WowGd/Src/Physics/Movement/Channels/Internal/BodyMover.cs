@@ -1,6 +1,6 @@
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
+using WowGd.Src.Entities.Stats.Speed;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Physics.Movement.Channels.Internal;
@@ -18,7 +18,7 @@ public partial class BodyMover : InternalContributor
 
 	public bool Enabled => _enabled;
 
-    public override DynamicTackleNode DynamicTackleNode => _entity.EntityMover.DynamicTackleNode;
+	public override float MaxSpeed => SpeedStatisticsExt.GetMaxSpeedFrom(_entity);
 
     private bool _enabled = false;
 

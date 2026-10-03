@@ -8,7 +8,17 @@ public sealed class Statistic<T>(T @base) : IStatistic<T>
     private readonly Dictionary<long, IModifier<T>> _modifiers = [];
     private long _nextId;
 
-    public T Base { get; } = @base;
+    private T _base = @base;
+    public T Base
+    {
+        get => _base;
+        set
+        {
+            _base = value;
+            Recalculate();
+        }
+    }
+    
     public T Current { get; private set; } = @base;
 
     public IDisposable? AddModifier(IModifier<T> modifier)

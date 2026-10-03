@@ -1,0 +1,705 @@
+[gd_scene format=3 uid="uid://dysspmhd6l6lu"]
+
+[ext_resource type="Script" uid="uid://dr3n7mycos7rq" path="res://Src/Entities/ClientEntity.cs" id="1_upqbw"]
+[ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="2_017mr"]
+[ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="3_qjp78"]
+[ext_resource type="Script" uid="uid://bl8lp3ttb4jor" path="res://Src/Combat/Resources/ResourceManager.cs" id="4_k2b5b"]
+[ext_resource type="Script" uid="uid://dbfmamo6b7xia" path="res://Src/Combat/Resources/FocusRes/Focus.cs" id="5_qewp4"]
+[ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="6_h8dry"]
+[ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/Channels/Internal/BodyMover.cs" id="7_l5be3"]
+[ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="8_11fuo"]
+[ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="9_4q036"]
+[ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="10_envmc"]
+[ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="11_n5pdb"]
+[ext_resource type="Script" uid="uid://dg4qx0sj3cb7r" path="res://Src/Physics/Body.cs" id="12_q72cs"]
+[ext_resource type="Script" uid="uid://c273v4avjawkx" path="res://Src/Input/SelectionCombatModeInput.cs" id="13_tk2o0"]
+[ext_resource type="Script" uid="uid://bgf68riiwyila" path="res://Src/Entities/Modes/ModesManager.cs" id="14_aflbg"]
+[ext_resource type="Script" uid="uid://bjsonh2oopm3s" path="res://Src/Entities/Modes/ModePicker.cs" id="15_s12lk"]
+[ext_resource type="Script" uid="uid://pux5ejw5b5kx" path="res://Src/Physics/Movement/MoveMode.cs" id="16_105x8"]
+[ext_resource type="Script" uid="uid://fqpr1dnee5y2" path="res://Src/Physics/Movement/MoveModeInput.cs" id="17_6bglf"]
+[ext_resource type="Script" uid="uid://djomokhsknkk0" path="res://Src/Combat/Abilities/AbilityStateMachine.cs" id="18_kjuvs"]
+[ext_resource type="Script" uid="uid://ckalqjavqpd37" path="res://Src/Combat/Abilities/Launch/LaunchData.cs" id="19_ghg0p"]
+[ext_resource type="Script" uid="uid://ckoy54dodnv5e" path="res://Src/Combat/Abilities/CasterRules/CasterRule.cs" id="20_b7wtm"]
+[ext_resource type="Texture2D" uid="uid://c6l3cnukhrcn1" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_13.png" id="21_t4wrm"]
+[ext_resource type="Script" uid="uid://d2qv3p843380o" path="res://Src/Combat/Abilities/LoopRules/LoopRule.cs" id="22_g2b8w"]
+[ext_resource type="Script" uid="uid://xxo1vwasspl1" path="res://Src/Combat/Abilities/Targeting/TargetRules/TargetRule.cs" id="23_tsd2l"]
+[ext_resource type="Script" uid="uid://diy1f0p7da221" path="res://Src/Combat/Abilities/Launch/EffectsHolders/EffectsHolderData.cs" id="24_rw8uc"]
+[ext_resource type="Script" uid="uid://3kt2gisdc54v" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/Effect.cs" id="25_p6241"]
+[ext_resource type="Script" uid="uid://dxm4snkmay15w" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/AccelerationData.cs" id="26_iiwpk"]
+[ext_resource type="Script" uid="uid://bx8avv7d2o33t" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/ImpulseData.cs" id="27_rd0a3"]
+[ext_resource type="Script" uid="uid://ou6rb2kwsfxl" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/TranslationData.cs" id="28_ctmb4"]
+[ext_resource type="Script" uid="uid://c6dworxii6xbg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/ExternalMoveEffect.cs" id="29_ac11p"]
+[ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="30_vkvdf"]
+[ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="31_ry6pk"]
+[ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilitySmData.cs" id="32_6c71x"]
+[ext_resource type="Script" uid="uid://bftjqppjm3ti3" path="res://Src/Combat/Health/HealthHandlers/MoveModeHealthHandler.cs" id="33_1bdah"]
+[ext_resource type="Script" uid="uid://8l2woqce8nl6" path="res://Src/Combat/Modes/SelectionCombatMode.cs" id="34_crycb"]
+[ext_resource type="Script" uid="uid://ctj8xarphtj3u" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleDamageEffect.cs" id="35_mvgpk"]
+[ext_resource type="Script" uid="uid://bplv858g76r4d" path="res://Src/Combat/Abilities/Targeting/TargetRules/LosTargetRule.cs" id="36_ln184"]
+[ext_resource type="Script" uid="uid://dpigjmfyxn2c0" path="res://Src/Combat/Abilities/Actuators/WordActuatorData.cs" id="37_sodcn"]
+[ext_resource type="Texture2D" uid="uid://cflr0o44cowv7" path="res://assets/sprites/abilities/placeholders/FireMage_Free/FireMage_11.png" id="38_mhiej"]
+[ext_resource type="Resource" uid="uid://ceu308hpob53h" path="res://assets/abilities/loop_rules/loop_rule_always.tres" id="39_f8sij"]
+[ext_resource type="Script" uid="uid://tr6yt483fw7q" path="res://Src/Combat/Abilities/Targeting/TargetRules/AliveTargetRule.cs" id="40_eksvc"]
+[ext_resource type="Script" uid="uid://dmt3brgj3dhih" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleResEffect.cs" id="41_tf51j"]
+[ext_resource type="Texture2D" uid="uid://bm8khn4xyvtiu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_28.png" id="42_qccaq"]
+[ext_resource type="Script" uid="uid://cb1glnpals704" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleFocusEffect.cs" id="43_bvcse"]
+[ext_resource type="Texture2D" uid="uid://ins4kvbqcwu" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_29.png" id="44_gopr4"]
+[ext_resource type="Texture2D" uid="uid://c10juxdrquxhp" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_36.png" id="45_i117a"]
+[ext_resource type="Script" uid="uid://do3m8sny4khm" path="res://Src/Combat/Abilities/CasterRules/ResourceRules/Types/CasterFocusRule.cs" id="46_0mytr"]
+[ext_resource type="Script" uid="uid://bmahds0wdxok7" path="res://Src/Combat/Abilities/Targeting/TargetRules/RelationTargetRule.cs" id="47_pofnm"]
+[ext_resource type="Script" uid="uid://beoj5s7ccateg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleHealEffect.cs" id="48_yp35a"]
+[ext_resource type="Texture2D" uid="uid://bqxnlv2uovw6k" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png" id="49_vjpnc"]
+[ext_resource type="Texture2D" uid="uid://bcg5yyrd6224n" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_7.png" id="50_a4blw"]
+[ext_resource type="Texture2D" uid="uid://cfhuqyvvnk04j" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_17.png" id="51_cfqh2"]
+[ext_resource type="Script" uid="uid://ce6rjnnq7n2l8" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/MovementStatusEffect.cs" id="52_n6gq7"]
+[ext_resource type="Texture2D" uid="uid://bbio1xqk0qfdw" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_32.png" id="53_vo0d8"]
+[ext_resource type="Script" uid="uid://hwe5y4wn5sah" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/RadiusGathererData.cs" id="54_uoox7"]
+[ext_resource type="Script" uid="uid://dj0sj1thojqst" path="res://Src/Combat/Modes/CombatModeHealthHandler.cs" id="55_r8cxm"]
+[ext_resource type="Script" uid="uid://b54uw6fk4ndjr" path="res://Src/Combat/Abilities/Targeting/Player/PlayerTargetIntentDriver.cs" id="56_286bw"]
+[ext_resource type="Script" uid="uid://cvln6rapoqvqg" path="res://Src/Combat/Abilities/Actuation/Drivers/Player/PlayerDactyloDriver.cs" id="57_pye3d"]
+[ext_resource type="Script" uid="uid://by0aobke5dswx" path="res://Src/Input/Targeting/Direct/DirectInputBufferTrigger.cs" id="58_y8egp"]
+[ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="59_isay2"]
+[ext_resource type="Script" uid="uid://u1q0ceaxrw3t" path="res://Src/Entities/Stats/Statistics.cs" id="60_3v1fp"]
+[ext_resource type="Script" uid="uid://bk41d1kcbqthv" path="res://Src/Entities/Stats/StatisticResInt.cs" id="61_ha2cu"]
+
+[sub_resource type="Resource" id="Resource_u78jf"]
+script = ExtResource("2_017mr")
+Key = "player"
+metadata/_custom_type_script = "uid://defda3606ges4"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rlms2"]
+radius = 0.4
+
+[sub_resource type="Resource" id="Resource_upqbw"]
+script = ExtResource("26_iiwpk")
+
+[sub_resource type="Resource" id="Resource_017mr"]
+script = ExtResource("27_rd0a3")
+
+[sub_resource type="Resource" id="Resource_qjp78"]
+script = ExtResource("28_ctmb4")
+
+[sub_resource type="Resource" id="Resource_7dokv"]
+script = ExtResource("29_ac11p")
+MoveMode = 1
+_impulseData = SubResource("Resource_017mr")
+_translationData = SubResource("Resource_qjp78")
+_accelerationData = SubResource("Resource_upqbw")
+_launcher = true
+metadata/_custom_type_script = "uid://c6dworxii6xbg"
+
+[sub_resource type="Resource" id="Resource_cgmg2"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_ln4r5"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_ydhbg"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_ln4r5")
+GathererDt = SubResource("Resource_cgmg2")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_7dokv")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_ehr82"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_ydhbg")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_6uhcd"]
+script = ExtResource("32_6c71x")
+Icon = ExtResource("21_t4wrm")
+Base = 2000
+TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_ehr82")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_emonu"]
+script = ExtResource("35_mvgpk")
+_target = 4
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_s6cx0"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_iq7xp"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_q6ayx"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_iq7xp")
+GathererDt = SubResource("Resource_s6cx0")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_emonu")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_2663l"]
+script = ExtResource("36_ln184")
+metadata/_custom_type_script = "uid://bplv858g76r4d"
+
+[sub_resource type="Resource" id="Resource_mftsw"]
+script = ExtResource("19_ghg0p")
+TargetRulesDt = Array[ExtResource("23_tsd2l")]([SubResource("Resource_2663l")])
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_q6ayx")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_o0kuw"]
+script = ExtResource("37_sodcn")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
+[sub_resource type="Resource" id="Resource_qx18j"]
+script = ExtResource("40_eksvc")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_sdhh7"]
+script = ExtResource("36_ln184")
+metadata/_custom_type_script = "uid://bplv858g76r4d"
+
+[sub_resource type="Resource" id="Resource_p5jn6"]
+script = ExtResource("32_6c71x")
+Id = "oui"
+Icon = ExtResource("38_mhiej")
+TargetRulesDt = Array[ExtResource("23_tsd2l")]([SubResource("Resource_qx18j"), SubResource("Resource_sdhh7")])
+TargetIntentAcquirer = 2
+ActuatorDt = SubResource("Resource_o0kuw")
+ActuationLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_mftsw")])
+LoopRulesDt = Array[ExtResource("22_g2b8w")]([ExtResource("39_f8sij")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_335pd"]
+script = ExtResource("41_tf51j")
+_hp = 50.0
+_target = 7
+metadata/_custom_type_script = "uid://dmt3brgj3dhih"
+
+[sub_resource type="Resource" id="Resource_xsg57"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_vqdru"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_osnag"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_vqdru")
+GathererDt = SubResource("Resource_xsg57")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_335pd")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_n11rl"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_osnag")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_y8o6s"]
+script = ExtResource("37_sodcn")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
+[sub_resource type="Resource" id="Resource_68ewr"]
+script = ExtResource("40_eksvc")
+_alive = false
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_6u4ov"]
+script = ExtResource("32_6c71x")
+Id = "oui"
+Icon = ExtResource("42_qccaq")
+TargetRulesDt = Array[ExtResource("23_tsd2l")]([SubResource("Resource_68ewr")])
+TargetIntentAcquirer = 2
+ActuatorDt = SubResource("Resource_y8o6s")
+ActuationLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_n11rl")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_23ucx"]
+script = ExtResource("43_bvcse")
+_target = 1
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_eokji"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_8nvs4"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_tnm51"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_8nvs4")
+GathererDt = SubResource("Resource_eokji")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_23ucx")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_uig8d"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_tnm51")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_eixnv"]
+script = ExtResource("37_sodcn")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
+[sub_resource type="Resource" id="Resource_rtdfa"]
+script = ExtResource("32_6c71x")
+Id = "oui"
+Icon = ExtResource("44_gopr4")
+ActuatorDt = SubResource("Resource_eixnv")
+ActuationLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_uig8d")])
+LoopRulesDt = Array[ExtResource("22_g2b8w")]([ExtResource("39_f8sij")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_3t5ks"]
+script = ExtResource("46_0mytr")
+Amount = 20.0
+Comparison = 2
+metadata/_custom_type_script = "uid://do3m8sny4khm"
+
+[sub_resource type="Resource" id="Resource_4amwq"]
+script = ExtResource("40_eksvc")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_wp3w3"]
+script = ExtResource("47_pofnm")
+_relation = 3
+metadata/_custom_type_script = "uid://bmahds0wdxok7"
+
+[sub_resource type="Resource" id="Resource_3w526"]
+script = ExtResource("48_yp35a")
+_hp = 20.0
+_target = 7
+metadata/_custom_type_script = "uid://beoj5s7ccateg"
+
+[sub_resource type="Resource" id="Resource_gwri7"]
+script = ExtResource("43_bvcse")
+_focus = -20.0
+_launcher = true
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_80m0l"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_hpsc0"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_tgrws"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_hpsc0")
+GathererDt = SubResource("Resource_80m0l")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_3w526"), SubResource("Resource_gwri7")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_g2gmo"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_tgrws")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_nkon8"]
+script = ExtResource("32_6c71x")
+Id = "oui"
+Icon = ExtResource("45_i117a")
+Base = 2000
+StartPreconditionsDt = Array[ExtResource("20_b7wtm")]([SubResource("Resource_3t5ks")])
+TargetRulesDt = Array[ExtResource("23_tsd2l")]([SubResource("Resource_4amwq"), SubResource("Resource_wp3w3")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_g2gmo")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_itbbc"]
+script = ExtResource("46_0mytr")
+Amount = 20.0
+Comparison = 2
+metadata/_custom_type_script = "uid://do3m8sny4khm"
+
+[sub_resource type="Resource" id="Resource_8pbqr"]
+script = ExtResource("40_eksvc")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_yuwb2"]
+script = ExtResource("43_bvcse")
+_focus = -20.0
+_launcher = true
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_xfgcb"]
+script = ExtResource("35_mvgpk")
+_hp = 35.0
+_target = 4
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_vs3tm"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_vspyu"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_2w7nf"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_vspyu")
+GathererDt = SubResource("Resource_vs3tm")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_yuwb2"), SubResource("Resource_xfgcb")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_ugxyt"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_2w7nf")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_mwko4"]
+script = ExtResource("32_6c71x")
+Id = "oui"
+Icon = ExtResource("49_vjpnc")
+Base = 5000
+StartPreconditionsDt = Array[ExtResource("20_b7wtm")]([SubResource("Resource_itbbc")])
+TargetRulesDt = Array[ExtResource("23_tsd2l")]([SubResource("Resource_8pbqr"), SubResource("Resource_sdhh7")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_ugxyt")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_mjgbv"]
+script = ExtResource("40_eksvc")
+metadata/_custom_type_script = "uid://tr6yt483fw7q"
+
+[sub_resource type="Resource" id="Resource_i5x3u"]
+script = ExtResource("35_mvgpk")
+_hp = 9999.0
+_target = 7
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_mvdx5"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_mlju8"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_csknu"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_mlju8")
+GathererDt = SubResource("Resource_mvdx5")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_i5x3u")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_nx2ev"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_csknu")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_3lfvi"]
+script = ExtResource("32_6c71x")
+Id = "oui"
+Icon = ExtResource("50_a4blw")
+TargetRulesDt = Array[ExtResource("23_tsd2l")]([SubResource("Resource_mjgbv")])
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_nx2ev")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_gy7v3"]
+script = ExtResource("52_n6gq7")
+_movementStatus = 1
+_duration = 2.0
+_target = 7
+metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
+
+[sub_resource type="Resource" id="Resource_k2b5b"]
+script = ExtResource("26_iiwpk")
+
+[sub_resource type="Resource" id="Resource_qewp4"]
+script = ExtResource("27_rd0a3")
+
+[sub_resource type="Resource" id="Resource_h8dry"]
+script = ExtResource("28_ctmb4")
+
+[sub_resource type="Resource" id="Resource_7335w"]
+script = ExtResource("29_ac11p")
+_moveDirection = 1
+_impulseData = SubResource("Resource_qewp4")
+_translationData = SubResource("Resource_h8dry")
+_accelerationData = SubResource("Resource_k2b5b")
+_target = 6
+metadata/_custom_type_script = "uid://c6dworxii6xbg"
+
+[sub_resource type="Resource" id="Resource_q1303"]
+script = ExtResource("30_vkvdf")
+metadata/_custom_type_script = "uid://b2utcesxdrfuh"
+
+[sub_resource type="Resource" id="Resource_7yorm"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_2ae6r"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_7yorm")
+GathererDt = SubResource("Resource_q1303")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_gy7v3"), SubResource("Resource_7335w")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_lswdd"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_2ae6r")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_175km"]
+script = ExtResource("32_6c71x")
+Icon = ExtResource("51_cfqh2")
+Base = 1000
+TargetIntentAcquirer = 2
+TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_lswdd")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_y55nh"]
+script = ExtResource("46_0mytr")
+Amount = 40.0
+Comparison = 2
+metadata/_custom_type_script = "uid://do3m8sny4khm"
+
+[sub_resource type="Resource" id="Resource_3n1kq"]
+script = ExtResource("52_n6gq7")
+_movementStatus = 1
+_duration = 4.0
+_target = 4
+metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
+
+[sub_resource type="Resource" id="Resource_l5be3"]
+script = ExtResource("26_iiwpk")
+
+[sub_resource type="Resource" id="Resource_11fuo"]
+script = ExtResource("27_rd0a3")
+
+[sub_resource type="Resource" id="Resource_4q036"]
+script = ExtResource("28_ctmb4")
+
+[sub_resource type="Resource" id="Resource_yscs2"]
+script = ExtResource("29_ac11p")
+_impulseData = SubResource("Resource_11fuo")
+_translationData = SubResource("Resource_4q036")
+_accelerationData = SubResource("Resource_l5be3")
+_target = 4
+metadata/_custom_type_script = "uid://c6dworxii6xbg"
+
+[sub_resource type="Resource" id="Resource_1m6rf"]
+script = ExtResource("35_mvgpk")
+_hp = 15.0
+_target = 4
+metadata/_custom_type_script = "uid://ctj8xarphtj3u"
+
+[sub_resource type="Resource" id="Resource_opre3"]
+script = ExtResource("43_bvcse")
+_focus = -40.0
+_launcher = true
+metadata/_custom_type_script = "uid://cb1glnpals704"
+
+[sub_resource type="Resource" id="Resource_xg7px"]
+script = ExtResource("54_uoox7")
+Radius = 6.0
+metadata/_custom_type_script = "uid://hwe5y4wn5sah"
+
+[sub_resource type="Resource" id="Resource_wf8it"]
+script = ExtResource("31_ry6pk")
+metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
+
+[sub_resource type="Resource" id="Resource_jnipx"]
+script = ExtResource("24_rw8uc")
+TriggerDt = SubResource("Resource_wf8it")
+GathererDt = SubResource("Resource_xg7px")
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_3n1kq"), SubResource("Resource_yscs2"), SubResource("Resource_1m6rf"), SubResource("Resource_opre3")])
+metadata/_custom_type_script = "uid://diy1f0p7da221"
+
+[sub_resource type="Resource" id="Resource_wux3n"]
+script = ExtResource("19_ghg0p")
+EffectsHoldersDt = Array[ExtResource("24_rw8uc")]([SubResource("Resource_jnipx")])
+metadata/_custom_type_script = "uid://ckalqjavqpd37"
+
+[sub_resource type="Resource" id="Resource_gc6n7"]
+script = ExtResource("32_6c71x")
+Icon = ExtResource("53_vo0d8")
+Base = 8000
+StartPreconditionsDt = Array[ExtResource("20_b7wtm")]([SubResource("Resource_y55nh")])
+TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_wux3n")])
+metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
+
+[sub_resource type="Resource" id="Resource_envmc"]
+script = ExtResource("61_ha2cu")
+Base = 500
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
+[sub_resource type="Resource" id="Resource_n5pdb"]
+script = ExtResource("61_ha2cu")
+Base = 25
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
+[sub_resource type="Resource" id="Resource_xj0aj"]
+script = ExtResource("61_ha2cu")
+Base = 36
+
+[node name="Player" type="Node" unique_id=1071117280 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput", "MoveModeInput")]
+script = ExtResource("1_upqbw")
+DactyloDriver = NodePath("PlayerDactyloDriver")
+SelectionModeInput = NodePath("SelectionCombatModeInput")
+MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
+IdData = SubResource("Resource_u78jf")
+TeamMask = 2
+
+[node name="StandardWishDir" type="Node" parent="." unique_id=2136790701]
+script = ExtResource("3_qjp78")
+metadata/_custom_type_script = "uid://fdi60jyuew2y"
+
+[node name="ResourceManager" type="Node" parent="." unique_id=1608649946]
+script = ExtResource("4_k2b5b")
+metadata/_custom_type_script = "uid://bl8lp3ttb4jor"
+
+[node name="Focus" type="Node" parent="ResourceManager" unique_id=1742714807]
+script = ExtResource("5_qewp4")
+metadata/_custom_type_script = "uid://dbfmamo6b7xia"
+
+[node name="EntityHealth" type="Node" parent="." unique_id=2111582883]
+script = ExtResource("6_h8dry")
+Base = 100
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
+[node name="BodyMover" type="Node" parent="." unique_id=1475820405]
+script = ExtResource("7_l5be3")
+_acceleration = 50.0
+FrictionBase = 15.0
+BaseSpeed = 3.6
+metadata/_custom_type_script = "uid://qx8vwd07ryt3"
+
+[node name="CursorWishDir" type="Node" parent="BodyMover" unique_id=330959096]
+script = ExtResource("8_11fuo")
+metadata/_custom_type_script = "uid://ciu72damg3lg6"
+
+[node name="Cursor" type="Node2D" parent="BodyMover/CursorWishDir" unique_id=805886779]
+script = ExtResource("9_4q036")
+metadata/_custom_type_script = "uid://dro2y37vij5qd"
+
+[node name="SwappableCursorMover" type="Node" parent="BodyMover/CursorWishDir/Cursor" unique_id=682369561]
+script = ExtResource("10_envmc")
+Type = 1
+metadata/_custom_type_script = "uid://b1cu3p8irox5s"
+
+[node name="SwappableCursorConfirm" type="Node" parent="BodyMover/CursorWishDir/Cursor" unique_id=1385394627]
+script = ExtResource("11_n5pdb")
+Type = 1
+metadata/_custom_type_script = "uid://hlchubm80yhc"
+
+[node name="Body" type="CharacterBody2D" parent="." unique_id=2067017608]
+motion_mode = 1
+script = ExtResource("12_q72cs")
+metadata/_custom_type_script = "uid://dg4qx0sj3cb7r"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body" unique_id=647252454]
+shape = SubResource("CircleShape2D_rlms2")
+
+[node name="SelectionCombatModeInput" type="Node" parent="." unique_id=1836781642 node_paths=PackedStringArray("Mode")]
+script = ExtResource("13_tk2o0")
+Mode = NodePath("../ModesManager/SelectionCombatMode")
+metadata/_custom_type_script = "uid://c273v4avjawkx"
+
+[node name="ModesManager" type="Node" parent="." unique_id=162277980]
+script = ExtResource("14_aflbg")
+metadata/_custom_type_script = "uid://bgf68riiwyila"
+
+[node name="ModePicker" type="Node" parent="ModesManager" unique_id=2030723685]
+script = ExtResource("15_s12lk")
+metadata/_custom_type_script = "uid://bjsonh2oopm3s"
+
+[node name="MoveMode" type="Node" parent="ModesManager" unique_id=587674463]
+script = ExtResource("16_105x8")
+metadata/_custom_type_script = "uid://pux5ejw5b5kx"
+
+[node name="MoveModeInput" type="Node" parent="ModesManager/MoveMode" unique_id=345379823]
+script = ExtResource("17_6bglf")
+metadata/_custom_type_script = "uid://fqpr1dnee5y2"
+
+[node name="DashSpell" type="Node" parent="ModesManager/MoveMode" unique_id=553511932]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_6uhcd")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="MoveModeHealthHandler" type="Node" parent="ModesManager" unique_id=1643832367 node_paths=PackedStringArray("MoveMode")]
+script = ExtResource("33_1bdah")
+MoveMode = NodePath("../MoveMode")
+metadata/_custom_type_script = "uid://bftjqppjm3ti3"
+
+[node name="SelectionCombatMode" type="Node" parent="ModesManager" unique_id=734420497]
+script = ExtResource("34_crycb")
+_key = 75
+metadata/_custom_type_script = "uid://8l2woqce8nl6"
+
+[node name="DamageSpell" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=137355530]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_p5jn6")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="ResSpell" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=2050751136]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_6u4ov")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="FocusMode" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=1453396561]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_rtdfa")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="HealSpell" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=1816605625]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_nkon8")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="FocusAttack" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=406660895]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_mwko4")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="KillSpell" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=801211802]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_3lfvi")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="Root" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=67157857]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_175km")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="Freeze" type="Node" parent="ModesManager/SelectionCombatMode" unique_id=1192137388]
+script = ExtResource("18_kjuvs")
+_data = SubResource("Resource_gc6n7")
+metadata/_custom_type_script = "uid://djomokhsknkk0"
+
+[node name="CombatModeHealthHandler" type="Node" parent="ModesManager" unique_id=1482256055]
+script = ExtResource("55_r8cxm")
+metadata/_custom_type_script = "uid://dj0sj1thojqst"
+
+[node name="PlayerTargetIntentDriver" type="Node" parent="." unique_id=199198168]
+script = ExtResource("56_286bw")
+metadata/_custom_type_script = "uid://b54uw6fk4ndjr"
+
+[node name="PlayerDactyloDriver" type="Node" parent="." unique_id=1559165323]
+script = ExtResource("57_pye3d")
+metadata/_custom_type_script = "uid://cvln6rapoqvqg"
+
+[node name="DirectInputBufferTrigger" type="Node" parent="." unique_id=1580391766 node_paths=PackedStringArray("_targetIntentDrive")]
+script = ExtResource("58_y8egp")
+_targetIntentDrive = NodePath("../PlayerTargetIntentDriver")
+metadata/_custom_type_script = "uid://by0aobke5dswx"
+
+[node name="ClientMarker" type="Node" parent="." unique_id=1364206007]
+script = ExtResource("59_isay2")
+metadata/_custom_type_script = "uid://4ma6ga1bxmpu"
+
+[node name="Statistics" type="Node" parent="." unique_id=652315356]
+script = ExtResource("60_3v1fp")
+_baseTackle = SubResource("Resource_envmc")
+_baseDodge = SubResource("Resource_n5pdb")
+_baseSpeed = SubResource("Resource_xj0aj")
+metadata/_custom_type_script = "uid://u1q0ceaxrw3t"
