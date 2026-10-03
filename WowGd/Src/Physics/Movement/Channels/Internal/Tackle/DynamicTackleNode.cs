@@ -17,7 +17,6 @@ public partial class DynamicTackleNode : Node
     private Vector2 _offset;
     private float _maxRangeSquared;
     private float _stamina;
-    private float _currentStamina;
 
     public Vector2 Offset
     {
@@ -53,25 +52,23 @@ public partial class DynamicTackleNode : Node
 
         if (Entity is Node node)
             node.AddChild(this);
+            
+        SetPhysicsProcess(false);
     }
 
+    private float _acc = 0f;
     public override void _PhysicsProcess(double delta)
     {
-        _currentStamina -= (float) delta;
-
-        if (_currentStamina <= 0f)
-        {
-            ReleaseTackle();
-            return;
-        }
+        _acc += (float) delta;
 
         if (!PhysicsExt.IsProcessTick(0xf, 1))
             return;
-        
-        if (!IsInRange())
-            ReleaseTackle();
 
-        // .. other behaviors
+        _stamina -= _acc / TackleStatisticsExt.GetTackleWeight(Entity, _tackleNode.Tackled!.Entity);
+        _acc = 0f;
+
+        if (_stamina <= 0f || !IsInRange())
+            ReleaseTackle();
     }
 
     private bool IsInRange()
@@ -103,8 +100,8 @@ public partial class DynamicTackleNode : Node
         Offset = entityBody.GlobalPosition - targetBody.GlobalPosition;
         entityMover.Internal.StartOverride(new TackleWishDir(Entity, target, Offset));
 
-        _stamina = TackleStatisticsExt.GetTackleWeight(Entity, target);
-        _currentStamina = _stamina;
+        _stamina = 1f;
+        _acc = 0f;
 
         SetPhysicsProcess(true);
         return true;
