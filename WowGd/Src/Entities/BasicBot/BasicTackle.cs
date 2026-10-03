@@ -39,12 +39,8 @@ public partial class BasicTackle : Node, IEntityHealthHandler
 
     public override void _PhysicsProcess(double delta)
     {
-        float dt = (float) delta;
-
-        if (DynamicTackleNode.IsTackling)
-            CheckRelease(dt);
-        else
-            CheckTackle(dt);
+        if (!DynamicTackleNode.IsTackling)
+            CheckTackle((float) delta);
     }
 
     private void CheckTackle(float dt)

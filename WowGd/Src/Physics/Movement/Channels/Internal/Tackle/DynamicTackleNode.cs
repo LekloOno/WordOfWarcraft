@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats.Tackle;
 using WowGd.Src.Physics.Movement.Status;
 using WowGd.Src.Physics.Movement.WishDir;
 using WowGd.Src.Tools;
@@ -15,6 +16,8 @@ public partial class DynamicTackleNode : Node
     private readonly TackleNode _tackleNode;
     private Vector2 _offset;
     private float _maxRangeSquared;
+    private float _stamina;
+    private float _currentStamina;
 
     public Vector2 Offset
     {
@@ -54,6 +57,14 @@ public partial class DynamicTackleNode : Node
 
     public override void _PhysicsProcess(double delta)
     {
+        _currentStamina -= (float) delta;
+
+        if (_currentStamina <= 0f)
+        {
+            ReleaseTackle();
+            return;
+        }
+
         if (!PhysicsExt.IsProcessTick(0xf, 1))
             return;
         
@@ -91,6 +102,9 @@ public partial class DynamicTackleNode : Node
 
         Offset = entityBody.GlobalPosition - targetBody.GlobalPosition;
         entityMover.Internal.StartOverride(new TackleWishDir(Entity, target, Offset));
+
+        _stamina = TackleStatisticsExt.GetTackleWeight(Entity, target);
+        _currentStamina = _stamina;
 
         SetPhysicsProcess(true);
         return true;

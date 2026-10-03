@@ -803,7 +803,7 @@ metadata/_custom_type_script = "uid://4ma6ga1bxmpu"
 [node name="Statistics" type="Node" parent="Physics/Player" unique_id=301613098]
 script = ExtResource("68_vvbw7")
 _baseDodge = 20
-_baseTackle = 25
+_baseTackle = 50
 metadata/_custom_type_script = "uid://u1q0ceaxrw3t"
 
 [node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1291784488 node_paths=PackedStringArray("_node")]
