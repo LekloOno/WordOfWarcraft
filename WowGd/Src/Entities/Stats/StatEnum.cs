@@ -11,6 +11,7 @@ public enum StatEnum : int
     Grip,
     Vitality,
     Focus,
+    Reach,
 }
 
 public static class TargetStatExt

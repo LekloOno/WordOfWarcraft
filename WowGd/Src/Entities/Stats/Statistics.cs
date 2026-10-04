@@ -14,6 +14,7 @@ public partial class Statistics : Node, IStatistics
     [Export] private StatisticResInt _baseGrip      = null!;
     [Export] private StatisticResInt _baseVitality  = null!;
     [Export] private StatisticResInt _baseFocus     = null!;
+    [Export] private StatisticResInt _baseReach     = null!;
     
 
     public IBucketedStat<int> GetStatistic(StatEnum stat) =>
@@ -55,6 +56,7 @@ public partial class Statistics : Node, IStatistics
         _baseAgility,
         _baseGrip,
         _baseVitality,
-        _baseFocus
+        _baseFocus,
+        _baseReach
     ];
 }

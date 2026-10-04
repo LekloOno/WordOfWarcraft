@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats.Reach;
 using WowGd.Src.Entities.Stats.Tackle;
 using WowGd.Src.Physics.Movement.Status;
 using WowGd.Src.Physics.Movement.WishDir;
@@ -94,7 +95,8 @@ public partial class DynamicTackleNode : Node
         IBody entityBody = Entity.Body;
         IBody targetBody = target.Body;
 
-        if (!PhysicsExt.IsContactWithin(entityBody, targetBody, 1f))
+        float reachMeters = Entity.GetMetersReach();
+        if (!PhysicsExt.IsContactWithin(entityBody, targetBody, reachMeters))
             return false;
 
         TackleNode targetTackleNode = target.EntityMover.DynamicTackleNode._tackleNode;

@@ -412,7 +412,6 @@ script = ExtResource("26_iiwpk")
 
 [sub_resource type="Resource" id="Resource_11fuo"]
 script = ExtResource("27_rd0a3")
-_strength = 30.0
 
 [sub_resource type="Resource" id="Resource_4q036"]
 script = ExtResource("28_ctmb4")
@@ -603,6 +602,11 @@ script = ExtResource("61_ha2cu")
 Base = 50
 metadata/_custom_type_script = "uid://bk41d1kcbqthv"
 
+[sub_resource type="Resource" id="Resource_8yxnp"]
+script = ExtResource("61_ha2cu")
+Base = 12
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
 [node name="Player" type="Node" unique_id=1071117280 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput", "MoveModeInput")]
 script = ExtResource("1_upqbw")
 DactyloDriver = NodePath("PlayerDactyloDriver")
@@ -763,4 +767,5 @@ _baseAgility = SubResource("Resource_udca6")
 _baseGrip = SubResource("Resource_kbkuv")
 _baseVitality = SubResource("Resource_55w0n")
 _baseFocus = SubResource("Resource_etsct")
+_baseReach = SubResource("Resource_8yxnp")
 metadata/_custom_type_script = "uid://u1q0ceaxrw3t"

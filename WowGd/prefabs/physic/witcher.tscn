@@ -57,6 +57,11 @@ script = ExtResource("15_fejao")
 Base = 20
 metadata/_custom_type_script = "uid://bk41d1kcbqthv"
 
+[sub_resource type="Resource" id="Resource_74y24"]
+script = ExtResource("15_fejao")
+Base = 18
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
 [node name="WitcherPillar" type="Node" unique_id=907940979]
 script = ExtResource("1_q5go0")
 IdData = SubResource("Resource_4k8fq")
@@ -126,4 +131,5 @@ _baseAgility = SubResource("Resource_wq2p5")
 _baseGrip = SubResource("Resource_joj2j")
 _baseVitality = SubResource("Resource_lhprm")
 _baseFocus = SubResource("Resource_x0rx1")
+_baseReach = SubResource("Resource_74y24")
 metadata/_custom_type_script = "uid://u1q0ceaxrw3t"
