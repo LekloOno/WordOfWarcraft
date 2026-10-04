@@ -1,6 +1,7 @@
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Entities.Stats;
+using WowGd.Src.Entities.Stats.Agility;
+using WowGd.Src.Entities.Stats.Grip;
 using WowGd.Src.Entities.Stats.Speed;
 using WowGd.Src.Tools;
 
@@ -9,7 +10,7 @@ namespace WowGd.Src.Physics.Movement.Channels.Internal;
 [GlobalClass]
 public partial class BodyMover : InternalContributor
 {
-	private float Acceleration => _entity.Statistics.GetStatistic(StatEnum.Agility).Current;
+	private float Acceleration => _entity.Agility();
 	[Export] private bool _ground = true;
 
 	private IEntity _entity = null!;
@@ -19,8 +20,8 @@ public partial class BodyMover : InternalContributor
 
 	public bool Enabled => _enabled;
 
-	public override float MaxSpeed => SpeedStatisticsExt.GetMaxSpeedFrom(_entity);
-    public override float FrictionBase => _entity.Statistics.GetStatistic(StatEnum.Grip).Current * (_ground ? 1f : 0.2f);
+	public override float MaxSpeed => _entity.SpeedMs();
+    public override float FrictionBase => _entity.Grip() * (_ground ? 1f : 0.2f);
 
     private bool _enabled = false;
 

@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Entities.Stats;
+using WowGd.Src.Entities.Stats.Focus;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Resources.FocusRes;
@@ -10,8 +10,8 @@ namespace WowGd.Src.Combat.Resources.FocusRes;
 public partial class Focus : Node, IFocus
 {
     private IEntity _entity = null!;
-    public int Base => _entity.Statistics.GetStatistic(StatEnum.Focus).Base;
-    public int Max => _entity.Statistics.GetStatistic(StatEnum.Focus).Current;
+    public int Base => _entity.FocusBase();
+    public int Max => _entity.Focus();
     public int Current { get; private set; }
 
     public event Action<int>? Consumed;

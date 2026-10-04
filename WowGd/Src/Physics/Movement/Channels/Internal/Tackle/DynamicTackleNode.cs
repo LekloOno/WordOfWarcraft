@@ -95,13 +95,13 @@ public partial class DynamicTackleNode : Node
         IBody entityBody = Entity.Body;
         IBody targetBody = target.Body;
 
-        float reachMeters = Entity.GetMetersReach();
+        float reachMeters = Entity.ReachMetres();
         if (!PhysicsExt.IsContactWithin(entityBody, targetBody, reachMeters))
             return false;
 
         TackleNode targetTackleNode = target.EntityMover.DynamicTackleNode._tackleNode;
 
-        float limit = TackleStatisticsExt.GetMsTackle(Entity);
+        float limit = Entity.TackleSpeedMs();
         if (!_tackleNode.Tackle(targetTackleNode, limit))
             return false;
 

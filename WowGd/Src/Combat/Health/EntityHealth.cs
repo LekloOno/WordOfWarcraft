@@ -1,7 +1,7 @@
 using System;
 using Godot;
 using WowGd.Src.Entities;
-using WowGd.Src.Entities.Stats;
+using WowGd.Src.Entities.Stats.Vitality;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Health;
@@ -10,8 +10,8 @@ namespace WowGd.Src.Combat.Health;
 public partial class EntityHealth : Node, IEntityHealth
 {
     private IEntity _entity = null!;
-    public int Base => _entity.Statistics.GetStatistic(StatEnum.Vitality).Base;
-    public int Max => _entity.Statistics.GetStatistic(StatEnum.Vitality).Current;
+    public int Base => _entity.VitalityBase();
+    public int Max => _entity.Vitality();
 
     public event Action<int>?   Consumed;
     public event Action<int>?   Generated;
