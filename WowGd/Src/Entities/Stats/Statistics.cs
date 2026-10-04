@@ -50,13 +50,13 @@ public partial class Statistics : Node, IStatistics
 
     private StatisticResInt[] BuildStatisticRes() =>
     [
-        _baseTackle,
-        _baseDodge,
-        _baseSpeed,
-        _baseAgility,
-        _baseGrip,
-        _baseVitality,
-        _baseFocus,
-        _baseReach
+        _baseTackle     ?? new(0),
+        _baseDodge      ?? new(0),
+        _baseSpeed      ?? new(25),
+        _baseAgility    ?? new(15),
+        _baseGrip       ?? new(10),
+        _baseVitality   ?? new(50),
+        _baseFocus      ?? new(0),
+        _baseReach      ?? new(10)
     ];
 }
