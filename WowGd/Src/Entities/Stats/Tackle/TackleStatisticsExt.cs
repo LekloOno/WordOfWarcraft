@@ -1,4 +1,5 @@
 using System;
+using WowGd.Src.Entities.Stats.Modifier;
 
 namespace WowGd.Src.Entities.Stats.Tackle;
 
@@ -17,8 +18,8 @@ public static class TackleStatisticsExt
     /// <returns></returns>
     public static float GetTackleWeight(IEntity tackling, IEntity tackled)
     {
-        int tackle = tackling.Statistics.Tackle.Current;
-        int dodge = tackled.Statistics.Dodge.Current;
+        int tackle  = TargetStat.Tackle.GetStat(tackling).Current;
+        int dodge   = TargetStat.Dodge.GetStat(tackled).Current;
 
         float ratio = TackleRatio(tackle, dodge, RatioScale);
         return Weight(ratio, MaxWeight, MinWeight, NeutralWeight);

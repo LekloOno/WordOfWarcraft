@@ -1,3 +1,5 @@
+using WowGd.Src.Entities.Stats.Modifier;
+
 namespace WowGd.Src.Entities.Stats.Speed;
 
 public static class SpeedStatisticsExt
@@ -8,7 +10,7 @@ public static class SpeedStatisticsExt
 
     public static float GetMaxSpeedFrom(IEntity entity)
     {
-        IStatistic<int> speedStat = entity.Statistics.Speed;
+        IStatistic<int> speedStat = TargetStat.Speed.GetStat(entity);
 
         float speed = GetMsFromSpeed(speedStat.Current);
         float tackleSpeed = entity.EntityMover.DynamicTackleNode.EffectiveLimit;

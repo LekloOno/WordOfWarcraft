@@ -11,14 +11,6 @@ public enum TargetStat : int
 
 public static class TargetStatExt
 {
-    public static IBucketedStat<int> GetStat(this TargetStat target, IEntity entity)
-    {
-        return target switch
-        {
-            TargetStat.Tackle => entity.Statistics.Tackle,
-            TargetStat.Dodge => entity.Statistics.Dodge,
-            TargetStat.Speed => entity.Statistics.Speed,
-            _ => throw new System.IndexOutOfRangeException(),
-        };
-    }
+    public static IBucketedStat<int> GetStat(this TargetStat target, IEntity entity) =>
+        entity.Statistics.GetStatistic(target);
 }
