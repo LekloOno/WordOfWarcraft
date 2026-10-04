@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://8eutqgke6w28"]
+
+[ext_resource type="PackedScene" uid="uid://puf3u1nyakou" path="res://prefabs/render/bars/bar_base.tscn" id="1_ix0ol"]
+[ext_resource type="Script" uid="uid://k0vjeqmns3cm" path="res://Src/Render/Ui/Combat/Resources/Bars/StandardResourceBar.cs" id="2_512sf"]
+[ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="3_hfwbb"]
+
+[sub_resource type="Resource" id="Resource_512sf"]
+script = ExtResource("3_hfwbb")
+AnimationTime = 0.4
+TransitionType = 2
+EaseType = 2
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_68ewr"]
+script = ExtResource("3_hfwbb")
+AnimationTime = 0.3
+TransitionType = 3
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_512sf"]
+bg_color = Color(0.26420894, 0.51368487, 0.9147746, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="ResourceBar" unique_id=1899683689 node_paths=PackedStringArray("_body", "_tail") instance=ExtResource("1_ix0ol")]
+script = ExtResource("2_512sf")
+_body = NodePath("Body")
+_tail = NodePath("Tail")
+_tailTweenSettings = SubResource("Resource_512sf")
+_bodyTweenSettings = SubResource("Resource_68ewr")
+
+[node name="Body" parent="." index="1" unique_id=514407313]
+theme_override_styles/fill = SubResource("StyleBoxFlat_512sf")

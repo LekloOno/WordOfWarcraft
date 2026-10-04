@@ -1,15 +1,16 @@
 [gd_scene format=3 uid="uid://byd256lw7uyjm"]
 
-[ext_resource type="PackedScene" uid="uid://wj2hvaemholr" path="res://prefabs/render/health/health_bar.tscn" id="1_ilny6"]
-[ext_resource type="PackedScene" uid="uid://cdfr1ddgxwdf6" path="res://prefabs/render/health/standard_resource_bar.tscn" id="2_foam2"]
+[ext_resource type="PackedScene" uid="uid://bbaj488o0pe7f" path="res://prefabs/render/bars/health_bar.tscn" id="1_foam2"]
+[ext_resource type="PackedScene" uid="uid://8eutqgke6w28" path="res://prefabs/render/bars/resource_bar.tscn" id="2_cd0f6"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_evht8"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3db8v"]
 viewport_path = NodePath("SubViewport")
 
 [node name="HealthBar" type="Sprite3D" unique_id=650881374]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0, 0, 0)
+offset = Vector2(0, 400)
+pixel_size = 0.005
 billboard = 1
-texture = SubResource("ViewportTexture_evht8")
+texture = SubResource("ViewportTexture_3db8v")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1568086297]
 transparent_bg = true
@@ -28,8 +29,9 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="HealthBar" parent="SubViewport/VBoxContainer" unique_id=1048134132 instance=ExtResource("1_ilny6")]
+[node name="HealthBar" parent="SubViewport/VBoxContainer" unique_id=1899683689 instance=ExtResource("1_foam2")]
+custom_minimum_size = Vector2(0, 45)
 layout_mode = 2
 
-[node name="FocusBar" parent="SubViewport/VBoxContainer" unique_id=1899683689 instance=ExtResource("2_foam2")]
+[node name="ResourceBar" parent="SubViewport/VBoxContainer" unique_id=1524618348 instance=ExtResource("2_cd0f6")]
 layout_mode = 2

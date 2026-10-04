@@ -1,19 +1,19 @@
 [gd_scene format=3 uid="uid://dcgq55m0tm7vq"]
 
-[ext_resource type="PackedScene" uid="uid://elj2cbc6hw68" path="res://prefabs/render/tackle/tackle_bar.tscn" id="1_g7un2"]
+[ext_resource type="PackedScene" uid="uid://dbggkvacidyds" path="res://prefabs/render/bars/tackle_bar.tscn" id="1_g7un2"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mkfsd"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_x8n8s"]
 viewport_path = NodePath("SubViewport")
 
 [node name="Tackle" type="Sprite3D" unique_id=1512478262]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
-offset = Vector2(0, 550)
+offset = Vector2(0, 350)
+pixel_size = 0.007
 billboard = 1
-texture = SubResource("ViewportTexture_mkfsd")
+texture = SubResource("ViewportTexture_x8n8s")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1329399703]
 transparent_bg = true
 
-[node name="TackleBar" parent="SubViewport" unique_id=40606491 instance=ExtResource("1_g7un2")]
+[node name="TackleBar" parent="SubViewport" unique_id=1899683689 instance=ExtResource("1_g7un2")]
 
 [editable path="SubViewport/TackleBar"]

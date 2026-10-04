@@ -17,12 +17,15 @@
 [ext_resource type="PackedScene" uid="uid://cnfhvc3f4cdqq" path="res://prefabs/render/indicators/focus_indicator2d.tscn" id="12_qy43x"]
 [ext_resource type="Texture2D" uid="uid://d1wxv50xf6qyw" path="res://assets/sprites/entities/simple_shadow.png" id="15_qy43x"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_4ekfy"]
+viewport_path = NodePath("SubViewport")
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sdhh7"]
 transparency = 1
 albedo_texture = ExtResource("5_qy43x")
 billboard_mode = 1
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_5u01r"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_3cnwx"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_175km"]
@@ -45,7 +48,7 @@ ring_segments = 8
 script = ExtResource("1_ohnyp")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/VBoxContainer/HealthBar")
-_focusBar = NodePath("HealthBar/SubViewport/VBoxContainer/FocusBar")
+_focusBar = NodePath("HealthBar/SubViewport/VBoxContainer/ResourceBar")
 _indicatorSuperManager = NodePath("ResourceIndicatorSuperManager")
 _tackleUi = NodePath("Tackle/SubViewport/TackleBar/TackleUi")
 _directTargetUi = NodePath("DirectTargetUi3D")
@@ -54,6 +57,9 @@ _directTargetUi = NodePath("DirectTargetUi3D")
 script = ExtResource("2_b1sg3")
 Target = NodePath("../BodySprite")
 Animations = Array[ExtResource("3_63tjw")]([ExtResource("4_6rdus")])
+
+[node name="Tackle" parent="." unique_id=1512478262 instance=ExtResource("7_4ekfy")]
+texture = SubResource("ViewportTexture_4ekfy")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
 sorting_offset = 1.0
@@ -65,11 +71,8 @@ texture = ExtResource("5_qy43x")
 script = ExtResource("6_4ekfy")
 Height = 1.8
 
-[node name="Tackle" parent="." unique_id=1512478262 instance=ExtResource("7_4ekfy")]
-
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("7_3cnwx")]
-offset = Vector2(0, 650)
-texture = SubResource("ViewportTexture_5u01r")
+texture = SubResource("ViewportTexture_3cnwx")
 
 [node name="ResourceIndicatorSuperManager" type="Node3D" parent="." unique_id=924827885]
 script = ExtResource("8_b1sg3")
