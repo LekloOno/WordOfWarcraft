@@ -1,8 +1,8 @@
 using WowGd.Src.Entities.Stats.Bucketing;
 
-namespace WowGd.Src.Entities.Stats.Modifier;
+namespace WowGd.Src.Entities.Stats;
 
-public enum TargetStat : int
+public enum StatEnum : int
 {
     Tackle,
     Dodge,
@@ -11,6 +11,6 @@ public enum TargetStat : int
 
 public static class TargetStatExt
 {
-    public static IBucketedStat<int> GetStat(this TargetStat target, IEntity entity) =>
+    public static IBucketedStat<int> GetStat(this StatEnum target, IEntity entity) =>
         entity.Statistics.GetStatistic(target);
 }

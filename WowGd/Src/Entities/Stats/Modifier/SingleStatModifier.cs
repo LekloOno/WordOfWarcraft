@@ -6,7 +6,7 @@ namespace WowGd.Src.Entities.Stats.Modifier;
 [GlobalClass, Tool]
 public partial class SingleStatModifier : StatModifier
 {
-    [Export] public TargetStat Target;
+    [Export] public StatEnum Target;
     [Export] public bool Flat
     {
         get => _flat;

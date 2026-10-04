@@ -12,11 +12,11 @@ public partial class Statistics : Node, IStatistics
     [Export] private StatisticResInt _baseDodge     = new(0);
     [Export] private StatisticResInt _baseSpeed     = new(30);
 
-    public IBucketedStat<int> GetStatistic(TargetStat stat) =>
+    public IBucketedStat<int> GetStatistic(StatEnum stat) =>
         _values[(int)stat].Stat;
 
     private readonly StatisticResInt.BoundStatistic[] _values =
-        new StatisticResInt.BoundStatistic[Enum.GetValues<TargetStat>().Length];
+        new StatisticResInt.BoundStatistic[Enum.GetValues<StatEnum>().Length];
 
     public override void _Ready()
     {

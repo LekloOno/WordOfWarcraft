@@ -18,8 +18,8 @@ public static class TackleStatisticsExt
     /// <returns></returns>
     public static float GetTackleWeight(IEntity tackling, IEntity tackled)
     {
-        int tackle  = TargetStat.Tackle.GetStat(tackling).Current;
-        int dodge   = TargetStat.Dodge.GetStat(tackled).Current;
+        int tackle  = StatEnum.Tackle.GetStat(tackling).Current;
+        int dodge   = StatEnum.Dodge.GetStat(tackled).Current;
 
         float ratio = TackleRatio(tackle, dodge, RatioScale);
         return Weight(ratio, MaxWeight, MinWeight, NeutralWeight);

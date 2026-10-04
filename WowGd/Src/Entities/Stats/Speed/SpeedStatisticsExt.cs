@@ -10,7 +10,7 @@ public static class SpeedStatisticsExt
 
     public static float GetMaxSpeedFrom(IEntity entity)
     {
-        IStatistic<int> speedStat = TargetStat.Speed.GetStat(entity);
+        IStatistic<int> speedStat = StatEnum.Speed.GetStat(entity);
 
         float speed = GetMsFromSpeed(speedStat.Current);
         float tackleSpeed = entity.EntityMover.DynamicTackleNode.EffectiveLimit;

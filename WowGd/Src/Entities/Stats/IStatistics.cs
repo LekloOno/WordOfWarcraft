@@ -5,5 +5,5 @@ namespace WowGd.Src.Entities.Stats;
 
 public interface IStatistics
 {
-    IBucketedStat<int> GetStatistic(TargetStat targetStat);
+    IBucketedStat<int> GetStatistic(StatEnum targetStat);
 }
