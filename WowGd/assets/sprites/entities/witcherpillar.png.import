@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqxnlv2uovw6k"
-path.s3tc="res://.godot/imported/Monk_23.png-4de362423073581d0d005efa6fcae611.s3tc.ctex"
+uid="uid://bwlv6brmypn8x"
+path.s3tc="res://.godot/imported/witcherpillar.png-398cb3f1b1dd02c8aba0bc89adbcb23b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png"
-dest_files=["res://.godot/imported/Monk_23.png-4de362423073581d0d005efa6fcae611.s3tc.ctex"]
+source_file="res://assets/sprites/entities/witcherpillar.png"
+dest_files=["res://.godot/imported/witcherpillar.png-398cb3f1b1dd02c8aba0bc89adbcb23b.s3tc.ctex"]
 
 [params]
 

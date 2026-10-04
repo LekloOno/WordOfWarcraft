@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bq7tjkfbxi8c4" path="res://prefabs/render/mapping/3d/dungeon/composed/wide_corner.tscn" id="3_sdhh7"]
 [ext_resource type="PackedScene" uid="uid://bjhxqdprwd4dv" path="res://prefabs/render/mapping/3d/dungeon/composed/small_corner.tscn" id="5_42bxd"]
 [ext_resource type="PackedScene" uid="uid://bhumabsdmhg76" path="res://prefabs/render/mapping/3d/dungeon/composed/small_corner_b.tscn" id="6_v6sbx"]
+[ext_resource type="PackedScene" uid="uid://c55s1wr1gab0c" path="res://prefabs/physic/witcher.tscn" id="8_74y24"]
 [ext_resource type="PackedScene" uid="uid://dysspmhd6l6lu" path="res://prefabs/physic/player.tscn" id="9_qc73i"]
 [ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="10_vvbw7"]
 [ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/physic/simple_monster.tscn" id="11_7dokv"]
@@ -95,7 +96,12 @@ size = 12.0
 
 [node name="Physics" type="Node" parent="." unique_id=1653195501]
 
-[node name="Entity" parent="Physics" unique_id=907940979 instance=ExtResource("11_7dokv")]
+[node name="WitcherPillar" parent="Physics" unique_id=907940979 instance=ExtResource("8_74y24")]
+
+[node name="Body" parent="Physics/WitcherPillar" index="0" unique_id=546788964]
+position = Vector2(2.295, -3.33)
+
+[node name="Entity" parent="Physics" unique_id=1068259863 instance=ExtResource("11_7dokv")]
 
 [node name="Body" parent="Physics/Entity" index="0" unique_id=546788964]
 position = Vector2(-3.87, -2.44)
@@ -255,6 +261,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -6)
 [node name="template-floor-layer3" parent="." unique_id=1480237602 instance=ExtResource("69_t1xho")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -6)
 
+[editable path="Physics/WitcherPillar"]
 [editable path="Physics/Entity"]
 [editable path="Physics/Entity2"]
 [editable path="Physics/Entity3"]

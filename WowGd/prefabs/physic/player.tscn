@@ -412,6 +412,7 @@ script = ExtResource("26_iiwpk")
 
 [sub_resource type="Resource" id="Resource_11fuo"]
 script = ExtResource("27_rd0a3")
+_strength = 30.0
 
 [sub_resource type="Resource" id="Resource_4q036"]
 script = ExtResource("28_ctmb4")

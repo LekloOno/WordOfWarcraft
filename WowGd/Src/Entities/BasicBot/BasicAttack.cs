@@ -14,6 +14,7 @@ public partial class BasicAttack : Node, IEntityHealthHandler
     [Export] private float _attackRange = 1.5f;
     [Export] private float _attackCd    = 1f;
     [Export] private int _attackDmg     = 5;
+    [Export] private TargetIntentAcquirer _targetType = TargetIntentAcquirer.Melee;
 
     public bool Enabled => _enabled;
     private bool _enabled = true;
@@ -46,17 +47,18 @@ public partial class BasicAttack : Node, IEntityHealthHandler
         CancellationToken token = _cts.Token;
 
         IEntity? target;
-        TargetResult result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Melee, token);
+        TargetResult result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, _targetType, token);
 
-        while(!result.TryGet(out TargetIntent intent) || !intent.TryGetEntity(out target) /*||
-            _entity.DistanceSquaredTo(target) > _attackRange * _attackRange*/)
+        while(!result.TryGet(out TargetIntent intent) ||
+            !intent.TryGetEntity(out target) ||
+            !InRange(intent))
         {
             await Task.Delay(500);
             
             if (token.IsCancellationRequested)
                 return;
 
-            result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Melee, token);
+            result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, _targetType, token);
         }
 
         target.Health.Consume(_attackDmg, out _);
@@ -65,6 +67,21 @@ public partial class BasicAttack : Node, IEntityHealthHandler
         _cts = null;
 
         SetPhysicsProcess(true);
+    }
+
+    private bool InRange(TargetIntent intent)
+    {
+        return _targetType switch
+        {
+            TargetIntentAcquirer.Self => true,
+            TargetIntentAcquirer.Melee => true,
+            TargetIntentAcquirer.Direct =>
+                intent.TryGetEntity(out IEntity? target) &&
+                _entity.DistanceSquaredTo(target) <= _attackRange * _attackRange,
+            TargetIntentAcquirer.Free =>
+                intent.Position.DistanceSquaredTo(_entity.Body.GlobalPosition) > _attackRange * _attackRange,
+            _ => throw new System.ArgumentOutOfRangeException(nameof(intent)),
+        };
     }
 
     public void OnDied()

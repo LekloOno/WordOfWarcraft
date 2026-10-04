@@ -8,6 +8,7 @@ namespace WowGd.Src.Physics.Movement.WishDir;
 [GlobalClass]
 public partial class FollowerWishDir : Node, IWishDir
 {
+    [Export] public bool _flee = false;
     public bool Enabled => _enabled;
     private bool _enabled = true;
 
@@ -45,6 +46,7 @@ public partial class FollowerWishDir : Node, IWishDir
         if (_targetAcquirer.Target is not IEntity target)
             return Vector2.Zero;
 
-        return (target.Body.GlobalPosition - _entity.Body.GlobalPosition).Normalized();
+        int sign = _flee ? -1 : 1;
+        return sign * (target.Body.GlobalPosition - _entity.Body.GlobalPosition).Normalized();
     }
 }

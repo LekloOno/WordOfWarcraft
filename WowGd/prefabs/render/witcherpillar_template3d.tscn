@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://p3lham2ebein"]
+
+[ext_resource type="PackedScene" uid="uid://tb2k4gfi3asl" path="res://prefabs/render/entity_template3d.tscn" id="1_64ml3"]
+[ext_resource type="Texture2D" uid="uid://bwlv6brmypn8x" path="res://assets/sprites/entities/witcherpillar.png" id="2_64ml3"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_64ml3"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ffyia"]
+transparency = 1
+albedo_texture = ExtResource("2_64ml3")
+billboard_mode = 1
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g5pqh"]
+viewport_path = NodePath("SubViewport")
+
+[node name="EntityRender3D" unique_id=846070588 instance=ExtResource("1_64ml3")]
+
+[node name="Tackle" parent="." index="1" unique_id=1512478262]
+offset = Vector2(0, 464.975)
+texture = SubResource("ViewportTexture_64ml3")
+
+[node name="BodySprite" parent="." index="2" unique_id=318333819]
+material_override = SubResource("StandardMaterial3D_ffyia")
+offset = Vector2(46.615, 168.045)
+pixel_size = 0.0072916667
+texture = ExtResource("2_64ml3")
+Height = 2.8
+
+[node name="HealthBar" parent="." index="3" unique_id=650881374]
+offset = Vector2(0, 560.85)
+texture = SubResource("ViewportTexture_g5pqh")
+
+[editable path="Tackle"]
+[editable path="Tackle/SubViewport/TackleBar"]
+[editable path="HealthBar"]
