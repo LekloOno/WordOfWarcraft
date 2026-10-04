@@ -45,14 +45,23 @@ public partial class BodyMover : InternalContributor
 
 	protected override void GetForces(InternalLayerInput input, float delta, out Vector2? accel, out Vector2? raw)
 	{
+		raw = null;
+
+		float maxSpeed = input.MaxSpeed;
+		
+		if (maxSpeed <= 0)
+		{
+			accel = Vector2.Zero;
+			return;
+		}
+
 		CurrentWishDir = _enabled ? input.WishDir : Vector2.Zero;
 
 		float currentSpeed = Body.Inertia.Dot(CurrentWishDir);
-		float t = Mathf.Clamp(currentSpeed / input.MaxSpeed, 0f, 1f);
+		float t = Mathf.Clamp(currentSpeed / maxSpeed, 0f, 1f);
 		float accelThisFrame = Acceleration * (1f - t);
 		
 		accel = accelThisFrame * CurrentWishDir * delta;
-		raw = null;
 	}
 
 	public override void OnChannelClosed() { }
