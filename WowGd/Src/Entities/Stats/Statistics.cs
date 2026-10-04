@@ -8,9 +8,9 @@ namespace WowGd.Src.Entities.Stats;
 [GlobalClass]
 public partial class Statistics : Node, IStatistics
 {
-    [Export] private StatisticResInt _baseTackle    = new(0);
-    [Export] private StatisticResInt _baseDodge     = new(0);
-    [Export] private StatisticResInt _baseSpeed     = new(30);
+    [Export] private StatisticResInt _baseTackle    = null!;
+    [Export] private StatisticResInt _baseDodge     = null!;
+    [Export] private StatisticResInt _baseSpeed     = null!;
     [Export] private StatisticResInt _baseAgility   = null!;
     [Export] private StatisticResInt _baseGrip      = null!;
     [Export] private StatisticResInt _baseVitality  = null!;
@@ -50,8 +50,8 @@ public partial class Statistics : Node, IStatistics
 
     private StatisticResInt[] BuildStatisticRes() =>
     [
-        _baseDodge,
         _baseTackle,
+        _baseDodge,
         _baseSpeed,
         _baseAgility,
         _baseGrip,
