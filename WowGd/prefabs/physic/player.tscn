@@ -73,21 +73,21 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_rlms2"]
 radius = 0.4
 
-[sub_resource type="Resource" id="Resource_upqbw"]
+[sub_resource type="Resource" id="Resource_k2b5b"]
 script = ExtResource("26_iiwpk")
 
-[sub_resource type="Resource" id="Resource_017mr"]
+[sub_resource type="Resource" id="Resource_qewp4"]
 script = ExtResource("27_rd0a3")
 
-[sub_resource type="Resource" id="Resource_qjp78"]
+[sub_resource type="Resource" id="Resource_h8dry"]
 script = ExtResource("28_ctmb4")
 
 [sub_resource type="Resource" id="Resource_7dokv"]
 script = ExtResource("29_ac11p")
 MoveMode = 1
-_impulseData = SubResource("Resource_017mr")
-_translationData = SubResource("Resource_qjp78")
-_accelerationData = SubResource("Resource_upqbw")
+_impulseData = SubResource("Resource_qewp4")
+_translationData = SubResource("Resource_h8dry")
+_accelerationData = SubResource("Resource_k2b5b")
 _launcher = true
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -407,21 +407,21 @@ TargetIntentAcquirer = 2
 TargetingLaunchesDt = Array[ExtResource("19_ghg0p")]([SubResource("Resource_nx2ev")])
 metadata/_custom_type_script = "uid://bmqf1jfqhr2jf"
 
-[sub_resource type="Resource" id="Resource_k2b5b"]
+[sub_resource type="Resource" id="Resource_l5be3"]
 script = ExtResource("26_iiwpk")
 
-[sub_resource type="Resource" id="Resource_qewp4"]
+[sub_resource type="Resource" id="Resource_11fuo"]
 script = ExtResource("27_rd0a3")
 
-[sub_resource type="Resource" id="Resource_h8dry"]
+[sub_resource type="Resource" id="Resource_4q036"]
 script = ExtResource("28_ctmb4")
 
 [sub_resource type="Resource" id="Resource_7335w"]
 script = ExtResource("29_ac11p")
 _moveDirection = 1
-_impulseData = SubResource("Resource_qewp4")
-_translationData = SubResource("Resource_h8dry")
-_accelerationData = SubResource("Resource_k2b5b")
+_impulseData = SubResource("Resource_11fuo")
+_translationData = SubResource("Resource_4q036")
+_accelerationData = SubResource("Resource_l5be3")
 _target = 6
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -510,20 +510,20 @@ _duration = 4.0
 _target = 4
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
-[sub_resource type="Resource" id="Resource_l5be3"]
+[sub_resource type="Resource" id="Resource_105x8"]
 script = ExtResource("26_iiwpk")
 
-[sub_resource type="Resource" id="Resource_11fuo"]
+[sub_resource type="Resource" id="Resource_6bglf"]
 script = ExtResource("27_rd0a3")
 
-[sub_resource type="Resource" id="Resource_4q036"]
+[sub_resource type="Resource" id="Resource_kjuvs"]
 script = ExtResource("28_ctmb4")
 
 [sub_resource type="Resource" id="Resource_yscs2"]
 script = ExtResource("29_ac11p")
-_impulseData = SubResource("Resource_11fuo")
-_translationData = SubResource("Resource_4q036")
-_accelerationData = SubResource("Resource_l5be3")
+_impulseData = SubResource("Resource_6bglf")
+_translationData = SubResource("Resource_kjuvs")
+_accelerationData = SubResource("Resource_105x8")
 _target = 4
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -582,6 +582,26 @@ metadata/_custom_type_script = "uid://bk41d1kcbqthv"
 script = ExtResource("61_ha2cu")
 Base = 36
 
+[sub_resource type="Resource" id="Resource_udca6"]
+script = ExtResource("61_ha2cu")
+Base = 50
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
+[sub_resource type="Resource" id="Resource_kbkuv"]
+script = ExtResource("61_ha2cu")
+Base = 15
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
+[sub_resource type="Resource" id="Resource_55w0n"]
+script = ExtResource("61_ha2cu")
+Base = 150
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
+[sub_resource type="Resource" id="Resource_etsct"]
+script = ExtResource("61_ha2cu")
+Base = 50
+metadata/_custom_type_script = "uid://bk41d1kcbqthv"
+
 [node name="Player" type="Node" unique_id=1071117280 node_paths=PackedStringArray("DactyloDriver", "SelectionModeInput", "MoveModeInput")]
 script = ExtResource("1_upqbw")
 DactyloDriver = NodePath("PlayerDactyloDriver")
@@ -604,13 +624,10 @@ metadata/_custom_type_script = "uid://dbfmamo6b7xia"
 
 [node name="EntityHealth" type="Node" parent="." unique_id=2111582883]
 script = ExtResource("6_h8dry")
-Base = 100
 metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 
 [node name="BodyMover" type="Node" parent="." unique_id=1475820405]
 script = ExtResource("7_l5be3")
-_acceleration = 50.0
-FrictionBase = 15.0
 metadata/_custom_type_script = "uid://qx8vwd07ryt3"
 
 [node name="CursorWishDir" type="Node" parent="BodyMover" unique_id=330959096]
@@ -741,4 +758,8 @@ script = ExtResource("60_3v1fp")
 _baseTackle = SubResource("Resource_envmc")
 _baseDodge = SubResource("Resource_n5pdb")
 _baseSpeed = SubResource("Resource_xj0aj")
+_baseAgility = SubResource("Resource_udca6")
+_baseGrip = SubResource("Resource_kbkuv")
+_baseVitality = SubResource("Resource_55w0n")
+_baseFocus = SubResource("Resource_etsct")
 metadata/_custom_type_script = "uid://u1q0ceaxrw3t"

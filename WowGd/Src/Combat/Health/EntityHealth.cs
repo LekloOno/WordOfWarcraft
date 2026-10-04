@@ -1,13 +1,17 @@
 using System;
 using Godot;
+using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Health;
 
 [GlobalClass]
 public partial class EntityHealth : Node, IEntityHealth
 {
-    [Export] public int Base { get; private set; } = 50;
-    public int Max => Base;
+    private IEntity _entity = null!;
+    public int Base => _entity.Statistics.GetStatistic(StatEnum.Vitality).Base;
+    public int Max => _entity.Statistics.GetStatistic(StatEnum.Vitality).Current;
 
     public event Action<int>?   Consumed;
     public event Action<int>?   Generated;
@@ -15,6 +19,12 @@ public partial class EntityHealth : Node, IEntityHealth
     public event Action<int>?   Resurrected;
 
     public int Current { get; private set; }
+
+    public override void _Ready()
+    {
+        if (this.TryGetComposedRecursive(out IEntity? entity))
+            _entity = entity;
+    }
 
     public bool Resurrect(int? hp = null)
     {

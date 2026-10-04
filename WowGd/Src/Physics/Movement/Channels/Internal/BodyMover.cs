@@ -1,5 +1,6 @@
 using Godot;
 using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats;
 using WowGd.Src.Entities.Stats.Speed;
 using WowGd.Src.Tools;
 
@@ -8,7 +9,7 @@ namespace WowGd.Src.Physics.Movement.Channels.Internal;
 [GlobalClass]
 public partial class BodyMover : InternalContributor
 {
-	[Export] private float _acceleration;
+	private float Acceleration => _entity.Statistics.GetStatistic(StatEnum.Agility).Current;
 	[Export] private bool _ground = true;
 
 	private IEntity _entity = null!;
@@ -19,6 +20,7 @@ public partial class BodyMover : InternalContributor
 	public bool Enabled => _enabled;
 
 	public override float MaxSpeed => SpeedStatisticsExt.GetMaxSpeedFrom(_entity);
+    public override float FrictionBase => _entity.Statistics.GetStatistic(StatEnum.Grip).Current * (_ground ? 1f : 0.2f);
 
     private bool _enabled = false;
 
@@ -47,7 +49,7 @@ public partial class BodyMover : InternalContributor
 
 		float currentSpeed = Body.Inertia.Dot(CurrentWishDir);
 		float t = Mathf.Clamp(currentSpeed / input.MaxSpeed, 0f, 1f);
-		float accelThisFrame = _acceleration * (1f - t);
+		float accelThisFrame = Acceleration * (1f - t);
 		
 		accel = accelThisFrame * CurrentWishDir * delta;
 		raw = null;

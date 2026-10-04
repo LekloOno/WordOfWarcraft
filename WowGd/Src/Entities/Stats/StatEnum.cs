@@ -7,6 +7,10 @@ public enum StatEnum : int
     Tackle,
     Dodge,
     Speed,
+    Agility,
+    Grip,
+    Vitality,
+    Focus,
 }
 
 public static class TargetStatExt

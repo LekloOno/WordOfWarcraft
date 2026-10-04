@@ -4,8 +4,7 @@ namespace WowGd.Src.Physics.Movement.Channels.Internal;
 
 public abstract partial class InternalContributor : Node, IInternalContributor
 {
-    [Export] public float FrictionBase { get; private set;}
-     
+    public abstract float FrictionBase { get; }
     public abstract float MaxSpeed { get; }
     public Vector2 WishDir { private get; set; }
 

@@ -1,20 +1,27 @@
 using System;
 using Godot;
+using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats;
+using WowGd.Src.Tools;
 
 namespace WowGd.Src.Combat.Resources.FocusRes;
 
 [GlobalClass]
 public partial class Focus : Node, IFocus
 {
-    [Export] public int Base { get; private set; } = 50;
-    /// <summary>
-    /// Later used with possible modifiers. For now, keep it simple.
-    /// </summary>
-    public int Max => Base;
+    private IEntity _entity = null!;
+    public int Base => _entity.Statistics.GetStatistic(StatEnum.Focus).Base;
+    public int Max => _entity.Statistics.GetStatistic(StatEnum.Focus).Current;
     public int Current { get; private set; }
 
     public event Action<int>? Consumed;
     public event Action<int>? Generated;
+
+    public override void _Ready()
+    {
+        if (this.TryGetComposedRecursive(out IEntity? entity))
+            _entity = entity;
+    }
 
     public bool Consume(int fp, out int overflow)
     {
