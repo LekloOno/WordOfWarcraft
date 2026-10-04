@@ -1,5 +1,3 @@
-using WowGd.Src.Entities.Stats.Modifier;
-
 namespace WowGd.Src.Entities.Stats.Speed;
 
 public static class SpeedStatisticsExt

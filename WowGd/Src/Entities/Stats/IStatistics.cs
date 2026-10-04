@@ -1,5 +1,4 @@
 using WowGd.Src.Entities.Stats.Bucketing;
-using WowGd.Src.Entities.Stats.Modifier;
 
 namespace WowGd.Src.Entities.Stats;
 
