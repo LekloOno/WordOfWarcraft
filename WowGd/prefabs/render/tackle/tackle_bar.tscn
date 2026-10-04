@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://elj2cbc6hw68"]
+
+[ext_resource type="Script" uid="uid://xrq8mni8vu7k" path="res://Src/Render/Ui/Movement/TackleUi.cs" id="1_2gr6k"]
+[ext_resource type="Texture2D" uid="uid://c7rffmg66lrys" path="res://assets/sprites/ui/chain_white.svg" id="1_4uo2m"]
+[ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="2_qgl6e"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cv86x"]
+bg_color = Color(0, 0, 0, 0.34509805)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tp61p"]
+bg_color = Color(0.9251978, 0.5648654, 0.19003403, 1)
+
+[sub_resource type="Resource" id="Resource_wo4hi"]
+script = ExtResource("2_qgl6e")
+AnimationTime = 0.6
+TransitionType = 4
+EaseType = 1
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_4uo2m"]
+script = ExtResource("2_qgl6e")
+AnimationTime = 0.4
+TransitionType = 1
+EaseType = 2
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[sub_resource type="Resource" id="Resource_ont6j"]
+script = ExtResource("2_qgl6e")
+AnimationTime = 0.4
+TransitionType = 1
+EaseType = 2
+metadata/_custom_type_script = "uid://8u3mt0o7qncd"
+
+[node name="TackleBar" type="HBoxContainer" unique_id=373169987]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -16.0
+offset_right = 130.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=6442447]
+modulate = Color(0.9254902, 0.5647059, 0.1882353, 1)
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("1_4uo2m")
+expand_mode = 1
+
+[node name="Body" type="ProgressBar" parent="." unique_id=1192524342]
+custom_minimum_size = Vector2(256, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxFlat_cv86x")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tp61p")
+max_value = 1.0
+step = 0.001
+value = 0.66
+show_percentage = false
+
+[node name="TackleUi" type="Node" parent="." unique_id=2021914180 node_paths=PackedStringArray("_container", "_body")]
+script = ExtResource("1_2gr6k")
+_container = NodePath("..")
+_body = NodePath("../Body")
+_bodyTweenSettings = SubResource("Resource_wo4hi")
+_showTweenSettings = SubResource("Resource_4uo2m")
+_hideTweenSettings = SubResource("Resource_ont6j")

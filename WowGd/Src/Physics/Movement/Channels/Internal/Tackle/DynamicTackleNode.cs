@@ -18,6 +18,8 @@ public partial class DynamicTackleNode : Node
     private float _maxRangeSquared;
     private float _stamina;
 
+    public event Action<float, float>? StaminaTicked;
+
     public Vector2 Offset
     {
         get => _offset;
@@ -64,8 +66,11 @@ public partial class DynamicTackleNode : Node
         if (!PhysicsExt.IsProcessTick(0xf, 1))
             return;
 
+        float prevStamina = _stamina;
         _stamina -= _acc / TackleStatisticsExt.GetTackleWeight(Entity, _tackleNode.Tackled!.Entity);
         _acc = 0f;
+
+        StaminaTicked?.Invoke(prevStamina, _stamina);
 
         if (_stamina <= 0f || !IsInRange())
             ReleaseTackle();

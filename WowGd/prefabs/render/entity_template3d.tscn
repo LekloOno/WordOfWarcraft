@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bohr8qp6rgkk" path="res://assets/sprites/entities/player.png" id="5_qy43x"]
 [ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="6_4ekfy"]
 [ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="7_3cnwx"]
+[ext_resource type="PackedScene" uid="uid://dcgq55m0tm7vq" path="res://prefabs/render/tackle/tackle_bar3d.tscn" id="7_4ekfy"]
 [ext_resource type="Script" uid="uid://b11rsu4oqoyxp" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/DamageIndicatorManager.cs" id="8_5u01r"]
 [ext_resource type="Script" uid="uid://b1430s7qxuwa6" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/ResourceIndicatorSuperManager.cs" id="8_b1sg3"]
 [ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="9_2fntv"]
@@ -21,7 +22,7 @@ transparency = 1
 albedo_texture = ExtResource("5_qy43x")
 billboard_mode = 1
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_qy43x"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_5u01r"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_175km"]
@@ -40,10 +41,13 @@ outer_radius = 0.534
 rings = 8
 ring_segments = 8
 
-[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_indicatorSuperManager", "_directTargetUi")]
+[node name="EntityRender3D" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_focusBar", "_indicatorSuperManager", "_tackleUi", "_directTargetUi")]
 script = ExtResource("1_ohnyp")
 _bodySprite = NodePath("BodySprite")
+_healthBar = NodePath("HealthBar/SubViewport/VBoxContainer/HealthBar")
+_focusBar = NodePath("HealthBar/SubViewport/VBoxContainer/FocusBar")
 _indicatorSuperManager = NodePath("ResourceIndicatorSuperManager")
+_tackleUi = NodePath("Tackle/SubViewport/TackleBar/TackleUi")
 _directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="TweenAnimator" type="Node" parent="." unique_id=448642881 node_paths=PackedStringArray("Target")]
@@ -61,9 +65,11 @@ texture = ExtResource("5_qy43x")
 script = ExtResource("6_4ekfy")
 Height = 1.8
 
+[node name="Tackle" parent="." unique_id=1512478262 instance=ExtResource("7_4ekfy")]
+
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("7_3cnwx")]
 offset = Vector2(0, 650)
-texture = SubResource("ViewportTexture_qy43x")
+texture = SubResource("ViewportTexture_5u01r")
 
 [node name="ResourceIndicatorSuperManager" type="Node3D" parent="." unique_id=924827885]
 script = ExtResource("8_b1sg3")
@@ -133,4 +139,6 @@ sorting_offset = 1.0
 modulate = Color(1, 1, 1, 0.4627451)
 texture = ExtResource("15_qy43x")
 
+[editable path="Tackle"]
+[editable path="Tackle/SubViewport/TackleBar"]
 [editable path="HealthBar"]

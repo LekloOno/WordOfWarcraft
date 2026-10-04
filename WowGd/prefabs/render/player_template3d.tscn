@@ -43,6 +43,9 @@ border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
 [sub_resource type="ViewportTexture" id="ViewportTexture_d0vlm"]
 viewport_path = NodePath("SubViewport")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_6qsus"]
+viewport_path = NodePath("SubViewport")
+
 [node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_moveModeUi", "_healthBar", "_focusBar") instance=ExtResource("2_n78br")]
 script = ExtResource("2_cgjug")
 _worder = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/TwoHands/WorderDisplay")
@@ -69,10 +72,15 @@ _pressedStyle = SubResource("StyleBoxFlat_nwaa2")
 [node name="Right" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="2" unique_id=1010706032]
 _pressedStyle = SubResource("StyleBoxFlat_k5444")
 
-[node name="HealthBar" parent="." index="3" unique_id=650881374]
-visible = false
+[node name="Tackle" parent="." index="3" unique_id=1512478262]
 texture = SubResource("ViewportTexture_d0vlm")
+
+[node name="HealthBar" parent="." index="4" unique_id=650881374]
+visible = false
+texture = SubResource("ViewportTexture_6qsus")
 
 [editable path="PlayerUi2"]
 [editable path="PlayerUi2/MarginContainer/VBoxContainer/HandUi"]
+[editable path="Tackle"]
+[editable path="Tackle/SubViewport/TackleBar"]
 [editable path="HealthBar"]

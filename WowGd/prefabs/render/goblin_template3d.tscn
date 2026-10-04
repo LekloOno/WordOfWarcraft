@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b8vejflhxk2lc" path="res://assets/sprites/entities/goblin.png" id="2_qcrgf"]
 [ext_resource type="PackedScene" uid="uid://byd256lw7uyjm" path="res://prefabs/render/health/health_bar_template3d.tscn" id="3_hbpfo"]
 [ext_resource type="Script" uid="uid://b7b1xeqe8jrbc" path="res://Src/Render/WorldRenderer/FixedSizeSprite3D.cs" id="3_owfsr"]
+[ext_resource type="PackedScene" uid="uid://dcgq55m0tm7vq" path="res://prefabs/render/tackle/tackle_bar3d.tscn" id="4_4sp7t"]
 [ext_resource type="Script" uid="uid://b11rsu4oqoyxp" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/DamageIndicatorManager.cs" id="4_hbpfo"]
 [ext_resource type="Script" uid="uid://b1430s7qxuwa6" path="res://Src/Render/Ui/Combat/Resources/Indicators/Managers/ResourceIndicatorSuperManager.cs" id="4_o7elv"]
 [ext_resource type="PackedScene" uid="uid://b1e2yxeffyx3c" path="res://prefabs/render/health/damage_indicator2d.tscn" id="5_4pern"]
@@ -16,7 +17,7 @@ transparency = 1
 albedo_texture = ExtResource("2_qcrgf")
 billboard_mode = 1
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4sp7t"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_p60ma"]
 viewport_path = NodePath("SubViewport")
 
 [sub_resource type="LabelSettings" id="LabelSettings_owfsr"]
@@ -35,12 +36,13 @@ outer_radius = 0.534
 rings = 8
 ring_segments = 8
 
-[node name="EntityRender3D2" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_focusBar", "_indicatorSuperManager", "_directTargetUi")]
+[node name="EntityRender3D2" type="Node3D" unique_id=846070588 node_paths=PackedStringArray("_bodySprite", "_healthBar", "_focusBar", "_indicatorSuperManager", "_tackleUi", "_directTargetUi")]
 script = ExtResource("1_hiiaf")
 _bodySprite = NodePath("BodySprite")
 _healthBar = NodePath("HealthBar/SubViewport/VBoxContainer/HealthBar")
 _focusBar = NodePath("HealthBar/SubViewport/VBoxContainer/FocusBar")
 _indicatorSuperManager = NodePath("ResourceIndicatorSuperManager")
+_tackleUi = NodePath("Tackle/SubViewport/TackleBar/TackleUi")
 _directTargetUi = NodePath("DirectTargetUi3D")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]
@@ -53,9 +55,11 @@ texture = ExtResource("2_qcrgf")
 script = ExtResource("3_owfsr")
 Height = 1.7
 
+[node name="Tackle" parent="." unique_id=1512478262 instance=ExtResource("4_4sp7t")]
+
 [node name="HealthBar" parent="." unique_id=650881374 instance=ExtResource("3_hbpfo")]
 offset = Vector2(0, 600)
-texture = SubResource("ViewportTexture_4sp7t")
+texture = SubResource("ViewportTexture_p60ma")
 
 [node name="ResourceIndicatorSuperManager" type="Node3D" parent="." unique_id=116487015]
 script = ExtResource("4_o7elv")
@@ -120,4 +124,6 @@ sorting_offset = 1.0
 modulate = Color(1, 1, 1, 0.4627451)
 texture = ExtResource("9_l17jm")
 
+[editable path="Tackle"]
+[editable path="Tackle/SubViewport/TackleBar"]
 [editable path="HealthBar"]
