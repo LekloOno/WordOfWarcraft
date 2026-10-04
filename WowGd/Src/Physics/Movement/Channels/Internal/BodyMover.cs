@@ -10,7 +10,7 @@ namespace WowGd.Src.Physics.Movement.Channels.Internal;
 [GlobalClass]
 public partial class BodyMover : InternalContributor
 {
-	private float Acceleration => _entity.Agility();
+	private float Acceleration => _entity.AccelerationMs2();
 	[Export] private bool _ground = true;
 
 	private IEntity _entity = null!;
