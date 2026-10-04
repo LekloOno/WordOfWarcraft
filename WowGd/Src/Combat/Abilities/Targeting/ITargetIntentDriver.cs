@@ -8,7 +8,7 @@ namespace WowGd.Src.Combat.Abilities.Targeting;
 
 public interface ITargetIntentDriver
 {
-    Task<TargetIntent> RetrieveTargetIntent(
+    Task<TargetResult> RetrieveTargetIntent(
         IEntity caster,
         TargetIntentAcquirer method, CancellationToken ct,
         IEnumerable<ITargetRule>? rules = null

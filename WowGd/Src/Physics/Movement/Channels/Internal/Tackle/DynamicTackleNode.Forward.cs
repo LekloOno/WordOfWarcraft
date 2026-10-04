@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using Godot;
+using WowGd.Src.Entities;
 
 namespace WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 
@@ -8,6 +10,11 @@ public partial class DynamicTackleNode : Node
     public float EffectiveLimit => _tackleNode.EffectiveLimit;
     public bool IsTackling => _tackleNode.IsTackling;
     public bool IsTackled => _tackleNode.IsTackled;
+    public bool TryGetTackled([NotNullWhen(true)] out IEntity? tackled)
+    {
+        tackled = _tackleNode.Tackled?.Entity;
+        return tackled != null;   
+    }
 
     /// <summary>
     /// Occurs when this node starts tackling another node.

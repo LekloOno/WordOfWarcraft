@@ -54,6 +54,7 @@ public static class AbilityBinderExt
         ability.Cancelled           += handler.OnCancelled;
         ability.TargetingStarted    += handler.OnTargetingStarted;
         ability.TargetingCompleted  += handler.OnTargetingCompleted;
+        ability.TargetingFailed     += handler.OnTargetingFailed;
     }
 
     public static void Unbind(this IAbilityHandler handler, IAbility ability)

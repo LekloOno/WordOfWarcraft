@@ -14,7 +14,7 @@ public class CastActuator(CastActuatorData data) : IActuator
 
     public event Action<ActuatePayload>? Actuated;
 
-    public async Task Actuate(IEntity entity, TargetIntentController intentController, CancellationToken ct)
+    public async Task<bool> Actuate(IEntity entity, TargetIntentController intentController, CancellationToken ct)
     {
         _currentCharge = 0f;
 
@@ -29,12 +29,16 @@ public class CastActuator(CastActuatorData data) : IActuator
 
                 if (_currentCharge >= _data.Charge)
                 {
-                    TargetIntent intent = await intentController.WaitForValidTargetAsync(ct);
+                    TargetResult result = await intentController.WaitForValidTargetAsync(ct);
+                    if (!result.TryGet(out TargetIntent intent))
+                        return false;
+                        
                     Actuated?.Invoke(new ActuatePayload(entity, intent, 1f));
                     _currentCharge -= _data.Charge;
                 }
             }
+            return true;
         }
-        catch (OperationCanceledException) {}
+        catch (OperationCanceledException) { return false; }
     }
 }

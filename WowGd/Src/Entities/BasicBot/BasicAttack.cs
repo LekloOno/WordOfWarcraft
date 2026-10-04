@@ -46,16 +46,17 @@ public partial class BasicAttack : Node, IEntityHealthHandler
         CancellationToken token = _cts.Token;
 
         IEntity? target;
-        TargetIntent intent = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Direct, token);
+        TargetResult result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Melee, token);
 
-        while(!intent.TryGetEntity(out target) ||
-            _entity.DistanceSquaredTo(target) > _attackRange * _attackRange)
+        while(!result.TryGet(out TargetIntent intent) || !intent.TryGetEntity(out target) /*||
+            _entity.DistanceSquaredTo(target) > _attackRange * _attackRange*/)
         {
             await Task.Delay(500);
+            
             if (token.IsCancellationRequested)
                 return;
-                
-            intent = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Direct, token);
+
+            result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, TargetIntentAcquirer.Melee, token);
         }
 
         target.Health.Consume(_attackDmg, out _);

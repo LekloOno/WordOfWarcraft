@@ -3,6 +3,7 @@ using WowGd.Src.Combat.Abilities;
 using WowGd.Src.Combat.Abilities.CoolDowns.EventData;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Handlers;
+using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Input;
 
 namespace WowGd.Src.Render.Ui.Input.Impls;
@@ -124,4 +125,5 @@ public partial class AbilityCellUi : Control,
 
     public void OnTargetingStarted() { }
     public void OnTargetingCompleted() { }
+    public void OnTargetingFailed(TargetFailure failure) { }
 }

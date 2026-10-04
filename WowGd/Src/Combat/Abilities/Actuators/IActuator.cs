@@ -18,7 +18,7 @@ namespace WowGd.Src.Combat.Abilities.Actuators;
 /// </summary>
 public interface IActuator
 {
-    Task Actuate(IEntity entity, TargetIntentController intentController, CancellationToken ct);
+    Task<bool> Actuate(IEntity entity, TargetIntentController intentController, CancellationToken ct);
 
     // using event instead of a Task because actuate might trigger at high frequency
     // For example in the case of a beam. Using task would stress out the GC, but we can't either

@@ -17,11 +17,14 @@ public sealed class TargetIntentController : IDisposable
 
     private IEntity? _trackedDirectTarget;
     private CancellationTokenSource? _reacquireCts;
-    private TaskCompletionSource<TargetIntent>? _validTargetTcs;
+    private TaskCompletionSource<TargetResult>? _validTargetTcs;
 
     public TargetIntent Current { get; private set; }
     public bool IsValid { get; private set; }
     public event Action<TargetIntent>? Updated;
+
+    public TargetFailure? LastFailure { get; private set; }
+    public event Action<TargetFailure>? Failed;
 
     public TargetIntentController(
         IEntity caster,
@@ -53,20 +56,24 @@ public sealed class TargetIntentController : IDisposable
         _ = ReacquireAsync(_reacquireCts.Token);
     }
 
-    public Task<TargetIntent> WaitForValidTargetAsync(
+    public Task<TargetResult> WaitForValidTargetAsync(
         CancellationToken ct = default)
     {
-        if (IsValid && _targetRules.CheckAll(_caster, Current))
-            return Task.FromResult(Current);
+        if (IsValid)
+        {
+            if (_targetRules.CheckAll(_caster, Current))
+                return Task.FromResult(TargetResult.Ok(Current));
+            
+            RequestRefresh();
+        }
 
         _validTargetTcs ??= CreateValidTargetTcs();
-
         return _validTargetTcs.Task.WaitAsync(ct);
     }
 
-    private TaskCompletionSource<TargetIntent> CreateValidTargetTcs()
+    private TaskCompletionSource<TargetResult> CreateValidTargetTcs()
     {
-        return new TaskCompletionSource<TargetIntent>(
+        return new TaskCompletionSource<TargetResult>(
             TaskCreationOptions.RunContinuationsAsynchronously);
     }
 
@@ -74,22 +81,50 @@ public sealed class TargetIntentController : IDisposable
     {
         try
         {
+            TargetResult result;
             TargetIntent intent;
-            do
+
+            while (true)
             {
-                intent = await _caster.TargetIntentDriver.RetrieveTargetIntent(
+                result = await _caster.TargetIntentDriver.RetrieveTargetIntent(
                     _caster, _acquirer, ct, _targetRules);
+
+                ct.ThrowIfCancellationRequested();
+
+                if (!result.TryGet(out intent))
+                {
+                    Fail(result);
+                    return;
+                }
+
+                if (_targetRules.CheckAll(_caster, intent))
+                    break;
+
+                // Only Direct is interactive, so only it can safely re-prompt.
+                if (_acquirer != TargetIntentAcquirer.Direct)
+                {
+                    Fail(TargetResult.Fail(TargetFailure.RuleViolation));
+                    return;
+                }
             }
-            while (!_targetRules.CheckAll(_caster, intent));
 
             Current = intent;
             TrackDirectTarget(intent);
-            _validTargetTcs?.TrySetResult(intent);
+            LastFailure = null;
             IsValid = true;
+            _validTargetTcs?.TrySetResult(TargetResult.Ok(intent));
 
             Updated?.Invoke(intent);
         }
         catch (OperationCanceledException) { }
+    }
+
+    private void Fail(TargetResult failure)
+    {
+        IsValid = false;
+        LastFailure = failure.Failure;
+        _validTargetTcs?.TrySetResult(failure);
+        Failed?.Invoke(failure.Failure!.Value);
     }
 
     private void TrackDirectTarget(TargetIntent intent)

@@ -14,7 +14,7 @@ namespace WowGd.Src.Combat.Abilities.Targeting.Player;
 public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, IListenableHandInputMode
 {
     private TargetIntent? _buffered;
-    private TaskCompletionSource<TargetIntent>? _pendingIntent;
+    private TaskCompletionSource<TargetResult>? _pendingIntent;
 
     private bool _defaultToNearest = true;
 
@@ -31,7 +31,7 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
     public event Action? InputRemoved;
 
 
-    public async Task<TargetIntent> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct, bool useBuffer = true)
+    public async Task<TargetResult> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct, bool useBuffer = true)
     {
         // See if we later put some domain specific cancellation ?
         if (_pendingIntent is not null)
@@ -40,16 +40,16 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
 
         if (useBuffer && _buffered is TargetIntent intent &&
             (rules?.CheckAll(caster, intent) ?? true))
-            return intent;
+            return TargetResult.Ok(intent);
 
         if (_defaultToNearest && DirectTargetEntitiesManager.TryRetrieveClosestEntity(caster, out IEntity? entity, rules))
         {
             intent = new(entity);
             _buffered = intent;
-            return intent;
+            return TargetResult.Ok(intent);
         }
 
-        var pendingIntent = new TaskCompletionSource<TargetIntent>(
+        var pendingIntent = new TaskCompletionSource<TargetResult>(
             TaskCreationOptions.RunContinuationsAsynchronously);
 
         _pendingIntent = pendingIntent;
@@ -95,7 +95,7 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
 
         if (_pendingIntent is null)
             SetBuffer(intent);
-        else if (_pendingIntent.TrySetResult(intent))
+        else if (_pendingIntent.TrySetResult(TargetResult.Ok(intent)))
             SetBuffer(intent);
     }
 

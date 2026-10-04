@@ -1,3 +1,5 @@
+using WowGd.Src.Combat.Abilities.Targeting;
+
 namespace WowGd.Src.Combat.Abilities.Handlers;
 
 public interface IAbilityHandler
@@ -8,4 +10,5 @@ public interface IAbilityHandler
 
     void OnTargetingStarted();
     void OnTargetingCompleted();
+    void OnTargetingFailed(TargetFailure failure);
 }

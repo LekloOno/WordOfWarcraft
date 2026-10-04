@@ -26,6 +26,9 @@ public static class TeamMaskExt
     public static uint ToEnemyCollisionMask(this IEntity entity) =>
         (entity.TeamMask & ~TeamMask.Environment).ToCollisionLayer();
 
+    public static TeamMask EnemyMask(this IEntity entity) =>
+        (~ entity.TeamMask) & (TeamMask.Team1 | TeamMask.Team2);
+
     public static uint ToCollisionMask(this IEntity entity, TargetRelation relation)
     {
         return relation switch

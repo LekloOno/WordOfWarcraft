@@ -68,8 +68,11 @@ public partial class MoveMode : Node
 		_cts?.Cancel();
 		_cts = new();
 
-		TargetIntent intent = await _entity.TargetIntentDriver.RetrieveTargetIntent(
+		TargetResult result = await _entity.TargetIntentDriver.RetrieveTargetIntent(
 			_entity, TargetIntentAcquirer.Direct, _cts.Token, _tackleTargetRules);
+
+		if (!result.TryGet(out TargetIntent intent))
+			return;
 
 		entityMover.DynamicTackleNode.StartTackle(intent.Entity!, 1f);
 	}

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch;
+using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Entities;
 using WowGd.Src.Tools;
 
@@ -27,6 +28,7 @@ public interface IAbility : IDisablable
     
     event Action? TargetingStarted;
     event Action? TargetingCompleted;
+    public event Action<TargetFailure>? TargetingFailed;
 }
 
 public enum AbilityLaunchHook

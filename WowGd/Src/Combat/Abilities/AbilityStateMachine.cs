@@ -99,7 +99,6 @@ public partial class AbilityStateMachine : Node,
         _stopLaunches.LaunchAll(payload);
     }
 
-    private TargetIntentController? _targetIntentController;
     public async Task<bool> Start(IEntity caster)
     {
         if (!_enabled)
@@ -120,19 +119,22 @@ public partial class AbilityStateMachine : Node,
         InstantLaunchesEmitted?.Invoke(_instantLaunches);
 
         _cts = new CancellationTokenSource();
+        using var controller = new TargetIntentController(
+            caster, _data.TargetIntentAcquirer, _data.TargetRulesDt, default, _cts.Token);
 
         try
         {
-            _targetIntentController = new(
-                caster, 
-                _data.TargetIntentAcquirer,
-                _data.TargetRulesDt,
-                default,
-                _cts.Token);
-
-            _targetIntentController.RequestRefresh();
+            controller.RequestRefresh();
             TargetingStarted?.Invoke();
-            TargetIntent targetIntent = await _targetIntentController.WaitForValidTargetAsync(_cts.Token);
+
+            TargetResult result = await controller.WaitForValidTargetAsync(_cts.Token);
+            if (!result.TryGet(out TargetIntent targetIntent))
+            {
+                TargetingFailed?.Invoke(result.Failure!.Value);
+                _cts.Cancel();
+                return true;
+            }
+            
             TargetingCompleted?.Invoke();
 
             CoolDown.StartCd();
@@ -145,7 +147,9 @@ public partial class AbilityStateMachine : Node,
             if (_actuator != null)
             {
                 ActuationStarted?.Invoke();
-                await _actuator.Actuate(caster, _targetIntentController, _cts.Token);
+                bool completed = await _actuator.Actuate(caster, controller, _cts.Token);
+                if (!completed)
+                    return false;
                 ActuationCompleted?.Invoke();
             }
 
@@ -196,6 +200,7 @@ public partial class AbilityStateMachine : Node,
     public event Action? Cancelled;
     public event Action? TargetingStarted;
     public event Action? TargetingCompleted;
+    public event Action<TargetFailure>? TargetingFailed;
     public event Action<IEnumerable<ILaunch>>? ActuationLaunchesEmitted;
     public event Action? ActuationStarted;
     public event Action? ActuationCompleted;

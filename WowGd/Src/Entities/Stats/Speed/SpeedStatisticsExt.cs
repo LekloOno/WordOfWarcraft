@@ -1,3 +1,5 @@
+using Godot;
+
 namespace WowGd.Src.Entities.Stats.Speed;
 
 public static class SpeedStatisticsExt
