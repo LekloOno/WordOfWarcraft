@@ -2,7 +2,7 @@ using WowGd.Src.Entities.Stats.Bucketing;
 
 namespace WowGd.Src.Entities.Stats.Modifier;
 
-public enum TargetStat
+public enum TargetStat : int
 {
     Tackle,
     Dodge,
