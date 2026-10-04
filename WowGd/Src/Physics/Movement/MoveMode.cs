@@ -7,8 +7,8 @@ using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Combat.Abilities.Targeting.TargetRules;
 using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats.Tackle;
 using WowGd.Src.Physics.Movement.Channels.Internal;
-using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 using WowGd.Src.Physics.Movement.Status;
 using WowGd.Src.Tools;
 
@@ -74,7 +74,7 @@ public partial class MoveMode : Node
 		if (!result.TryGet(out TargetIntent intent))
 			return;
 
-		entityMover.DynamicTackleNode.StartTackle(intent.Entity!, 1f);
+		entityMover.DynamicTackleNode.StartTackle(intent.Entity!);
 	}
 
 	public void CancelTackleTargeting() =>

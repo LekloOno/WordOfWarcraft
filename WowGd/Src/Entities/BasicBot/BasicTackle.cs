@@ -1,5 +1,6 @@
 using Godot;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Entities.Stats.Tackle;
 using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 using WowGd.Src.Tools;
 
@@ -51,7 +52,7 @@ public partial class BasicTackle : Node, IEntityHealthHandler
 
         if (_targetAcquirer.IsProcessTick() &&
             _targetAcquirer.Target is not null &&
-            DynamicTackleNode.StartTackle(_targetAcquirer.Target, _tackleSpeed))
+            DynamicTackleNode.StartTackle(_targetAcquirer.Target))
             _acc = 0f;
     }
 

@@ -1,13 +1,16 @@
 using System;
+using Godot;
+using WowGd.Src.Entities.Stats.Speed;
 
 namespace WowGd.Src.Entities.Stats.Tackle;
 
 public static class TackleStatisticsExt
 {
-    public const int RatioScale      = 25;
-    public const float MaxWeight     = 15f;
-    public const float MinWeight     = 0.5f;
-    public const float NeutralWeight = 2.8f;
+    public const int RatioScale         = 25;
+    public const float MaxWeight        = 15f;
+    public const float MinWeight        = 0.5f;
+    public const float NeutralWeight    = 2.8f;
+    public const float SpeedLimitFactor = 0.5f;
 
     /// <summary>
     /// https://www.desmos.com/calculator/cp5qp9vnq2
@@ -23,6 +26,12 @@ public static class TackleStatisticsExt
         float ratio = TackleRatio(tackle, dodge, RatioScale);
         return Weight(ratio, MaxWeight, MinWeight, NeutralWeight);
     }
+
+    public static int GetTackleSpeed(IEntity entity) =>
+        Mathf.FloorToInt(entity.Statistics.GetStatistic(StatEnum.Speed).Current * SpeedLimitFactor);
+
+    public static float GetMsTackle(IEntity entity) =>
+        SpeedStatisticsExt.GetMsFromSpeed(GetTackleSpeed(entity));
 
     private static float TackleRatio(int tackle, int dodge, int scale) =>
         (float)(tackle - dodge) / (Math.Abs(tackle) + Math.Abs(dodge) + scale);

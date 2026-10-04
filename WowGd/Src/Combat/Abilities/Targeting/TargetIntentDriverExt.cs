@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using WowGd.Src.Entities;
+using WowGd.Src.Entities.Stats.Tackle;
 
 namespace WowGd.Src.Combat.Abilities.Targeting;
 
@@ -28,7 +29,7 @@ public static class TargetIntentDriverExt
     private static Task<TargetResult> TryGetTackleable(IEntity caster)
     {
         if (caster.TryGetClosestTarget(out IEntity? target, caster.EnemyMask(), true) &&
-            caster.EntityMover.DynamicTackleNode.StartTackle(target, 1f))
+            caster.EntityMover.DynamicTackleNode.StartTackle(target))
             return Task.FromResult(TargetResult.Ok(new TargetIntent(target)));
 
         return Task.FromResult(TargetResult.Fail(TargetFailure.NoTarget));

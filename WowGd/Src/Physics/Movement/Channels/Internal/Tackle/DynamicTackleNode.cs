@@ -84,7 +84,7 @@ public partial class DynamicTackleNode : Node
         return Entity.DistanceSquaredTo(_tackleNode.Tackled.Entity) <= _maxRangeSquared;
     }
 
-    public bool StartTackle(IEntity target, float limit)
+    public bool StartTackle(IEntity target)
     {
         IEntityMover entityMover = Entity.EntityMover;
 
@@ -99,6 +99,7 @@ public partial class DynamicTackleNode : Node
 
         TackleNode targetTackleNode = target.EntityMover.DynamicTackleNode._tackleNode;
 
+        float limit = TackleStatisticsExt.GetMsTackle(Entity);
         if (!_tackleNode.Tackle(targetTackleNode, limit))
             return false;
 
