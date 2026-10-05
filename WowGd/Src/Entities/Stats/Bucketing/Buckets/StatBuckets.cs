@@ -8,6 +8,9 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
         IAdditionOperators<TVal, TVal, TVal>,
         ISubtractionOperators<TVal, TVal, TVal>
 {
+    public event Action? Changed;
+	private void NotifyChanged() => Changed?.Invoke();
+
     private readonly HomogeneousBucket<TVal> _flat = new(identity);
     private readonly HomogeneousBucket<float>[] _layers = CreateLayers(layers);
 
@@ -17,8 +20,12 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
     private bool LayersZeroed => _zeroedLayers != 0;
     private float _zeroPreservedCache = 1f;
 
-    public IDisposable? AddFlatModifier(TVal value) =>
-        _flat.AddModifier(value);
+    public IDisposable? AddFlatModifier(TVal value)
+	{
+		var inner = _flat.AddModifier(value);
+		NotifyChanged();
+		return new FlatModifierHandle(this, inner);
+	}
 
     public IDisposable? AddLayerModifier(float value, int layer)
     {
@@ -35,7 +42,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
         float newModifier = bucket.Modifier;
 
         UpdateLayersCache(oldModifier, newModifier);
-
+        NotifyChanged();
         return handle;
     }
 
@@ -46,6 +53,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
         float newModifier = bucket.Modifier;
 
         UpdateLayersCache(oldModifier, newModifier);
+        NotifyChanged();
     }
 
     private static HomogeneousBucket<float>[] CreateLayers(int layers)
@@ -92,4 +100,19 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
             _handle = null;
         }
     }
+
+    private sealed class FlatModifierHandle(StatBuckets<TVal> buckets, IDisposable handle) : IDisposable
+	{
+		private IDisposable? _handle = handle;
+
+		public void Dispose()
+		{
+			if (_handle == null)
+				return;
+
+			_handle.Dispose();
+			_handle = null;
+			buckets.NotifyChanged();
+		}
+	}
 }

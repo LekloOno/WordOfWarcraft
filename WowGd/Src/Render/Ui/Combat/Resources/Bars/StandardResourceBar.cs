@@ -113,4 +113,18 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
 
 	public void OnConsumed(int rp)  => Refresh(growing: false);
 	public void OnGenerated(int rp) => Refresh(growing: true);
+
+	public void OnMaxChanged(int max)
+	{
+		if (_resource is null)
+			return;
+
+		if (_body.MaxValue == max)
+			return;
+
+		_body.MaxValue = _tail.MaxValue = max;
+
+		Refresh(growing: false);
+		UpdateLabel();
+	}
 }

@@ -10,6 +10,7 @@ public interface IStandardResource
 
     event Action<int>? Consumed;
     event Action<int>? Generated;
+    event Action<int>? MaxChanged;
 
     bool Consume(int rp, out int overflow);
     bool Generate(int rp, out int overflow);

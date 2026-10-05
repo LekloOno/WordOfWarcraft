@@ -17,14 +17,33 @@ public partial class EntityHealth : Node, IEntityHealth
     public event Action<int>?   Generated;
     public event Action?        Died;
     public event Action<int>?   Resurrected;
+    public event Action<int>?   MaxChanged;
 
     public int Current { get; private set; }
 
-    public override void _Ready()
+    public override async void _Ready()
     {
         if (this.TryGetComposedRecursive(out IEntity? entity))
             _entity = entity;
+
+        await _entity.Initialization;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += NotifyMaxChanged;
     }
+
+    public override async void _EnterTree()
+    {
+        if (_entity == null) return;
+
+        await _entity.Initialization;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += NotifyMaxChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed -= NotifyMaxChanged;
+    }
+
+    private void NotifyMaxChanged(int max) => MaxChanged?.Invoke(max);
 
     public bool Resurrect(int? hp = null)
     {

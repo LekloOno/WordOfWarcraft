@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Entities;
 using WowGd.Src.Entities.Stats.Focus;
@@ -16,12 +17,31 @@ public partial class Focus : Node, IFocus
 
     public event Action<int>? Consumed;
     public event Action<int>? Generated;
+    public event Action<int>? MaxChanged;
 
-    public override void _Ready()
+    public override async void _Ready()
     {
         if (this.TryGetComposedRecursive(out IEntity? entity))
             _entity = entity;
+
+        await _entity.Initialization;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += NotifyMaxChanged;
     }
+
+    public override async void _EnterTree()
+    {
+        if (_entity == null) return;
+
+        await _entity.Initialization;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += NotifyMaxChanged;
+    }
+
+    public override void _ExitTree()
+    {
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed -= NotifyMaxChanged;
+    }
+
+    private void NotifyMaxChanged(int max) => MaxChanged?.Invoke(max);
 
     public bool Consume(int fp, out int overflow)
     {

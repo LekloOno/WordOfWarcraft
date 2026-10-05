@@ -14,6 +14,7 @@ public class EnvironmentHealth : IEntityHealth
     public event Action<int>?   Generated;
     public event Action?        Died;
     public event Action<int>?   Resurrected;
+    public event Action<int>?   MaxChanged;
 
     public bool Dead() => false;
     public bool Resurrect(int? hp) => false;
