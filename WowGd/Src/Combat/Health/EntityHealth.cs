@@ -27,7 +27,7 @@ public partial class EntityHealth : Node, IEntityHealth
             _entity = entity;
 
         await _entity.Initialization;
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += NotifyMaxChanged;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += OnMaxChanged;
     }
 
     public override async void _EnterTree()
@@ -35,15 +35,19 @@ public partial class EntityHealth : Node, IEntityHealth
         if (_entity == null) return;
 
         await _entity.Initialization;
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += NotifyMaxChanged;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += OnMaxChanged;
     }
 
     public override void _ExitTree()
     {
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed -= NotifyMaxChanged;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed -= OnMaxChanged;
     }
 
-    private void NotifyMaxChanged(int max) => MaxChanged?.Invoke(max);
+    private void OnMaxChanged(int max)
+    {
+        Current = Math.Min(max, Current);
+        MaxChanged?.Invoke(max);  
+    }
 
     public bool Resurrect(int? hp = null)
     {

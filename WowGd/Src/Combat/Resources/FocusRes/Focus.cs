@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Entities;
 using WowGd.Src.Entities.Stats.Focus;
@@ -25,7 +24,7 @@ public partial class Focus : Node, IFocus
             _entity = entity;
 
         await _entity.Initialization;
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += NotifyMaxChanged;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += OnMaxChanged;
     }
 
     public override async void _EnterTree()
@@ -33,15 +32,19 @@ public partial class Focus : Node, IFocus
         if (_entity == null) return;
 
         await _entity.Initialization;
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += NotifyMaxChanged;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += OnMaxChanged;
     }
 
     public override void _ExitTree()
     {
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed -= NotifyMaxChanged;
+        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed -= OnMaxChanged;
     }
 
-    private void NotifyMaxChanged(int max) => MaxChanged?.Invoke(max);
+    private void OnMaxChanged(int max)
+    {
+        Current = Math.Min(max, Current);
+        MaxChanged?.Invoke(max);
+    }
 
     public bool Consume(int fp, out int overflow)
     {
