@@ -59,6 +59,8 @@ Target = NodePath("../BodySprite")
 Animations = Array[ExtResource("3_63tjw")]([ExtResource("4_6rdus")])
 
 [node name="Tackle" parent="." unique_id=1512478262 instance=ExtResource("7_4ekfy")]
+offset = Vector2(0, 440)
+pixel_size = 0.0055
 texture = SubResource("ViewportTexture_4ekfy")
 
 [node name="BodySprite" type="Sprite3D" parent="." unique_id=318333819]

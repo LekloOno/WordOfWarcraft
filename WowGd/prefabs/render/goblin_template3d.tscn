@@ -17,7 +17,7 @@ transparency = 1
 albedo_texture = ExtResource("2_qcrgf")
 billboard_mode = 1
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_di6c5"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_g7un2"]
 viewport_path = NodePath("Tackle/SubViewport")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4sp7t"]
@@ -59,10 +59,10 @@ script = ExtResource("3_owfsr")
 Height = 1.7
 
 [node name="Tackle" type="Sprite3D" parent="." unique_id=1512478262]
-offset = Vector2(0, 350)
-pixel_size = 0.007
+offset = Vector2(0, 440)
+pixel_size = 0.0055
 billboard = 1
-texture = SubResource("ViewportTexture_di6c5")
+texture = SubResource("ViewportTexture_g7un2")
 
 [node name="SubViewport" type="SubViewport" parent="Tackle" unique_id=1329399703]
 transparent_bg = true

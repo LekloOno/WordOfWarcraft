@@ -17,7 +17,7 @@ viewport_path = NodePath("SubViewport")
 [node name="EntityRender3D" unique_id=846070588 instance=ExtResource("1_64ml3")]
 
 [node name="Tackle" parent="." index="1" unique_id=1512478262]
-offset = Vector2(0, 464.975)
+offset = Vector2(0, 585)
 texture = SubResource("ViewportTexture_64ml3")
 
 [node name="BodySprite" parent="." index="2" unique_id=318333819]

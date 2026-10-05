@@ -75,25 +75,6 @@ _pressedStyle = SubResource("StyleBoxFlat_k5444")
 [node name="Tackle" parent="." index="2" unique_id=1512478262]
 texture = SubResource("ViewportTexture_d0vlm")
 
-[node name="TackleBar" parent="Tackle/SubViewport" parent_id_path=PackedInt32Array(1512478262, 1329399703) index="0" unique_id=1899683689]
-offset_bottom = 16.0
-
-[node name="Tail" parent="Tackle/SubViewport/TackleBar" index="1" unique_id=1316591671]
-size_flags_vertical = 0
-
-[node name="Body" parent="Tackle/SubViewport/TackleBar" index="2" unique_id=514407313]
-size_flags_vertical = 0
-
-[node name="Outline" parent="Tackle/SubViewport/TackleBar" index="4" unique_id=439564115]
-offset_transform_position = Vector2(17.85, -11.975)
-offset_transform_position_ratio = Vector2(0, 0)
-offset_transform_scale = Vector2(0.8, -0.145)
-
-[node name="Shadow" parent="Tackle/SubViewport/TackleBar" index="5" unique_id=2001850868]
-offset_transform_position = Vector2(0, 13.305)
-offset_transform_position_ratio = Vector2(0, 0)
-offset_transform_scale = Vector2(0.995, -0.15)
-
 [node name="HealthBar" parent="." index="4" unique_id=650881374]
 visible = false
 texture = SubResource("ViewportTexture_6qsus")

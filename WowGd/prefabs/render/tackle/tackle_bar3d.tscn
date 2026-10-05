@@ -2,14 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://dbggkvacidyds" path="res://prefabs/render/bars/tackle_bar.tscn" id="1_g7un2"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_x8n8s"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_di6c5"]
 viewport_path = NodePath("SubViewport")
 
 [node name="Tackle" type="Sprite3D" unique_id=1512478262]
 offset = Vector2(0, 350)
 pixel_size = 0.007
 billboard = 1
-texture = SubResource("ViewportTexture_x8n8s")
+texture = SubResource("ViewportTexture_di6c5")
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=1329399703]
 transparent_bg = true

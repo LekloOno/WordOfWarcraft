@@ -34,7 +34,6 @@ EaseType = 2
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 
 [node name="TackleBar" unique_id=1899683689 instance=ExtResource("1_di6c5")]
-offset_bottom = 19.0
 
 [node name="TextureRect" type="TextureRect" parent="." index="0" unique_id=1499170081]
 modulate = Color(0.9254902, 0.5647059, 0.1882353, 1)
