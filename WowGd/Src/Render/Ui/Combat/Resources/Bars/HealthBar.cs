@@ -1,81 +1,30 @@
 using Godot;
 using WowGd.Src.Combat.Health;
-using WowGd.Src.Render.Animation.TweenTools;
+using WowGd.Src.Combat.Resources;
 
 namespace WowGd.Src.Render.Ui.Combat.Resources.Bars;
 
 [GlobalClass]
-public partial class HealthBar : Control, IEntityHealthHandler
+public partial class HealthBar : StandardResourceBar, IEntityHealthHandler
 {
-	[Export] private ProgressBar _body = null!;
-	[Export] private ProgressBar _tail = null!;
-	[Export] private TweenSettings _tailTweenSettings = null!;
+	public void SetHealth(IEntityHealth health) => SetResource(health);
 
-	private Tween? _tailTween;
-	private IEntityHealth _health = null!;
-
-	public override void _Ready()
+	protected override void BindResource(IStandardResource resource)
 	{
-		if (_health != null)
-			Init();
+		if (resource is IEntityHealth health)
+			this.Bind(health);
+		else
+			base.BindResource(resource);
 	}
 
-	private void Init()
+	protected override void UnbindResource(IStandardResource resource)
 	{
-		_tailTween?.Kill();
-
-		_body.MinValue = _tail.MinValue = 0f;
-		_body.MaxValue = _tail.MaxValue = _health.Max;
-		_body.Value = _tail.Value = _health.Current;
-	}
-
-	public void SetHealth(IEntityHealth health)
-	{
-		if (_health == health)
-			return;
-
-		if (_health != null)
-			this.Unbind(_health);
-
-		_health = health;
-		this.Bind(_health);
-
-		_tailTween?.Kill();
-
-		if (_body is not null && _tail is not null)
-			Init();
-	}
-
-	public void Damage(float currentHealth)
-	{
-		_body.Value = currentHealth;
-
-		_tailTween?.Kill();
-		_tailTween = CreateTween();
-		
-		_tailTweenSettings.TweenProperty(_tailTween, _tail, _body.Value, "value");
-	}
-
-	public void Heal(float currentHealth)
-	{
-		_body.Value = currentHealth;
-
-		_tailTween?.Kill();
-
-		_tail.Value = Mathf.Max(_tail.Value, _body.Value);
-
-		_tailTween = CreateTween();
-		_tailTweenSettings.TweenProperty(_tailTween, _tail, _body.Value, "value");
+		if (resource is IEntityHealth health)
+			this.Unbind(health);
+		else
+			base.UnbindResource(resource);
 	}
 
 	public void OnDied() {}
-
-	public void OnConsumed(int hp) =>
-		Damage(_health.Current);
-
-	public void OnGenerated(int hp) =>
-		Heal(_health.Current);
-
-	public void OnResurrected(int hp) =>
-		Heal(_health.Current);
+	public void OnResurrected(int hp) => OnGenerated(hp);
 }

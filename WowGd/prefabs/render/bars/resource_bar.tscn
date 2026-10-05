@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://puf3u1nyakou" path="res://prefabs/render/bars/bar_base.tscn" id="1_ix0ol"]
 [ext_resource type="Script" uid="uid://k0vjeqmns3cm" path="res://Src/Render/Ui/Combat/Resources/Bars/StandardResourceBar.cs" id="2_512sf"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="3_hfwbb"]
+[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="4_hfwbb"]
 
 [sub_resource type="Resource" id="Resource_512sf"]
 script = ExtResource("3_hfwbb")
@@ -25,12 +26,26 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="ResourceBar" unique_id=1899683689 node_paths=PackedStringArray("_body", "_tail") instance=ExtResource("1_ix0ol")]
+[sub_resource type="LabelSettings" id="LabelSettings_3db8v"]
+font = ExtResource("4_hfwbb")
+font_size = 26
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ResourceBar" unique_id=1899683689 node_paths=PackedStringArray("_body", "_tail", "_label") instance=ExtResource("1_ix0ol")]
 script = ExtResource("2_512sf")
 _body = NodePath("Body")
 _tail = NodePath("Tail")
 _tailTweenSettings = SubResource("Resource_512sf")
 _bodyTweenSettings = SubResource("Resource_68ewr")
+_label = NodePath("Label")
 
 [node name="Body" parent="." index="1" unique_id=514407313]
 theme_override_styles/fill = SubResource("StyleBoxFlat_512sf")
+
+[node name="Label" type="Label" parent="." index="5" unique_id=8330777]
+layout_mode = 2
+text = "67/69"
+label_settings = SubResource("LabelSettings_3db8v")
+horizontal_alignment = 1
+vertical_alignment = 1

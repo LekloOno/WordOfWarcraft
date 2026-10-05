@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://puf3u1nyakou" path="res://prefabs/render/bars/bar_base.tscn" id="1_atr23"]
 [ext_resource type="Script" uid="uid://sbgbxjm61r8y" path="res://Src/Render/Ui/Combat/Resources/Bars/HealthBar.cs" id="2_x8n8s"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="3_0j28x"]
+[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="4_ic02o"]
 
 [sub_resource type="Resource" id="Resource_ic02o"]
 script = ExtResource("3_0j28x")
@@ -18,11 +19,25 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="HealthBar" unique_id=1899683689 node_paths=PackedStringArray("_body", "_tail") instance=ExtResource("1_atr23")]
+[sub_resource type="LabelSettings" id="LabelSettings_4k4bw"]
+font = ExtResource("4_ic02o")
+font_size = 26
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="HealthBar" unique_id=1899683689 node_paths=PackedStringArray("_body", "_tail", "_label") instance=ExtResource("1_atr23")]
 script = ExtResource("2_x8n8s")
 _body = NodePath("Body")
 _tail = NodePath("Tail")
 _tailTweenSettings = SubResource("Resource_ic02o")
+_label = NodePath("Label")
 
 [node name="Body" parent="." index="1" unique_id=514407313]
 theme_override_styles/fill = SubResource("StyleBoxFlat_atr23")
+
+[node name="Label" type="Label" parent="." index="5" unique_id=1182607470]
+layout_mode = 2
+text = "67/69"
+label_settings = SubResource("LabelSettings_4k4bw")
+horizontal_alignment = 1
+vertical_alignment = 1

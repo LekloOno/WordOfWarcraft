@@ -10,26 +10,25 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
 {
 	[Export] private ProgressBar _body = null!;
 	[Export] private ProgressBar _tail = null!;
-	[Export] private TweenSettings _tailTweenSettings = null!;
-	[Export] private TweenSettings _bodyTweenSettings = null!;
+	// Null tween settings means snap to target value.
+	[Export] private TweenSettings? _tailTweenSettings = null!;
+	[Export] private TweenSettings? _bodyTweenSettings = null!;
+
+	[ExportGroup("Label")]
+	[Export] private Label? _label;
+	[Export] private BarLabelFormat _labelFormat = BarLabelFormat.CurrentOverMax;
 
 	private Tween? _tailTween;
 	private Tween? _bodyTween;
-	private IStandardResource _resource = null!;
+	private IStandardResource? _resource;
+
+	public override void _EnterTree() => _body.ValueChanged += OnBodyValueChanged;
+	public override void _ExitTree()  => _body.ValueChanged -= OnBodyValueChanged;
 
 	public override void _Ready()
 	{
 		if (_resource != null)
 			Init();
-	}
-
-	private void Init()
-	{
-		_tailTween?.Kill();
-
-		_body.MinValue = _tail.MinValue = 0f;
-		_body.MaxValue = _tail.MaxValue = _resource.Max;
-		_body.Value = _tail.Value = _resource.Current;
 	}
 
 	public void SetResource(IStandardResource resource)
@@ -38,53 +37,80 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
 			return;
 
 		if (_resource != null)
-			this.Unbind(_resource);
+			UnbindResource(_resource);
 
 		_resource = resource;
-		this.Bind(_resource);
 
-		_tailTween?.Kill();
+		if (_resource != null)
+			BindResource(_resource);
 
-		if (_body is not null && _tail is not null)
+		if (IsNodeReady() && _resource != null)
 			Init();
 	}
 
-	public void Consume(float currentHealth)
-	{
-		//_bodyTween?.Kill();
+	protected virtual void BindResource(IStandardResource resource)   => this.Bind(resource);
+	protected virtual void UnbindResource(IStandardResource resource) => this.Unbind(resource);
 
-		//_body.Value = currentHealth;
-
-		_tailTween?.Kill();
-		_tailTween = CreateTween();
-
-		_tailTweenSettings.TweenProperty(_tailTween, _tail, currentHealth, "value");
-
-		_bodyTween?.Kill();
-
-		_bodyTween = CreateTween();
-		_bodyTweenSettings.TweenProperty(_bodyTween, _body, currentHealth, "value");
-	}
-
-	public void Generate(float currentHealth)
+	private void Init()
 	{
 		_tailTween?.Kill();
-
-		_tail.Value = Mathf.Max(_tail.Value, _body.Value);
-
-		_tailTween = CreateTween();
-
-		_tailTweenSettings.TweenProperty(_tailTween, _tail, currentHealth, "value");
-
 		_bodyTween?.Kill();
 
-		_bodyTween = CreateTween();
-		_bodyTweenSettings.TweenProperty(_bodyTween, _body, currentHealth, "value");
+		_body.MinValue = _tail.MinValue = 0f;
+		_body.MaxValue = _tail.MaxValue = _resource!.Max;
+		_body.Value = _tail.Value = _resource.Current;
+
+		UpdateLabel();
 	}
 
-	public void OnConsumed(int rp) =>
-		Consume(_resource.Current);
+	private void UpdateLabel()
+	{
+		if (_label is null)
+			return;
 
-	public void OnGenerated(int rp) =>
-		Generate(_resource.Current);
+		_label.Text = FormatValue(_body.Value, _body.MaxValue);
+	}
+
+	private void OnBodyValueChanged(double value) => UpdateLabel();
+
+	private void Refresh(bool growing)
+	{
+		if (_resource is null)
+			return;
+
+		float target = _resource.Current;
+
+		SetLayer(_body, ref _bodyTween, _bodyTweenSettings, target);
+
+		if (growing)
+			_tail.Value = Mathf.Max(_tail.Value, _body.Value);
+
+		SetLayer(_tail, ref _tailTween, _tailTweenSettings, target);
+	}
+
+	protected virtual string FormatValue(double value, double max) => _labelFormat switch
+	{
+		BarLabelFormat.Current        => $"{Mathf.RoundToInt(value)}",
+		BarLabelFormat.CurrentOverMax => $"{Mathf.RoundToInt(value)} / {Mathf.RoundToInt(max)}",
+		BarLabelFormat.Percent        => max > 0 ? $"{Mathf.RoundToInt(value / max * 100)}%" : "0%",
+		_                             => string.Empty,
+	};
+
+	private void SetLayer(ProgressBar bar, ref Tween? tween, TweenSettings? settings, float target)
+	{
+		tween?.Kill();
+		tween = null;
+
+		if (settings is null)
+		{
+			bar.Value = target;
+			return;
+		}
+
+		tween = CreateTween();
+		settings.TweenProperty(tween, bar, target, "value");
+	}
+
+	public void OnConsumed(int rp)  => Refresh(growing: false);
+	public void OnGenerated(int rp) => Refresh(growing: true);
 }
