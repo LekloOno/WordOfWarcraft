@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://pvfg1dpficv8"]
+
+[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="1_jecoj"]
+[ext_resource type="Shader" uid="uid://bsoxsg80btuw7" path="res://assets/shaders/damage_indicator2d_gradient.gdshader" id="2_47311"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_175km"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kku2r"]
+font = ExtResource("1_jecoj")
+font_size = 56
+font_color = Color(0, 0, 0, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(0.3, 1.4)
+stacked_outline_count = 1
+stacked_outline_0/size = 5
+
+[sub_resource type="Gradient" id="Gradient_fii0t"]
+offsets = PackedFloat32Array(0.3206751, 0.70464134)
+colors = PackedColorArray(0.9779369, 0.97793704, 0.9779367, 1, 0.64602846, 0.6460294, 0.64602816, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_fii0t"]
+gradient = SubResource("Gradient_fii0t")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kku2r"]
+shader = ExtResource("2_47311")
+shader_parameter/gradient = SubResource("GradientTexture1D_fii0t")
+shader_parameter/label_size = Vector2(100, 79)
+shader_parameter/vertical = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_fii0t"]
+font = ExtResource("1_jecoj")
+font_size = 56
+stacked_outline_count = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_175km"]
+font = ExtResource("1_jecoj")
+font_size = 56
+font_color = Color(0.8901961, 0.8901961, 0.8901961, 0)
+outline_size = 1
+stacked_outline_count = 1
+
+[node name="PanelContainer" type="PanelContainer" unique_id=26853821]
+theme_override_styles/panel = SubResource("StyleBoxEmpty_175km")
+
+[node name="Back" type="Label" parent="." unique_id=525269272]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "69"
+label_settings = SubResource("LabelSettings_kku2r")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fill" type="Label" parent="." unique_id=1710581788]
+material = SubResource("ShaderMaterial_kku2r")
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "69"
+label_settings = SubResource("LabelSettings_fii0t")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Shine" type="Label" parent="." unique_id=1802566247]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+text = "69"
+label_settings = SubResource("LabelSettings_175km")
+horizontal_alignment = 1
+vertical_alignment = 1

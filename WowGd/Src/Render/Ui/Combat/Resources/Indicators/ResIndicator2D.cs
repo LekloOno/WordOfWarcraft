@@ -10,7 +10,9 @@ namespace WowGd.Src.Render.Ui.Combat.Resources.Indicators;
 public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
     where T: IResIndicatorColor
 {
-    [Export] private Label          _label = null!;
+    [Export] private Label _back  = null!;
+    [Export] private Label _shine = null!;
+    [Export] private Label _fill  = null!;
     [Export] private Vector2        _startScale;
     [Export] private Vector2        _randomOffsetRange = new (0.5f, 0.5f);
     [Export] private float          _gravity = 9.81f;
@@ -34,7 +36,9 @@ public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
 
     private Vector3 _worldPosition;
 
-    public void SetText(string text) => _label.Text = text;
+    public void SetText(string text) =>
+        _back.Text = _shine.Text = _fill.Text = text;
+        
     public void SetValueText(int value) =>
         SetText($"{value.ToString("#,0", CultureInfo.GetCultureInfo("fr-FR"))}");
 

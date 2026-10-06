@@ -7,8 +7,8 @@
 
 [sub_resource type="Resource" id="Resource_ic02o"]
 script = ExtResource("3_0j28x")
-AnimationTime = 0.5
-TransitionType = 10
+AnimationTime = 0.4
+TransitionType = 2
 EaseType = 2
 metadata/_custom_type_script = "uid://8u3mt0o7qncd"
 

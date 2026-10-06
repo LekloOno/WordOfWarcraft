@@ -6,26 +6,26 @@
 [ext_resource type="Script" uid="uid://d0pwdq7a28vss" path="res://Src/Render/Animation/TweenTools/Value/Vector2TweenValue.cs" id="4_23eb0"]
 [ext_resource type="Script" uid="uid://8u3mt0o7qncd" path="res://Src/Render/Animation/TweenTools/TweenSettings.cs" id="5_77uk2"]
 [ext_resource type="Script" uid="uid://qoydsswh3nis" path="res://Src/Render/Animation/TweenTools/Value/FloatTweenValue.cs" id="6_lgbqo"]
-[ext_resource type="FontFile" uid="uid://cj74ygch2v2tj" path="res://assets/fonts/Poppins/Poppins-Bold.ttf" id="7_2pjug"]
 [ext_resource type="Script" uid="uid://il7nciag3oe5" path="res://Src/Tools/Curve/Float/TrueLogCurve.cs" id="7_vjswj"]
 [ext_resource type="Texture2D" uid="uid://yqhwb6rg8fli" path="res://assets/sprites/ui/focus_star_grey.png" id="8_h5lbq"]
+[ext_resource type="PackedScene" uid="uid://pvfg1dpficv8" path="res://prefabs/render/health/num_indicator_style.tscn" id="8_vjswj"]
 
 [sub_resource type="Resource" id="Resource_vjswj"]
 script = ExtResource("2_wek0k")
-ConsumedColor = Color(0.18621495, 0.19260246, 1, 1)
-GeneratedColor = Color(0.18621495, 0.19260246, 1, 1)
+ConsumedColor = Color(0.25941435, 0.3939455, 1, 1)
+GeneratedColor = Color(0.25941435, 0.3939455, 1, 1)
 metadata/_custom_type_script = "uid://cufxordecpxhd"
 
 [sub_resource type="Resource" id="Resource_ktg0t"]
 script = ExtResource("2_wek0k")
-ConsumedColor = Color(0.12500653, 0.19665146, 0.6321919, 1)
-GeneratedColor = Color(0.12500653, 0.19665146, 0.6321919, 1)
+ConsumedColor = Color(0.25941435, 0.3939455, 1, 1)
+GeneratedColor = Color(0.25941435, 0.3939455, 1, 1)
 metadata/_custom_type_script = "uid://cufxordecpxhd"
 
 [sub_resource type="Resource" id="Resource_uqt47"]
 script = ExtResource("2_wek0k")
-ConsumedColor = Color(0.18621495, 0.19260246, 1, 1)
-GeneratedColor = Color(0.18621495, 0.19260246, 1, 1)
+ConsumedColor = Color(0.25941435, 0.3939455, 1, 1)
+GeneratedColor = Color(0.25941435, 0.3939455, 1, 1)
 metadata/_custom_type_script = "uid://cufxordecpxhd"
 
 [sub_resource type="Resource" id="Resource_y4hmk"]
@@ -89,13 +89,7 @@ _referenceInput = 40.0
 _referenceOutput = 0.5
 metadata/_custom_type_script = "uid://il7nciag3oe5"
 
-[sub_resource type="LabelSettings" id="LabelSettings_175km"]
-font = ExtResource("7_2pjug")
-font_size = 56
-outline_size = 6
-outline_color = Color(0, 0, 0, 1)
-
-[node name="HBoxContainer" type="HBoxContainer" unique_id=957226034 node_paths=PackedStringArray("_label")]
+[node name="HBoxContainer" type="HBoxContainer" unique_id=957226034 node_paths=PackedStringArray("_back", "_shine", "_fill")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -110,7 +104,9 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0.5, 0.5)
 script = ExtResource("1_puevu")
 _relationColors = SubResource("Resource_y4hmk")
-_label = NodePath("DamageIndicator")
+_back = NodePath("PanelContainer/Back")
+_shine = NodePath("PanelContainer/Shine")
+_fill = NodePath("PanelContainer/Fill")
 _gravity = 6.0
 _launchStrength = 2.6
 _scaleInSettings = SubResource("Resource_thth2")
@@ -120,16 +116,12 @@ _holdDelay = 0.2
 _fadeOutSettings = SubResource("Resource_wcp3p")
 _scaleCurve = SubResource("Resource_yg4hu")
 
-[node name="DamageIndicator" type="Label" parent="." unique_id=1779011724]
+[node name="PanelContainer" parent="." unique_id=26853821 instance=ExtResource("8_vjswj")]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-text = "69"
-label_settings = SubResource("LabelSettings_175km")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=1622381405]
 layout_mode = 2
 texture = ExtResource("8_h5lbq")
 expand_mode = 2
+
+[editable path="PanelContainer"]
