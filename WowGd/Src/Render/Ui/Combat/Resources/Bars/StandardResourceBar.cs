@@ -13,6 +13,7 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
 	// Null tween settings means snap to target value.
 	[Export] private TweenSettings? _tailTweenSettings = null!;
 	[Export] private TweenSettings? _bodyTweenSettings = null!;
+	[Export] private bool _tweenBodyOnGrowthOnly = true;
 
 	[ExportGroup("Label")]
 	[Export] private Label? _label;
@@ -80,7 +81,10 @@ public partial class StandardResourceBar : Control, IStandardResourceHandler
 
 		float target = _resource.Current;
 
-		SetLayer(_body, ref _bodyTween, _bodyTweenSettings, target);
+		TweenSettings? bodySettings = growing ? _bodyTweenSettings :
+			(_tweenBodyOnGrowthOnly ? null : _bodyTweenSettings);
+
+		SetLayer(_body, ref _bodyTween, bodySettings, target);
 
 		if (growing)
 			_tail.Value = Mathf.Max(_tail.Value, _body.Value);
