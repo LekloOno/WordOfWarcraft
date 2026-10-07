@@ -14,11 +14,19 @@ public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
     [Export] private Label _shine = null!;
     [Export] private Label _fill  = null!;
     [Export] private Vector2        _startScale;
+    [Export] private float          _maxSizeMultiplier = 2f;
     [Export] private Vector2        _randomOffsetRange = new (0.5f, 0.5f);
     [Export] private float          _gravity = 9.81f;
     [Export] private float          _launchStrength = 3.5f;
     [Export] private float          _launchAngleRange = 100f;
-    [Export] private TweenSettings  _scaleInSettings  = null!;
+    /// <summary>
+    /// Scale tween to max size. If null, scale starts at max scale.
+    /// </summary>
+    [Export] private TweenSettings? _scaleInSettings  = null!;
+    /// <summary>
+    /// Scale tween to steady size. If null, max scale is the steady scale.
+    /// </summary>
+    [Export] private TweenSettings? _scaleOutSettings = null!;
     [Export] private TweenSettings  _fadeInSettings   = null!;
     [Export] private TweenSettings  _rotateInSettings = null!;
     [Export] private float _holdDelay = 0.5f;
@@ -97,9 +105,20 @@ public abstract partial class ResIndicator2D<T> : Control, IResIndicator<T>
         float rotDir = Random.Shared.Next(3) - 1;
         float rot = (float)_rotateInSettings.Value!.Value * rotDir;
 
-        _scaleInSettings.TweenProperty( _scaleTween,    this, propertyPath: "scale", value: Vector2.One * targetScale);
-        _fadeInSettings.TweenProperty(  _fadeTween,     this, propertyPath: "modulate:a");
+        Vector2 targetScaleVec = Vector2.One * targetScale;
+
+        if (_scaleInSettings == null)
+            Scale = targetScaleVec * _maxSizeMultiplier;
+        else
+        {
+            Scale = _startScale;
+            _scaleInSettings.TweenProperty(_scaleTween, this, propertyPath: "scale", value: targetScaleVec * _maxSizeMultiplier);
+        }
+            
+
+        _fadeInSettings.TweenProperty(_fadeTween,       this, propertyPath: "modulate:a");
         _rotateInSettings.TweenProperty(_rotateTween,   this, propertyPath: "rotation_degrees", value: rot);
+        _scaleOutSettings?.TweenProperty(_scaleTween,   this, propertyPath: "scale", value: targetScaleVec);
 
         _fadeTween.TweenInterval(_holdDelay);
         
