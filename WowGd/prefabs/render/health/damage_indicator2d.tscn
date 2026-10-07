@@ -13,7 +13,7 @@ script = ExtResource("6_thth2")
 ResColor = Color(0.99594885, 0.8596502, 0.40307394, 1)
 DeadColor = Color(0.63057697, 0.09651562, 0.17724586, 1)
 ConsumedColor = Color(1, 0.21866506, 0.2535713, 1)
-GeneratedColor = Color(0.19723791, 0.8693769, 0.15272349, 1)
+GeneratedColor = Color(0.35616648, 0.8507058, 0.31109592, 1)
 metadata/_custom_type_script = "uid://jmvr6db8j6dr"
 
 [sub_resource type="Resource" id="Resource_5kurf"]

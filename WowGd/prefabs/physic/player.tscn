@@ -602,12 +602,12 @@ metadata/_custom_type_script = "uid://bk41d1kcbqthv"
 
 [sub_resource type="Resource" id="Resource_55w0n"]
 script = ExtResource("61_ha2cu")
-Base = 150
+Base = 200
 metadata/_custom_type_script = "uid://bk41d1kcbqthv"
 
 [sub_resource type="Resource" id="Resource_etsct"]
 script = ExtResource("61_ha2cu")
-Base = 50
+Base = 100
 metadata/_custom_type_script = "uid://bk41d1kcbqthv"
 
 [sub_resource type="Resource" id="Resource_8yxnp"]
