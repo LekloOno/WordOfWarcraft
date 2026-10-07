@@ -2,6 +2,7 @@ using Godot;
 
 namespace WowGd.Src.Render.Animation.Shakes;
 
+[GlobalClass]
 public partial class TraumaChannelSettings : Resource, ITraumaSettings, ITraumaSamplerSettings
 {
     [Export] private TraumaSettings _traumaSettings = null!;
@@ -11,4 +12,5 @@ public partial class TraumaChannelSettings : Resource, ITraumaSettings, ITraumaS
     public float Cap => _traumaSettings.Cap;
     public Noise Noise => _traumaSamplerSettings.Noise;
     public float NoiseSpeed => _traumaSamplerSettings.NoiseSpeed;
+    public ShakeSpatialChannels SpatialChannels => _traumaSamplerSettings.SpatialChannels;
 }

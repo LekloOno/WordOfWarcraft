@@ -6,7 +6,7 @@ namespace WowGd.Src.Render.Animation.Followers;
 [GlobalClass]
 public abstract partial class Node2DFollower : Node2D
 {
-    [Export] protected Node2D _node       = null!;
+    [Export] public Node2D Node = null!;
 
     public override sealed void _Ready()
     {
@@ -20,18 +20,18 @@ public abstract partial class Node2DFollower : Node2D
 
     private bool TryFetchNode()
     {
-        if (_node != null)
+        if (Node != null)
             return true;
 
         if (this.TryGetComposed(out Node2D? parent))
         {
-            _node = parent;
+            Node = parent;
             return true;
         }
 
         if (this.TryGetComponent(out Node2D? child))
         {
-            _node = child;
+            Node = child;
             return true;
         }
 

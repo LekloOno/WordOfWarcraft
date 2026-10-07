@@ -6,4 +6,5 @@ public interface ITraumaSamplerSettings
 {
     Noise Noise         { get; }
     float NoiseSpeed    { get; }
+    ShakeSpatialChannels SpatialChannels { get; }
 }

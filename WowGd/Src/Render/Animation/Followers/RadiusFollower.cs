@@ -59,7 +59,7 @@ public partial class RadiusFollower : Node2DFollower
 	public override void _PhysicsProcess(double delta)
 	{
 		_previousTargetPosition = _currentTargetPosition;
-		_currentTargetPosition = _node.GlobalPosition;
+		_currentTargetPosition = Node.GlobalPosition;
 	}
 
 	public override void _Process(double delta)

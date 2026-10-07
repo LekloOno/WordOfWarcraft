@@ -31,7 +31,7 @@ public partial class VelocityFollower : Node2DFollower
 
     public override void _PhysicsProcess(double delta)
     {
-        _velDamper.Process(_node.GlobalPosition, (float)delta);
+        _velDamper.Process(Node.GlobalPosition, (float)delta);
         GlobalPosition = _velDamper.Position;
     }
 }

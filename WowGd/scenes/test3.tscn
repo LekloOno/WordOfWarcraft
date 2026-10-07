@@ -8,10 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bhumabsdmhg76" path="res://prefabs/render/mapping/3d/dungeon/composed/small_corner_b.tscn" id="6_v6sbx"]
 [ext_resource type="PackedScene" uid="uid://c55s1wr1gab0c" path="res://prefabs/physic/witcher.tscn" id="8_74y24"]
 [ext_resource type="PackedScene" uid="uid://dysspmhd6l6lu" path="res://prefabs/physic/player.tscn" id="9_qc73i"]
-[ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="10_vvbw7"]
 [ext_resource type="PackedScene" uid="uid://r63mql4al3qq" path="res://prefabs/physic/simple_monster.tscn" id="11_7dokv"]
-[ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="62_fdxxn"]
-[ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="63_oilj3"]
 [ext_resource type="PackedScene" uid="uid://fighml8jejap" path="res://prefabs/render/mapping/3d/cave/floor_layer_hole.tscn" id="68_7pwph"]
 [ext_resource type="PackedScene" uid="uid://0cl71x3fpf06" path="res://assets/placeholders/free/kenney_modular_cave/GLB format/template-floor-layer.glb" id="69_t1xho"]
 
@@ -20,18 +17,6 @@ background_mode = 1
 ambient_light_source = 2
 ambient_light_color = Color(0.7241422, 0.71741486, 0.98638767, 1)
 ambient_light_energy = 0.46
-
-[sub_resource type="Resource" id="Resource_uif08"]
-script = ExtResource("63_oilj3")
-Speed = 20.0
-VelDamping = 50.0
-metadata/_custom_type_script = "uid://cxvoblnwrx032"
-
-[sub_resource type="Resource" id="Resource_ykc0m"]
-script = ExtResource("63_oilj3")
-Speed = 2.5
-VelDamping = 6.0
-metadata/_custom_type_script = "uid://cxvoblnwrx032"
 
 [node name="Node3D" type="Node3D" unique_id=1036701696]
 
@@ -81,19 +66,6 @@ transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0
 [node name="SmallCornerB" parent="Terrain" unique_id=580816296 instance=ExtResource("6_v6sbx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
 
-[node name="Node2DRender3D" type="Node3D" parent="." unique_id=1573887591 node_paths=PackedStringArray("_node")]
-physics_interpolation_mode = 2
-transform = Transform3D(0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, 0.7071067, 0, 4.7683716e-07, 3.000001)
-script = ExtResource("10_vvbw7")
-_node = NodePath("../Physics/RadiusFollower")
-ProcessType = 0
-metadata/_custom_type_script = "uid://r0iw0hgjbuff"
-
-[node name="Camera3D" type="Camera3D" parent="Node2DRender3D" unique_id=2095000205]
-transform = Transform3D(1, 0, 0, 0, 0.7313537, 0.6819984, 0, -0.6819984, 0.7313537, 0, 9.5, 8.5)
-fov = 60.0
-size = 12.0
-
 [node name="Physics" type="Node" parent="." unique_id=1653195501]
 
 [node name="WitcherPillar" parent="Physics" unique_id=907940979 instance=ExtResource("8_74y24")]
@@ -127,17 +99,6 @@ position = Vector2(0.515, 4.895)
 position = Vector2(5.32, 2.845)
 
 [node name="Player" parent="Physics" unique_id=1071117280 instance=ExtResource("9_qc73i")]
-
-[node name="RadiusFollower" type="Node2D" parent="Physics" unique_id=1291784488 node_paths=PackedStringArray("_node")]
-physics_interpolation_mode = 2
-script = ExtResource("62_fdxxn")
-_radius = 0.18
-_lookTriggerRadius = 0.12
-_lookDistance = 0.2
-CenterVelDamperData = SubResource("Resource_uif08")
-LookVelDamperData = SubResource("Resource_ykc0m")
-_node = NodePath("../Player/Body")
-metadata/_custom_type_script = "uid://yu3jttiip8tv"
 
 [node name="World" type="Node2D" parent="Physics" unique_id=1719085259]
 

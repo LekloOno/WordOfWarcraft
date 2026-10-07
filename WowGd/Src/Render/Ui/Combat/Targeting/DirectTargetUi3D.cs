@@ -94,7 +94,7 @@ public partial class DirectTargetUi3D : Control, IDirectTargetUi
             _position.GetGlobalTransformInterpolated().Origin;
 
         Vector2 screenPosition = 
-            _camera.UnprojectPosition(worldPosition);
+            (_camera ??= GetViewport().GetCamera3D()).UnprojectPosition(worldPosition);
 
         _indexLabel.GlobalPosition = screenPosition - Size * 0.5f;
     }

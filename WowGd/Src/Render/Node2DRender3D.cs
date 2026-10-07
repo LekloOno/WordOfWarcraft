@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using WowGd.Src.Tools;
 
@@ -19,6 +20,7 @@ public partial class Node2DRender3D : Node3D
     public Node2DRender3D(Node2D node) { _node = node; }
 
     [Export] private Node2D _node = null!;
+    [Export] private bool _gridRelative = false;
     private Node3D _grid = null!;
 
     private ProcessType _processType = ProcessType.PhysicsProcess;
@@ -56,17 +58,24 @@ public partial class Node2DRender3D : Node3D
         if (this.TryGetComposed(out Node3D? grid))
             _grid = grid;
 
+        if (!_gridRelative || _grid is null)
+            GridPosition = () => Vector3.Zero;
+        else
+            GridPosition = () => _grid.GlobalPosition;
+
         UpdateProcessType();
     }
 
+    private Func<Vector3> GridPosition;
+
     public override void _PhysicsProcess(double delta)
     {
-        Position = _node.Position.ToVector3() + _grid.GlobalPosition;
+        Position = _node.Position.ToVector3() + GridPosition();
     }
 
     public override void _Process(double delta)
     {
-        Position = _node.Position.ToVector3() + _grid.GlobalPosition;
+        Position = _node.Position.ToVector3() + GridPosition();
     }
 }
 

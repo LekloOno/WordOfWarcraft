@@ -3,8 +3,17 @@
 [ext_resource type="Script" uid="uid://dtt2vmek6bw1c" path="res://Src/Render/WorldRenderer/Entities/ComplexPlayer.cs" id="2_cgjug"]
 [ext_resource type="PackedScene" uid="uid://tb2k4gfi3asl" path="res://prefabs/render/entity_template3d.tscn" id="2_n78br"]
 [ext_resource type="PackedScene" uid="uid://dhrx2ownhc8cd" path="res://scenes/ui/player/player_ui_v2.tscn" id="3_n78br"]
+[ext_resource type="Script" uid="uid://r0iw0hgjbuff" path="res://Src/Render/Node2DRender3D.cs" id="4_alsn2"]
+[ext_resource type="Script" uid="uid://baykv58qm4i5n" path="res://Src/Render/Camera/CameraShakes3D.cs" id="5_emh10"]
+[ext_resource type="Script" uid="uid://c37gkr37gwncv" path="res://Src/Render/Animation/Shakes/TraumaSamplerSettings.cs" id="6_5bg00"]
+[ext_resource type="Script" uid="uid://dtvs7k6rn4pdt" path="res://Src/Render/Animation/Shakes/TraumaSettings.cs" id="7_61asd"]
+[ext_resource type="Script" uid="uid://cgktwh3pi1dgb" path="res://Src/Render/Animation/Shakes/TraumaChannelSettings.cs" id="8_b2pur"]
+[ext_resource type="Script" uid="uid://ubkqemq3rirm" path="res://Src/Render/Camera/DamageShakesNode.cs" id="9_5bg00"]
+[ext_resource type="Script" uid="uid://yu3jttiip8tv" path="res://Src/Render/Animation/Followers/RadiusFollower.cs" id="9_ph67p"]
+[ext_resource type="Script" uid="uid://cjbbgq74npnyd" path="res://Src/Tools/Curve/Float/Clamped/FastLogCurve.cs" id="10_5bg00"]
+[ext_resource type="Script" uid="uid://cxvoblnwrx032" path="res://Src/Render/Animation/Smoothing/PositionVelDamperData.cs" id="10_yf44k"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n78br"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xh0sc"]
 resource_local_to_scene = true
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 5
@@ -13,7 +22,7 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cgjug"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lhnnv"]
 resource_local_to_scene = true
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 5
@@ -22,7 +31,7 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nwaa2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lcgv1"]
 resource_local_to_scene = true
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 5
@@ -31,7 +40,7 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k5444"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7l615"]
 resource_local_to_scene = true
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 5
@@ -40,18 +49,58 @@ border_width_right = 5
 border_width_bottom = 5
 border_color = Color(1, 0.62352943, 0.36078432, 0.7647059)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_d0vlm"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_quith"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_6qsus"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_oxh8p"]
 viewport_path = NodePath("SubViewport")
 
-[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_moveModeUi", "_healthBar", "_focusBar") instance=ExtResource("2_n78br")]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0mta5"]
+
+[sub_resource type="Resource" id="Resource_2ae6r"]
+script = ExtResource("6_5bg00")
+Noise = SubResource("FastNoiseLite_0mta5")
+NoiseSpeed = 70.0
+metadata/_custom_type_script = "uid://c37gkr37gwncv"
+
+[sub_resource type="Resource" id="Resource_lswdd"]
+script = ExtResource("7_61asd")
+DecayRate = 0.7
+Cap = 4.0
+metadata/_custom_type_script = "uid://dtvs7k6rn4pdt"
+
+[sub_resource type="Resource" id="Resource_s0her"]
+script = ExtResource("8_b2pur")
+_traumaSettings = SubResource("Resource_lswdd")
+_traumaSamplerSettings = SubResource("Resource_2ae6r")
+metadata/_custom_type_script = "uid://cgktwh3pi1dgb"
+
+[sub_resource type="Resource" id="Resource_5bg00"]
+script = ExtResource("10_5bg00")
+_halfInput = 0.24
+_maxOutput = 0.58
+metadata/_custom_type_script = "uid://cjbbgq74npnyd"
+
+[sub_resource type="Resource" id="Resource_krhcl"]
+script = ExtResource("10_yf44k")
+Speed = 20.0
+VelDamping = 50.0
+metadata/_custom_type_script = "uid://cxvoblnwrx032"
+
+[sub_resource type="Resource" id="Resource_q7tl7"]
+script = ExtResource("10_yf44k")
+Speed = 2.5
+VelDamping = 6.0
+metadata/_custom_type_script = "uid://cxvoblnwrx032"
+
+[node name="PlayerTemplate3D" unique_id=846070588 node_paths=PackedStringArray("_worder", "_selectionCombatModeUi", "_directTargetModeUi", "_moveModeUi", "_radiusFollower", "_damageShakesNode", "_healthBar", "_focusBar") instance=ExtResource("2_n78br")]
 script = ExtResource("2_cgjug")
 _worder = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/TwoHands/WorderDisplay")
 _selectionCombatModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/MarginContainer/SelectionCombatModeUi")
 _directTargetModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/SecondHandContainer/DirectTargetUi")
 _moveModeUi = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/MoveModeUi")
+_radiusFollower = NodePath("RadiusFollower")
+_damageShakesNode = NodePath("Node2DRender3D/Angle/CameraShakes3D/DamageShakesNode")
 _healthBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HBoxContainer/HealthBar")
 _focusBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HBoxContainer/ResourceBar")
 
@@ -61,23 +110,61 @@ _focusBar = NodePath("PlayerUi2/MarginContainer/VBoxContainer/HBoxContainer/Reso
 pivot_offset_ratio = Vector2(0.5, 1)
 
 [node name="Up" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD" parent_id_path=PackedInt32Array(1593580968, 839347118, 1885711284) index="0" unique_id=1469888641]
-_pressedStyle = SubResource("StyleBoxFlat_n78br")
+_pressedStyle = SubResource("StyleBoxFlat_xh0sc")
 
 [node name="Left" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="0" unique_id=1262633889]
-_pressedStyle = SubResource("StyleBoxFlat_cgjug")
+_pressedStyle = SubResource("StyleBoxFlat_lhnnv")
 
 [node name="Down" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="1" unique_id=1928656782]
-_pressedStyle = SubResource("StyleBoxFlat_nwaa2")
+_pressedStyle = SubResource("StyleBoxFlat_lcgv1")
 
 [node name="Right" parent="PlayerUi2/MarginContainer/VBoxContainer/HandUi/SplitHands/FirstHandContainer/MarginContainer/PanelContainer/WASD/HBoxContainer" parent_id_path=PackedInt32Array(1593580968, 839347118, 30540964) index="2" unique_id=1010706032]
-_pressedStyle = SubResource("StyleBoxFlat_k5444")
+_pressedStyle = SubResource("StyleBoxFlat_7l615")
 
 [node name="Tackle" parent="." index="2" unique_id=1512478262]
-texture = SubResource("ViewportTexture_d0vlm")
+texture = SubResource("ViewportTexture_quith")
 
 [node name="HealthBar" parent="." index="4" unique_id=650881374]
 visible = false
-texture = SubResource("ViewportTexture_6qsus")
+texture = SubResource("ViewportTexture_oxh8p")
+
+[node name="Node2DRender3D" type="Node3D" parent="." index="11" unique_id=164619403 node_paths=PackedStringArray("_node")]
+physics_interpolation_mode = 2
+transform = Transform3D(0.7071067, 0, 0.7071067, 0, 1, 0, -0.7071067, 0, 0.7071067, 0, 0, 0)
+top_level = true
+script = ExtResource("4_alsn2")
+_node = NodePath("../RadiusFollower")
+ProcessType = 0
+metadata/_custom_type_script = "uid://r0iw0hgjbuff"
+
+[node name="Angle" type="Node3D" parent="Node2DRender3D" index="0" unique_id=74951360]
+transform = Transform3D(1.0000001, 0, 0, 0, 0.7313537, 0.6819984, 0, -0.68199843, 0.7313539, -2.3841858e-07, 9.5, 8.5)
+
+[node name="CameraShakes3D" type="Node3D" parent="Node2DRender3D/Angle" index="0" unique_id=1968378901]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 2.9802322e-08, 0, 0, 0.99999994, 0, 0, 0)
+script = ExtResource("5_emh10")
+_baseChannelSettings = SubResource("Resource_s0her")
+metadata/_custom_type_script = "uid://baykv58qm4i5n"
+
+[node name="Camera3D" type="Camera3D" parent="Node2DRender3D/Angle/CameraShakes3D" index="0" unique_id=1644678732]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, -2.9802322e-08, 0, 0, 1, 0, 0, 0)
+fov = 60.0
+size = 12.0
+
+[node name="DamageShakesNode" type="Node" parent="Node2DRender3D/Angle/CameraShakes3D" index="1" unique_id=2000482644]
+script = ExtResource("9_5bg00")
+_curveSampler = SubResource("Resource_5bg00")
+metadata/_custom_type_script = "uid://ubkqemq3rirm"
+
+[node name="RadiusFollower" type="Node2D" parent="." index="12" unique_id=116554313]
+physics_interpolation_mode = 2
+script = ExtResource("9_ph67p")
+_radius = 0.18
+_lookTriggerRadius = 0.12
+_lookDistance = 0.2
+CenterVelDamperData = SubResource("Resource_krhcl")
+LookVelDamperData = SubResource("Resource_q7tl7")
+metadata/_custom_type_script = "uid://yu3jttiip8tv"
 
 [editable path="PlayerUi2"]
 [editable path="PlayerUi2/MarginContainer/VBoxContainer/HandUi"]

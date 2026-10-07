@@ -1,6 +1,8 @@
 using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Player;
 using WowGd.Src.Entities;
+using WowGd.Src.Render.Animation.Followers;
+using WowGd.Src.Render.Camera;
 using WowGd.Src.Render.Ui.Input.Impls;
 using WowGd.Src.Render.Ui.Input.Impls.MoveMode;
 using WowGd.Src.Render.Ui.Input.Impls.Worder;
@@ -20,6 +22,12 @@ public partial class ComplexPlayer : SimpleDude
 
     [Export]
     private MoveModeUi? _moveModeUi;
+
+    [Export]
+    private RadiusFollower _radiusFollower = null!;
+
+    [Export]
+    private DamageShakesNode? _damageShakesNode;
 
     public override bool InitSpec(IEntity entity)
     {
@@ -41,6 +49,11 @@ public partial class ComplexPlayer : SimpleDude
 
         if (_moveModeUi != null)
             _moveModeUi.MoveModeInput = clientEntity.MoveModeInput;
+
+        if (entity.Body is Node2D bodyNode)
+            _radiusFollower.Node = bodyNode;
+
+        _damageShakesNode?.Init(entity.Health);
 
         return base.InitSpec(entity);
     }

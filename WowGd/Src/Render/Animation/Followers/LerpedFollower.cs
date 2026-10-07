@@ -10,6 +10,6 @@ public partial class LerpedFollower : Node2DFollower
 
     public override void _Process(double delta)
     {
-        Position = Position.ProcessLerp(_node.Position, _lerpSpeed, (float)delta);
+        Position = Position.ProcessLerp(Node.Position, _lerpSpeed, (float)delta);
     }
 }
