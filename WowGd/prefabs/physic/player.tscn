@@ -73,6 +73,11 @@ metadata/_custom_type_script = "uid://defda3606ges4"
 [sub_resource type="CircleShape2D" id="CircleShape2D_rlms2"]
 radius = 0.4
 
+[sub_resource type="Resource" id="Resource_n0npx"]
+script = ExtResource("37_sodcn")
+_actuationType = 1
+metadata/_custom_type_script = "uid://dpigjmfyxn2c0"
+
 [sub_resource type="Resource" id="Resource_k2b5b"]
 script = ExtResource("26_iiwpk")
 
@@ -684,6 +689,7 @@ metadata/_custom_type_script = "uid://bjsonh2oopm3s"
 
 [node name="MoveMode" type="Node" parent="ModesManager" unique_id=587674463]
 script = ExtResource("16_105x8")
+DodgeActuator = SubResource("Resource_n0npx")
 metadata/_custom_type_script = "uid://pux5ejw5b5kx"
 
 [node name="MoveModeInput" type="Node" parent="ModesManager/MoveMode" unique_id=345379823]

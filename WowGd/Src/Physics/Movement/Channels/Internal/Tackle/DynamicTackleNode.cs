@@ -130,6 +130,19 @@ public partial class DynamicTackleNode : Node
             tacklers[i].Entity.EntityMover.DynamicTackleNode.DrainStamina(amount);
         }
     }
+
+    public void DrainTacklersWeighted(double weight)
+    {
+        var tacklers = _tackleNode.Tacklers;
+        for (int i = tacklers.Count - 1; i >= 0; i--)
+        {
+            if (i >= tacklers.Count) continue;
+
+            double amount = TackleStatisticsExt.GetTackleDrain(tacklers[i].Entity, Entity, weight);
+            tacklers[i].Entity.EntityMover.DynamicTackleNode.DrainStamina(amount);
+        }
+    }
+
     public void DrainStamina(double amount)
     {
         if (IsTackling)

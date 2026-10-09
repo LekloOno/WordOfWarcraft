@@ -73,6 +73,10 @@ public static class TackleStatisticsExt
     /// </remarks>
     /// </summary>
     public const float SpeedLimitFactor = 0.5f;
+    /// <summary>
+    /// The number of seconds skipped from a neutral dodge.
+    /// </summary>
+    public const float SecondsPerDodge = 1f;
 
     /// <summary>
     /// Calculates the tackle weight for an interaction between two entities.
@@ -154,6 +158,9 @@ public static class TackleStatisticsExt
     /// <returns>The effective tackling speed in metres per second.</returns>
     public static float TackleSpeedMs(this IEntity entity) =>
         SpeedStatisticsExt.GetMsFromSpeed(entity.TackleSpeed());
+
+    public static double GetTackleDrain(IEntity tackling, IEntity tackled, double weight) =>
+        weight * SecondsPerDodge / GetTackleWeight(tackling, tackled);
 
     private static float TackleRatio(int tackle, int dodge, int scale) =>
         (float)(tackle - dodge) / (Math.Abs(tackle) + Math.Abs(dodge) + scale);

@@ -20,6 +20,8 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
     public bool CanStart() => true;
     public bool CanStop() => true;
 
+    private bool _active = false;
+
     public override async void _Ready()
     {
         if (this.TryGetComposed(out MoveMode? mode))
@@ -38,26 +40,32 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
     public void Start()
     {
         _entity.WishDir.Enable();
-        SetProcessUnhandledKeyInput(true);
+        _active = true;
+        //SetProcessUnhandledKeyInput(true);
         InputStarted?.Invoke();
     }
 
     public void Stop()
     {
         _entity.WishDir.Disable();
-        SetProcessUnhandledKeyInput(false);
+        _active = false;
+        //SetProcessUnhandledKeyInput(false);
         InputStopped?.Invoke();
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
     {
+        if (@event.IsActionPressed("ability_cancel"))
+            Mode.CancelTackleTargeting();
+        
+        if (!_active)
+            return;
+
         if (@event.IsMovementAbilityPressed())
             Mode.StartMovementAbility();
         else if (@event.IsTacklePressed())
             Mode.Tackle();
         else if (@event.IsDodgingPressed())
             Mode.Dodge();
-        else if (@event.IsActionPressed("ability_cancel"))
-            Mode.CancelTackleTargeting();
     }
 }
