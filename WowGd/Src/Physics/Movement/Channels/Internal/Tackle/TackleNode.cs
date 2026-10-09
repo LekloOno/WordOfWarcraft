@@ -1,4 +1,5 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using WowGd.Src.Entities;
 
@@ -277,5 +278,56 @@ public sealed partial class TackleNode(IEntity entity)
             Tackled.UpdateFromTackle(EffectiveLimit);
 
         return true;
+    }
+
+    public int DodgeTacklers()
+    {
+        int count = _tacklers.Count;
+        if (count == 0)
+            return 0;
+
+        float prevEffectiveLimit = EffectiveLimit;
+        bool wasCycling = _cycling;
+
+        var tacklers = ArrayPool<TackleNode>.Shared.Rent(count);
+        _tacklers.CopyTo(tacklers);
+        _tacklers.Clear();
+
+        try
+        {
+            for (int i = 0; i < count; i++)
+            {
+                var t = tacklers[i];
+                t.InternalLimit = float.PositiveInfinity;
+
+                if (t._cycling)
+                    t.UnsetCycling();
+                else
+                    t.EffectiveLimit = t.GetEffectiveLimit();
+
+                t.Tackled = null;
+            }
+
+            if (!wasCycling)
+            {
+                _parentsLimit = float.PositiveInfinity;
+                EffectiveLimit = InternalLimit;
+
+                if (prevEffectiveLimit < EffectiveLimit)
+                    Tackled?.UpdateFromRelease(prevEffectiveLimit);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                tacklers[i].TackleReleased?.Invoke(this);
+                GotReleased?.Invoke(new TackledEventArgs(tacklers[i], count - 1 - i));
+            }
+        }
+        finally
+        {
+            ArrayPool<TackleNode>.Shared.Return(tacklers, clearArray: true);
+        }
+
+        return count;
     }
 }

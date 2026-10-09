@@ -87,6 +87,9 @@ public partial class DynamicTackleNode : Node
 
     public bool StartTackle(IEntity target)
     {
+        if (target.Health.Dead())
+            return false;
+
         IEntityMover entityMover = Entity.EntityMover;
 
         if (!entityMover.StatusChannels.State.CanTackle())
@@ -115,13 +118,6 @@ public partial class DynamicTackleNode : Node
         return true;
     }
 
-    public bool ReleaseTackle()
-    {
-        if (!_tackleNode.Release())
-            return false;
-            
-        Entity.EntityMover.Internal.ReleaseOverride();
-        SetPhysicsProcess(false);
-        return true;
-    }
+    public bool ReleaseTackle() => _tackleNode.Release();
+    public int DodgeTacklers() => _tackleNode.DodgeTacklers();
 }

@@ -169,6 +169,7 @@ public class EntityMover : IEntityMover, IEntityHealthHandler
     public void OnDied()
     {
         StatusChannels.Query(this, MovementStatus.Immobilized | MovementStatus.Anchored, out _);
+        DynamicTackleNode.DodgeTacklers();
     }
 
     public void OnResurrected(int hp)

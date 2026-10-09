@@ -45,8 +45,12 @@ public partial class DynamicTackleNode : Node
     private void OnTackleStarted(TackleNode node) =>
         TackleStarted?.Invoke(node.Entity.EntityMover.DynamicTackleNode);
 
-    private void OnTackleReleased(TackleNode node) =>
+    private void OnTackleReleased(TackleNode node)
+    {
+        Entity.EntityMover.Internal.ReleaseOverride();
+        SetPhysicsProcess(false);
         TackleReleased?.Invoke(node.Entity.EntityMover.DynamicTackleNode);
+    }
 
     private void OnGotTackled(TackledEventArgs args) =>
         GotTackled?.Invoke(new(args));
