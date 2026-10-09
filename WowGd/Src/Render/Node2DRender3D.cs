@@ -16,8 +16,8 @@ namespace WowGd.Src.Render;
 [GlobalClass]
 public partial class Node2DRender3D : Node3D
 {
-    public Node2DRender3D() {}
-    public Node2DRender3D(Node2D node) { _node = node; }
+    public Node2DRender3D() { GridPosition = () => Vector3.Zero; }
+    public Node2DRender3D(Node2D node) : this() { _node = node; }
 
     [Export] private Node2D _node = null!;
     [Export] private bool _gridRelative = false;
