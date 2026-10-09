@@ -6,8 +6,7 @@ public static class DynamicTackleNodeBinderExt
     {
         tackleNode.TackleStarted    += handler.OnTackleStarted;
         tackleNode.TackleReleased   += handler.OnTackleReleased;
-        tackleNode.GotTackled       += handler.OnGotTackled;
-        tackleNode.GotReleased      += handler.OnGotReleased;
+        tackleNode.TackleChanged    += handler.OnTackleChanged;
         tackleNode.StaminaChanged   += handler.OnStaminaChanged;
     }
 
@@ -15,8 +14,7 @@ public static class DynamicTackleNodeBinderExt
     {
         tackleNode.TackleStarted    -= handler.OnTackleStarted;
         tackleNode.TackleReleased   -= handler.OnTackleReleased;
-        tackleNode.GotTackled       -= handler.OnGotTackled;
-        tackleNode.GotReleased      -= handler.OnGotReleased;
-        tackleNode.StaminaChanged    -= handler.OnStaminaChanged;
+        tackleNode.TackleChanged    -= handler.OnTackleChanged;
+        tackleNode.StaminaChanged   -= handler.OnStaminaChanged;
     }
 }

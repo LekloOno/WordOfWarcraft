@@ -4,7 +4,6 @@ public interface IDynamicTackleNodeHandler
 {
     void OnTackleStarted(DynamicTackleNode tackleNode);
     void OnTackleReleased(DynamicTackleNode tackleNode);
-    void OnGotTackled(DynamicTackledEventArgs tackleArgs);
-    void OnGotReleased(DynamicTackledEventArgs tackleArgs);
+    void OnTackleChanged(TackleInteraction tackleArgs);
     void OnStaminaChanged(StaminaChange change);
 }

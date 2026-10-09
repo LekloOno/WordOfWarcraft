@@ -71,59 +71,8 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
         _tail.Value = _tailValue;
     }
 
-    public void OnGotReleased(DynamicTackledEventArgs tackleArgs) { }
-    public void OnGotTackled(DynamicTackledEventArgs tackleArgs) { }
-
-    public void OnTackleReleased(DynamicTackleNode tackleNode)
-    {
-        _bodyTween?.Kill();
-        _tailTween?.Kill();
-        _fadeTween?.Kill();
-
-        _following = false;
-        SetProcess(false);
-
-        _fadeTween = CreateTween();
-
-        _hideTweenSettings.TweenProperty(_fadeTween, _container, 0f, "modulate:a");
-
-        _offset = 0;
-
-        _tailTween = CreateTween();
-        _bodyTweenSettings.TweenProperty(_tailTween, _tail, 0f, "value");
-
-        _bodyTween = CreateTween();
-        _bodyTweenSettings.TweenProperty(_bodyTween, _body, 0f, "value");
-    }
-
-    public void OnTackleStarted(DynamicTackleNode tackleNode)
-    {
-        _bodyTween?.Kill();
-        _tailTween?.Kill();        
-        _fadeTween?.Kill();
-
-        _following = false;
-        SetProcess(false);
-        _hasTick = false;
-        _hasInterval = false;
-        _target = 1f;
-
-        _fadeTween = CreateTween();
-        _showTweenSettings.TweenProperty(_fadeTween, _container, 1f, "modulate:a");
-
-        _body.Value = 0f;
-        _offset = _tailTimer = 0;
-
-        _bodyTween = CreateTween();
-        _bodyTweenSettings.TweenProperty(_bodyTween, _body, 1f, "value");
-        _bodyTween.Finished += () =>
-        {
-            BeginSegment(_body.Value);
-            _tailValue = _body.Value;
-            _following = true;
-            SetProcess(true);
-        };
-    }
+    public void OnTackleReleased(DynamicTackleNode tackleNode) { }
+    public void OnTackleStarted(DynamicTackleNode tackleNode) { }
 
     private static double Now => Time.GetTicksMsec() / 1000.0;
     public void OnStaminaChanged(StaminaChange change)
@@ -171,5 +120,70 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
         _segTo = _target;
         _segStart = Now;
         _segDuration = _hasInterval ? _interval : _defaultInterval;
+    }
+
+    public void OnTackleInitialized()
+    {
+        _bodyTween?.Kill();
+        _tailTween?.Kill();        
+        _fadeTween?.Kill();
+
+        _following = false;
+        SetProcess(false);
+        _hasTick = false;
+        _hasInterval = false;
+        _target = 1f;
+
+        _fadeTween = CreateTween();
+        _showTweenSettings.TweenProperty(_fadeTween, _container, 1f, "modulate:a");
+
+        _body.Value = 0f;
+        _offset = _tailTimer = 0;
+
+        _bodyTween = CreateTween();
+        _bodyTweenSettings.TweenProperty(_bodyTween, _body, 1f, "value");
+        _bodyTween.Finished += () =>
+        {
+            BeginSegment(_body.Value);
+            _tailValue = _body.Value;
+            _following = true;
+            SetProcess(true);
+        };
+    }
+
+    public void OnDodged()
+    {
+        _bodyTween?.Kill();
+        _tailTween?.Kill();
+        _fadeTween?.Kill();
+
+        _following = false;
+        SetProcess(false);
+
+        _fadeTween = CreateTween();
+
+        _hideTweenSettings.TweenProperty(_fadeTween, _container, 0f, "modulate:a");
+
+        _offset = 0;
+
+        _tailTween = CreateTween();
+        _bodyTweenSettings.TweenProperty(_tailTween, _tail, 0f, "value");
+
+        _bodyTween = CreateTween();
+        _bodyTweenSettings.TweenProperty(_bodyTween, _body, 0f, "value");
+    }
+
+    public void OnTackleChanged(TackleInteraction tackleArgs)
+    {
+        switch (tackleArgs.Type)
+        {
+            case TackleInteractionType.Initialized :
+                OnTackleInitialized();
+                break;
+            
+            case TackleInteractionType.Freed :
+                OnDodged();
+                break;
+        }
     }
 }

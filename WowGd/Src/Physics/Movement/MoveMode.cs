@@ -140,7 +140,7 @@ public partial class MoveMode : Node
 	}
 
 	private void OnActuated(ActuatePayload payload) =>
-		_entity.EntityMover.DynamicTackleNode.DrainTacklersWeighted(payload.Weight);
+		_entity.EntityMover.DynamicTackleNode.DrainStaminaWeighted(payload.Weight);
 
 	public bool Enable() =>
 		DisableExt.IndempEnableActivable(ref _enabled, _active, DoEnable);

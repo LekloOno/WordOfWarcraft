@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using WowGd.Src.Entities.Stats.Speed;
+using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 
 namespace WowGd.Src.Entities.Stats.Tackle;
 
@@ -79,7 +80,7 @@ public static class TackleStatisticsExt
     public const float SecondsPerDodge = 1f;
 
     /// <summary>
-    /// Calculates the tackle weight for an interaction between two entities.
+    /// Calculates the tackle weight for a given total value of tackle and dodge.
     /// 
     /// <para>
     /// See -
@@ -87,8 +88,8 @@ public static class TackleStatisticsExt
     /// </para>
     /// 
     /// <remarks>
-    /// The tackle weight is determined from the difference between the tackling
-    /// entity's Tackle statistic and the tackled entity's Dodge statistic.
+    /// The tackle weight is determined from the difference between the sum of the
+    /// tackling entities's Tackle statistic and the tackled's Dodge statistic.
     ///
     /// When Tackle and Dodge are equal, the result is <see cref="NeutralWeight"/>.
     /// A higher Tackle relative to Dodge produces a higher weight, while a lower
@@ -98,17 +99,14 @@ public static class TackleStatisticsExt
     /// <see cref="MaxWeight"/> as asymptotic limits.
     /// </remarks>
     /// </summary>
-    /// <param name="tackling">The entity initiating the tackle.</param>
-    /// <param name="tackled">The entity that is being tackled.</param>
+    /// <param name="tackling">The total tackle of the interraction.</param>
+    /// <param name="tackled">The dodge stat of the tackled entity.</param>
     /// <returns>
     /// The calculated tackle weight, interpreted as the projected tackle
     /// duration in seconds.
     /// </returns>
-    public static float GetTackleWeight(IEntity tackling, IEntity tackled)
+    public static float GetTackleWeight(int tackle, int dodge)
     {
-        int tackle  = StatEnum.Tackle.GetStat(tackling).Current;
-        int dodge   = StatEnum.Dodge.GetStat(tackled).Current;
-
         float ratio = TackleRatio(tackle, dodge, RatioScale);
         return Weight(ratio, MaxWeight, MinWeight, NeutralWeight);
     }
@@ -159,8 +157,8 @@ public static class TackleStatisticsExt
     public static float TackleSpeedMs(this IEntity entity) =>
         SpeedStatisticsExt.GetMsFromSpeed(entity.TackleSpeed());
 
-    public static double GetTackleDrain(IEntity tackling, IEntity tackled, double weight) =>
-        weight * SecondsPerDodge / GetTackleWeight(tackling, tackled);
+    public static double GetTackleDrain(int tackle, int dodge, double weight) =>
+        weight * SecondsPerDodge / GetTackleWeight(tackle, dodge);
 
     private static float TackleRatio(int tackle, int dodge, int scale) =>
         (float)(tackle - dodge) / (Math.Abs(tackle) + Math.Abs(dodge) + scale);
