@@ -17,9 +17,9 @@ public partial class DynamicTackleNode : Node
     private readonly TackleNode _tackleNode;
     private Vector2 _offset;
     private float _maxRangeSquared;
-    private float _stamina;
+    private double _stamina;
 
-    public event Action<float, float>? StaminaTicked;
+    public event Action<double, double>? StaminaTicked;
 
     public Vector2 Offset
     {
@@ -59,15 +59,15 @@ public partial class DynamicTackleNode : Node
         SetPhysicsProcess(false);
     }
 
-    private float _acc = 0f;
+    private double _acc = 0f;
     public override void _PhysicsProcess(double delta)
     {
-        _acc += (float) delta;
+        _acc += delta;
 
         if (!PhysicsExt.IsProcessTick(0xf, 1))
             return;
 
-        float prevStamina = _stamina;
+        double prevStamina = _stamina;
         _stamina -= _acc / TackleStatisticsExt.GetTackleWeight(Entity, _tackleNode.Tackled!.Entity);
         _acc = 0f;
 

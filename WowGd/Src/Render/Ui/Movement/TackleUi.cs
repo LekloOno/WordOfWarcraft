@@ -25,8 +25,8 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
     private double _lastTickTime;
     private double _interval;
 
-    private float _target = 1f;
-    private float _segFrom, _segTo;
+    private double _target = 1f;
+    private double _segFrom, _segTo;
     private double _segStart, _segDuration;
 
     public override void _Ready()
@@ -90,7 +90,7 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
     }
 
     private static double Now => Time.GetTicksMsec() / 1000.0;
-    public void OnStaminaTicked(float prev, float next)
+    public void OnStaminaTicked(double prev, double next)
     {
         double now = Now;
         if (_hasTick)
