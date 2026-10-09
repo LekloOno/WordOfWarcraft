@@ -108,6 +108,7 @@ public sealed partial class TackleNode(IEntity entity)
     /// and the limits propagated from this node's ancestor's.
     /// </remarks>
     public float EffectiveLimit { get; private set; } = float.PositiveInfinity;
+    public IReadOnlyList<TackleNode> Tacklers => _tacklers;
 
     /// <summary>
     /// Whether this node is part of graph cycle.

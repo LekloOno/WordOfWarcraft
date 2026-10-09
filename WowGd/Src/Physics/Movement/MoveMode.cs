@@ -9,6 +9,7 @@ using WowGd.Src.Combat.Abilities.Targeting.TargetRules;
 using WowGd.Src.Entities;
 using WowGd.Src.Entities.Stats.Tackle;
 using WowGd.Src.Physics.Movement.Channels.Internal;
+using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 using WowGd.Src.Physics.Movement.Status;
 using WowGd.Src.Tools;
 
@@ -55,10 +56,11 @@ public partial class MoveMode : Node
 	public async void Tackle()
 	{
 		IEntityMover entityMover = _entity.EntityMover;
+		DynamicTackleNode tackleNode = entityMover.DynamicTackleNode;
 
-		if (entityMover.DynamicTackleNode.IsTackling)
+		if (tackleNode.IsTackling)
 		{
-			entityMover.DynamicTackleNode.ReleaseTackle();
+			tackleNode.ReleaseTackle();
 			return;
 		}
 
@@ -74,7 +76,7 @@ public partial class MoveMode : Node
 		if (!result.TryGet(out TargetIntent intent))
 			return;
 
-		entityMover.DynamicTackleNode.StartTackle(intent.Entity!);
+		tackleNode.StartTackle(intent.Entity!);
 	}
 
 	public void CancelTackleTargeting() =>
@@ -82,7 +84,13 @@ public partial class MoveMode : Node
 
 	public void Dodge()
 	{
-		GD.Print("we be dodgin");
+		IEntityMover entityMover = _entity.EntityMover;
+		DynamicTackleNode tackleNode = entityMover.DynamicTackleNode;
+
+		if (!tackleNode.IsTackled)
+			return;
+
+		tackleNode.DrainTacklers(0.2);
 	}
 
 	public bool Enable() =>

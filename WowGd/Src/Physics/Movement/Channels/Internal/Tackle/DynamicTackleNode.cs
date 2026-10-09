@@ -19,7 +19,7 @@ public partial class DynamicTackleNode : Node
     private float _maxRangeSquared;
     private double _stamina;
 
-    public event Action<double, double>? StaminaTicked;
+    public event Action<StaminaChange>? StaminaChanged;
 
     public Vector2 Offset
     {
@@ -67,13 +67,13 @@ public partial class DynamicTackleNode : Node
         if (!PhysicsExt.IsProcessTick(0xf, 1))
             return;
 
-        double prevStamina = _stamina;
-        _stamina -= _acc / TackleStatisticsExt.GetTackleWeight(Entity, _tackleNode.Tackled!.Entity);
+        double decay = _acc / TackleStatisticsExt.GetTackleWeight(Entity, _tackleNode.Tackled!.Entity);
         _acc = 0f;
 
-        StaminaTicked?.Invoke(prevStamina, _stamina);
-
-        if (_stamina <= 0f || !IsInRange())
+        if (ApplyStamina(StaminaChangeKind.Tick, -decay))
+            return;
+        
+        if (!IsInRange())
             ReleaseTackle();
     }
 
@@ -120,4 +120,41 @@ public partial class DynamicTackleNode : Node
 
     public bool ReleaseTackle() => _tackleNode.Release();
     public int DodgeTacklers() => _tackleNode.DodgeTacklers();
+    
+    public void DrainTacklers(double amount)
+    {
+        var tacklers = _tackleNode.Tacklers;
+        for (int i = tacklers.Count - 1; i >= 0; i--)
+        {
+            if (i >= tacklers.Count) continue;
+            tacklers[i].Entity.EntityMover.DynamicTackleNode.DrainStamina(amount);
+        }
+    }
+    public void DrainStamina(double amount)
+    {
+        if (IsTackling)
+            ApplyStamina(StaminaChangeKind.Drain, -Math.Max(amount, 0));
+    }
+
+    public void FeedStamina(double amount)
+    {
+        if (IsTackling)
+            ApplyStamina(StaminaChangeKind.Feed, Math.Max(amount, 0));
+    }
+
+    private bool ApplyStamina(StaminaChangeKind kind, double requested)
+    {
+        double prev = _stamina;
+        _stamina = Math.Clamp(prev + requested, 0.0, 1.0);
+        double delta = _stamina - prev;
+
+        if (delta == 0 && kind != StaminaChangeKind.Tick)
+            return false;
+
+        StaminaChanged?.Invoke(new(kind, delta, _stamina));
+
+        if (_stamina <= 0)
+            return ReleaseTackle();
+        return false;
+    }
 }

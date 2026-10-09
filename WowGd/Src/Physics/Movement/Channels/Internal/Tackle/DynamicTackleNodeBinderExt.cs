@@ -8,7 +8,7 @@ public static class DynamicTackleNodeBinderExt
         tackleNode.TackleReleased   += handler.OnTackleReleased;
         tackleNode.GotTackled       += handler.OnGotTackled;
         tackleNode.GotReleased      += handler.OnGotReleased;
-        tackleNode.StaminaTicked    += handler.OnStaminaTicked;
+        tackleNode.StaminaChanged   += handler.OnStaminaChanged;
     }
 
     public static void Unbind(this IDynamicTackleNodeHandler handler, DynamicTackleNode tackleNode)
@@ -17,6 +17,6 @@ public static class DynamicTackleNodeBinderExt
         tackleNode.TackleReleased   -= handler.OnTackleReleased;
         tackleNode.GotTackled       -= handler.OnGotTackled;
         tackleNode.GotReleased      -= handler.OnGotReleased;
-        tackleNode.StaminaTicked    -= handler.OnStaminaTicked;
+        tackleNode.StaminaChanged    -= handler.OnStaminaChanged;
     }
 }

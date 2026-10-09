@@ -45,7 +45,9 @@ texture = ExtResource("2_di6c5")
 expand_mode = 2
 
 [node name="Tail" parent="." index="1" unique_id=1316591671]
-visible = false
+max_value = 1.0
+step = 0.001
+value = 0.6
 
 [node name="Body" parent="." index="2" unique_id=514407313]
 theme_override_styles/fill = SubResource("StyleBoxFlat_518fo")
@@ -53,11 +55,14 @@ max_value = 1.0
 step = 0.001
 value = 0.5
 
-[node name="TackleUi" type="Node" parent="." index="6" unique_id=57712022 node_paths=PackedStringArray("_container", "_body")]
+[node name="TackleUi" type="Node" parent="." index="6" unique_id=57712022 node_paths=PackedStringArray("_container", "_body", "_tail")]
 script = ExtResource("2_mtykw")
 _container = NodePath("..")
 _body = NodePath("../Body")
 _bodyTweenSettings = SubResource("Resource_518fo")
 _showTweenSettings = SubResource("Resource_d2o2e")
 _hideTweenSettings = SubResource("Resource_1tgw5")
+_tail = NodePath("../Tail")
+_tailHold = 0.15
+_tailSpeed = 3.0
 metadata/_custom_type_script = "uid://xrq8mni8vu7k"

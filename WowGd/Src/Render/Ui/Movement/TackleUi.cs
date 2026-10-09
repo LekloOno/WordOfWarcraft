@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using WowGd.Src.Physics.Movement.Channels.Internal.Tackle;
 using WowGd.Src.Render.Animation.TweenTools;
@@ -13,7 +14,15 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
     [Export] private TweenSettings _showTweenSettings = null!;
     [Export] private TweenSettings _hideTweenSettings = null!;
 
+    [Export] private ProgressBar _tail = null!;
+    [Export] private double _jumpDuration = 0.12;
+    [Export] private double _tailHold = 0.35;
+    [Export] private double _tailSpeed = 1.5;
+
+    private double _offset, _tailValue, _tailTimer;
+
     private Tween? _bodyTween;
+    private Tween? _tailTween;
     private Tween? _fadeTween;
 
     private float _defaultInterval = 0.25f;
@@ -29,6 +38,15 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
     private double _segFrom, _segTo;
     private double _segStart, _segDuration;
 
+    private double LineValue
+    {
+        get
+        {
+            double t = _segDuration <= 0 ? 1.0 : (Now - _segStart) / _segDuration;
+            return Mathf.Lerp(_segFrom, _segTo, Mathf.Clamp(t, 0.0, 1.0));
+        }
+    }
+
     public override void _Ready()
     {
         _body.Value = 0f;
@@ -41,8 +59,16 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
     public override void _Process(double delta)
     {
         if (!_following) return;
-        double t = _segDuration <= 0 ? 1.0 : (Now - _segStart) / _segDuration;
-        _body.Value = Mathf.Lerp(_segFrom, _segTo, (float)Mathf.Clamp(t, 0.0, 1.0));
+
+        _offset = Mathf.MoveToward(_offset, 0.0, delta / _jumpDuration);
+        double body = Mathf.Clamp(LineValue + _offset, 0.0, 1.0);
+
+        if (_tailTimer > 0) _tailTimer -= delta;
+        else _tailValue = Mathf.MoveToward(_tailValue, body, _tailSpeed * delta);
+        _tailValue = Math.Max(_tailValue, body);
+
+        _body.Value = body;
+        _tail.Value = _tailValue;
     }
 
     public void OnGotReleased(DynamicTackledEventArgs tackleArgs) { }
@@ -50,23 +76,30 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
 
     public void OnTackleReleased(DynamicTackleNode tackleNode)
     {
+        _bodyTween?.Kill();
+        _tailTween?.Kill();
+        _fadeTween?.Kill();
+
         _following = false;
         SetProcess(false);
 
-        _fadeTween?.Kill();
         _fadeTween = CreateTween();
 
         _hideTweenSettings.TweenProperty(_fadeTween, _container, 0f, "modulate:a");
 
-        _bodyTween?.Kill();
-        _bodyTween = CreateTween();
+        _offset = 0;
 
+        _tailTween = CreateTween();
+        _bodyTweenSettings.TweenProperty(_tailTween, _tail, 0f, "value");
+
+        _bodyTween = CreateTween();
         _bodyTweenSettings.TweenProperty(_bodyTween, _body, 0f, "value");
     }
 
     public void OnTackleStarted(DynamicTackleNode tackleNode)
     {
         _bodyTween?.Kill();
+        _tailTween?.Kill();        
         _fadeTween?.Kill();
 
         _following = false;
@@ -79,35 +112,60 @@ public partial class TackleUi : Node, IDynamicTackleNodeHandler
         _showTweenSettings.TweenProperty(_fadeTween, _container, 1f, "modulate:a");
 
         _body.Value = 0f;
+        _offset = _tailTimer = 0;
+
         _bodyTween = CreateTween();
         _bodyTweenSettings.TweenProperty(_bodyTween, _body, 1f, "value");
         _bodyTween.Finished += () =>
         {
-            BeginSegment((float)_body.Value);
+            BeginSegment(_body.Value);
+            _tailValue = _body.Value;
             _following = true;
             SetProcess(true);
         };
     }
 
     private static double Now => Time.GetTicksMsec() / 1000.0;
-    public void OnStaminaTicked(double prev, double next)
+    public void OnStaminaChanged(StaminaChange change)
     {
-        double now = Now;
-        if (_hasTick)
-        {
-            double dt = Mathf.Clamp(now - _lastTickTime, 0.02, 1.0);
-            _interval = _hasInterval ? Mathf.Lerp(_interval, dt, 0.3) : dt;
-            _hasInterval = true;
-        }
-        _hasTick = true;
-        _lastTickTime = now;
-        _target = next;
+        _target = change.Value;
 
-        if (_following)
-            BeginSegment((float)_body.Value);
+        if (change.Kind == StaminaChangeKind.Tick)
+        {
+            double now = Now;
+            if (_hasTick)
+            {
+                double dt = Mathf.Clamp(now - _lastTickTime, 0.02, 1.0);
+                _interval = _hasInterval ? Mathf.Lerp(_interval, dt, 0.3) : dt;
+                _hasInterval = true;
+            }
+            _hasTick = true;
+            _lastTickTime = now;
+
+            if (_following)
+                BeginSegment(LineValue);
+
+            return;
+        }
+
+        if (!_following) return;
+
+        double line = LineValue;
+        double shown = Mathf.Clamp(line + _offset, 0.0, 1.0);
+        double shifted = Mathf.Clamp(line + change.Delta, 0.0, 1.0);
+
+        if (change.Kind == StaminaChangeKind.Drain)
+        {
+            _tailValue = Math.Max(_tailValue, shown);
+            _tailTimer = _tailHold;
+        }
+
+        _offset += line - shifted;
+        _segFrom = Mathf.Clamp(_segFrom + change.Delta, 0.0, 1.0);
+        _segTo = change.Value;
     }
 
-    private void BeginSegment(float from)
+    private void BeginSegment(double from)
     {
         _segFrom = from;
         _segTo = _target;

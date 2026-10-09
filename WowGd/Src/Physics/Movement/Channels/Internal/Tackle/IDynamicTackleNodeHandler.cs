@@ -6,5 +6,5 @@ public interface IDynamicTackleNodeHandler
     void OnTackleReleased(DynamicTackleNode tackleNode);
     void OnGotTackled(DynamicTackledEventArgs tackleArgs);
     void OnGotReleased(DynamicTackledEventArgs tackleArgs);
-    void OnStaminaTicked(double prev, double next);
+    void OnStaminaChanged(StaminaChange change);
 }
