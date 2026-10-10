@@ -102,15 +102,15 @@ public partial class AbilityStateMachine : Node,
     public async Task<bool> Start(IEntity caster)
     {
         if (!_enabled)
-            return true;
+            return false;
 
         if (!CoolDown.Completed())
-            return true;
+            return false;
 
         _cts?.Cancel();
         // STEP 1 - check preconditions
         if (!_data.StartPreconditionsDt.CheckAll(caster))
-            return true;
+            return false;
 
         Started?.Invoke();
 
@@ -132,7 +132,7 @@ public partial class AbilityStateMachine : Node,
             {
                 TargetingFailed?.Invoke(result.Failure!.Value);
                 _cts.Cancel();
-                return true;
+                return false;
             }
             
             TargetingCompleted?.Invoke();

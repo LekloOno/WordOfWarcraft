@@ -49,10 +49,8 @@ public partial class SelectionCombatMode : CombatMode, IInitializable
 
         IAbility ability = _abilities[index];
         _activeAbilities.Add(ability);
-        bool finished = await ability.Start(_entity);
-        
-        if (finished)
-            _activeAbilities.Remove(ability);
+        await ability.Start(_entity);
+        _activeAbilities.Remove(ability);
 
         return;
     }
@@ -71,7 +69,6 @@ public partial class SelectionCombatMode : CombatMode, IInitializable
         if (!_activeAbilities[index].Cancel(_entity))
             return false;
 
-        _activeAbilities.RemoveAt(index);
         return true;
     }
 
