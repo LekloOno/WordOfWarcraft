@@ -25,7 +25,7 @@ public static class ResourceRegistry
     // resource types are explicit.
     private static T? Resource<T>(this IEntity entity) where T: class, IStandardResource
     {
-        if (!entity.ResourceManager.TryGetResource(GetId<IEntityHealth>(), out IStandardResource? std))
+        if (!entity.ResourceManager.TryGetResource(GetId<T>(), out IStandardResource? std))
             return null;
 
         if (std is not T resource)

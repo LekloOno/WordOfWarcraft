@@ -77,36 +77,32 @@ public partial class AbilityStateMachine : Node,
 
     public bool Cancel(IEntity caster)
     {
-        if (!_enabled)
-            return false;
-            
-        if (_cts is null)
-            return false;
-
         _cts?.Cancel();
-        _cancelLaunches.LaunchAll(new (caster, new(caster), 1f), _currentInstance!);
-
-        Cancelled?.Invoke();
-        CancelLaunchesEmitted?.Invoke(_cancelLaunches);
-
-        _cts = null;
-        _currentInstance = null;
         return true;
     }
 
-    private void Stop(ActuatePayload payload)
+    private bool CanEnd() => _enabled && _cts is not null;
+
+    private void Cleanup(StopReason reason)
     {
-        if (!_enabled)
-            return;
-
-        if (_cts is null)
-            return;
-
         _cts?.Cancel();
-        _stopLaunches.LaunchAll(payload, _currentInstance!);
-        
         _cts = null;
+
+        _currentInstance?.Stop(reason);
         _currentInstance = null;
+    }
+
+    private void Stop(ActuatePayload payload, StopReason reason)
+    {
+        if (!CanEnd())
+            return;
+
+        _stopLaunches.LaunchAll(payload, _currentInstance!);
+
+        Stopped?.Invoke();
+        StopLaunchesEmitted?.Invoke(_stopLaunches);
+
+        Cleanup(reason);
     }
 
     public async Task<bool> Start(IEntity caster)
@@ -169,11 +165,16 @@ public partial class AbilityStateMachine : Node,
         }
         catch (OperationCanceledException) when (_cts.IsCancellationRequested)
         {
+            _cancelLaunches.LaunchAll(new (caster, new(caster), 1f), _currentInstance!);
+
+            Cancelled?.Invoke();
+            CancelLaunchesEmitted?.Invoke(_cancelLaunches);
+
+            Cleanup(StopReason.Cancelled);
             return false; 
         }
 
-        _cts?.Cancel();
-
+        Cleanup(StopReason.Completed);
         return true;
     }
 
@@ -191,7 +192,7 @@ public partial class AbilityStateMachine : Node,
             !_data.CasterLoopRulesDt.CheckAll(payload.Caster) ||
             !_data.TargetLoopRulesDt.CheckAll(payload.Caster, payload.Intent))
         {
-            Stop(payload);
+            Stop(payload, StopReason.RuleViolation);
             return;
         }
     }    

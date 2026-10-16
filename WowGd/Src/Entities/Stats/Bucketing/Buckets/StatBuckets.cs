@@ -28,8 +28,6 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
             ? null
             : new FlatModifierHandle(this, _flat.AddModifier(flat));
 
-        if (mult == 1f)
-
         if (layer >= layers)
             throw new IndexOutOfRangeException();
 
@@ -41,6 +39,10 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
             ? null
             : new(this, bucket, bucket.AddModifier(mult));
 
+        if (layerHandle is not null)
+            UpdateLayersCache(oldModifier, bucket.Modifier);
+
+        NotifyChanged();
         return new CombinedModifierHandle(flatHandle, layerHandle);
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CombatCore;
 using CombatCore.Primitives;
+using WowGd.Src.Combat;
 
 namespace WowGd.Src.Entities;
 
@@ -31,6 +32,10 @@ public partial class EntitiesRegistry : IEntityDirectory
         bool deleted = _entities.Remove(entity);
         if (deleted)
             EntityDeleted?.Invoke(entity);
+
+        _orderedEntities.Remove(entity.Id);
+        CombatCoreNode.Authority.RemoveEntity(entity.Id);
+        
         return deleted;
     }
 
