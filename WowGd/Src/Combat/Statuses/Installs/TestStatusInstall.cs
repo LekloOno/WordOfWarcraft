@@ -36,7 +36,7 @@ public partial class TestStatusInstall : StatusInstall
             return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Add, 5)];
         }
 
-        return CombatCoreNode.Authority.Add(
+        return auth.Add(
             Rules.AddOn(filter, fn));
     }
 }
