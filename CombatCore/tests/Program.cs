@@ -71,17 +71,19 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // rollback: refund on kill reads the cost fact
     foreach (var free in new[] { false, true })
     {
+        var costTag = Tag.Register("cost");
+        var tagSet = TagSet.Of(costTag);
         var a = New(out var w, out var clock);
         var instanceAbility = new Dictionary<InstanceId, uint> { [new(41)] = 1 };
         var optedIn = new HashSet<uint> { 1 };
         var spent = new Dictionary<InstanceId, long>();
         w.Set(Mage, R.Mana, 100); w.Set(X, R.Health, 10);
         if (free) a.Add(Rules.Mod(new(Roles: Role.Drain, SourceId: 1), ValueMod.Times(0)));
-        a.OnFact<ResourceFact>((Func<ResourceFact, IEnumerable<Draft>>)(f => { if (f.Role == Role.Drain && f.Ctx.Cause is { } c) spent[c] = spent.GetValueOrDefault(c) + f.Applied; return None(); }));
+        a.OnFact<ResourceFact>((Func<ResourceFact, IEnumerable<Draft>>)(f => { if (f.Role == Role.Drain && f.Ctx.Cause is { } c && f.Tags.ContainsAll(tagSet)) spent[c] = spent.GetValueOrDefault(c) + f.Applied; return None(); }));
         a.OnFact<DeathFact>(d => d.Ctx.Cause is { } c && instanceAbility.TryGetValue(c, out var ab) && optedIn.Contains(ab) && spent.GetValueOrDefault(c) > 0
             ? new Draft[] { new RequestDraft(Status(99), Mage, R.Mana, Role.Feed, spent[c], default, c) } : None());
         var inst = new InstanceId(41);
-        a.Submit(new RequestDraft(Spell(1), Mage, R.Mana, Role.Drain, 30, default, inst));
+        a.Submit(new RequestDraft(Spell(1), Mage, R.Mana, Role.Drain, 30, tagSet, inst));
         a.Submit(new RequestDraft(Status(5), X, R.Health, Role.Drain, 40, default, inst));
         Check($"P6 rollback (free={free}): mana back to 100, refund {(free ? "skipped" : "emitted")}",
               w.Get(Mage, R.Mana) == 100 && a.Log.Any(l => l.Contains("REACT DeathFact")) == !free);
