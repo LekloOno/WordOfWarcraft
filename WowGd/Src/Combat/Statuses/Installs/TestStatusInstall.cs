@@ -32,8 +32,8 @@ public partial class TestStatusInstall : StatusInstall
                 return [];
                 
             if (relation.IsEnemy())
-                return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), Role.Drain, r.Value.Resolve())];
-            return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), Role.Feed, 5)];
+                return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Remove, r.Value.Resolve())];
+            return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Add, 5)];
         }
 
         return CombatCoreNode.Authority.Add(

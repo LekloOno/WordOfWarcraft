@@ -68,7 +68,7 @@ public partial class BasicAttack : Node, IEntityHealthHandler
             new(CombatCore.Primitives.SourceKind.Ability, 1, _entity.Id),
             target.Id,
             ResourceRegistry.GetId<IEntityHealth>(),
-            CombatCore.Primitives.Role.Drain,
+            ResourceDirection.Remove,
             Mathf.FloorToInt(_attackDmg)));
 
         _acc = 0f;

@@ -7,7 +7,7 @@ namespace CombatCore;
 public abstract record Draft(Source Source, EntityId Target, InstanceId? Cause);
 
 public sealed record RequestDraft(
-    Source Source, EntityId Target, ResourceId Resource, Role Role, long Amount,
+    Source Source, EntityId Target, ResourceId Resource, ResourceDirection Direction, long Amount,
     TagSet Tags = default, InstanceId? Cause = null) : Draft(Source, Target, Cause);
 
 public sealed record StatusDraft(
@@ -33,13 +33,13 @@ public abstract record Request(
 public sealed record ResourceRequest(
     RequestId Id, Source Source, InstanceId? Cause, Origin Origin,
     ImmutableArray<long> Lineage, int Depth, EntityId Target,
-    ResourceId Resource, Role Role, TagSet Tags, BucketedValue Value)
+    ResourceId Resource, ResourceDirection Direction, TagSet Tags, BucketedValue Value)
     : Request(Id, Source, Cause, Origin, Lineage, Depth, Target)
 {
     public override Request CloneValues() => this with { Value = Value.Clone() };
     public override int ContributionCount => Value.Contributions.Count;
     public override string Describe() =>
-        $"{Id} {Source.Kind}:{Source.Id} -> {Target} {Role} res{Resource.Value} {Value.Base} {Tail()}";
+        $"{Id} {Source.Kind}:{Source.Id} -> {Target} {Direction} res{Resource.Value} {Value.Base} {Tail()}";
 }
 
 public sealed record StatusRequest(
@@ -59,7 +59,7 @@ public sealed record StatusRequest(
 public readonly record struct FactCtx(RequestId Request, InstanceId? Cause, ImmutableArray<long> Lineage, int Depth);
 
 public sealed record ResourceFact(
-    FactCtx Ctx, Source Source, EntityId Target, ResourceId Resource, Role Role, TagSet Tags,
+    FactCtx Ctx, Source Source, EntityId Target, ResourceId Resource, ResourceDirection Direction, TagSet Tags,
     long Requested, long Applied, long Before, long After, IReadOnlyList<Contribution> Contributions);
 
 public sealed record DeathFact(FactCtx Ctx, EntityId Entity, Source Killer);

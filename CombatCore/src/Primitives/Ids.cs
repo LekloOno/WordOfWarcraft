@@ -8,13 +8,6 @@ public readonly record struct RequestId(uint Value)  { public override string To
 /// <summary>Open id (the game side defines the constants). The core never needs to know which one is "health".</summary>
 public readonly record struct ResourceId(int Value);
 
-/// <summary>
-/// Closed, engine-owned set: the pipeline itself branches on it (clamping, kill detection, ...).
-/// A request has exactly one role; a filter may hold a mask of roles (None = any).
-/// </summary>
-[Flags]
-public enum Role { None = 0, Drain = 1, Feed = 2 }
-
 public enum SourceKind { System, Ability, Status }
 
 /// <summary>Who emitted the request. Mandatory, unlike Cause.</summary>

@@ -144,7 +144,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         _queue.Enqueue(d switch
         {
             RequestDraft r => new ResourceRequest(id, r.Source, r.Cause, origin, lineage, depth, r.Target,
-                                                  r.Resource, r.Role, r.Tags, new BucketedValue(r.Amount)),
+                                                  r.Resource, r.Direction, r.Tags, new BucketedValue(r.Amount)),
             StatusDraft s => new StatusRequest(id, s.Source, s.Cause, origin, lineage, depth, s.Target,
                                                s.Op, s.Def, new BucketedValue(s.Level), new BucketedValue((long)(s.Duration ?? 0)),
                                                s.Duration.HasValue, s.LevelOp, s.TimeOp, s.RemoveFilter, s.Reason),
@@ -242,12 +242,11 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         if (!entity.Resources.Has(current.Resource)) { Log.Add($"NOOP  {current.Id} {current.Target} has no resource {current.Resource.Value}"); return; }
 
         long amount = current.Value.Resolve();
-        bool removes = (current.Role & Role.Drain) != 0;
-        var change = entity.Resources.Apply(current.Resource, removes ? ResourceDirection.Remove : ResourceDirection.Add, amount);
+        var change = entity.Resources.Apply(current.Resource, current.Direction, amount);
 
-        var fact = new ResourceFact(ctx, current.Source, current.Target, current.Resource, current.Role, current.Tags,
+        var fact = new ResourceFact(ctx, current.Source, current.Target, current.Resource, current.Direction, current.Tags,
                                     amount, change.Applied, change.Before, change.After, current.Value.Contributions.ToArray());
-        Log.Add($"FACT  {current.Id} {current.Role} res{current.Resource.Value} {current.Target}: {change.Before} -> {change.After}"
+        Log.Add($"FACT  {current.Id} {current.Direction} res{current.Resource.Value} {current.Target}: {change.Before} -> {change.After}"
                 + (fact.Contributions.Count > 0 ? $"  [base {current.Value.Base}, " + string.Join(", ", fact.Contributions.Select(c => $"{c.By}:{c.Kind}{c.Amount:+0.##;-0.##}")) + "]" : ""));
         Publish(fact, ctx);
 

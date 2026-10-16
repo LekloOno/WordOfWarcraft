@@ -4,7 +4,7 @@ namespace CombatCore;
 
 /// <summary>Cheap structural discrimination for resource requests. Derive what is derivable, tag only content.</summary>
 public readonly record struct RequestFilter(
-    Role Roles = Role.None,
+    ResourceDirection direction = ResourceDirection.None,
     TagSet RequireAll = default,
     TagSet Exclude = default,
     SourceKind? Kind = null,
@@ -14,7 +14,7 @@ public readonly record struct RequestFilter(
     EntityId? SourceOwner = null)
 {
     public bool Matches(ResourceRequest r) =>
-        (Roles == Role.None || (Roles & r.Role) != 0)
+        (direction == ResourceDirection.None || (direction & r.Direction) != 0)
         && r.Tags.ContainsAll(RequireAll)
         && !r.Tags.Intersects(Exclude)
         && (Kind is null || Kind == r.Source.Kind)

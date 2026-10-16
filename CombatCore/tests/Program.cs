@@ -28,25 +28,25 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // drain becomes damage, then +5
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(B, R.Mana, 100);
-    a.Add(Rules.Replace(new(Roles: Role.Drain), Phase.Convert, r => r with { Role = Role.Drain, Resource = R.Health }));
-    a.Add(Rules.Mod(new(Roles: Role.Drain), ValueMod.Plus(5)));
-    a.Submit(new RequestDraft(Spell(1), B, R.Mana, Role.Drain, 20));
+    a.Add(Rules.Replace(new(direction: ResourceDirection.Remove), Phase.Convert, r => r with { Direction = ResourceDirection.Remove, Resource = R.Health }));
+    a.Add(Rules.Mod(new(direction: ResourceDirection.Remove), ValueMod.Plus(5)));
+    a.Submit(new RequestDraft(Spell(1), B, R.Mana, ResourceDirection.Remove, 20));
     Check("P1 drain -> damage +5: health 75, mana untouched", w.Get(B, R.Health) == 75 && w.Get(B, R.Mana) == 100);
 }
 {   // competing replacements
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(B, R.Stamina, 100); w.Set(B, R.Mana, 100);
-    a.Add(Rules.Replace(new(Roles: Role.Drain), Phase.Convert, r => r with { Resource = R.Health }));
-    a.Add(Rules.Replace(new(Roles: Role.Drain), Phase.Convert, r => r with { Resource = R.Stamina }));
-    a.Submit(new RequestDraft(Spell(1), B, R.Mana, Role.Drain, 20));
+    a.Add(Rules.Replace(new(direction: ResourceDirection.Remove), Phase.Convert, r => r with { Resource = R.Health }));
+    a.Add(Rules.Replace(new(direction: ResourceDirection.Remove), Phase.Convert, r => r with { Resource = R.Stamina }));
+    a.Submit(new RequestDraft(Spell(1), B, R.Mana, ResourceDirection.Remove, 20));
     Check("P2 first replacement wins", w.Get(B, R.Health) == 80 && w.Get(B, R.Stamina) == 100);
 }
 {   // lineage rule
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 1000); w.Set(B, R.Mana, 1000);
-    a.Add(Rules.AddOn(new(Roles: Role.Drain), r => new[] { new RequestDraft(Status(1), B, R.Mana, Role.Drain, 5) }));
-    a.Add(Rules.AddOn(new(Roles: Role.Drain),  r => new[] { new RequestDraft(Status(2), B, R.Health, Role.Drain, 5) }));
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 10));
+    a.Add(Rules.AddOn(new(direction: ResourceDirection.Remove), r => new[] { new RequestDraft(Status(1), B, R.Mana, ResourceDirection.Remove, 5) }));
+    a.Add(Rules.AddOn(new(direction: ResourceDirection.Remove),  r => new[] { new RequestDraft(Status(2), B, R.Health, ResourceDirection.Remove, 5) }));
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10));
     Show(a, "oui");
     Check("P3 lineage: terminates after one round, nothing dropped",
           w.Get(B, R.Health) == 985 && w.Get(B, R.Mana) == 995 && !a.Log.Any(l => l.StartsWith("DROP")));
@@ -54,18 +54,18 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // depth fuse
     var a = New(out var w, out var clock, maxDepth: 4);
     w.Set(B, R.Health, 1000);
-    a.OnFact<ResourceFact>(f => new[] { new RequestDraft(Status(9), B, R.Health, Role.Drain, 1) });
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 1));
+    a.OnFact<ResourceFact>(f => new[] { new RequestDraft(Status(9), B, R.Health, ResourceDirection.Remove, 1) });
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 1));
     Check("P4 depth fuse", w.Get(B, R.Health) == 995 && a.Log.Any(l => l.StartsWith("DROP")));
 }
 {   // direct vs derived discrimination
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(C, R.Health, 100);
-    a.Add(Rules.Mod(new(Roles: Role.Drain, Kind: SourceKind.Ability, Origin: OriginMask.Original), ValueMod.Plus(5)));
-    a.Add(Rules.Mod(new(Roles: Role.Drain), ValueMod.Plus(1)));
-    a.OnFact<ResourceFact>(f => f.Source.Kind == SourceKind.Ability && f.Role == Role.Drain
-        ? new[] { new RequestDraft(Status(7), C, R.Health, Role.Drain, 10) } : None());
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 20));
+    a.Add(Rules.Mod(new(direction: ResourceDirection.Remove, Kind: SourceKind.Ability, Origin: OriginMask.Original), ValueMod.Plus(5)));
+    a.Add(Rules.Mod(new(direction: ResourceDirection.Remove), ValueMod.Plus(1)));
+    a.OnFact<ResourceFact>(f => f.Source.Kind == SourceKind.Ability && f.Direction == ResourceDirection.Remove
+        ? new[] { new RequestDraft(Status(7), C, R.Health, ResourceDirection.Remove, 10) } : None());
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 20));
     Check("P5 direct-only modifier skips derived damage", w.Get(B, R.Health) == 74 && w.Get(C, R.Health) == 89);
 }
 {   // rollback: refund on kill reads the cost fact
@@ -78,13 +78,13 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
         var optedIn = new HashSet<uint> { 1 };
         var spent = new Dictionary<InstanceId, long>();
         w.Set(Mage, R.Mana, 100); w.Set(X, R.Health, 10);
-        if (free) a.Add(Rules.Mod(new(Roles: Role.Drain, SourceId: 1), ValueMod.Times(0)));
-        a.OnFact<ResourceFact>((Func<ResourceFact, IEnumerable<Draft>>)(f => { if (f.Role == Role.Drain && f.Ctx.Cause is { } c && f.Tags.ContainsAll(tagSet)) spent[c] = spent.GetValueOrDefault(c) + f.Applied; return None(); }));
+        if (free) a.Add(Rules.Mod(new(direction: ResourceDirection.Remove, SourceId: 1), ValueMod.Times(0)));
+        a.OnFact<ResourceFact>((Func<ResourceFact, IEnumerable<Draft>>)(f => { if (f.Direction == ResourceDirection.Remove && f.Ctx.Cause is { } c && f.Tags.ContainsAll(tagSet)) spent[c] = spent.GetValueOrDefault(c) + f.Applied; return None(); }));
         a.OnFact<DeathFact>(d => d.Ctx.Cause is { } c && instanceAbility.TryGetValue(c, out var ab) && optedIn.Contains(ab) && spent.GetValueOrDefault(c) > 0
-            ? new Draft[] { new RequestDraft(Status(99), Mage, R.Mana, Role.Feed, spent[c], default, c) } : None());
+            ? new Draft[] { new RequestDraft(Status(99), Mage, R.Mana, ResourceDirection.Add, spent[c], default, c) } : None());
         var inst = new InstanceId(41);
-        a.Submit(new RequestDraft(Spell(1), Mage, R.Mana, Role.Drain, 30, tagSet, inst));
-        a.Submit(new RequestDraft(Status(5), X, R.Health, Role.Drain, 40, default, inst));
+        a.Submit(new RequestDraft(Spell(1), Mage, R.Mana, ResourceDirection.Remove, 30, tagSet, inst));
+        a.Submit(new RequestDraft(Status(5), X, R.Health, ResourceDirection.Remove, 40, default, inst));
         Check($"P6 rollback (free={free}): mana back to 100, refund {(free ? "skipped" : "emitted")}",
               w.Get(Mage, R.Mana) == 100 && a.Log.Any(l => l.Contains("REACT DeathFact")) == !free);
     }
@@ -135,7 +135,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
         Level: new LevelModel(1, MergeOp.Replace, EndsAtZero: true),
         Effects: new IStatusEffect[] { new StatEffect(new StatContribution(Cost, Mult: 0f)) },
         Install: (inst, auth) => new[] { auth.OnFact<ResourceFact>(f =>
-            f.Role == Role.Drain && f.Source.Id == 1 && f.Source.Owner == inst.Owner
+            f.Direction == ResourceDirection.Remove && f.Source.Id == 1 && f.Source.Owner == inst.Owner
                 ? new Draft[] { new StatusDraft(Status(200), inst.Owner, StatusOp.Adjust, free, Level: 1, LevelOp: MergeOp.Subtract) }
                 : None()) });
     w.Set(Mage, R.Mana, 100);
@@ -143,7 +143,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     a.Submit(new StatusDraft(Spell(2), Mage, StatusOp.Apply, free, Level: 1));
     int effective = w.Stat(Mage, Cost, 30);
     Check("S4 UI/precondition read effective cost 0", effective == 0);
-    a.Submit(new RequestDraft(Spell(1), Mage, R.Mana, Role.Drain, effective));     // the cast spends the effective cost
+    a.Submit(new RequestDraft(Spell(1), Mage, R.Mana, ResourceDirection.Remove, effective));     // the cast spends the effective cost
     Show(a, "S4: free cast consumes its charge");
     Check("S4 spent 0, status ended (ZeroLevel), cost back to 30",
           w.Get(Mage, R.Mana) == 100 && a.StatusesOf(Mage).Count == 0 && w.Stat(Mage, Cost, 30) == 30);
@@ -154,15 +154,15 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     var weakened = new StatusDefinition(300, "Weakened", StatusCategory.Debuff,
         Level: new LevelModel(5, MergeOp.Add),
         Install: (inst, auth) => new[] { auth.Add(Rules.Mod(
-            new(Roles: Role.Drain, SourceOwner: inst.Owner), _ => ValueMod.Times(1 - 0.1 * inst.Weight))) });
+            new(direction: ResourceDirection.Remove, SourceOwner: inst.Owner), _ => ValueMod.Times(1 - 0.1 * inst.Weight))) });
     a.Submit(new StatusDraft(Status(9), B, StatusOp.Apply, weakened, Level: 1));
-    a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, Role.Drain, 100));
+    a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, ResourceDirection.Remove, 100));
     w.Set(C, R.Health, 1000);
-    a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, Role.Drain, 100));
+    a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, ResourceDirection.Remove, 100));
     long afterL1 = w.Get(C, R.Health);
     a.Submit(new StatusDraft(Status(9), B, StatusOp.Apply, weakened, Level: 1));        // level 2
     w.Set(C, R.Health, 1000);
-    a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, Role.Drain, 100));
+    a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, ResourceDirection.Remove, 100));
     Check("S5 level 1: 100 -> 90, level 2: 100 -> 80", afterL1 == 910 && w.Get(C, R.Health) == 920);
 }
 {   // S6: cleanse by category; passives are never swept by a catch-all
@@ -194,12 +194,12 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 {   // S8: disposing the status removes every effect it installed
     var a = New(out var w, out var clock); w.Set(B, R.Health, 100);
     var d = new StatusDefinition(304, "Sting", StatusCategory.Neutral, Time: new TimeModel(MergeOp.Replace),
-        Install: (inst, auth) => new[] { auth.Add(Rules.Mod(new(Roles: Role.Drain, Target: inst.Owner), ValueMod.Plus(5))) });
+        Install: (inst, auth) => new[] { auth.Add(Rules.Mod(new(direction: ResourceDirection.Remove, Target: inst.Owner), ValueMod.Plus(5))) });
     At(a, clock, 0);
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Duration: 10));
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 10));
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10));
     At(a, clock, 10);
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 10));
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10));
     Check("S8 +5 while active (15), gone after expiry (10)", w.Get(B, R.Health) == 75);
 }
 
@@ -214,8 +214,8 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     a.OnFact<ResourceFact>(f => { facts.Add(f); return None(); });
 
     var inst = a.StartInstance(abilityId: 7, caster: Mage);
-    inst.Request(Mage, R.Mana, Role.Drain, 30);
-    inst.Request(B, R.Health, Role.Drain, 20);
+    inst.Request(Mage, R.Mana, ResourceDirection.Remove, 30);
+    inst.Request(B, R.Health, ResourceDirection.Remove, 20);
     inst.Stop(StopReason.Completed);
     inst.Stop(StopReason.Cancelled);                      // ignored: a flow ends once
     Show(a, "L1: spell lifecycle");
@@ -229,14 +229,14 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     w.Set(B, R.Health, 100);
     var inst = a.StartInstance(7, Mage);
     inst.Stop(StopReason.Completed);
-    inst.Request(B, R.Health, Role.Drain, 10);
+    inst.Request(B, R.Health, ResourceDirection.Remove, 10);
     Check("L2 consequences outlive the flow", w.Get(B, R.Health) == 90);
 }
 {   // L3: a reaction to a lifecycle fact (the hook you want to bind things on)
     var a = New(out var w, out var clock);
     w.Set(Mage, R.Mana, 50);
     a.OnFact<InstanceStopped>(f => f.Reason == StopReason.Interrupted
-        ? new Draft[] { new RequestDraft(Status(1), f.Caster, R.Mana, Role.Feed, 10) } : None());
+        ? new Draft[] { new RequestDraft(Status(1), f.Caster, R.Mana, ResourceDirection.Add, 10) } : None());
     a.StartInstance(7, Mage).Stop(StopReason.Completed);
     Check("L3 no reaction on Completed", w.Get(Mage, R.Mana) == 50);
     a.StartInstance(7, Mage).Stop(StopReason.Interrupted);
@@ -259,7 +259,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     w.Remove(B);
     Check("E1 status removed with reason OwnerRemoved, effect disposed",
           removed.Count == 1 && removed[0].Reason == RemoveReason.OwnerRemoved && entityB.Stat(Strength2, 0) == 0);
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 10));
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10));
     Check("E1 request to a removed entity is dropped", a.Log.Any(l => l.Contains("target gone")));
 }
 

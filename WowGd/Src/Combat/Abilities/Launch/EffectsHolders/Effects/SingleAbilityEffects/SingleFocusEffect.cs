@@ -22,14 +22,14 @@ public partial class SingleFocusEffect : SingleAbilityEffect
             spellInstance.Request(
                 target.Id,
                 ResourceRegistry.GetId<IFocus>(),
-                CombatCore.Primitives.Role.Feed,
+                ResourceDirection.Add,
                 Mathf.FloorToInt(_focus * gatherWeight * actuateWeight),
                 RequestTagSet);
         else
             spellInstance.Request(
                 target.Id,
                 ResourceRegistry.GetId<IFocus>(),
-                CombatCore.Primitives.Role.Drain,
+                ResourceDirection.Remove,
                 Mathf.FloorToInt(-_focus * gatherWeight * actuateWeight),
                 RequestTagSet);
     }

@@ -8,7 +8,8 @@ namespace CombatCore;
 /// <summary>Time source. The game backs it with the physics tick; tests with a manual counter.</summary>
 public interface IGameClock { long Tick { get; } }
 
-public enum ResourceDirection { Remove, Add }
+[Flags]
+public enum ResourceDirection { None, Remove, Add }
 
 /// <summary>
 /// What actually happened to a resource. The adapter does the clamping, so Before/After are real.
