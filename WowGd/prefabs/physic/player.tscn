@@ -636,13 +636,13 @@ metadata/_custom_type_script = "uid://fdi60jyuew2y"
 script = ExtResource("4_k2b5b")
 metadata/_custom_type_script = "uid://bl8lp3ttb4jor"
 
+[node name="EntityHealth" type="Node" parent="ResourceManager" unique_id=2111582883]
+script = ExtResource("6_h8dry")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
 [node name="Focus" type="Node" parent="ResourceManager" unique_id=1742714807]
 script = ExtResource("5_qewp4")
 metadata/_custom_type_script = "uid://dbfmamo6b7xia"
-
-[node name="EntityHealth" type="Node" parent="." unique_id=2111582883]
-script = ExtResource("6_h8dry")
-metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 
 [node name="BodyMover" type="Node" parent="." unique_id=1475820405]
 script = ExtResource("7_l5be3")

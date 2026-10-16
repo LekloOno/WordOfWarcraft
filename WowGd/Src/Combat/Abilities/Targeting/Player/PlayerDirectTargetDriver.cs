@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 using WowGd.Src.Input;
 using WowGd.Src.Input.Hands;
@@ -102,10 +103,10 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
     private void SetBuffer(TargetIntent intent)
     {
         if (_buffered is TargetIntent targetIntent)
-            targetIntent.Entity!.Health.Died -= OnBufferedDied;
+            targetIntent.Entity!.HealthRes()!.Died -= OnBufferedDied;
 
         _buffered = intent;
-        intent.Entity!.Health.Died += OnBufferedDied;
+        intent.Entity!.HealthRes()!.Died += OnBufferedDied;
     }
 
     private static bool TryGetTargetIntent(InputEvent @event, out TargetIntent intent)

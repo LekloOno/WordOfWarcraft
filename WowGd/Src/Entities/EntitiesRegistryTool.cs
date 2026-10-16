@@ -4,14 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace WowGd.Src.Entities;
 
-public static partial class EntitiesRegistry
+public static partial class EntitiesRegistryTool
 {
     public static bool TryGetClosestTarget(this IEntity self, [NotNullWhen(true)] out IEntity? target, TeamMask targetTeamMask = (TeamMask)ushort.MaxValue, bool excludeSelf = true)
     {
         target = null;
         float closestSquaredDist = float.PositiveInfinity;
 
-        foreach (IEntity entity in _entities)
+        foreach (IEntity entity in EntitiesRegistryNode.Registry.Entities)
         {
             if (excludeSelf && entity == self)
                 continue;
@@ -32,7 +32,7 @@ public static partial class EntitiesRegistry
 
     public static bool TryGetTarget(this IEntity self, [NotNullWhen(true)] out IEntity? target, TeamMask targetTeamMask = (TeamMask)ushort.MaxValue, bool excludeSelf = true)
     {
-        foreach (IEntity entity in EntitiesRegistry.Entities)
+        foreach (IEntity entity in EntitiesRegistryNode.Registry.Entities)
         {
             if (excludeSelf && entity == self)
                 continue;
@@ -53,7 +53,7 @@ public static partial class EntitiesRegistry
         ICollection<IEntity> inRange = [];
         float rangeSquared = range * range;
         
-        foreach (IEntity entity in Entities)
+        foreach (IEntity entity in EntitiesRegistryNode.Registry.Entities)
         {
             if (excludeSelf && entity == self)
                 continue;
@@ -74,7 +74,7 @@ public static partial class EntitiesRegistry
         HashSet<IEntity> inRange = [];
         float rangeSquared = range * range;
         
-        foreach (IEntity entity in Entities)
+        foreach (IEntity entity in EntitiesRegistryNode.Registry.Entities)
         {
             float squaredDist = (entity.Body.GlobalPosition - position).LengthSquared();
             if (squaredDist <= rangeSquared)

@@ -7,7 +7,8 @@ namespace WowGd.Src.Entities.Stats.Bucketing;
 public abstract class BucketedStat<TVal> : IBucketedStat<TVal>
     where TVal :
         IAdditionOperators<TVal, TVal, TVal>,
-        ISubtractionOperators<TVal, TVal, TVal>
+        ISubtractionOperators<TVal, TVal, TVal>,
+        IEqualityOperators<TVal, TVal, bool>
 {
     public StatBuckets<TVal> Buckets    { get; }
 

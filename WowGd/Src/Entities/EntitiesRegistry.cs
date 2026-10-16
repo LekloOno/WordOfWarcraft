@@ -1,28 +1,42 @@
 using System;
 using System.Collections.Generic;
+using CombatCore;
+using CombatCore.Primitives;
 
 namespace WowGd.Src.Entities;
 
-public static partial class EntitiesRegistry
+public partial class EntitiesRegistry : IEntityDirectory
 {
-    private static readonly HashSet<IEntity> _entities = [];
-    public static IReadOnlySet<IEntity> Entities => _entities;
-    public static event Action<IEntity>? EntityCreated;
-    public static event Action<IEntity>? EntityDeleted;
+    private readonly HashSet<IEntity> _entities = [];
+    private readonly Dictionary<EntityId, IEntity> _orderedEntities = [];
+    public IReadOnlySet<IEntity> Entities => _entities;
+    public event Action<IEntity>? EntityCreated;
+    public event Action<IEntity>? EntityDeleted;
+    private uint _count = 0;
 
-    public static bool Register(IEntity entity)
+    public bool Register(IEntity entity)
     {
         bool created = _entities.Add(entity);
-        if (created)
-            EntityCreated?.Invoke(entity);
-        return created;
+        if (!created)
+            return false;
+
+        entity.SetId(new(_count++));
+        _orderedEntities.Add(entity.Id, entity);
+        EntityCreated?.Invoke(entity);
+        return true;
     }
 
-    public static bool Unregister(IEntity entity)
+    public bool Unregister(IEntity entity)
     {
         bool deleted = _entities.Remove(entity);
         if (deleted)
             EntityDeleted?.Invoke(entity);
         return deleted;
+    }
+
+    public ICombatEntity? Find(EntityId id)
+    {
+        _orderedEntities.TryGetValue(id, out IEntity? entity);
+        return entity;
     }
 }

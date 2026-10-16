@@ -9,16 +9,18 @@ public partial class WorldRenderer3D : Node3D
 {
     private readonly Dictionary<IEntity, EntityRender3D> _entities = [];
 
-    public override void _EnterTree()
+    public override async void _EnterTree()
     {
-        EntitiesRegistry.EntityCreated += OnEntityCreated;
-        EntitiesRegistry.EntityDeleted += OnEntityDeleted;
+        await EntitiesRegistryNode.Instance.Initialization;
+        EntitiesRegistryNode.Registry.EntityCreated += OnEntityCreated;
+        EntitiesRegistryNode.Registry.EntityDeleted += OnEntityDeleted;
     }
 
-    public override void _ExitTree()
+    public override async void _ExitTree()
     {
-        EntitiesRegistry.EntityCreated -= OnEntityCreated;
-        EntitiesRegistry.EntityDeleted -= OnEntityDeleted;
+        await EntitiesRegistryNode.Instance.Initialization;
+        EntitiesRegistryNode.Registry.EntityCreated -= OnEntityCreated;
+        EntitiesRegistryNode.Registry.EntityDeleted -= OnEntityDeleted;
     }
 
     private void OnEntityDeleted(IEntity entity)

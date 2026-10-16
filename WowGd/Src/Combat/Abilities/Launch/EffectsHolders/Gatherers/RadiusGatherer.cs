@@ -88,7 +88,7 @@ public class RadiusGatherer(RadiusGathererData data) : IGatherer
         ICollection<(IEntity, float)> inRange = [];
         float rangeSquared = range * range;
         
-        foreach (IEntity entity in EntitiesRegistry.Entities)
+        foreach (IEntity entity in EntitiesRegistryNode.Registry.Entities)
         {
             if (entity == exclude)
                 continue;

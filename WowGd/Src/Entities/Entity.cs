@@ -1,4 +1,6 @@
 using System.Threading.Tasks;
+using CombatCore;
+using CombatCore.Primitives;
 using Godot;
 using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
@@ -40,8 +42,12 @@ public partial class Entity : Node, IEntity
 
     public IStatistics Statistics { get; private set; } = null!;
 
+    public EntityId Id { get; private set; }
+    public void SetId(EntityId id) => Id = id;
+    public IResourcePort Resources => ResourceManager;
+    public IStatPort Stats => Statistics;
 
-    public override void _Ready()
+    public override async void _Ready()
     {
         FetchBaseComponents();
         _entityMover = new(this);
@@ -53,28 +59,35 @@ public partial class Entity : Node, IEntity
 
         Health.Resurrect();
 
-        EntitiesRegistry.Register(this);
+        await EntitiesRegistryNode.Instance.Initialization;
+        EntitiesRegistryNode.Registry.Register(this);
+
         _initialized.TrySetResult();
     }
 
-    public override void _EnterTree()
+    public override async void _EnterTree()
     {
-        if (_initialized.Task.IsCompleted)
-            EntitiesRegistry.Register(this);
+        if (!_initialized.Task.IsCompleted)
+            return;
+
+        await EntitiesRegistryNode.Instance.Initialization;
+        EntitiesRegistryNode.Registry.Register(this);
     }
 
-    public override void _ExitTree()
+    public override async void _ExitTree()
     {
-        EntitiesRegistry.Unregister(this);
+        await EntitiesRegistryNode.Instance.Initialization;
+        EntitiesRegistryNode.Registry.Unregister(this);
     }
 
     private void FetchBaseComponents()
     {
-        if (this.TryGetComponent(out IEntityHealth? health))
-            Health = health;
-
         if (this.TryGetComponent(out IResourceManager? resourceManager))
+        {
             ResourceManager = resourceManager;
+            if ((resourceManager as Node)!.TryGetComponent(out IEntityHealth? health))
+                Health = health;
+        }
 
         if (this.TryGetComponent(out IBody? body))
         {

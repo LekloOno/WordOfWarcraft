@@ -1,6 +1,9 @@
 [gd_scene format=3 uid="uid://cwbe7bd0eowbj"]
 
+[ext_resource type="Script" uid="uid://s5nqo5lrbe5h" path="res://Src/Entities/EntitiesRegistryNode.cs" id="1_8nxa3"]
 [ext_resource type="LightmapGIData" uid="uid://gcda1x8yvoe6" path="res://scenes/light_maps/test3.lmbake" id="1_42bxd"]
+[ext_resource type="Script" uid="uid://dcgqi10qgubcb" path="res://Src/Combat/CombatCoreNode.cs" id="1_qc73i"]
+[ext_resource type="Script" uid="uid://qwfiyce7b1fr" path="res://Src/Combat/CombatCoreLog.cs" id="2_74y24"]
 [ext_resource type="Script" uid="uid://d4m3xvc6ylan5" path="res://Src/Debug/CollisionShapeBuilder.cs" id="2_2663l"]
 [ext_resource type="Script" uid="uid://dkbr282rb0aq" path="res://Src/Render/WorldRenderer/WorldRenderer3D.cs" id="3_imk6l"]
 [ext_resource type="PackedScene" uid="uid://bq7tjkfbxi8c4" path="res://prefabs/render/mapping/3d/dungeon/composed/wide_corner.tscn" id="3_sdhh7"]
@@ -19,6 +22,15 @@ ambient_light_color = Color(0.7241422, 0.71741486, 0.98638767, 1)
 ambient_light_energy = 0.46
 
 [node name="Node3D" type="Node3D" unique_id=1036701696]
+
+[node name="CombatCore" type="Node" parent="." unique_id=1734229468]
+script = ExtResource("1_qc73i")
+
+[node name="CombatCoreLog" type="Node" parent="CombatCore" unique_id=487794984]
+script = ExtResource("2_74y24")
+
+[node name="EntitiesRegistry" type="Node" parent="." unique_id=1153351129]
+script = ExtResource("1_8nxa3")
 
 [node name="LightmapGI" type="LightmapGI" parent="." unique_id=231018911]
 visible = false

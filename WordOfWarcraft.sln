@@ -5,6 +5,12 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowGd", "WowGd\WowGd.csproj", "{88AC4D46-758E-486D-9006-7858C136448E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CombatCore", "CombatCore", "{7BC7CB66-B395-4A68-8CB0-6DC2117BAC99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CombatCore", "CombatCore\src\CombatCore.csproj", "{8C2B549C-FA12-4B1E-A74F-0D34F24E77CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CombatCore.Tests", "CombatCore\tests\CombatCore.Tests.csproj", "{0FB371E6-7D97-478C-9A8F-F53C20390BC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +21,20 @@ Global
 		{88AC4D46-758E-486D-9006-7858C136448E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88AC4D46-758E-486D-9006-7858C136448E}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{88AC4D46-758E-486D-9006-7858C136448E}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{8C2B549C-FA12-4B1E-A74F-0D34F24E77CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C2B549C-FA12-4B1E-A74F-0D34F24E77CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C2B549C-FA12-4B1E-A74F-0D34F24E77CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C2B549C-FA12-4B1E-A74F-0D34F24E77CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FB371E6-7D97-478C-9A8F-F53C20390BC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FB371E6-7D97-478C-9A8F-F53C20390BC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FB371E6-7D97-478C-9A8F-F53C20390BC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FB371E6-7D97-478C-9A8F-F53C20390BC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8C2B549C-FA12-4B1E-A74F-0D34F24E77CA} = {7BC7CB66-B395-4A68-8CB0-6DC2117BAC99}
+		{0FB371E6-7D97-478C-9A8F-F53C20390BC4} = {7BC7CB66-B395-4A68-8CB0-6DC2117BAC99}
 	EndGlobalSection
 EndGlobal

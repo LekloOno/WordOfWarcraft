@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Targeting.TargetRules;
@@ -14,6 +15,6 @@ public partial class AliveTargetRule : TargetRule
         if (!intent.IsDirect || intent.Entity is null)
             return true;
 
-        return intent.Entity.Health.Dead() != _alive;
+        return intent.Entity.HealthRes()!.Dead() != _alive;
     }
 }

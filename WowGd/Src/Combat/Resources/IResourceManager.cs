@@ -1,8 +1,10 @@
-using WowGd.Src.Combat.Resources.FocusRes;
+using System.Diagnostics.CodeAnalysis;
+using CombatCore;
+using CombatCore.Primitives;
 
 namespace WowGd.Src.Combat.Resources;
 
-public interface IResourceManager
+public interface IResourceManager : IResourcePort
 {
-    IFocus? Focus { get; }
+    bool TryGetResource(ResourceId id, [NotNullWhen(true)] out IStandardResource? resource);
 }

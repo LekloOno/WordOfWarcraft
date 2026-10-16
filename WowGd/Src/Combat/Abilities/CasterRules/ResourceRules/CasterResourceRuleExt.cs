@@ -1,14 +1,16 @@
 using System;
+using WowGd.Src.Combat.Resources;
 
 namespace WowGd.Src.Combat.Abilities.CasterRules.ResourceRules;
 
 public static class CasterResourceRuleExt
 {
-    public static bool Compare(
-        this CasterResourceRule data,
+    public static bool Compare<T>(
+        this CasterResourceRule<T> data,
         float current,
         float maxTotal,
         float @base)
+    where T : IStandardResource
     {
         return data.AmountType switch
         {

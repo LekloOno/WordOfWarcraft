@@ -1,4 +1,5 @@
 using Godot;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Combat.Resources.FocusRes;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Combat.Resources.Bars;
@@ -17,10 +18,10 @@ public partial class SimpleDude : EntityRender3D
 
     public override bool InitSpec(IEntity entity)
     {
-        _healthBar.SetHealth(entity.Health);
+        _healthBar.SetHealth(entity.HealthRes()!);
         _indicatorSuperManager.BindEntity(entity);
 
-        if (entity.ResourceManager.Focus is Focus focus)
+        if (entity.ResourceManager.TryGetResource(ResourceRegistry.GetId<IFocus>(), out IStandardResource? focus))
             _focusBar.SetResource(focus);
         else
             _focusBar.Hide();

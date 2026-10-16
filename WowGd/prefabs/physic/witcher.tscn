@@ -101,13 +101,13 @@ metadata/_custom_type_script = "uid://14ici7sfka52"
 script = ExtResource("8_lhprm")
 metadata/_custom_type_script = "uid://bl8lp3ttb4jor"
 
+[node name="EntityHealth" type="Node" parent="ResourceManager" unique_id=777489415]
+script = ExtResource("9_x0rx1")
+metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
+
 [node name="Focus" type="Node" parent="ResourceManager" unique_id=1319849299]
 script = ExtResource("9_fowbq")
 metadata/_custom_type_script = "uid://dbfmamo6b7xia"
-
-[node name="EntityHealth" type="Node" parent="." unique_id=777489415]
-script = ExtResource("9_x0rx1")
-metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 
 [node name="MoverHealthHandler" type="Node" parent="." unique_id=605582853 node_paths=PackedStringArray("Mover")]
 script = ExtResource("10_ksxqo")

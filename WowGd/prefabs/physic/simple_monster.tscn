@@ -95,7 +95,7 @@ metadata/_custom_type_script = "uid://14ici7sfka52"
 script = ExtResource("8_ydhbg")
 metadata/_custom_type_script = "uid://bl8lp3ttb4jor"
 
-[node name="EntityHealth" type="Node" parent="." unique_id=777489415]
+[node name="EntityHealth" type="Node" parent="ResourceManager" unique_id=777489415]
 script = ExtResource("8_7lu00")
 metadata/_custom_type_script = "uid://dr2fk3cmwlxdp"
 

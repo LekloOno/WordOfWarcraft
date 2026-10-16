@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 using WowGd.Src.Tools;
 
@@ -38,21 +39,21 @@ public partial class TestPlayerAttack : Node, IEntityHealthHandler
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
         foreach (IEntity target in targets)
-            target.Health.Resurrect();
+            target.HealthRes()!.Resurrect();
     }
 
     private void Heal()
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
         foreach (IEntity target in targets)
-            target.Health.Generate(_hp, out _);
+            target.HealthRes()!.Generate(_hp, out _);
     }
 
     private void Attack()
     {
         ICollection<IEntity> targets = _entity.GetTargetsInRange(_range, _targetTeamMask);
         foreach (IEntity target in targets)
-            target.Health.Consume(_hp, out _);
+            target.HealthRes()!.Consume(_hp, out _);
     }
 
     public void OnDied()

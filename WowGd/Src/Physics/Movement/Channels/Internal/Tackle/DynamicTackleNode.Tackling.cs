@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 using WowGd.Src.Entities.Stats.Reach;
 using WowGd.Src.Entities.Stats.Tackle;
@@ -49,7 +50,7 @@ public partial class DynamicTackleNode : Node
 
     public bool StartTackle(IEntity target)
     {
-        if (target.Health.Dead())
+        if (target.HealthRes()!.Dead())
             return false;
 
         IEntityMover entityMover = Entity.EntityMover;

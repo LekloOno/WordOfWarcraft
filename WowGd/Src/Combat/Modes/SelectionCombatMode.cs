@@ -66,10 +66,7 @@ public partial class SelectionCombatMode : CombatMode, IInitializable
         if (index >= _activeAbilities.Count)
             return false;
 
-        if (!_activeAbilities[index].Cancel(_entity))
-            return false;
-
-        return true;
+        return _activeAbilities[index].Cancel(_entity);
     }
 
     protected override void EnableSpec()

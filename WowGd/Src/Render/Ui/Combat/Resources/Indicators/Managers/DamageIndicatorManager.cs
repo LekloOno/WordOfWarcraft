@@ -1,5 +1,6 @@
 using Godot;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Ui.Combat.Resources.Indicators.Health;
 
@@ -12,13 +13,13 @@ public partial class DamageIndicatorManager : ResourceIndicatorManager<DamageInd
 
     protected override void SetResourceFrom(IEntity entity)
     {
-        if (_health == entity.Health)
+        if (_health == entity.HealthRes()!)
             return;
 
         if (_health != null)
             this.Unbind(_health);
 
-        _health = entity.Health;
+        _health = entity.HealthRes()!;
         this.Bind(_health);
     }
 

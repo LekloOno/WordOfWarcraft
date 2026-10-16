@@ -1,9 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
+using CombatCore;
 using Godot;
+using WowGd.Src.Combat;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Tools;
 
 namespace WowGd.Src.Entities.BasicBot;
@@ -61,7 +64,13 @@ public partial class BasicAttack : Node, IEntityHealthHandler
             result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, _targetType, token);
         }
 
-        target.Health.Consume(_attackDmg, out _);
+        CombatCoreNode.Authority.Submit(new RequestDraft(
+            new(CombatCore.Primitives.SourceKind.Ability, 1, _entity.Id),
+            target.Id,
+            ResourceRegistry.GetId<IEntityHealth>(),
+            CombatCore.Primitives.Role.Damage,
+            Mathf.FloorToInt(_attackDmg)));
+
         _acc = 0f;
 
         _cts = null;

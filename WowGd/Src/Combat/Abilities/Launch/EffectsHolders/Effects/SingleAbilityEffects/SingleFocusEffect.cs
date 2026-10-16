@@ -1,4 +1,7 @@
+using CombatCore;
 using Godot;
+using WowGd.Src.Combat.Resources;
+using WowGd.Src.Combat.Resources.FocusRes;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects;
@@ -16,8 +19,18 @@ public partial class SingleFocusEffect : SingleAbilityEffect
     {
         int fp = Mathf.FloorToInt(_focus * gatherWeight * actuateWeight);
         if (fp > 0)
-            target.ResourceManager.Focus?.Generate(fp, out _);
+            CombatCoreNode.Authority.Submit(new RequestDraft(
+                new(CombatCore.Primitives.SourceKind.Ability, 1, launcher.Id),
+                target.Id,
+                ResourceRegistry.GetId<IFocus>(),
+                CombatCore.Primitives.Role.Heal,
+                Mathf.FloorToInt(_focus * gatherWeight * actuateWeight)));
         else
-            target.ResourceManager.Focus?.Consume(-fp, out _);
+            CombatCoreNode.Authority.Submit(new RequestDraft(
+                new(CombatCore.Primitives.SourceKind.Ability, 1, launcher.Id),
+                target.Id,
+                ResourceRegistry.GetId<IFocus>(),
+                CombatCore.Primitives.Role.Drain,
+                Mathf.FloorToInt(-_focus * gatherWeight * actuateWeight)));
     }
 }

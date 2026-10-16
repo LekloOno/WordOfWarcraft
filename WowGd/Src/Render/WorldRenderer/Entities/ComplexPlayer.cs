@@ -1,5 +1,6 @@
 using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Player;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 using WowGd.Src.Render.Animation.Followers;
 using WowGd.Src.Render.Camera;
@@ -53,7 +54,7 @@ public partial class ComplexPlayer : SimpleDude
         if (entity.Body is Node2D bodyNode)
             _radiusFollower.Node = bodyNode;
 
-        _damageShakesNode?.Init(entity.Health);
+        _damageShakesNode?.Init(entity.HealthRes()!);
 
         return base.InitSpec(entity);
     }

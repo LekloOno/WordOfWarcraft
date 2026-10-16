@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Godot;
 using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Targeting;
@@ -130,12 +131,12 @@ public sealed class TargetIntentController : IDisposable
     private void TrackDirectTarget(TargetIntent intent)
     {
         if (_trackedDirectTarget != null)
-            _trackedDirectTarget.Health.Died -= OnDirectTargetDied;
+            _trackedDirectTarget.HealthRes()!.Died -= OnDirectTargetDied;
 
         _trackedDirectTarget = intent.TryGetEntity(out var entity) ? entity : null;
 
         if (_trackedDirectTarget != null)
-            _trackedDirectTarget.Health.Died += OnDirectTargetDied;
+            _trackedDirectTarget.HealthRes()!.Died += OnDirectTargetDied;
     }
 
     private void OnDirectTargetDied() => RequestRefresh();
@@ -143,7 +144,7 @@ public sealed class TargetIntentController : IDisposable
     public void Dispose()
     {
         if (_trackedDirectTarget != null)
-            _trackedDirectTarget.Health.Died -= OnDirectTargetDied;
+            _trackedDirectTarget.HealthRes()!.Died -= OnDirectTargetDied;
         _reacquireCts?.Cancel();
         _lifetimeCts.Cancel();
 

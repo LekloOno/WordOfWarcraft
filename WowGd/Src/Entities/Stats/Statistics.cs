@@ -1,4 +1,5 @@
 using System;
+using CombatCore;
 using Godot;
 using WowGd.Src.Entities.Stats.Bucketing;
 
@@ -59,4 +60,9 @@ public partial class Statistics : Node, IStatistics
         _baseFocus      ?? new(0),
         _baseReach      ?? new(10)
     ];
+
+    public IEffectHandle Apply(StatContribution contribution, float weight)
+    {
+        return _values[contribution.Stat.Value].Stat.Buckets.AddModifier(contribution.Flat, contribution.Mult, 0);
+    }
 }

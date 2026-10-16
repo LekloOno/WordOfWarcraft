@@ -27,6 +27,8 @@ public partial class AbilityStateMachine : Node,
     ITargetLaunchable
 { 
     [Export] private AbilitySmData _data = null!;
+    private static uint _count;
+    private readonly uint _id = _count ++; 
 
     public IActuableData ActuableData => _data;
     public ICancelLaunchableData CancelLaunchableData => _data;
@@ -111,6 +113,8 @@ public partial class AbilityStateMachine : Node,
         // STEP 1 - check preconditions
         if (!_data.StartPreconditionsDt.CheckAll(caster))
             return false;
+
+        CombatCoreNode.Authority.StartInstance(_id, caster.Id);
 
         Started?.Invoke();
 

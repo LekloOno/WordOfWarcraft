@@ -1,4 +1,7 @@
+using CombatCore;
 using Godot;
+using WowGd.Src.Combat.Health;
+using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects;
@@ -13,5 +16,10 @@ public partial class SingleDamageEffect : SingleAbilityEffect
     [Export] private float _hp = 10f;
 
     public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        target.Health.Consume(Mathf.FloorToInt(_hp * gatherWeight * actuateWeight), out _);
+        CombatCoreNode.Authority.Submit(new RequestDraft(
+            new(CombatCore.Primitives.SourceKind.Ability, 1, launcher.Id),
+            target.Id,
+            ResourceRegistry.GetId<IEntityHealth>(),
+            CombatCore.Primitives.Role.Damage,
+            Mathf.FloorToInt(_hp * gatherWeight * actuateWeight)));
 }

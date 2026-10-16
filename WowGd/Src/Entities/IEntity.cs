@@ -1,3 +1,5 @@
+using CombatCore;
+using CombatCore.Primitives;
 using WowGd.Src.Combat.Abilities.Actuation.Drivers;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
@@ -10,7 +12,7 @@ using WowGd.Src.Tools;
 
 namespace WowGd.Src.Entities;
 
-public interface IEntity : IInitializable
+public interface IEntity : IInitializable, ICombatEntity
 {
     /// <summary>
     /// Data that identifies the entity.
@@ -24,10 +26,6 @@ public interface IEntity : IInitializable
     /// The physical body of the entity, notably defines its position.
     /// </summary>
     IBody               Body                { get; }
-    /// <summary>
-    /// The health of the entity.
-    /// </summary>
-    IEntityHealth       Health              { get; }
     IResourceManager    ResourceManager     { get; }
     IWishDir            WishDir             { get; }
 
@@ -37,4 +35,6 @@ public interface IEntity : IInitializable
     IEntityMover        EntityMover         { get; }
 
     IStatistics         Statistics          { get; }
+
+    void SetId(EntityId id);
 }
