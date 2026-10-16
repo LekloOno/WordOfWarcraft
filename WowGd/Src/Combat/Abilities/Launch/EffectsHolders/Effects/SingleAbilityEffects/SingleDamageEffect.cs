@@ -19,6 +19,6 @@ public partial class SingleDamageEffect : SingleAbilityEffect
         spellInstance.Request(
             target.Id,
             ResourceRegistry.GetId<IEntityHealth>(),
-            CombatCore.Primitives.Role.Damage,
+            CombatCore.Primitives.Role.Drain,
             Mathf.FloorToInt(_hp * gatherWeight * actuateWeight));
 }

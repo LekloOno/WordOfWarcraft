@@ -22,7 +22,7 @@ public partial class SingleFocusEffect : SingleAbilityEffect
             spellInstance.Request(
                 target.Id,
                 ResourceRegistry.GetId<IFocus>(),
-                CombatCore.Primitives.Role.Heal,
+                CombatCore.Primitives.Role.Feed,
                 Mathf.FloorToInt(_focus * gatherWeight * actuateWeight));
         else
             spellInstance.Request(

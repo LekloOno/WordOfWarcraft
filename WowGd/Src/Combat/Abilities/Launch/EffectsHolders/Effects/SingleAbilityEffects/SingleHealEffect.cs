@@ -19,6 +19,6 @@ public partial class SingleHealEffect : SingleAbilityEffect
         spellInstance.Request(
             target.Id,
             ResourceRegistry.GetId<IEntityHealth>(),
-            CombatCore.Primitives.Role.Heal,
+            CombatCore.Primitives.Role.Feed,
             Mathf.FloorToInt(_hp * gatherWeight * actuateWeight));
 }

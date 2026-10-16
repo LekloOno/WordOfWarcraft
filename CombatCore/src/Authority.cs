@@ -239,7 +239,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         if (!entity.Resources.Has(current.Resource)) { Log.Add($"NOOP  {current.Id} {current.Target} has no resource {current.Resource.Value}"); return; }
 
         long amount = current.Value.Resolve();
-        bool removes = (current.Role & (Role.Damage | Role.Drain | Role.Cost)) != 0;
+        bool removes = (current.Role & Role.Drain) != 0;
         var change = entity.Resources.Apply(current.Resource, removes ? ResourceDirection.Remove : ResourceDirection.Add, amount);
 
         var fact = new ResourceFact(ctx, current.Source, current.Target, current.Resource, current.Role, current.Tags,

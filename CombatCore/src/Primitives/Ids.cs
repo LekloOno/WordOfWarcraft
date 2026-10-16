@@ -13,7 +13,7 @@ public readonly record struct ResourceId(int Value);
 /// A request has exactly one role; a filter may hold a mask of roles (None = any).
 /// </summary>
 [Flags]
-public enum Role { None = 0, Damage = 1, Drain = 2, Cost = 4, Heal = 8, Refund = 16 }
+public enum Role { None = 0, Drain = 1, Feed = 2 }
 
 public enum SourceKind { System, Ability, Status }
 
