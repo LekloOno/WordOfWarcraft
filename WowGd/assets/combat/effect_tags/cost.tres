@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="CombatRequestTag" format=3 uid="uid://bqn0agkooun1f"]
+
+[ext_resource type="Script" uid="uid://c5vh25fgoms17" path="res://Src/Combat/CombatRequestTag.cs" id="1_ou0rj"]
+
+[resource]
+script = ExtResource("1_ou0rj")
+Name = "cost"
+metadata/_custom_type_script = "uid://c5vh25fgoms17"

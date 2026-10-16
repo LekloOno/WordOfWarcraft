@@ -29,6 +29,7 @@
 [ext_resource type="Script" uid="uid://bx8avv7d2o33t" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/ImpulseData.cs" id="27_rd0a3"]
 [ext_resource type="Script" uid="uid://ou6rb2kwsfxl" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/Contribs/TranslationData.cs" id="28_ctmb4"]
 [ext_resource type="Script" uid="uid://c6dworxii6xbg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/External/ExternalMoveEffect.cs" id="29_ac11p"]
+[ext_resource type="Script" uid="uid://c5vh25fgoms17" path="res://Src/Combat/CombatRequestTag.cs" id="29_qewp4"]
 [ext_resource type="Script" uid="uid://b2utcesxdrfuh" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Gatherers/DirectGathererData.cs" id="30_vkvdf"]
 [ext_resource type="Script" uid="uid://ckqo2mxf3bw17" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Triggers/InstantTriggerData.cs" id="31_ry6pk"]
 [ext_resource type="Script" uid="uid://bmqf1jfqhr2jf" path="res://Src/Combat/Abilities/AbilitySmData.cs" id="32_6c71x"]
@@ -50,6 +51,7 @@
 [ext_resource type="Script" uid="uid://beoj5s7ccateg" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/SingleHealEffect.cs" id="48_yp35a"]
 [ext_resource type="Texture2D" uid="uid://bqxnlv2uovw6k" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_23.png" id="49_vjpnc"]
 [ext_resource type="Texture2D" uid="uid://bcg5yyrd6224n" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_7.png" id="50_a4blw"]
+[ext_resource type="Resource" uid="uid://bqn0agkooun1f" path="res://assets/combat/effect_tags/cost.tres" id="50_h8dry"]
 [ext_resource type="Texture2D" uid="uid://cfhuqyvvnk04j" path="res://assets/sprites/abilities/placeholders/Monk_Free/Monk_17.png" id="51_cfqh2"]
 [ext_resource type="Script" uid="uid://bisjn2v4n4vlu" path="res://Src/Entities/Stats/Modifier/SingleStatModifier.cs" id="52_k2b5b"]
 [ext_resource type="Script" uid="uid://ce6rjnnq7n2l8" path="res://Src/Combat/Abilities/Launch/EffectsHolders/Effects/SingleAbilityEffects/Movement/MovementStatusEffect.cs" id="52_n6gq7"]
@@ -287,6 +289,7 @@ metadata/_custom_type_script = "uid://beoj5s7ccateg"
 script = ExtResource("43_bvcse")
 _focus = -20.0
 _launcher = true
+_requestTags = Array[ExtResource("29_qewp4")]([ExtResource("50_h8dry")])
 metadata/_custom_type_script = "uid://cb1glnpals704"
 
 [sub_resource type="Resource" id="Resource_80m0l"]
@@ -340,6 +343,7 @@ metadata/_custom_type_script = "uid://cb1glnpals704"
 script = ExtResource("35_mvgpk")
 _hp = 35.0
 _target = 4
+_requestTags = Array[ExtResource("29_qewp4")]([ExtResource("50_h8dry")])
 metadata/_custom_type_script = "uid://ctj8xarphtj3u"
 
 [sub_resource type="Resource" id="Resource_vs3tm"]
@@ -550,6 +554,7 @@ metadata/_custom_type_script = "uid://ctj8xarphtj3u"
 script = ExtResource("43_bvcse")
 _focus = -40.0
 _launcher = true
+_requestTags = Array[ExtResource("29_qewp4")]([ExtResource("50_h8dry")])
 metadata/_custom_type_script = "uid://cb1glnpals704"
 
 [sub_resource type="Resource" id="Resource_xg7px"]

@@ -23,12 +23,14 @@ public partial class SingleFocusEffect : SingleAbilityEffect
                 target.Id,
                 ResourceRegistry.GetId<IFocus>(),
                 CombatCore.Primitives.Role.Feed,
-                Mathf.FloorToInt(_focus * gatherWeight * actuateWeight));
+                Mathf.FloorToInt(_focus * gatherWeight * actuateWeight),
+                RequestTagSet);
         else
             spellInstance.Request(
                 target.Id,
                 ResourceRegistry.GetId<IFocus>(),
                 CombatCore.Primitives.Role.Drain,
-                Mathf.FloorToInt(-_focus * gatherWeight * actuateWeight));
+                Mathf.FloorToInt(-_focus * gatherWeight * actuateWeight),
+                RequestTagSet);
     }
 }

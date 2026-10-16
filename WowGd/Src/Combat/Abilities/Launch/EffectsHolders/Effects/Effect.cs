@@ -1,5 +1,7 @@
 using CombatCore;
+using CombatCore.Primitives;
 using Godot;
+using Godot.Collections;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 
@@ -15,6 +17,9 @@ namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects;
 [GlobalClass]
 public abstract partial class Effect : Resource, IEffect
 {
+    [Export] private Array<CombatRequestTag> _requestTags = [];
+
+    protected TagSet RequestTagSet => _requestTags.IntoSet();
     public abstract string Id { get; }
     public abstract bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance);
 }
