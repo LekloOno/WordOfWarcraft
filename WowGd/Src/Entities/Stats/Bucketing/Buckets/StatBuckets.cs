@@ -44,7 +44,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
         return new CombinedModifierHandle(flatHandle, layerHandle);
     }
 
-    public IDisposable? AddFlatModifier(TVal value)
+    public IEffectHandle? AddFlatModifier(TVal value)
 	{
         if (value == identity)
             return null;
@@ -54,7 +54,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
 		return new FlatModifierHandle(this, inner);
 	}
 
-    public IDisposable? AddLayerModifier(float value, int layer)
+    public IEffectHandle? AddLayerModifier(float value, int layer)
     {
         if (layer >= layers)
             throw new IndexOutOfRangeException();
@@ -73,7 +73,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
         return handle;
     }
 
-    private void RemovedModifierFrom(IDisposable handle, HomogeneousBucket<float> bucket)
+    private void RemovedModifierFrom(IEffectHandle handle, HomogeneousBucket<float> bucket)
     {
         float oldModifier = bucket.Modifier;
         handle.Dispose();
@@ -115,9 +115,9 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
             _zeroPreservedCache *= next / prev;
     }
 
-    private sealed class LayerModifierHandle(StatBuckets<TVal> buckets, HomogeneousBucket<float> bucket, IDisposable handle) : IEffectHandle
+    private sealed class LayerModifierHandle(StatBuckets<TVal> buckets, HomogeneousBucket<float> bucket, IEffectHandle handle) : IEffectHandle
     {
-        IDisposable? _handle = handle;
+        IEffectHandle? _handle = handle;
         public void Dispose()
         {
             if (_handle == null)
@@ -129,13 +129,13 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
 
         public void Reweight(float weight)
         {
-            throw new NotImplementedException();
+            _handle?.Reweight(weight);
         }
     }
 
-    private sealed class FlatModifierHandle(StatBuckets<TVal> buckets, IDisposable handle) : IEffectHandle
+    private sealed class FlatModifierHandle(StatBuckets<TVal> buckets, IEffectHandle handle) : IEffectHandle
 	{
-		private IDisposable? _handle = handle;
+		private IEffectHandle? _handle = handle;
 
 		public void Dispose()
 		{
@@ -149,7 +149,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
 
         public void Reweight(float weight)
         {
-            throw new NotImplementedException();
+            _handle?.Reweight(weight);
         }
     }
 

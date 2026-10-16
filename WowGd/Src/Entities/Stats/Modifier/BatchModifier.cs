@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using CombatCore;
 using Godot;
 
 namespace WowGd.Src.Entities.Stats.Modifier;
@@ -9,11 +9,11 @@ public partial class BatchModifier : StatModifier
 {
     [Export] private Godot.Collections.Array<SingleStatModifier> _modifiers = [];
 
-    public override IDisposable? ApplyTo(IEntity entity, float weight)
+    public override IEffectHandle? ApplyTo(IEntity entity, float weight)
     {
-        List<IDisposable> handles = [];
+        List<IEffectHandle> handles = [];
         foreach (SingleStatModifier val in _modifiers)
-            if (val.ApplyTo(entity, weight) is IDisposable handle)
+            if (val.ApplyTo(entity, weight) is IEffectHandle handle)
                 handles.Add(handle);
 
         if (handles.Count == 0)
@@ -22,19 +22,28 @@ public partial class BatchModifier : StatModifier
         return new BatchModifierHandle(handles);
     }
 
-    private sealed class BatchModifierHandle(List<IDisposable> handles) : IDisposable
+    private sealed class BatchModifierHandle(List<IEffectHandle> handles) : IEffectHandle
     {
-        List<IDisposable>? _handles = handles;
+        List<IEffectHandle>? _handles = handles;
         public void Dispose()
         {
             if (_handles is null)
                 return;
 
-            foreach (IDisposable handle in _handles)
+            foreach (IEffectHandle handle in _handles)
                 handle.Dispose();
 
             _handles = null!;
             return;
+        }
+
+        public void Reweight(float weight)
+        {
+            if (_handles is null)
+                return;
+
+            foreach (IEffectHandle handle in _handles)
+                handle.Reweight(weight);
         }
     }
 }

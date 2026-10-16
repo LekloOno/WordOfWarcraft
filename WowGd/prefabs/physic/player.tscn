@@ -2,12 +2,18 @@
 
 [ext_resource type="Script" uid="uid://dr3n7mycos7rq" path="res://Src/Entities/ClientEntity.cs" id="1_upqbw"]
 [ext_resource type="Script" uid="uid://defda3606ges4" path="res://Src/Entities/EntityIdData.cs" id="2_017mr"]
+[ext_resource type="Script" uid="uid://cel6wqxgjl7i5" path="res://Src/Combat/Statuses/StatusInstall.cs" id="2_envmc"]
+[ext_resource type="Script" uid="uid://begsovkbp1702" path="res://Src/Combat/Statuses/Installs/TestStatusInstall.cs" id="3_n5pdb"]
+[ext_resource type="Script" uid="uid://b7pwsyo8pnwmo" path="res://Src/Combat/Statuses/StatusEffects.cs" id="3_q72cs"]
 [ext_resource type="Script" uid="uid://fdi60jyuew2y" path="res://Src/Physics/Movement/WishDir/StandardWishDir.cs" id="3_qjp78"]
 [ext_resource type="Script" uid="uid://bl8lp3ttb4jor" path="res://Src/Combat/Resources/ResourceManager.cs" id="4_k2b5b"]
+[ext_resource type="Script" uid="uid://doayurmn7h0ob" path="res://Src/Combat/Statuses/StatusInstalls.cs" id="4_q72cs"]
 [ext_resource type="Script" uid="uid://dbfmamo6b7xia" path="res://Src/Combat/Resources/FocusRes/Focus.cs" id="5_qewp4"]
 [ext_resource type="Script" uid="uid://dr2fk3cmwlxdp" path="res://Src/Combat/Health/EntityHealth.cs" id="6_h8dry"]
+[ext_resource type="Script" uid="uid://c82mg5mpp0avj" path="res://Src/Combat/Statuses/StatusData.cs" id="6_tk2o0"]
 [ext_resource type="Script" uid="uid://qx8vwd07ryt3" path="res://Src/Physics/Movement/Channels/Internal/BodyMover.cs" id="7_l5be3"]
 [ext_resource type="Script" uid="uid://ciu72damg3lg6" path="res://Src/Physics/Movement/WishDir/CursorWishDir.cs" id="8_11fuo"]
+[ext_resource type="Script" uid="uid://ca1fg0nmmcwj4" path="res://Src/Combat/Statuses/TimeModelData.cs" id="8_q72cs"]
 [ext_resource type="Script" uid="uid://dro2y37vij5qd" path="res://Src/Input/Targeting/Free/Cursor.cs" id="9_4q036"]
 [ext_resource type="Script" uid="uid://b1cu3p8irox5s" path="res://Src/Input/Targeting/Free/Control/SwappableCursorMover.cs" id="10_envmc"]
 [ext_resource type="Script" uid="uid://hlchubm80yhc" path="res://Src/Input/Targeting/Free/Confirm/SwappableCursorConfirm.cs" id="11_n5pdb"]
@@ -66,6 +72,38 @@
 [ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="59_isay2"]
 [ext_resource type="Script" uid="uid://u1q0ceaxrw3t" path="res://Src/Entities/Stats/Statistics.cs" id="60_3v1fp"]
 [ext_resource type="Script" uid="uid://bk41d1kcbqthv" path="res://Src/Entities/Stats/StatisticResInt.cs" id="61_ha2cu"]
+
+[sub_resource type="Resource" id="Resource_s12lk"]
+script = ExtResource("52_k2b5b")
+Target = 6
+Value = 50
+metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
+
+[sub_resource type="Resource" id="Resource_aflbg"]
+script = ExtResource("3_q72cs")
+_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_s12lk")])
+metadata/_custom_type_script = "uid://b7pwsyo8pnwmo"
+
+[sub_resource type="Resource" id="Resource_iqnyx"]
+script = ExtResource("3_n5pdb")
+metadata/_custom_type_script = "uid://begsovkbp1702"
+
+[sub_resource type="Resource" id="Resource_d1qh8"]
+script = ExtResource("4_q72cs")
+_installs = Array[ExtResource("2_envmc")]([SubResource("Resource_iqnyx")])
+metadata/_custom_type_script = "uid://doayurmn7h0ob"
+
+[sub_resource type="Resource" id="Resource_tk2o0"]
+script = ExtResource("8_q72cs")
+metadata/_custom_type_script = "uid://ca1fg0nmmcwj4"
+
+[sub_resource type="Resource" id="Resource_b55oy"]
+script = ExtResource("6_tk2o0")
+_category = 2
+_timeModelData = SubResource("Resource_tk2o0")
+_effects = SubResource("Resource_aflbg")
+_installs = SubResource("Resource_d1qh8")
+metadata/_custom_type_script = "uid://c82mg5mpp0avj"
 
 [sub_resource type="Resource" id="Resource_u78jf"]
 script = ExtResource("2_017mr")
@@ -337,13 +375,13 @@ metadata/_custom_type_script = "uid://tr6yt483fw7q"
 script = ExtResource("43_bvcse")
 _focus = -20.0
 _launcher = true
+_requestTags = Array[ExtResource("29_qewp4")]([ExtResource("50_h8dry")])
 metadata/_custom_type_script = "uid://cb1glnpals704"
 
 [sub_resource type="Resource" id="Resource_xfgcb"]
 script = ExtResource("35_mvgpk")
 _hp = 35.0
 _target = 4
-_requestTags = Array[ExtResource("29_qewp4")]([ExtResource("50_h8dry")])
 metadata/_custom_type_script = "uid://ctj8xarphtj3u"
 
 [sub_resource type="Resource" id="Resource_vs3tm"]
@@ -460,7 +498,7 @@ Target = 2
 Flat = false
 metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
 
-[sub_resource type="Resource" id="Resource_s12lk"]
+[sub_resource type="Resource" id="Resource_b7wtm"]
 script = ExtResource("52_k2b5b")
 Target = 1
 Value = 500
@@ -474,14 +512,14 @@ Value = 50
 Multiplier = 3.0
 metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
 
-[sub_resource type="Resource" id="Resource_tk2o0"]
+[sub_resource type="Resource" id="Resource_g2b8w"]
 script = ExtResource("53_qewp4")
-_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_q72cs"), SubResource("Resource_s12lk"), SubResource("Resource_ghg0p")])
+_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_q72cs"), SubResource("Resource_b7wtm"), SubResource("Resource_ghg0p")])
 metadata/_custom_type_script = "uid://c5fd42nlc6dwi"
 
-[sub_resource type="Resource" id="Resource_aflbg"]
+[sub_resource type="Resource" id="Resource_t4wrm"]
 script = ExtResource("54_h8dry")
-_modifiers = SubResource("Resource_tk2o0")
+_modifiers = SubResource("Resource_g2b8w")
 _duration = 3.0
 _target = 1
 metadata/_custom_type_script = "uid://b5qwvmhcv4ew"
@@ -498,7 +536,7 @@ metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 script = ExtResource("24_rw8uc")
 TriggerDt = SubResource("Resource_7yorm")
 GathererDt = SubResource("Resource_q1303")
-EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_7335w"), SubResource("Resource_1ks5w"), SubResource("Resource_aflbg")])
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_7335w"), SubResource("Resource_1ks5w"), SubResource("Resource_t4wrm")])
 metadata/_custom_type_script = "uid://diy1f0p7da221"
 
 [sub_resource type="Resource" id="Resource_lswdd"]
@@ -630,6 +668,7 @@ script = ExtResource("1_upqbw")
 DactyloDriver = NodePath("PlayerDactyloDriver")
 SelectionModeInput = NodePath("SelectionCombatModeInput")
 MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
+_testStatus = SubResource("Resource_b55oy")
 IdData = SubResource("Resource_u78jf")
 TeamMask = 2
 

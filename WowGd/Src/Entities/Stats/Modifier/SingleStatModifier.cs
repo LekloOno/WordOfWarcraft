@@ -1,4 +1,5 @@
 using System;
+using CombatCore;
 using Godot;
 
 namespace WowGd.Src.Entities.Stats.Modifier;
@@ -25,7 +26,7 @@ public partial class SingleStatModifier : StatModifier
 
     private bool _flat = true;
 
-    public override IDisposable? ApplyTo(IEntity entity, float weight) => _flat
+    public override IEffectHandle? ApplyTo(IEntity entity, float weight) => _flat
         ? Target.GetStat(entity).Buckets.AddFlatModifier(Mathf.FloorToInt(Value * weight))
         : Target.GetStat(entity).Buckets.AddLayerModifier(Multiplier * weight, _layer);
 
@@ -44,4 +45,6 @@ public partial class SingleStatModifier : StatModifier
                 property["usage"] = (uint)PropertyUsageFlags.NoEditor;
         }
     }
+
+    public StatContribution Contribution => new(new((uint)Target), _flat ? Value : 0, _flat ? 1f : Multiplier);
 }

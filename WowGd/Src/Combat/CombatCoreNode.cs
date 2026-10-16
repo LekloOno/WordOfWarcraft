@@ -27,4 +27,9 @@ public partial class CombatCoreNode : Node, IInitializable
 
         _initialized.TrySetResult();
     }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        Authority.Update();
+    }
 }

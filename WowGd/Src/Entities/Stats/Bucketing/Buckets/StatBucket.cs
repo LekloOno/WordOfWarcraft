@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CombatCore;
 
 namespace WowGd.Src.Entities.Stats.Bucketing.Buckets;
 
@@ -11,7 +12,7 @@ public partial class StatBucket<TIn, TOut>(
     private readonly Dictionary<ModifierHandle, TIn> _bucket = [];
     public TOut Modifier { get; private set; } = identity;
 
-    public IDisposable AddModifier(TIn value)
+    public IEffectHandle AddModifier(TIn value)
     {
         ModifierHandle handle = new(this);
         _bucket.Add(handle, value);
@@ -25,7 +26,7 @@ public partial class StatBucket<TIn, TOut>(
             Modifier = subOp(Modifier, value);
     }
 
-    private sealed class ModifierHandle(StatBucket<TIn, TOut> statBucket) : IDisposable
+    private sealed class ModifierHandle(StatBucket<TIn, TOut> statBucket) : IEffectHandle
     {
         private StatBucket<TIn, TOut> _statBucket = statBucket;
 
@@ -36,6 +37,11 @@ public partial class StatBucket<TIn, TOut>(
 
             _statBucket.RemoveModifier(this);
             _statBucket = null!;
+        }
+
+        public void Reweight(float weight)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using CombatCore;
 using Godot;
 
 namespace WowGd.Src.Entities.Stats.Modifier;

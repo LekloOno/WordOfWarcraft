@@ -24,7 +24,9 @@ public partial class Focus : Node, IFocus
             _entity = entity;
 
         await _entity.Initialization;
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus).Changed += OnMaxChanged;
+        var stat = _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Focus);
+        stat.Changed += OnMaxChanged;
+        OnMaxChanged(stat.Current);
     }
 
     public override async void _EnterTree()

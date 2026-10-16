@@ -34,7 +34,9 @@ public partial class EntitiesRegistry : IEntityDirectory
         return deleted;
     }
 
-    public ICombatEntity? Find(EntityId id)
+    public ICombatEntity? Find(EntityId id) => FindAsEntity(id);
+
+    public IEntity? FindAsEntity(EntityId id)
     {
         _orderedEntities.TryGetValue(id, out IEntity? entity);
         return entity;
