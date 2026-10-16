@@ -15,11 +15,10 @@ public partial class SingleDamageEffect : SingleAbilityEffect
     public override string Id => "effect_single_damage";
     [Export] private float _hp = 10f;
 
-    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        CombatCoreNode.Authority.Submit(new RequestDraft(
-            new(CombatCore.Primitives.SourceKind.Ability, 1, launcher.Id),
+    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight) =>
+        spellInstance.Request(
             target.Id,
             ResourceRegistry.GetId<IEntityHealth>(),
             CombatCore.Primitives.Role.Damage,
-            Mathf.FloorToInt(_hp * gatherWeight * actuateWeight)));
+            Mathf.FloorToInt(_hp * gatherWeight * actuateWeight));
 }

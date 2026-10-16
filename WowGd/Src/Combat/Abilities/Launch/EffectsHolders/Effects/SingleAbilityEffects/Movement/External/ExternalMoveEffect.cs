@@ -1,3 +1,4 @@
+using CombatCore;
 using Godot;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects.Movement.External;
@@ -59,7 +60,7 @@ public partial class ExternalMoveEffect : SingleAbilityEffect
         };
     }
 
-    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight)
+    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight)
     {
         Vector2 direction = (launcher.Body.GlobalPosition - target.Body.GlobalPosition).Normalized();
         if (_moveDirection is ExternalMoveDirection.Push)
@@ -68,7 +69,7 @@ public partial class ExternalMoveEffect : SingleAbilityEffect
         DoMove(target, direction, gatherWeight, actuateWeight);
     }
 
-    public override void LauncherEffect(IEntity entity, float actuateWeight)
+    public override void LauncherEffect(IEntity entity, SpellInstance spellInstance, float actuateWeight)
     {
         Vector2 direction = entity.WishDir.WishDir();
         if (_moveDirection is ExternalMoveDirection.Pull)

@@ -1,3 +1,4 @@
+using CombatCore;
 using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Entities;
@@ -15,16 +16,16 @@ public abstract partial class SingleAbilityEffect : Effect
     [Export] private TargetRelation _target;
     [Export] private EffectWeighting _weighting = EffectWeighting.Actuate | EffectWeighting.Gather;
 
-    public override bool Apply(TargetsPayload targetsPayload)
+    public override bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance)
     {
         if (_launcher)
-            LauncherEffect(targetsPayload.Launcher, targetsPayload.ActuateWeight);
+            LauncherEffect(targetsPayload.Launcher, spellInstance, targetsPayload.ActuateWeight);
 
         if (_target == TargetRelation.None)
             return true;
 
         void solver(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
-            ResolveEffect(targetsPayload.Launcher, entity, IsDirect, gatherWeight, actuateWeight);
+            ResolveEffect(targetsPayload.Launcher, entity, spellInstance, IsDirect, gatherWeight, actuateWeight);
 
         targetsPayload.Apply(
             _target.HasSelf()  ? solver : null,
@@ -35,17 +36,18 @@ public abstract partial class SingleAbilityEffect : Effect
         return true;
     }
 
-    private void ResolveEffect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        Effect(launcher, target, IsDirect,
+    private void ResolveEffect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight) =>
+        Effect(launcher, target, spellInstance, IsDirect,
             _weighting.HasFlag(EffectWeighting.Gather)  ? gatherWeight  : 1f,
             _weighting.HasFlag(EffectWeighting.Actuate) ? actuateWeight : 1f);
 
-    public abstract void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight);
+    public abstract void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight);
 
-    public virtual void LauncherEffect(IEntity entity, float actuateWeight) =>
+    public virtual void LauncherEffect(IEntity entity, SpellInstance spellInstance, float actuateWeight) =>
         Effect(
             launcher: entity,
             target: entity,
+            spellInstance: spellInstance,
             IsDirect: true,
             gatherWeight: 1f,
             actuateWeight

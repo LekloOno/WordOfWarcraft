@@ -1,3 +1,4 @@
+using CombatCore;
 using Godot;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
@@ -15,5 +16,5 @@ namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects;
 public abstract partial class Effect : Resource, IEffect
 {
     public abstract string Id { get; }
-    public abstract bool Apply(TargetsPayload targetsPayload);
+    public abstract bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance);
 }

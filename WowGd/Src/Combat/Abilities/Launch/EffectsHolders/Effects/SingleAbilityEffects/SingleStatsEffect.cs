@@ -1,4 +1,5 @@
 using System;
+using CombatCore;
 using Godot;
 using WowGd.Src.Entities;
 using WowGd.Src.Entities.Stats.Modifier;
@@ -13,7 +14,7 @@ public partial class SingleStatsEffect : SingleAbilityEffect
     [Export] private BatchModifier _modifiers = null!;
     [Export] private float _duration;
 
-    public override void Effect(IEntity launcher, IEntity target, bool IsDirect, float gatherWeight, float actuateWeight)
+    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight)
     {
         if (!StaticTree.TryGetTree(out SceneTree? tree))
             return;

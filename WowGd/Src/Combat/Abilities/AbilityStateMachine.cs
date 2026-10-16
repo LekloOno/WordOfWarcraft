@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CombatCore;
 using Godot;
 using WowGd.Src.Combat.Abilities.Actuation;
 using WowGd.Src.Combat.Abilities.Actuators;
@@ -37,6 +38,7 @@ public partial class AbilityStateMachine : Node,
     public ITargetLaunchableData TargetLaunchableData => _data;
     private ICoolDown _coolDown = null!;
     public ICoolDown CoolDown => _coolDown;
+    private SpellInstance? _currentInstance;
 
     public IAbilityData Data => _data;
     private ILaunch[]       _instantLaunches    = [];
@@ -82,10 +84,13 @@ public partial class AbilityStateMachine : Node,
             return false;
 
         _cts?.Cancel();
-        _cancelLaunches.LaunchAll(new (caster, new(caster), 1f));
+        _cancelLaunches.LaunchAll(new (caster, new(caster), 1f), _currentInstance!);
 
         Cancelled?.Invoke();
         CancelLaunchesEmitted?.Invoke(_cancelLaunches);
+
+        _cts = null;
+        _currentInstance = null;
         return true;
     }
 
@@ -98,7 +103,10 @@ public partial class AbilityStateMachine : Node,
             return;
 
         _cts?.Cancel();
-        _stopLaunches.LaunchAll(payload);
+        _stopLaunches.LaunchAll(payload, _currentInstance!);
+        
+        _cts = null;
+        _currentInstance = null;
     }
 
     public async Task<bool> Start(IEntity caster)
@@ -114,12 +122,12 @@ public partial class AbilityStateMachine : Node,
         if (!_data.StartPreconditionsDt.CheckAll(caster))
             return false;
 
-        CombatCoreNode.Authority.StartInstance(_id, caster.Id);
+        _currentInstance = CombatCoreNode.Authority.StartInstance(_id, caster.Id);
 
         Started?.Invoke();
 
         // STEP 2 - trgger instant launches
-        _instantLaunches.LaunchAll(new(caster, new(caster), 1f));
+        _instantLaunches.LaunchAll(new(caster, new(caster), 1f), _currentInstance);
         InstantLaunchesEmitted?.Invoke(_instantLaunches);
 
         _cts = new CancellationTokenSource();
@@ -144,7 +152,7 @@ public partial class AbilityStateMachine : Node,
             CoolDown.StartCd();
             
             // STEP 4 - trigger targeting launches
-            _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f));
+            _targetingLaunches.LaunchAll(new(caster, targetIntent, 1f), _currentInstance);
             TargetLaunchesEmitted?.Invoke(_targetingLaunches);
 
             // STEP 5 - wait for actuation completion
@@ -175,7 +183,7 @@ public partial class AbilityStateMachine : Node,
             return;
             
         // STEP 5.1 - trigger actuation launches
-        _actuationLaunches.LaunchAll(payload);
+        _actuationLaunches.LaunchAll(payload, _currentInstance!);
         ActuationLaunchesEmitted?.Invoke(_actuationLaunches);
 
         // STEP 5.2, 5.3 and 5.4 - check if current state still passes through looping conditions
