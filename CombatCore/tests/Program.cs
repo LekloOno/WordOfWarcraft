@@ -28,25 +28,26 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // drain becomes damage, then +5
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(B, R.Mana, 100);
-    a.Add(Rules.Replace(10, new(Roles: Role.Drain), Phase.Convert, r => r with { Role = Role.Drain, Resource = R.Health }));
-    a.Add(Rules.Mod(20, new(Roles: Role.Drain), ValueMod.Plus(5)));
+    a.Add(Rules.Replace(new(Roles: Role.Drain), Phase.Convert, r => r with { Role = Role.Drain, Resource = R.Health }));
+    a.Add(Rules.Mod(new(Roles: Role.Drain), ValueMod.Plus(5)));
     a.Submit(new RequestDraft(Spell(1), B, R.Mana, Role.Drain, 20));
     Check("P1 drain -> damage +5: health 75, mana untouched", w.Get(B, R.Health) == 75 && w.Get(B, R.Mana) == 100);
 }
 {   // competing replacements
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(B, R.Stamina, 100); w.Set(B, R.Mana, 100);
-    a.Add(Rules.Replace(10, new(Roles: Role.Drain), Phase.Convert, r => r with { Role = Role.Drain, Resource = R.Health }));
-    a.Add(Rules.Replace(11, new(Roles: Role.Drain), Phase.Convert, r => r with { Resource = R.Stamina }));
+    a.Add(Rules.Replace(new(Roles: Role.Drain), Phase.Convert, r => r with { Resource = R.Health }));
+    a.Add(Rules.Replace(new(Roles: Role.Drain), Phase.Convert, r => r with { Resource = R.Stamina }));
     a.Submit(new RequestDraft(Spell(1), B, R.Mana, Role.Drain, 20));
     Check("P2 first replacement wins", w.Get(B, R.Health) == 80 && w.Get(B, R.Stamina) == 100);
 }
 {   // lineage rule
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 1000); w.Set(B, R.Mana, 1000);
-    a.Add(Rules.AddOn(1, new(Roles: Role.Drain), r => new[] { new RequestDraft(Status(1), B, R.Mana, Role.Drain, 5) }));
-    a.Add(Rules.AddOn(2, new(Roles: Role.Drain),  r => new[] { new RequestDraft(Status(2), B, R.Health, Role.Drain, 5) }));
+    a.Add(Rules.AddOn(new(Roles: Role.Drain), r => new[] { new RequestDraft(Status(1), B, R.Mana, Role.Drain, 5) }));
+    a.Add(Rules.AddOn(new(Roles: Role.Drain),  r => new[] { new RequestDraft(Status(2), B, R.Health, Role.Drain, 5) }));
     a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 10));
+    Show(a, "oui");
     Check("P3 lineage: terminates after one round, nothing dropped",
           w.Get(B, R.Health) == 985 && w.Get(B, R.Mana) == 995 && !a.Log.Any(l => l.StartsWith("DROP")));
 }
@@ -60,8 +61,8 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // direct vs derived discrimination
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(C, R.Health, 100);
-    a.Add(Rules.Mod(1, new(Roles: Role.Drain, Kind: SourceKind.Ability, Origin: OriginMask.Original), ValueMod.Plus(5)));
-    a.Add(Rules.Mod(2, new(Roles: Role.Drain), ValueMod.Plus(1)));
+    a.Add(Rules.Mod(new(Roles: Role.Drain, Kind: SourceKind.Ability, Origin: OriginMask.Original), ValueMod.Plus(5)));
+    a.Add(Rules.Mod(new(Roles: Role.Drain), ValueMod.Plus(1)));
     a.OnFact<ResourceFact>(f => f.Source.Kind == SourceKind.Ability && f.Role == Role.Drain
         ? new[] { new RequestDraft(Status(7), C, R.Health, Role.Drain, 10) } : None());
     a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 20));
@@ -75,7 +76,7 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
         var optedIn = new HashSet<uint> { 1 };
         var spent = new Dictionary<InstanceId, long>();
         w.Set(Mage, R.Mana, 100); w.Set(X, R.Health, 10);
-        if (free) a.Add(Rules.Mod(50, new(Roles: Role.Drain, SourceId: 1), ValueMod.Times(0)));
+        if (free) a.Add(Rules.Mod(new(Roles: Role.Drain, SourceId: 1), ValueMod.Times(0)));
         a.OnFact<ResourceFact>((Func<ResourceFact, IEnumerable<Draft>>)(f => { if (f.Role == Role.Drain && f.Ctx.Cause is { } c) spent[c] = spent.GetValueOrDefault(c) + f.Applied; return None(); }));
         a.OnFact<DeathFact>(d => d.Ctx.Cause is { } c && instanceAbility.TryGetValue(c, out var ab) && optedIn.Contains(ab) && spent.GetValueOrDefault(c) > 0
             ? new Draft[] { new RequestDraft(Status(99), Mage, R.Mana, Role.Feed, spent[c], default, c) } : None());
@@ -150,7 +151,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     w.Set(B, R.Health, 1000);
     var weakened = new StatusDefinition(300, "Weakened", StatusCategory.Debuff,
         Level: new LevelModel(5, MergeOp.Add),
-        Install: (inst, auth) => new[] { auth.Add(Rules.Mod(inst.Id + 1000,
+        Install: (inst, auth) => new[] { auth.Add(Rules.Mod(
             new(Roles: Role.Drain, SourceOwner: inst.Owner), _ => ValueMod.Times(1 - 0.1 * inst.Weight))) });
     a.Submit(new StatusDraft(Status(9), B, StatusOp.Apply, weakened, Level: 1));
     a.Submit(new RequestDraft(new Source(SourceKind.Ability, 1, B), C, R.Health, Role.Drain, 100));
@@ -179,7 +180,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 {   // S7: status acting on statuses: +20% level on received buffs
     var a = New(out var w, out var clock);
     var blessed = new StatusDefinition(303, "Blessed", StatusCategory.Passive,
-        Install: (inst, auth) => new[] { auth.Add(Rules.LevelMod(5000,
+        Install: (inst, auth) => new[] { auth.Add(Rules.LevelMod(
             new(new StatusFilter(StatusCategory.Buff), StatusOp.Apply, Target: inst.Owner), ValueMod.Times(1.2))) });
     a.Submit(new StatusDraft(Sys(B), B, StatusOp.Apply, blessed));
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, Might(), Level: 5, Duration: 100));
@@ -191,7 +192,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 {   // S8: disposing the status removes every effect it installed
     var a = New(out var w, out var clock); w.Set(B, R.Health, 100);
     var d = new StatusDefinition(304, "Sting", StatusCategory.Neutral, Time: new TimeModel(MergeOp.Replace),
-        Install: (inst, auth) => new[] { auth.Add(Rules.Mod(7000, new(Roles: Role.Drain, Target: inst.Owner), ValueMod.Plus(5))) });
+        Install: (inst, auth) => new[] { auth.Add(Rules.Mod(new(Roles: Role.Drain, Target: inst.Owner), ValueMod.Plus(5))) });
     At(a, clock, 0);
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Duration: 10));
     a.Submit(new RequestDraft(Spell(1), B, R.Health, Role.Drain, 10));

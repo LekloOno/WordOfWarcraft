@@ -15,7 +15,7 @@ public readonly struct ValueMod
     public static ValueMod Times(double mult) => new(0, mult);
 }
 
-public readonly record struct Contribution(uint By, string Kind, double Amount);
+public readonly record struct Contribution(long By, string Kind, double Amount);
 
 /// <summary>
 /// Request-local value: base + flat sums, then a multiplier. One-shot, no removal handles (unlike stat buckets).
@@ -30,7 +30,7 @@ public sealed class BucketedValue(long baseValue)
     public long Base { get; } = baseValue;
     public IReadOnlyList<Contribution> Contributions => _contributions;
 
-    public void Apply(uint by, ValueMod mod)
+    public void Apply(long by, ValueMod mod)
     {
         if (mod.Flat != 0) { _flat += mod.Flat; _contributions.Add(new(by, "flat", mod.Flat)); }
         if (mod.Mult != 1) { _mult *= mod.Mult; _contributions.Add(new(by, "mult", mod.Mult)); }

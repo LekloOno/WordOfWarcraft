@@ -37,6 +37,6 @@ public partial class TestStatusInstall : StatusInstall
         }
 
         return CombatCoreNode.Authority.Add(
-            Rules.AddOn(1, filter, fn));
+            Rules.AddOn(filter, fn));
     }
 }

@@ -86,7 +86,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     // ---------------- entry points ----------------
     public void Submit(Draft draft)
     {
-        Enqueue(draft, Origin.Original, ImmutableArray<uint>.Empty, 0);
+        Enqueue(draft, Origin.Original, ImmutableArray<long>.Empty, 0);
         if (!_running) Run();
     }
 
@@ -123,7 +123,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
 
     void PublishLifecycle<T>(T fact, InstanceId cause)
     {
-        Publish(fact, new FactCtx(default, cause, ImmutableArray<uint>.Empty, 0));
+        Publish(fact, new FactCtx(default, cause, ImmutableArray<long>.Empty, 0));
         if (!_running) Run();
     }
 
@@ -133,12 +133,12 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     /// </summary>
     public void RemoveEntity(EntityId entity)
     {
-        var ctx = new FactCtx(default, null, ImmutableArray<uint>.Empty, 0);
+        var ctx = new FactCtx(default, null, ImmutableArray<long>.Empty, 0);
         foreach (var inst in StatusesOf(entity).ToList()) RemoveInstance(inst, RemoveReason.OwnerRemoved, ctx);
         _statuses.Remove(entity);
     }
 
-    void Enqueue(Draft d, Origin origin, ImmutableArray<uint> lineage, int depth)
+    void Enqueue(Draft d, Origin origin, ImmutableArray<long> lineage, int depth)
     {
         var id = new RequestId(++_nextRequest);
         _queue.Enqueue(d switch
@@ -187,21 +187,23 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         var current = (T)original.CloneValues();
         foreach (var e in p.Replacements.OrderBy(x => x.Item.Phase).ThenBy(x => x.Timestamp).ToList())
         {
+            var id = e.Timestamp;
             var rep = e.Item;
-            if (current.Lineage.Contains(rep.Id) || !rep.Match(current)) continue;
-            current = (T)rep.Apply(current).WithLineage(current.Lineage.Add(rep.Id));
-            Log.Add($"REPL  {rep.Id}");
+            if (current.Lineage.Contains(id) || !rep.Match(current)) continue;
+            current = (T)rep.Apply(current).WithLineage(current.Lineage.Add(id));
+            Log.Add($"REPL  {id}");
         }
 
         // 3. add: decided on the ORIGINAL request, queued, never resolved inline.
         foreach (var e in p.Additions.OrderBy(x => x.Timestamp).ToList())
         {
             var add = e.Item;
-            if (original.Lineage.Contains(add.Id) || !add.Match(original)) continue;
+            var id = e.Timestamp;
+            if (original.Lineage.Contains(id) || !add.Match(original)) continue;
             foreach (var d in add.Add(original))
             {
-                Log.Add($"ADD   {add.Id}");
-                Enqueue(d with { Cause = d.Cause ?? original.Cause }, Origin.Derived, original.Lineage.Add(add.Id), original.Depth + 1);
+                Log.Add($"ADD   {id}");
+                Enqueue(d with { Cause = d.Cause ?? original.Cause }, Origin.Derived, original.Lineage.Add(id), original.Depth + 1);
             }
         }
 
@@ -209,10 +211,11 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         foreach (var e in p.Modifiers.OrderBy(x => x.Timestamp).ToList())
         {
             var mod = e.Item;
+            var id = e.Timestamp;
             if (!mod.Match(current)) continue;
             int before = current.ContributionCount;
-            mod.Apply(current, mod.Id);
-            if (current.ContributionCount > before) Log.Add($"MOD   {mod.Id}");
+            mod.Apply(current, id);
+            if (current.ContributionCount > before) Log.Add($"MOD   {id}");
         }
 
         // 5/6. resolve (type specific) publishes facts; reactions enqueue derived requests.

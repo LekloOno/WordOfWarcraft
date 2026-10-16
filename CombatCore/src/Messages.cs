@@ -19,12 +19,12 @@ public sealed record StatusDraft(
 // ---------- requests ----------
 public abstract record Request(
     RequestId Id, Source Source, InstanceId? Cause, Origin Origin,
-    ImmutableArray<uint> Lineage, int Depth, EntityId Target)
+    ImmutableArray<long> Lineage, int Depth, EntityId Target)
 {
     public abstract Request CloneValues();
     public abstract int ContributionCount { get; }
     public abstract string Describe();
-    public Request WithLineage(ImmutableArray<uint> lineage) => this with { Lineage = lineage };
+    public Request WithLineage(ImmutableArray<long> lineage) => this with { Lineage = lineage };
 
     protected string Tail() =>
         $"[{Origin}{(Cause is { } c ? $", cause {c}" : "")}{(Lineage.Length > 0 ? $", lineage {string.Join(",", Lineage)}" : "")}]";
@@ -32,7 +32,7 @@ public abstract record Request(
 
 public sealed record ResourceRequest(
     RequestId Id, Source Source, InstanceId? Cause, Origin Origin,
-    ImmutableArray<uint> Lineage, int Depth, EntityId Target,
+    ImmutableArray<long> Lineage, int Depth, EntityId Target,
     ResourceId Resource, Role Role, TagSet Tags, BucketedValue Value)
     : Request(Id, Source, Cause, Origin, Lineage, Depth, Target)
 {
@@ -44,7 +44,7 @@ public sealed record ResourceRequest(
 
 public sealed record StatusRequest(
     RequestId Id, Source Source, InstanceId? Cause, Origin Origin,
-    ImmutableArray<uint> Lineage, int Depth, EntityId Target,
+    ImmutableArray<long> Lineage, int Depth, EntityId Target,
     StatusOp Op, StatusDefinition? Def, BucketedValue Level, BucketedValue Duration, bool HasDuration,
     MergeOp? LevelOp, MergeOp? TimeOp, StatusFilter RemoveFilter, RemoveReason Reason)
     : Request(Id, Source, Cause, Origin, Lineage, Depth, Target)
@@ -56,7 +56,7 @@ public sealed record StatusRequest(
 }
 
 // ---------- facts: final and self-contained ----------
-public readonly record struct FactCtx(RequestId Request, InstanceId? Cause, ImmutableArray<uint> Lineage, int Depth);
+public readonly record struct FactCtx(RequestId Request, InstanceId? Cause, ImmutableArray<long> Lineage, int Depth);
 
 public sealed record ResourceFact(
     FactCtx Ctx, Source Source, EntityId Target, ResourceId Resource, Role Role, TagSet Tags,
