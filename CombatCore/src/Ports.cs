@@ -6,7 +6,7 @@ namespace CombatCore;
 // The game project implements them; tests implement them with fakes.
 
 /// <summary>Time source. The game backs it with the physics tick; tests with a manual counter.</summary>
-public interface IGameClock { ulong Tick { get; } }
+public interface IGameClock { long Tick { get; } }
 
 public enum ResourceDirection { Remove, Add }
 

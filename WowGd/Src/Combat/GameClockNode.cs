@@ -5,5 +5,5 @@ namespace WowGd.Src.Combat;
 
 public partial class GameClockNode : IGameClock
 {
-    public ulong Tick => Engine.GetPhysicsFrames();
+    public long Tick => (long) Engine.GetPhysicsFrames();
 }

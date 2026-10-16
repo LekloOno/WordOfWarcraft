@@ -23,7 +23,7 @@ public partial class StatusData : Resource
 
     private StatusDefinition? Definition;
 
-    public void Submit(IEntity owner, IEntity target, long level = 1, ulong? duration = null)
+    public void Submit(IEntity owner, IEntity target, long level = 1, long? duration = null)
     {
         Definition ??= new(
             Id: _count ++,

@@ -27,13 +27,13 @@ public sealed record StatusDefinition(
     Func<StatusInstance, Authority, IEnumerable<IDisposable>>? Install = null);
 
 /// <summary>Per-target instance of a definition. Owns every handle it registered: disposing them is "the status ends".</summary>
-public sealed class StatusInstance(uint id, StatusDefinition def, EntityId owner, int level, ulong? expiresAt, Source applier)
+public sealed class StatusInstance(uint id, StatusDefinition def, EntityId owner, int level, long? expiresAt, Source applier)
 {
     public uint Id { get; } = id;
     public StatusDefinition Def { get; } = def;
     public EntityId Owner { get; } = owner;
     public int Level { get; internal set; } = level;
-    public ulong? ExpiresAt { get; internal set; } = expiresAt;
+    public long? ExpiresAt { get; internal set; } = expiresAt;
     public Source Applier { get; internal set; } = applier;   // latest applier, kept for attribution
     internal bool Removed;
     internal readonly List<IDisposable> Handles = new();

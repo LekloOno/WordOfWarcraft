@@ -12,7 +12,7 @@ public sealed record RequestDraft(
 
 public sealed record StatusDraft(
     Source Source, EntityId Target, StatusOp Op, StatusDefinition? Def = null,
-    long Level = 1, ulong? Duration = null, MergeOp? LevelOp = null, MergeOp? TimeOp = null,
+    long Level = 1, long? Duration = null, MergeOp? LevelOp = null, MergeOp? TimeOp = null,
     StatusFilter RemoveFilter = default, RemoveReason Reason = RemoveReason.Dispelled,
     InstanceId? Cause = null) : Draft(Source, Target, Cause);
 
@@ -65,8 +65,8 @@ public sealed record ResourceFact(
 public sealed record DeathFact(FactCtx Ctx, EntityId Entity, Source Killer);
 public sealed record RequestDropped(FactCtx Ctx, string Reason);
 
-public sealed record StatusApplied(FactCtx Ctx, EntityId Owner, uint DefId, uint InstanceId, int Level, ulong? ExpiresAt, Source Applier);
-public sealed record StatusChanged(FactCtx Ctx, EntityId Owner, uint DefId, uint InstanceId, int LevelBefore, int LevelAfter, ulong? ExpiresBefore, ulong? ExpiresAfter);
+public sealed record StatusApplied(FactCtx Ctx, EntityId Owner, uint DefId, uint InstanceId, int Level, long? ExpiresAt, Source Applier);
+public sealed record StatusChanged(FactCtx Ctx, EntityId Owner, uint DefId, uint InstanceId, int LevelBefore, int LevelAfter, long? ExpiresBefore, long? ExpiresAfter);
 public sealed record StatusRemoved(FactCtx Ctx, EntityId Owner, uint DefId, uint InstanceId, RemoveReason Reason);
 
 // Spell lifecycle: plain facts, no request behind them.

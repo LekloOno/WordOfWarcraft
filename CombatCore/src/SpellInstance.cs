@@ -24,7 +24,7 @@ public sealed class SpellInstance
     public void Request(EntityId target, ResourceId resource, Role role, long amount, TagSet tags = default) =>
         _authority.Submit(new RequestDraft(Source, target, resource, role, amount, tags, Id));
 
-    public void ApplyStatus(EntityId target, StatusDefinition def, long level = 1, ulong? duration = null) =>
+    public void ApplyStatus(EntityId target, StatusDefinition def, long level = 1, long? duration = null) =>
         _authority.Submit(new StatusDraft(Source, target, StatusOp.Apply, def, level, duration, Cause: Id));
 
     /// <summary>Ends the flow once, with a reason. Further calls are ignored.</summary>

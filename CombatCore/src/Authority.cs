@@ -16,7 +16,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         public void Dispose() { _a?.Invoke(); _a = null; }
     }
 
-    sealed record Entry<T>(T Item, ulong Timestamp);
+    sealed record Entry<T>(T Item, long Timestamp);
 
     interface IPipeline { }
 
@@ -43,14 +43,14 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
 
     public int MaxDepth { get; init; } = 8;
     public List<string> Log { get; } = [];
-    public ulong Now { get; private set; }
+    public long Now { get; private set; }
     readonly Dictionary<EntityId, List<StatusInstance>> _statuses = [];
     readonly Queue<Request> _queue = new();
     readonly PipelineSet _pipelines = new();
     readonly Dictionary<Type, IFactChannel> _facts = [];
     readonly Dictionary<InstanceId, SpellInstance> _instances = [];
     uint _nextRequest, _nextStatus, _nextInstance;
-    ulong _nextTimestamp;
+    long _nextTimestamp;
     bool _running;
 
     // ---------------- queries ----------------
@@ -287,14 +287,14 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         var def = r.Def ?? throw new InvalidOperationException("Apply/Adjust needs a definition.");
         var inst2 = StatusesOf(r.Target).FirstOrDefault(i => i.Def.Id == def.Id);
         long inLevel = r.Level.Resolve();
-        ulong? inDur = r.HasDuration ? (ulong)r.Duration.Resolve() : null;
+        long? inDur = r.HasDuration ? r.Duration.Resolve() : null;
 
         if (inst2 is null)
         {
             if (r.Op != StatusOp.Apply) { Log.Add($"NOOP  adjust on missing status {def.Name}"); return; }
             int level = def.Level is null ? 1 : (int)Math.Clamp(inLevel, 0, def.Level.Max);
             if (level == 0) { Log.Add($"NOOP  level 0, {def.Name} not created"); return; }
-            ulong? expires = def.Time is not null ? Now + (inDur ?? 0) : null;
+            long? expires = def.Time is not null ? Now + (inDur ?? 0) : null;
             Create(def, r, owner, level, expires, ctx);
             return;
         }
@@ -302,13 +302,13 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         var levelOp = r.LevelOp ?? (r.Op == StatusOp.Apply ? def.Level?.OnApply : null) ?? MergeOp.Keep;
         var timeOp = r.TimeOp ?? (r.Op == StatusOp.Apply ? def.Time?.OnApply : null) ?? MergeOp.Keep;
         int newLevel = def.Level is null ? inst2.Level : (int)Math.Clamp(Merge(levelOp, inst2.Level, inLevel), 0, def.Level.Max);
-        ulong? newExp = def.Time is not null && inDur is { } d
-            ? (ulong)(timeOp == MergeOp.Replace || timeOp == MergeOp.Max ? Merge(timeOp, (long)(inst2.ExpiresAt ?? Now), (long)(Now + d)) : Merge(timeOp, (long)(inst2.ExpiresAt ?? Now), (long)d))
+        long? newExp = def.Time is not null && inDur is { } d
+            ? (long)(timeOp == MergeOp.Replace || timeOp == MergeOp.Max ? Merge(timeOp, (long)(inst2.ExpiresAt ?? Now), (long)(Now + d)) : Merge(timeOp, (long)(inst2.ExpiresAt ?? Now), (long)d))
             : inst2.ExpiresAt;
 
         if (newLevel == inst2.Level && newExp == inst2.ExpiresAt) { Log.Add($"NOOP  {def.Name} unchanged"); return; }
 
-        int lvlBefore = inst2.Level; ulong? expBefore = inst2.ExpiresAt;
+        int lvlBefore = inst2.Level; long? expBefore = inst2.ExpiresAt;
         inst2.Level = newLevel; inst2.ExpiresAt = newExp; inst2.Applier = r.Source;
         if (newLevel != lvlBefore) foreach (var h in inst2.EffectHandles) h.Reweight(inst2.Weight);
         Log.Add($"FACT  {def.Name} on {r.Target}: level {lvlBefore} -> {newLevel}, expires {expBefore?.ToString() ?? "-"} -> {newExp?.ToString() ?? "-"}");
@@ -318,7 +318,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         else if (newExp is { } t && t <= Now) RemoveInstance(inst2, RemoveReason.Expired, ctx);
     }
 
-    void Create(StatusDefinition def, StatusRequest r, ICombatEntity owner, int level, ulong? expires, FactCtx ctx)
+    void Create(StatusDefinition def, StatusRequest r, ICombatEntity owner, int level, long? expires, FactCtx ctx)
     {
         var inst = new StatusInstance(++_nextStatus, def, r.Target, level, expires, r.Source);
         if (def.Effects is not null)

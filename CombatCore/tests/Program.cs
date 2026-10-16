@@ -17,7 +17,7 @@ Authority New(out FakeWorld w, out ManualClock clock, int maxDepth = 8)
     w = world;
     return new Authority(clock, world) { MaxDepth = maxDepth };
 }
-void At(Authority a, ManualClock c, ulong tick) { c.Tick = tick; a.Update(); }
+void At(Authority a, ManualClock c, long tick) { c.Tick = tick; a.Update(); }
 Source Spell(uint id) => new(SourceKind.Ability, id, Mage);
 Source Status(uint id) => new(SourceKind.Status, id, Mage);
 Source Sys(EntityId owner) => new(SourceKind.System, 0, owner);
