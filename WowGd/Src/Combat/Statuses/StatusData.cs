@@ -13,7 +13,6 @@ public partial class StatusData : Resource
     [Export] private string _name = string.Empty;
     [Export] private StatusCategory _category;
     [Export] private Array<CombatRequestTag> _requestTags = [];
-    [Export] private StatusOp _statusOp;
 
     [Export] private LevelModelData? _levelModelData;
     [Export] private TimeModelData? _timeModelData;
@@ -23,7 +22,7 @@ public partial class StatusData : Resource
 
     private StatusDefinition? Definition;
 
-    public void Submit(IEntity owner, IEntity target, long level = 1, long? duration = null)
+    public void Submit(IEntity owner, IEntity target, StatusOp statusOp, long level = 1, long? duration = null)
     {
         Definition ??= new(
             Id: _count ++,
@@ -38,7 +37,7 @@ public partial class StatusData : Resource
         CombatCoreNode.Authority.Submit(new StatusDraft(
             new CombatCore.Primitives.Source(CombatCore.Primitives.SourceKind.Status, Definition.Id, owner.Id),
             target.Id,
-            _statusOp,
+            statusOp,
             Definition,
             level,
             duration

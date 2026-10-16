@@ -75,7 +75,7 @@
 
 [sub_resource type="Resource" id="Resource_s12lk"]
 script = ExtResource("52_k2b5b")
-Target = 6
+Target = 5
 Value = 50
 metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
 
@@ -84,25 +84,48 @@ script = ExtResource("3_q72cs")
 _modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_s12lk")])
 metadata/_custom_type_script = "uid://b7pwsyo8pnwmo"
 
-[sub_resource type="Resource" id="Resource_iqnyx"]
+[sub_resource type="Resource" id="Resource_6bglf"]
 script = ExtResource("3_n5pdb")
 metadata/_custom_type_script = "uid://begsovkbp1702"
 
-[sub_resource type="Resource" id="Resource_d1qh8"]
+[sub_resource type="Resource" id="Resource_105x8"]
 script = ExtResource("4_q72cs")
-_installs = Array[ExtResource("2_envmc")]([SubResource("Resource_iqnyx")])
+_installs = Array[ExtResource("2_envmc")]([SubResource("Resource_6bglf")])
 metadata/_custom_type_script = "uid://doayurmn7h0ob"
 
 [sub_resource type="Resource" id="Resource_tk2o0"]
+script = ExtResource("6_tk2o0")
+_category = 8
+_effects = SubResource("Resource_aflbg")
+_installs = SubResource("Resource_105x8")
+metadata/_custom_type_script = "uid://c82mg5mpp0avj"
+
+[sub_resource type="Resource" id="Resource_t4wrm"]
+script = ExtResource("52_k2b5b")
+Target = 6
+Value = 100
+metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
+
+[sub_resource type="Resource" id="Resource_ac11p"]
+script = ExtResource("52_k2b5b")
+Target = 2
+Value = 50
+metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
+
+[sub_resource type="Resource" id="Resource_b7wtm"]
+script = ExtResource("3_q72cs")
+_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_t4wrm"), SubResource("Resource_ac11p")])
+metadata/_custom_type_script = "uid://b7pwsyo8pnwmo"
+
+[sub_resource type="Resource" id="Resource_ghg0p"]
 script = ExtResource("8_q72cs")
 metadata/_custom_type_script = "uid://ca1fg0nmmcwj4"
 
-[sub_resource type="Resource" id="Resource_b55oy"]
+[sub_resource type="Resource" id="Resource_kjuvs"]
 script = ExtResource("6_tk2o0")
 _category = 2
-_timeModelData = SubResource("Resource_tk2o0")
-_effects = SubResource("Resource_aflbg")
-_installs = SubResource("Resource_d1qh8")
+_timeModelData = SubResource("Resource_ghg0p")
+_effects = SubResource("Resource_b7wtm")
 metadata/_custom_type_script = "uid://c82mg5mpp0avj"
 
 [sub_resource type="Resource" id="Resource_u78jf"]
@@ -498,13 +521,13 @@ Target = 2
 Flat = false
 metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
 
-[sub_resource type="Resource" id="Resource_b7wtm"]
+[sub_resource type="Resource" id="Resource_tsd2l"]
 script = ExtResource("52_k2b5b")
 Target = 1
 Value = 500
 metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
 
-[sub_resource type="Resource" id="Resource_ghg0p"]
+[sub_resource type="Resource" id="Resource_rw8uc"]
 script = ExtResource("52_k2b5b")
 Target = 6
 Flat = false
@@ -514,10 +537,10 @@ metadata/_custom_type_script = "uid://bisjn2v4n4vlu"
 
 [sub_resource type="Resource" id="Resource_g2b8w"]
 script = ExtResource("53_qewp4")
-_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_q72cs"), SubResource("Resource_b7wtm"), SubResource("Resource_ghg0p")])
+_modifiers = Array[ExtResource("52_k2b5b")]([SubResource("Resource_q72cs"), SubResource("Resource_tsd2l"), SubResource("Resource_rw8uc")])
 metadata/_custom_type_script = "uid://c5fd42nlc6dwi"
 
-[sub_resource type="Resource" id="Resource_t4wrm"]
+[sub_resource type="Resource" id="Resource_p6241"]
 script = ExtResource("54_h8dry")
 _modifiers = SubResource("Resource_g2b8w")
 _duration = 3.0
@@ -536,7 +559,7 @@ metadata/_custom_type_script = "uid://ckqo2mxf3bw17"
 script = ExtResource("24_rw8uc")
 TriggerDt = SubResource("Resource_7yorm")
 GathererDt = SubResource("Resource_q1303")
-EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_7335w"), SubResource("Resource_1ks5w"), SubResource("Resource_t4wrm")])
+EffectsDt = Array[ExtResource("25_p6241")]([SubResource("Resource_7335w"), SubResource("Resource_1ks5w"), SubResource("Resource_p6241")])
 metadata/_custom_type_script = "uid://diy1f0p7da221"
 
 [sub_resource type="Resource" id="Resource_lswdd"]
@@ -565,20 +588,20 @@ _duration = 4.0
 _target = 4
 metadata/_custom_type_script = "uid://ce6rjnnq7n2l8"
 
-[sub_resource type="Resource" id="Resource_105x8"]
+[sub_resource type="Resource" id="Resource_iiwpk"]
 script = ExtResource("26_iiwpk")
 
-[sub_resource type="Resource" id="Resource_6bglf"]
+[sub_resource type="Resource" id="Resource_rd0a3"]
 script = ExtResource("27_rd0a3")
 
-[sub_resource type="Resource" id="Resource_kjuvs"]
+[sub_resource type="Resource" id="Resource_ctmb4"]
 script = ExtResource("28_ctmb4")
 
 [sub_resource type="Resource" id="Resource_yscs2"]
 script = ExtResource("29_ac11p")
-_impulseData = SubResource("Resource_6bglf")
-_translationData = SubResource("Resource_kjuvs")
-_accelerationData = SubResource("Resource_105x8")
+_impulseData = SubResource("Resource_rd0a3")
+_translationData = SubResource("Resource_ctmb4")
+_accelerationData = SubResource("Resource_iiwpk")
 _target = 4
 metadata/_custom_type_script = "uid://c6dworxii6xbg"
 
@@ -668,7 +691,7 @@ script = ExtResource("1_upqbw")
 DactyloDriver = NodePath("PlayerDactyloDriver")
 SelectionModeInput = NodePath("SelectionCombatModeInput")
 MoveModeInput = NodePath("ModesManager/MoveMode/MoveModeInput")
-_testStatus = SubResource("Resource_b55oy")
+_testStatuses = Array[ExtResource("6_tk2o0")]([SubResource("Resource_tk2o0"), SubResource("Resource_kjuvs")])
 IdData = SubResource("Resource_u78jf")
 TeamMask = 2
 

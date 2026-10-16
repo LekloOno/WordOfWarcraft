@@ -27,7 +27,9 @@ public partial class EntityHealth : Node, IEntityHealth
             _entity = entity;
 
         await _entity.Initialization;
-        _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality).Changed += OnMaxChanged;
+        var stat = _entity.Statistics.GetStatistic(Entities.Stats.StatEnum.Vitality);
+        stat.Changed += OnMaxChanged;
+        OnMaxChanged(stat.Current);
     }
 
     public override async void _EnterTree()
