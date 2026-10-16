@@ -35,7 +35,7 @@ public sealed class StatBuckets<TVal>(int layers, TVal identity)
 
         float oldModifier = bucket.Modifier;
 
-        LayerModifierHandle? layerHandle = mult == 1f
+        LayerModifierHandle? layerHandle = mult == 0f
             ? null
             : new(this, bucket, bucket.AddModifier(mult));
 

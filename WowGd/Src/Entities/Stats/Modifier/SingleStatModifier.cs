@@ -46,5 +46,5 @@ public partial class SingleStatModifier : StatModifier
         }
     }
 
-    public StatContribution Contribution => new(new((uint)Target), _flat ? Value : 0, _flat ? 1f : Multiplier);
+    public StatContribution Contribution => new(new((uint)Target), _flat ? Value : 0, _flat ? 0f : Multiplier);
 }
