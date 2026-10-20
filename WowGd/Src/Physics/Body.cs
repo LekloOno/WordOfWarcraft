@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using WowGd.Src.Entities;
 
 namespace WowGd.Src.Physics;
 
@@ -17,6 +18,7 @@ namespace WowGd.Src.Physics;
 [GlobalClass]
 public partial class Body : CharacterBody2D, IBody
 {
+	public IEntity Entity 		{ get; set; } = null!;
 	public Vector2 RawVelocity  { get; private set; }
 	public Vector2 Inertia      { get; private set; }
 	public IEnumerable<CollisionShape2D> CollisionShapes => _collisionShapes;

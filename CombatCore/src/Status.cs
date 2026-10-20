@@ -36,8 +36,8 @@ public sealed class StatusInstance(uint id, StatusDefinition def, EntityId owner
     public long? ExpiresAt { get; internal set; } = expiresAt;
     public Source Applier { get; internal set; } = applier;   // latest applier, kept for attribution
     internal bool Removed;
-    internal readonly List<IDisposable> Handles = new();
-    internal readonly List<IEffectHandle> EffectHandles = new();
+    internal readonly List<IDisposable> Handles = [];
+    internal readonly List<IEffectHandle> EffectHandles = [];
 
     /// <summary>What interceptors and stat modifiers scale with. Read live, so level changes need no re-registration.</summary>
     public float Weight => Def.Level is null ? 1f : Def.Level.Curve?.Invoke(Level) ?? Level;

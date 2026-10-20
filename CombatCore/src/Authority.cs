@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using CombatCore.Primitives;
+using CombatCore.Status;
 
 namespace CombatCore;
 
@@ -44,7 +45,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     public int MaxDepth { get; init; } = 8;
     public List<string> Log { get; } = [];
     public long Now { get; private set; }
-    readonly Dictionary<EntityId, List<StatusInstance>> _statuses = [];
+    readonly Dictionary<EntityId, StatusRegistry> _statuses = [];
     readonly Queue<Request> _queue = new();
     readonly PipelineSet _pipelines = new();
     readonly Dictionary<Type, IFactChannel> _facts = [];
@@ -54,8 +55,14 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     bool _running;
 
     // ---------------- queries ----------------
+    internal StatusRegistry StatusRegistryOf(EntityId e)
+    {
+        if (!_statuses.TryGetValue(e, out var registry)) _statuses[e] = registry = new();
+        return registry;
+    }
+
     public IReadOnlyList<StatusInstance> StatusesOf(EntityId e) =>
-        _statuses.TryGetValue(e, out var l) ? l : Array.Empty<StatusInstance>();
+        _statuses.TryGetValue(e, out var l) ? l.GeneralStatuses : [];
     public bool HasTag(EntityId e, Tag t) => StatusesOf(e).Any(s => s.Def.Grants.Contains(t));
 
     // ---------------- registration: every call returns a handle ----------------
@@ -86,7 +93,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     // ---------------- entry points ----------------
     public void Submit(Draft draft)
     {
-        Enqueue(draft, Origin.Original, ImmutableArray<long>.Empty, 0);
+        Enqueue(draft, Origin.Original, [], 0);
         if (!_running) Run();
     }
 
@@ -94,12 +101,59 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     public void Update()
     {
         Now = clock.Tick;
-        var due = _statuses.Values.SelectMany(l => l)
+        var due = _statuses.Values.SelectMany(l => l.GeneralStatuses)
             .Where(s => s.ExpiresAt is { } t && t <= Now)
             .OrderBy(s => s.ExpiresAt).ThenBy(s => s.Id).ToList();
         foreach (var s in due)
             Submit(new StatusDraft(new Source(SourceKind.System, 0, s.Owner), s.Owner, StatusOp.Remove,
                                    RemoveFilter: new StatusFilter(DefId: s.Def.Id), Reason: RemoveReason.Expired));
+    }
+
+    public bool SubmitTypedStatus<T>(EntityId target, TypedStatusDraft<T> statusDraft) where T : notnull
+    {
+        StatusInstance? inst = null;
+
+        Action pub = () => {};
+
+        if (statusDraft.BaseDraft is StatusDraft d)
+        {
+            if (target != d.Target) throw new InvalidOperationException("Requested target do not match base draft.");
+
+            var r = new StatusRequest(new(++_nextRequest), d.Source, d.Cause, Origin.Original, [], 0, d.Target,
+                d.Op, d.Def, new BucketedValue(d.Level), new BucketedValue((long)(d.Duration ?? 0)),
+                d.Duration.HasValue, d.LevelOp, d.TimeOp, d.RemoveFilter, d.Reason);
+
+            StatusDefinition def = r.Def ?? throw new InvalidOperationException("Base status Apply needs a definition.");
+            
+            if (r.Op != StatusOp.Apply) { Log.Add($"NOOP  typed status base status must be apply."); return false; }
+            int level = def.Level is null ? 1 : (int)Math.Clamp(d.Level, 0, def.Level.Max);
+            if (level == 0) { Log.Add($"NOOP  level 0, {def.Name} not created"); return false; }
+            long? expires = def.Time is not null ? Now + (d.Duration ?? 0) : null;
+            
+            var ctx = CtxOf(r);
+
+            var owner = entities.Find(r.Target);
+            if (owner is null) { Drop(r, "target gone", ctx); return false; }
+            
+            inst = new StatusInstance(++_nextStatus, def, r.Target, level, expires, r.Source);
+            if (def.Effects is not null)
+                foreach (var e in def.Effects) inst.EffectHandles.Add(e.Apply(inst, owner));
+            if (def.Install is not null) inst.Handles.AddRange(def.Install(inst, this));
+
+            pub = () => Publish(new StatusApplied(ctx, r.Target, def.Id, inst.Id, level, expires, r.Source), ctx);
+        }
+
+        var registry = StatusRegistryOf(target);
+        bool registered = registry.Register(statusDraft.Instance, inst);
+        if (registered) pub();
+
+        return registered;
+    }
+
+    public bool RemoveTypedStatus<T>(EntityId target) where T : notnull
+    {
+        var registry = StatusRegistryOf(target);
+        return registry.Remove<T>();
     }
 
     // ---------------- spell lifecycle ----------------
@@ -327,8 +381,8 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
             foreach (var e in def.Effects) inst.EffectHandles.Add(e.Apply(inst, owner));
         if (def.Install is not null) inst.Handles.AddRange(def.Install(inst, this));
 
-        if (!_statuses.TryGetValue(r.Target, out var list)) _statuses[r.Target] = list = new();
-        list.Add(inst);
+        var registry = StatusRegistryOf(r.Target);
+        registry.Register(inst);
         Log.Add($"FACT  {def.Name} applied on {r.Target}: level {level}, expires {expires?.ToString() ?? "-"}");
         Publish(new StatusApplied(ctx, r.Target, def.Id, inst.Id, level, expires, r.Source), ctx);
     }

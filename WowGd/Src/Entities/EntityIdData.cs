@@ -16,4 +16,11 @@ public partial class EntityIdData : Resource
     /// It can be used by the renderer to render specific things.
     /// </summary>
     [Export] public string Key {get; private set;} = null!;
+
+    public EntityIdData() {}
+
+    public EntityIdData(string key) : this()
+    {
+        Key = key;
+    }
 }

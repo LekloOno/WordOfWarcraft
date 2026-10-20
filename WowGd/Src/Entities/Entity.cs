@@ -91,6 +91,7 @@ public partial class Entity : Node, IEntity
 
         if (this.TryGetComponent(out IBody? body))
         {
+            Body.Entity = this;
             Body = body;
             Body.CollisionLayer = TeamMask.ToCollisionLayer();
             Body.CollisionMask  = TeamMask.ToCollisionMask();

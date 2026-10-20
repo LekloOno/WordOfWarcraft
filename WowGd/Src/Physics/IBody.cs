@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using Godot;
+using WowGd.Src.Entities;
 
 namespace WowGd.Src.Physics;
 
 public interface IBody
 {
+    IEntity Entity { get; set; }
     Vector2 GlobalPosition  { get; }
     
     Vector2 RawVelocity     { get; }
