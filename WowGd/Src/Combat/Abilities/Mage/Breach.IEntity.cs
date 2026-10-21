@@ -24,12 +24,9 @@ public partial class Breach : IEntity
     public IEntityMover EntityMover => MoverSink.Sink;
     public IStatistics Statistics => StatisticSink.Sink;
     public Task Initialization => Task.CompletedTask;
-    public EntityId Id => throw new System.NotImplementedException();
+    public EntityId Id { get; private set; }
     public IResourcePort Resources => ResourceManagerSink.Sink;
     public IStatPort Stats => StatisticSink.Sink;
 
-    public void SetId(EntityId id)
-    {
-        throw new System.NotImplementedException();
-    }
+    public void SetId(EntityId id) => Id = id;
 }

@@ -78,3 +78,13 @@ public sealed class FakeWorld : IEntityDirectory
     public int Stat(EntityId e, StatId s, int baseValue) => _entities[e].Stat(s, baseValue);
     public int Notifications(EntityId e) => _entities[e].Notifications;
 }
+/// <summary>Typed payload used by the typed-status tests (stands for the mage's BreachStatus).</summary>
+public sealed class FakeBreaches(EntityId owner) : IDisposable
+{
+    public EntityId Owner { get; } = owner;
+    public int Generation { get; set; } = 1;     // bumped by the reapply hook: "Brèches re-cast re-rolls the positions"
+    public bool Disposed { get; private set; }
+    public void Dispose() => Disposed = true;
+}
+
+public sealed class DisposeFlag : IDisposable { public bool Disposed { get; private set; } public void Dispose() => Disposed = true; }

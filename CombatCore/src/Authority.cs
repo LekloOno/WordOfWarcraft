@@ -1,4 +1,5 @@
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using CombatCore.Primitives;
 using CombatCore.Status;
 
@@ -62,7 +63,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     }
 
     public IReadOnlyList<StatusInstance> StatusesOf(EntityId e) =>
-        _statuses.TryGetValue(e, out var l) ? l.GeneralStatuses : [];
+        _statuses.TryGetValue(e, out var l) ? l.Instances : [];
     public bool HasTag(EntityId e, Tag t) => StatusesOf(e).Any(s => s.Def.Grants.Contains(t));
 
     // ---------------- registration: every call returns a handle ----------------
@@ -101,7 +102,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     public void Update()
     {
         Now = clock.Tick;
-        var due = _statuses.Values.SelectMany(l => l.GeneralStatuses)
+        var due = _statuses.Values.SelectMany(l => l.Instances)
             .Where(s => s.ExpiresAt is { } t && t <= Now)
             .OrderBy(s => s.ExpiresAt).ThenBy(s => s.Id).ToList();
         foreach (var s in due)
@@ -109,51 +110,11 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
                                    RemoveFilter: new StatusFilter(DefId: s.Def.Id), Reason: RemoveReason.Expired));
     }
 
-    public bool SubmitTypedStatus<T>(EntityId target, TypedStatusDraft<T> statusDraft) where T : notnull
+    /// <summary>Reads the typed data of a status. The typed definition is the key, so two definitions sharing a data type never collide.</summary>
+    public bool TryGetData<T>(EntityId entity, TypedStatusDefinition<T> key, [NotNullWhen(true)] out T? data) where T : class
     {
-        StatusInstance? inst = null;
-
-        Action pub = () => {};
-
-        if (statusDraft.BaseDraft is StatusDraft d)
-        {
-            if (target != d.Target) throw new InvalidOperationException("Requested target do not match base draft.");
-
-            var r = new StatusRequest(new(++_nextRequest), d.Source, d.Cause, Origin.Original, [], 0, d.Target,
-                d.Op, d.Def, new BucketedValue(d.Level), new BucketedValue((long)(d.Duration ?? 0)),
-                d.Duration.HasValue, d.LevelOp, d.TimeOp, d.RemoveFilter, d.Reason);
-
-            StatusDefinition def = r.Def ?? throw new InvalidOperationException("Base status Apply needs a definition.");
-            
-            if (r.Op != StatusOp.Apply) { Log.Add($"NOOP  typed status base status must be apply."); return false; }
-            int level = def.Level is null ? 1 : (int)Math.Clamp(d.Level, 0, def.Level.Max);
-            if (level == 0) { Log.Add($"NOOP  level 0, {def.Name} not created"); return false; }
-            long? expires = def.Time is not null ? Now + (d.Duration ?? 0) : null;
-            
-            var ctx = CtxOf(r);
-
-            var owner = entities.Find(r.Target);
-            if (owner is null) { Drop(r, "target gone", ctx); return false; }
-            
-            inst = new StatusInstance(++_nextStatus, def, r.Target, level, expires, r.Source);
-            if (def.Effects is not null)
-                foreach (var e in def.Effects) inst.EffectHandles.Add(e.Apply(inst, owner));
-            if (def.Install is not null) inst.Handles.AddRange(def.Install(inst, this));
-
-            pub = () => Publish(new StatusApplied(ctx, r.Target, def.Id, inst.Id, level, expires, r.Source), ctx);
-        }
-
-        var registry = StatusRegistryOf(target);
-        bool registered = registry.Register(statusDraft.Instance, inst);
-        if (registered) pub();
-
-        return registered;
-    }
-
-    public bool RemoveTypedStatus<T>(EntityId target) where T : notnull
-    {
-        var registry = StatusRegistryOf(target);
-        return registry.Remove<T>();
+        data = StatusesOf(entity).FirstOrDefault(i => i.Def.Id == key.Id)?.Data as T;
+        return data is not null;
     }
 
     // ---------------- spell lifecycle ----------------
@@ -355,6 +316,8 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
             return;
         }
 
+        if (r.Op == StatusOp.Apply) inst2.Def.OnReapply(inst2);   // typed data may refresh itself, even if level and time do not change
+
         var levelOp = r.LevelOp ?? (r.Op == StatusOp.Apply ? def.Level?.OnApply : null) ?? MergeOp.Keep;
         var timeOp = r.TimeOp ?? (r.Op == StatusOp.Apply ? def.Time?.OnApply : null) ?? MergeOp.Keep;
         int newLevel = def.Level is null ? inst2.Level : (int)Math.Clamp(Merge(levelOp, inst2.Level, inLevel), 0, def.Level.Max);
@@ -377,6 +340,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     void Create(StatusDefinition def, StatusRequest r, ICombatEntity owner, int level, long? expires, FactCtx ctx)
     {
         var inst = new StatusInstance(++_nextStatus, def, r.Target, level, expires, r.Source);
+        inst.Data = def.CreateData(inst, owner);   // before effects/install, so they can read it
         if (def.Effects is not null)
             foreach (var e in def.Effects) inst.EffectHandles.Add(e.Apply(inst, owner));
         if (def.Install is not null) inst.Handles.AddRange(def.Install(inst, this));
@@ -393,6 +357,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         inst.Removed = true;
         foreach (var h in inst.EffectHandles) h.Dispose();
         foreach (var h in inst.Handles) h.Dispose();
+        (inst.Data as IDisposable)?.Dispose();
         if (_statuses.TryGetValue(inst.Owner, out var owned)) owned.Remove(inst);
         Log.Add($"FACT  {inst.Def.Name} removed from {inst.Owner} ({reason})");
         Publish(new StatusRemoved(ctx, inst.Owner, inst.Def.Id, inst.Id, reason), ctx);

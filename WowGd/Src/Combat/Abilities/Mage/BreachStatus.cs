@@ -30,7 +30,8 @@ public sealed class BreachStatus : IDisposable
         _matterBreach   = new(GetCollision(), new MatterBreachBuff(), owner);
         _lightBreach    = new(GetCollision(), new MatterBreachBuff(), owner);
     
-        authority.SubmitTypedStatus(owner.Id, new TypedStatusDraft<BreachStatus>(this));
+        //var def = new TypedStatusDefinition()
+        //authority.SubmitTypedStatus(owner.Id, new TypedStatusDraft<BreachStatus>(this));
     }
 
     static CollisionShape2D[] GetCollision()
@@ -50,7 +51,7 @@ public sealed class BreachStatus : IDisposable
         Release(ref _matterBreach);
         Release(ref _lightBreach);
 
-        _authority.RemoveTypedStatus<BreachStatus>(_owner.Id);
+        //_authority.RemoveTypedStatus<BreachStatus>(_owner.Id);
     }
 
     private static void Release(ref Breach? breach)

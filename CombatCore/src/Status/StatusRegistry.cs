@@ -1,72 +1,16 @@
-using System.Diagnostics.CodeAnalysis;
-
 namespace CombatCore.Status;
 
+/// <summary>
+/// The statuses of one entity. A single list is the source of truth: typed access is just "find the instance of this
+/// definition and look at its Data", so there is no second structure to keep in sync.
+/// </summary>
 internal sealed class StatusRegistry
 {
-    private readonly List<StatusInstance> _generalStatuses = [];
-    private readonly Dictionary<Type, object> _typedStatuses = [];
-    private readonly Dictionary<StatusInstance, Type> _statusTypes =
-        new(ReferenceEqualityComparer.Instance);
+    private readonly List<StatusInstance> _instances = [];
 
-    internal IReadOnlyList<StatusInstance> GeneralStatuses => _generalStatuses;
+    internal IReadOnlyList<StatusInstance> Instances => _instances;
 
-    internal bool TryGet<T>([NotNullWhen(true)] out T? status)
-    {
-        if (_typedStatuses.TryGetValue(typeof(T), out object? s))
-        {
-            status = (T)s;
-            return true;
-        }
+    internal void Register(StatusInstance instance) => _instances.Add(instance);
 
-        status = default;
-        return false;
-    }
-
-    internal void Register(StatusInstance instance) =>
-        _generalStatuses.Add(instance);
-
-    internal bool Register<T>(T instance, StatusInstance? baseInstance) where T : notnull
-    {
-        if (!_typedStatuses.TryAdd(typeof(T), instance))
-            return false;
-
-        if (baseInstance is not null)
-        {
-            _generalStatuses.Add(baseInstance);
-            _statusTypes.Add(baseInstance, typeof(T));
-        }
-
-        return true;
-    }
-
-    internal bool Remove<T>() where T : notnull
-    {
-        bool typed = _typedStatuses.Remove(typeof(T), out object? status);
-
-        bool general;
-
-        if (status is StatusInstance instance)
-        {
-            _generalStatuses.Remove(instance);
-            _statusTypes.Remove(instance);
-            general = true;
-        }
-        else
-            general = false;
-
-        return typed || general;
-    }
-
-    internal bool Remove(StatusInstance instance)
-    {
-        bool general = _generalStatuses.Remove(instance);
-
-        bool typed = _statusTypes.Remove(instance, out Type? type);
-
-        if (typed)
-            _typedStatuses.Remove(type!);
-
-        return typed || general;
-    }
+    internal bool Remove(StatusInstance instance) => _instances.Remove(instance);
 }

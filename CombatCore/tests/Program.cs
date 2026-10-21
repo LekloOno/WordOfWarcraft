@@ -36,18 +36,20 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // competing replacements
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(B, R.Stamina, 100); w.Set(B, R.Mana, 100);
-    a.Add(Rules.Replace(new(direction: ResourceDirection.Remove), Phase.Convert, r => r with { Resource = R.Health }));
-    a.Add(Rules.Replace(new(direction: ResourceDirection.Remove), Phase.Convert, r => r with { Resource = R.Stamina }));
-    a.Submit(new RequestDraft(Spell(1), B, R.Mana, ResourceDirection.Remove, 20));
+    var drain = Tag.Register("test.drain"); var dmg = Tag.Register("test.damage");
+    // both match "drain"; the first converts it (rewrites the tags), so the second no longer matches
+    a.Add(Rules.Replace(new(RequireAll: TagSet.Of(drain)), Phase.Convert, r => r with { Resource = R.Health, Tags = TagSet.Of(dmg) }));
+    a.Add(Rules.Replace(new(RequireAll: TagSet.Of(drain)), Phase.Convert, r => r with { Resource = R.Stamina, Tags = TagSet.Of(dmg) }));
+    a.Submit(new RequestDraft(Spell(1), B, R.Mana, ResourceDirection.Remove, 20, TagSet.Of(drain)));
     Check("P2 first replacement wins", w.Get(B, R.Health) == 80 && w.Get(B, R.Stamina) == 100);
 }
 {   // lineage rule
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 1000); w.Set(B, R.Mana, 1000);
-    a.Add(Rules.AddOn(new(direction: ResourceDirection.Remove), r => new[] { new RequestDraft(Status(1), B, R.Mana, ResourceDirection.Remove, 5) }));
-    a.Add(Rules.AddOn(new(direction: ResourceDirection.Remove),  r => new[] { new RequestDraft(Status(2), B, R.Health, ResourceDirection.Remove, 5) }));
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10));
-    Show(a, "oui");
+    var drain = Tag.Register("test.drain"); var dmg = Tag.Register("test.damage");
+    a.Add(Rules.AddOn(new(RequireAll: TagSet.Of(dmg)),   r => new[] { new RequestDraft(Status(1), B, R.Mana, ResourceDirection.Remove, 5, TagSet.Of(drain)) }));
+    a.Add(Rules.AddOn(new(RequireAll: TagSet.Of(drain)), r => new[] { new RequestDraft(Status(2), B, R.Health, ResourceDirection.Remove, 5, TagSet.Of(dmg)) }));
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10, TagSet.Of(dmg)));
     Check("P3 lineage: terminates after one round, nothing dropped",
           w.Get(B, R.Health) == 985 && w.Get(B, R.Mana) == 995 && !a.Log.Any(l => l.StartsWith("DROP")));
 }
@@ -261,6 +263,70 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
           removed.Count == 1 && removed[0].Reason == RemoveReason.OwnerRemoved && entityB.Stat(Strength2, 0) == 0);
     a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10));
     Check("E1 request to a removed entity is dropped", a.Log.Any(l => l.Contains("target gone")));
+}
+
+// =====================  typed statuses (through the usual pipeline)  =====================
+
+{   // T1: created once by the authority, data readable through the definition, reapply hook instead of a new instance
+    var a = New(out var w, out var clock);
+    int created = 0; FakeBreaches? last = null;
+    var applied = new List<StatusApplied>();
+    a.OnFact<StatusApplied>(f => { applied.Add(f); return None(); });
+    var def = new TypedStatusDefinition<FakeBreaches>(500, "Breaches", StatusCategory.Passive,
+        Create: (inst, owner) => { created++; return last = new FakeBreaches(owner.Id); },
+        Reapply: (inst, data) => data.Generation++);
+
+    Check("T1 nothing before the apply", !a.TryGetData(Mage, def, out _));
+    a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, def));
+    var found = a.TryGetData(Mage, def, out var data);
+    Check("T1 data built once, for the right owner, readable by key", found && created == 1 && ReferenceEquals(data, last) && data!.Owner == Mage);
+    Check("T1 StatusApplied fact published (the UI and the log see it)", applied.Count == 1 && applied[0].DefId == 500);
+
+    a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, def));
+    Check("T1 re-apply: no second instance, reapply hook ran", created == 1 && a.StatusesOf(Mage).Count == 1 && data!.Generation == 2);
+}
+{   // T2: expiry removes the status through the pipeline, and disposes data + installed handles
+    var a = New(out var w, out var clock);
+    var flag = new DisposeFlag(); FakeBreaches? made = null;
+    var removed = new List<StatusRemoved>();
+    a.OnFact<StatusRemoved>(f => { removed.Add(f); return None(); });
+    var def = new TypedStatusDefinition<FakeBreaches>(501, "TimedBreaches", StatusCategory.Buff,
+        Create: (inst, owner) => made = new FakeBreaches(owner.Id),
+        Time: new TimeModel(MergeOp.Replace),
+        Install: (inst, auth) => new IDisposable[] { flag });
+    At(a, clock, 0);
+    a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, def, Duration: 10));
+    At(a, clock, 10);
+    Check("T2 expired: data disposed", made is { Disposed: true });
+    Check("T2 expired: installed handle disposed", flag.Disposed);
+    Check("T2 expired: StatusRemoved(Expired) published, data unreachable",
+          removed.Count == 1 && removed[0].Reason == RemoveReason.Expired && !a.TryGetData(Mage, def, out _));
+}
+{   // T3: cleanse removes typed buffs but a catch-all spares the typed passive; explicit removal and owner removal dispose
+    var a = New(out var w, out var clock);
+    FakeBreaches? buff = null, passive = null, owned = null;
+    var buffDef    = new TypedStatusDefinition<FakeBreaches>(502, "TypedBuff", StatusCategory.Buff,    Create: (i, o) => buff = new FakeBreaches(o.Id));
+    var passiveDef = new TypedStatusDefinition<FakeBreaches>(503, "TypedPassive", StatusCategory.Passive, Create: (i, o) => passive = new FakeBreaches(o.Id));
+    var ownedDef   = new TypedStatusDefinition<FakeBreaches>(504, "OnC", StatusCategory.Buff,        Create: (i, o) => owned = new FakeBreaches(o.Id));
+    a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, buffDef));
+    a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, passiveDef));
+    a.Submit(new StatusDraft(Spell(1), C, StatusOp.Apply, ownedDef));
+    a.Submit(new StatusDraft(Spell(3), B, StatusOp.Remove));   // catch-all cleanse
+    Check("T3 catch-all removes the typed buff and disposes it, spares the passive",
+          buff!.Disposed && !passive!.Disposed && a.TryGetData(B, passiveDef, out _) && !a.TryGetData(B, buffDef, out _));
+    a.Submit(new StatusDraft(Spell(3), B, StatusOp.Remove, RemoveFilter: new StatusFilter(StatusCategory.Passive)));
+    Check("T3 explicit removal by category disposes the passive", passive!.Disposed);
+    a.RemoveEntity(C);
+    Check("T3 owner removal disposes the data", owned!.Disposed);
+}
+{   // T4: two definitions sharing a data type do not collide
+    var a = New(out var w, out var clock);
+    var d1 = new TypedStatusDefinition<FakeBreaches>(505, "A", StatusCategory.Neutral, Create: (i, o) => new FakeBreaches(o.Id));
+    var d2 = new TypedStatusDefinition<FakeBreaches>(506, "B", StatusCategory.Neutral, Create: (i, o) => new FakeBreaches(o.Id));
+    a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, d1));
+    a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, d2));
+    Check("T4 same data type, two keys, two instances",
+          a.TryGetData(Mage, d1, out var x) && a.TryGetData(Mage, d2, out var y) && !ReferenceEquals(x, y));
 }
 
 Console.WriteLine($"\n{passed} passed, {failed} failed");

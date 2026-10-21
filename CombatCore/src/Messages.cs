@@ -10,8 +10,6 @@ public sealed record RequestDraft(
     Source Source, EntityId Target, ResourceId Resource, ResourceDirection Direction, long Amount,
     TagSet Tags = default, InstanceId? Cause = null) : Draft(Source, Target, Cause);
 
-public sealed record TypedStatusDraft<T>(T Instance, StatusDraft? BaseDraft = null);
-
 public sealed record StatusDraft(
     Source Source, EntityId Target, StatusOp Op, StatusDefinition? Def = null,
     long Level = 1, long? Duration = null, MergeOp? LevelOp = null, MergeOp? TimeOp = null,
