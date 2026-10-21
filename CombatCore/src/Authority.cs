@@ -62,8 +62,8 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         return registry;
     }
 
-    public IReadOnlyList<StatusInstance> StatusesOf(EntityId e) =>
-        _statuses.TryGetValue(e, out var l) ? l.Instances : [];
+    public IReadOnlyCollection<StatusInstance> StatusesOf(EntityId e) =>
+        _statuses.TryGetValue(e, out var l) ? l.Instances : Array.Empty<StatusInstance>();
     public bool HasTag(EntityId e, Tag t) => StatusesOf(e).Any(s => s.Def.Grants.Contains(t));
 
     // ---------------- registration: every call returns a handle ----------------
@@ -113,7 +113,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     /// <summary>Reads the typed data of a status. The typed definition is the key, so two definitions sharing a data type never collide.</summary>
     public bool TryGetData<T>(EntityId entity, TypedStatusDefinition<T> key, [NotNullWhen(true)] out T? data) where T : class
     {
-        data = StatusesOf(entity).FirstOrDefault(i => i.Def.Id == key.Id)?.Data as T;
+        data = _statuses.TryGetValue(entity, out var registry) ? registry.Find(key.Id)?.Data as T : null;
         return data is not null;
     }
 
@@ -302,7 +302,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         }
 
         var def = r.Def ?? throw new InvalidOperationException("Apply/Adjust needs a definition.");
-        var inst2 = StatusesOf(r.Target).FirstOrDefault(i => i.Def.Id == def.Id);
+        var inst2 = _statuses.TryGetValue(r.Target, out var targetStatuses) ? targetStatuses.Find(def.Id) : null;
         long inLevel = r.Level.Resolve();
         long? inDur = r.HasDuration ? r.Duration.Resolve() : null;
 

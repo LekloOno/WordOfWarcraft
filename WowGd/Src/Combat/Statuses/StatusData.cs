@@ -8,8 +8,6 @@ namespace WowGd.Src.Combat.Statuses;
 [GlobalClass]
 public partial class StatusData : Resource
 {
-    private static uint _count;
-
     [Export] private string _name = string.Empty;
     [Export] private StatusCategory _category;
     [Export] private Array<CombatRequestTag> _requestTags = [];
@@ -25,7 +23,6 @@ public partial class StatusData : Resource
     public void Submit(IEntity owner, IEntity target, StatusOp statusOp, long level = 1, long? duration = null)
     {
         Definition ??= new(
-            Id: _count ++,
             Name: _name,
             Category: _category,
             Grants: _requestTags.IntoSet(),

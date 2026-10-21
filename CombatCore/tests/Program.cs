@@ -96,7 +96,7 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 
 var Strength = new StatId(1);
 StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
-    100, "Might", cat, Level: new LevelModel(10, MergeOp.Add), Time: new TimeModel(MergeOp.Replace),
+    "Might", cat, Level: new LevelModel(10, MergeOp.Add), Time: new TimeModel(MergeOp.Replace),
     Effects: new IStatusEffect[] { new StatEffect(new StatContribution(Strength, Flat: 10)) });
 
 {   // S1: level merge (Add), stat scales with weight, a level change notifies ONCE (Reweight)
@@ -105,7 +105,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     int n1 = w.Notifications(B);
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Level: 3, Duration: 100));
     Show(a, "S1: apply level 2, then level 3 (Add)");
-    Check("S1 level 2 -> stat +20", a.StatusesOf(B)[0].Level == 5 && w.Stat(B, Strength, 0) == 50);
+    Check("S1 level 2 -> stat +20", a.StatusesOf(B).First().Level == 5 && w.Stat(B, Strength, 0) == 50);
     Check("S1 reweight notified once (not dispose + add)", w.Notifications(B) - n1 == 1);
 }
 {   // S2: time merge (Replace = refresh), expiry through the pipeline, stat removed with the status
@@ -115,7 +115,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     At(a, clock, 10);
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Level: 1, Duration: 50));   // refresh: expires at 60
     At(a, clock, 59);
-    Check("S2 alive at 59 (refreshed), level 2", a.StatusesOf(B).Count == 1 && a.StatusesOf(B)[0].Level == 2);
+    Check("S2 alive at 59 (refreshed), level 2", a.StatusesOf(B).Count == 1 && a.StatusesOf(B).First().Level == 2);
     At(a, clock, 60);
     Check("S2 expired at 60, stat gone", a.StatusesOf(B).Count == 0 && w.Stat(B, Strength, 0) == 0);
     Check("S2 removal fact says Expired", a.Log.Any(l => l.Contains("removed") && l.Contains("Expired")));
@@ -127,13 +127,13 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Level: 1, Duration: 100));
     At(a, clock, 10);
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Level: 1, Duration: 20));   // 30 < 100: keep 100
-    Check("S3 Max keeps the longest expiry", a.StatusesOf(B)[0].ExpiresAt == 100);
+    Check("S3 Max keeps the longest expiry", a.StatusesOf(B).First().ExpiresAt == 100);
 }
 {   // S4: FreeNextCast: charge consumed by a reaction, cost stat visible BEFORE the cast, removal restores it
     var a = New(out var w, out var clock);
     var Cost = new StatId(1001);
     StatusDefinition? free = null;
-    free = new StatusDefinition(200, "FreeNextCast", StatusCategory.Buff,
+    free = new StatusDefinition("FreeNextCast", StatusCategory.Buff,
         Level: new LevelModel(1, MergeOp.Replace, EndsAtZero: true),
         Effects: new IStatusEffect[] { new StatEffect(new StatContribution(Cost, Mult: 0f)) },
         Install: (inst, auth) => new[] { auth.OnFact<ResourceFact>(f =>
@@ -153,7 +153,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 {   // S5: an interceptor scales with the LIVE level, no re-registration
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 1000);
-    var weakened = new StatusDefinition(300, "Weakened", StatusCategory.Debuff,
+    var weakened = new StatusDefinition("Weakened", StatusCategory.Debuff,
         Level: new LevelModel(5, MergeOp.Add),
         Install: (inst, auth) => new[] { auth.Add(Rules.Mod(
             new(direction: ResourceDirection.Remove, SourceOwner: inst.Owner), _ => ValueMod.Times(1 - 0.1 * inst.Weight))) });
@@ -171,19 +171,19 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     var a = New(out var w, out var clock);
     var Slowed = Tag.Register("Slowed");
     var buff = Might(); 
-    var debuff = new StatusDefinition(301, "Slow", StatusCategory.Debuff, Grants: TagSet.Of(Slowed));
-    var passive = new StatusDefinition(302, "Ward", StatusCategory.Passive);
+    var debuff = new StatusDefinition("Slow", StatusCategory.Debuff, Grants: TagSet.Of(Slowed));
+    var passive = new StatusDefinition("Ward", StatusCategory.Passive);
     foreach (var d in new[] { buff, debuff, passive })
         a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Level: 1, Duration: 1000));
     Check("S6 tag present while Slow is active", a.HasTag(B, Slowed));
     a.Submit(new StatusDraft(Spell(3), B, StatusOp.Remove, RemoveFilter: new StatusFilter(StatusCategory.Debuff)));
     Check("S6 cleanse(Debuff) removes only the debuff, tag gone", a.StatusesOf(B).Count == 2 && !a.HasTag(B, Slowed));
     a.Submit(new StatusDraft(Spell(3), B, StatusOp.Remove));                           // catch-all
-    Check("S6 catch-all removes the buff, keeps the passive", a.StatusesOf(B).Count == 1 && a.StatusesOf(B)[0].Def.Name == "Ward");
+    Check("S6 catch-all removes the buff, keeps the passive", a.StatusesOf(B).Count == 1 && a.StatusesOf(B).First().Def.Name == "Ward");
 }
 {   // S7: status acting on statuses: +20% level on received buffs
     var a = New(out var w, out var clock);
-    var blessed = new StatusDefinition(303, "Blessed", StatusCategory.Passive,
+    var blessed = new StatusDefinition("Blessed", StatusCategory.Passive,
         Install: (inst, auth) => new[] { auth.Add(Rules.LevelMod(
             new(new StatusFilter(StatusCategory.Buff), StatusOp.Apply, Target: inst.Owner), ValueMod.Times(1.2))) });
     a.Submit(new StatusDraft(Sys(B), B, StatusOp.Apply, blessed));
@@ -195,7 +195,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 }
 {   // S8: disposing the status removes every effect it installed
     var a = New(out var w, out var clock); w.Set(B, R.Health, 100);
-    var d = new StatusDefinition(304, "Sting", StatusCategory.Neutral, Time: new TimeModel(MergeOp.Replace),
+    var d = new StatusDefinition("Sting", StatusCategory.Neutral, Time: new TimeModel(MergeOp.Replace),
         Install: (inst, auth) => new[] { auth.Add(Rules.Mod(new(direction: ResourceDirection.Remove, Target: inst.Owner), ValueMod.Plus(5))) });
     At(a, clock, 0);
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Duration: 10));
@@ -250,7 +250,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 {   // E1: removing an entity ends its statuses (effects disposed) and later requests to it are dropped
     var a = New(out var w, out var clock);
     var Strength2 = new StatId(2);
-    var buff = new StatusDefinition(400, "Buff", StatusCategory.Buff,
+    var buff = new StatusDefinition("Buff", StatusCategory.Buff,
         Effects: new IStatusEffect[] { new StatEffect(new StatContribution(Strength2, Flat: 5)) });
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, buff));
     var entityB = w[B];
@@ -272,7 +272,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     int created = 0; FakeBreaches? last = null;
     var applied = new List<StatusApplied>();
     a.OnFact<StatusApplied>(f => { applied.Add(f); return None(); });
-    var def = new TypedStatusDefinition<FakeBreaches>(500, "Breaches", StatusCategory.Passive,
+    var def = new TypedStatusDefinition<FakeBreaches>("Breaches", StatusCategory.Passive,
         Create: (inst, owner) => { created++; return last = new FakeBreaches(owner.Id); },
         Reapply: (inst, data) => data.Generation++);
 
@@ -280,7 +280,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, def));
     var found = a.TryGetData(Mage, def, out var data);
     Check("T1 data built once, for the right owner, readable by key", found && created == 1 && ReferenceEquals(data, last) && data!.Owner == Mage);
-    Check("T1 StatusApplied fact published (the UI and the log see it)", applied.Count == 1 && applied[0].DefId == 500);
+    Check("T1 StatusApplied fact published (the UI and the log see it)", applied.Count == 1 && applied[0].DefId == def.Id);
 
     a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, def));
     Check("T1 re-apply: no second instance, reapply hook ran", created == 1 && a.StatusesOf(Mage).Count == 1 && data!.Generation == 2);
@@ -290,7 +290,7 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     var flag = new DisposeFlag(); FakeBreaches? made = null;
     var removed = new List<StatusRemoved>();
     a.OnFact<StatusRemoved>(f => { removed.Add(f); return None(); });
-    var def = new TypedStatusDefinition<FakeBreaches>(501, "TimedBreaches", StatusCategory.Buff,
+    var def = new TypedStatusDefinition<FakeBreaches>("TimedBreaches", StatusCategory.Buff,
         Create: (inst, owner) => made = new FakeBreaches(owner.Id),
         Time: new TimeModel(MergeOp.Replace),
         Install: (inst, auth) => new IDisposable[] { flag });
@@ -305,9 +305,9 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 {   // T3: cleanse removes typed buffs but a catch-all spares the typed passive; explicit removal and owner removal dispose
     var a = New(out var w, out var clock);
     FakeBreaches? buff = null, passive = null, owned = null;
-    var buffDef    = new TypedStatusDefinition<FakeBreaches>(502, "TypedBuff", StatusCategory.Buff,    Create: (i, o) => buff = new FakeBreaches(o.Id));
-    var passiveDef = new TypedStatusDefinition<FakeBreaches>(503, "TypedPassive", StatusCategory.Passive, Create: (i, o) => passive = new FakeBreaches(o.Id));
-    var ownedDef   = new TypedStatusDefinition<FakeBreaches>(504, "OnC", StatusCategory.Buff,        Create: (i, o) => owned = new FakeBreaches(o.Id));
+    var buffDef    = new TypedStatusDefinition<FakeBreaches>("TypedBuff", StatusCategory.Buff,    Create: (i, o) => buff = new FakeBreaches(o.Id));
+    var passiveDef = new TypedStatusDefinition<FakeBreaches>("TypedPassive", StatusCategory.Passive, Create: (i, o) => passive = new FakeBreaches(o.Id));
+    var ownedDef   = new TypedStatusDefinition<FakeBreaches>("OnC", StatusCategory.Buff,        Create: (i, o) => owned = new FakeBreaches(o.Id));
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, buffDef));
     a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, passiveDef));
     a.Submit(new StatusDraft(Spell(1), C, StatusOp.Apply, ownedDef));
@@ -321,8 +321,8 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 }
 {   // T4: two definitions sharing a data type do not collide
     var a = New(out var w, out var clock);
-    var d1 = new TypedStatusDefinition<FakeBreaches>(505, "A", StatusCategory.Neutral, Create: (i, o) => new FakeBreaches(o.Id));
-    var d2 = new TypedStatusDefinition<FakeBreaches>(506, "B", StatusCategory.Neutral, Create: (i, o) => new FakeBreaches(o.Id));
+    var d1 = new TypedStatusDefinition<FakeBreaches>("A", StatusCategory.Neutral, Create: (i, o) => new FakeBreaches(o.Id));
+    var d2 = new TypedStatusDefinition<FakeBreaches>("B", StatusCategory.Neutral, Create: (i, o) => new FakeBreaches(o.Id));
     a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, d1));
     a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, d2));
     Check("T4 same data type, two keys, two instances",

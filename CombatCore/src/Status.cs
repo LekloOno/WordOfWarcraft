@@ -19,13 +19,22 @@ public sealed record LevelModel(int Max, MergeOp OnApply, bool EndsAtZero = fals
 public sealed record TimeModel(MergeOp OnApply);
 
 public record StatusDefinition(
-    uint Id, string Name, StatusCategory Category,
+    string Name, StatusCategory Category,
     TagSet Grants = default,
     LevelModel? Level = null,
     TimeModel? Time = null,
     IReadOnlyList<IStatusEffect>? Effects = null,
     Func<StatusInstance, Authority, IEnumerable<IDisposable>>? Install = null)
 {
+    private static uint _nextId;
+
+    /// <summary>
+    /// Unique per definition object, assigned at construction: nothing to pick by hand, so no collision.
+    /// A copy made with `with` keeps its Id (same identity, so it merges with the original on an entity).
+    /// Order of construction decides it, so it is only stable inside one process.
+    /// </summary>
+    public uint Id { get; } = Interlocked.Increment(ref _nextId);
+
     /// <summary>Builds the typed payload of an instance. Called once, when the authority creates the instance. Plain statuses have none.</summary>
     public virtual object? CreateData(StatusInstance instance, ICombatEntity owner) => null;
 
@@ -40,7 +49,7 @@ public record StatusDefinition(
 /// If the data is IDisposable, the authority disposes it when the instance is removed, whatever the reason.
 /// </summary>
 public sealed record TypedStatusDefinition<T>(
-    uint Id, string Name, StatusCategory Category,
+    string Name, StatusCategory Category,
     Func<StatusInstance, ICombatEntity, T> Create,
     TagSet Grants = default,
     LevelModel? Level = null,
@@ -48,7 +57,7 @@ public sealed record TypedStatusDefinition<T>(
     IReadOnlyList<IStatusEffect>? Effects = null,
     Func<StatusInstance, Authority, IEnumerable<IDisposable>>? Install = null,
     Action<StatusInstance, T>? Reapply = null)
-    : StatusDefinition(Id, Name, Category, Grants, Level, Time, Effects, Install) where T : class
+    : StatusDefinition(Name, Category, Grants, Level, Time, Effects, Install) where T : class
 {
     public override object? CreateData(StatusInstance instance, ICombatEntity owner) => Create(instance, owner);
 

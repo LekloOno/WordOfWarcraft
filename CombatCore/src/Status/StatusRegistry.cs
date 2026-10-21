@@ -1,16 +1,19 @@
 namespace CombatCore.Status;
 
 /// <summary>
-/// The statuses of one entity. A single list is the source of truth: typed access is just "find the instance of this
-/// definition and look at its Data", so there is no second structure to keep in sync.
+/// The statuses of one entity: one dictionary by definition id, so lookups are O(1) and there is still a single structure
+/// (nothing to keep in sync). The merge path guarantees at most one instance per definition per entity, and Register
+/// fails fast if that invariant is ever broken. Enumeration order is not guaranteed: sort where order matters.
 /// </summary>
 internal sealed class StatusRegistry
 {
-    private readonly List<StatusInstance> _instances = [];
+    private readonly Dictionary<uint, StatusInstance> _byDefinition = [];
 
-    internal IReadOnlyList<StatusInstance> Instances => _instances;
+    internal IReadOnlyCollection<StatusInstance> Instances => _byDefinition.Values;
 
-    internal void Register(StatusInstance instance) => _instances.Add(instance);
+    internal StatusInstance? Find(uint definitionId) => _byDefinition.GetValueOrDefault(definitionId);
 
-    internal bool Remove(StatusInstance instance) => _instances.Remove(instance);
+    internal void Register(StatusInstance instance) => _byDefinition.Add(instance.Def.Id, instance);
+
+    internal bool Remove(StatusInstance instance) => _byDefinition.Remove(instance.Def.Id);
 }
