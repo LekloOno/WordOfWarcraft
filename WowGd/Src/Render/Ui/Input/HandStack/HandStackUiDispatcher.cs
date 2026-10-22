@@ -64,14 +64,14 @@ public abstract class HandStackUiDispatcher : HandStackUi
                     toEnable.Add(channel[lastIdx - 1]);
             }
 
-            channel.Remove(handInputUi);
+            channel.RemoveAt(idx);
         }
-
-        foreach (IHandInputUi ui in toEnable)
-            TryEnableHand(ui, handChannels);
 
         if (toDisable != null)
             DisableAction(toDisable);
+
+        foreach (IHandInputUi ui in toEnable)
+            TryEnableHand(ui, handChannels);
     }
 
     private bool TryEnableHand(IHandInputUi ui, List<IHandInputUi>[] handChannels)
