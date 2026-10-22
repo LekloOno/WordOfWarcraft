@@ -9,23 +9,7 @@ namespace WowGd.Src.Render.Ui.Input.Impls;
 [GlobalClass]
 public partial class DirectTargetUi : Node, IHandInputUi
 {
-    [Export] private PlayerTargetIntentDriver _targetDriver = null!;
-    [Export] public PlayerTargetIntentDriver TargetDriver
-    {
-        get => _targetDriver;
-        set
-        {
-            if (value == _targetDriver)
-                return;
-
-            if (_targetDriver != null)
-                this.UnbindToContext();
-
-            _targetDriver = value;
-            if (_targetDriver != null)
-                this.BindToContext();
-        }
-    }
+    [Export] public PlayerTargetIntentDriver TargetDriver = null!;
 
     public IHandsInputUiContext Context => HandsInputUiContext.Instance;
     public HandInputDocking Docking => HandInputDocking.None;

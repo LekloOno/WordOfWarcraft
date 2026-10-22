@@ -25,14 +25,9 @@ public partial class MoveModeUi : Node, IHandInputUi
             if (value == _moveModeInput)
                 return;
 
-            if (_moveModeInput != null)
-                this.UnbindToContext();
-
             _moveModeInput = value;
             if (_moveModeInput == null)
                 return;
-
-            this.BindToContext();
 
             if (_moveModeInput.Mode.MovementAbility is IAbility listenable)
             {

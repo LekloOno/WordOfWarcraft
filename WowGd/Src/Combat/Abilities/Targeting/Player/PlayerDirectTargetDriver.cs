@@ -28,8 +28,6 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
 
     public event Action? InputStarted;
     public event Action? InputStopped;
-    public event Action? InputPushed;
-    public event Action? InputRemoved;
 
 
     public async Task<TargetResult> RetrieveTarget(IEntity caster, IEnumerable<ITargetRule>? rules, CancellationToken ct, bool useBuffer = true)
@@ -57,8 +55,7 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
         
         _processing = true;
         EnableTargeting(caster, rules);
-        if (HandsInputManager.TryPushSecondHandMode(this))
-            InputPushed?.Invoke();
+        HandsInputManager.TryPushSecondHandMode(this);
 
         try
         {
@@ -72,8 +69,7 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
             _processing = false;
             _pendingIntent = null;
             DisableTargeting();
-            if (HandsInputManager.TryRemoveSecondHandMode(this))
-                InputRemoved?.Invoke();
+            HandsInputManager.TryRemoveSecondHandMode(this);
         }
     }
 
@@ -153,11 +149,7 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
 
         BufferAcquisition = true;
         EnableTargeting(caster, rules);
-        bool pushed = HandsInputManager.TryPushSecondHandMode(this);
-        if (pushed)
-            InputPushed?.Invoke();
-
-        return pushed;
+        return HandsInputManager.TryPushSecondHandMode(this);
     }
 
     public bool StopBufferTarget()
@@ -167,10 +159,6 @@ public partial class PlayerDirectTargetDriver : Node, ISecondHandInputMode, ILis
             
         BufferAcquisition = false;
         DisableTargeting();
-        bool removed = HandsInputManager.TryRemoveSecondHandMode(this);
-        if (removed)
-            InputRemoved?.Invoke();
-
-        return removed;
+        return HandsInputManager.TryRemoveSecondHandMode(this);
     }
 }

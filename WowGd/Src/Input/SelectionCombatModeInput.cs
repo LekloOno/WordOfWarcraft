@@ -14,14 +14,11 @@ public partial class SelectionCombatModeInput : Node, ISecondHandInputMode, ILis
 
     public event Action? InputStarted;
     public event Action? InputStopped;
-    public event Action? InputPushed;
-    public event Action? InputRemoved;
 
 
     public override void _Ready()
     {
-        if (HandsInputManager.TryPushSecondHandMode(this))
-            InputPushed?.Invoke();
+        HandsInputManager.TryPushSecondHandMode(this);
     }
 
     public override void _UnhandledKeyInput(InputEvent @event)
@@ -30,7 +27,6 @@ public partial class SelectionCombatModeInput : Node, ISecondHandInputMode, ILis
         {
             if (@event.IsActionPressed("ability_cancel"))
                 Mode.Unselect(0);  // ad-hoc, this is wip, this would suppose no one else is interracting with the selection
-            return;
         }
 
         if (!_active)

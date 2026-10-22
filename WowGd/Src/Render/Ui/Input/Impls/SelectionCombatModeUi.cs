@@ -11,25 +11,8 @@ namespace WowGd.Src.Render.Ui.Input.Impls;
 [GlobalClass]
 public partial class SelectionCombatModeUi : Node, IHandInputUi
 {
-    private SelectionCombatMode SelectionMode => _selectionModeInput.Mode;
-
-    private SelectionCombatModeInput _selectionModeInput = null!;
-    [Export] public SelectionCombatModeInput SelectionModeInput
-    {
-        get => _selectionModeInput;
-        set
-        {
-            if (value == _selectionModeInput)
-                return;
-
-            if (_selectionModeInput != null)
-                this.UnbindToContext();
-
-            _selectionModeInput = value;
-            if (_selectionModeInput != null)
-                this.BindToContext();
-        }
-    }
+    private SelectionCombatMode SelectionMode => SelectionModeInput.Mode;
+    [Export] public SelectionCombatModeInput SelectionModeInput = null!;
 
     [Export] private Container _abilitiesContainer = null!;
     [Export] private PackedScene _cellUiTemplate = null!;
@@ -39,7 +22,7 @@ public partial class SelectionCombatModeUi : Node, IHandInputUi
 
     public IHandsInputUiContext Context => HandsInputUiContext.Instance;
     public HandInputDocking Docking => HandInputDocking.Main;
-    public IListenableHandInputMode InputMode => _selectionModeInput;
+    public IListenableHandInputMode InputMode => SelectionModeInput;
     public Control ControlNode => _abilitiesContainer;
 
     public override async void _Ready()

@@ -19,7 +19,6 @@ public partial class WorderDisplay : Node, IHandInputUi
 
     private void ReadyHandInput()
     {
-        this.BindToContext();
         SetUnactive();
         HideHand();
         PlayerInputUiSyncer.Register(this);

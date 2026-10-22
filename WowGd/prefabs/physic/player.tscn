@@ -75,6 +75,7 @@
 [ext_resource type="Script" uid="uid://4ma6ga1bxmpu" path="res://Src/Entities/ClientMarker.cs" id="59_isay2"]
 [ext_resource type="Script" uid="uid://u1q0ceaxrw3t" path="res://Src/Entities/Stats/Statistics.cs" id="60_3v1fp"]
 [ext_resource type="Script" uid="uid://bk41d1kcbqthv" path="res://Src/Entities/Stats/StatisticResInt.cs" id="61_ha2cu"]
+[ext_resource type="Script" uid="uid://2vuqibpvr3cq" path="res://Src/Input/QuickSwitchInput.cs" id="76_105x8"]
 
 [sub_resource type="Resource" id="Resource_s12lk"]
 script = ExtResource("52_k2b5b")
@@ -1035,3 +1036,9 @@ _baseVitality = SubResource("Resource_55w0n")
 _baseFocus = SubResource("Resource_etsct")
 _baseReach = SubResource("Resource_8yxnp")
 metadata/_custom_type_script = "uid://u1q0ceaxrw3t"
+
+[node name="QuickSwitchInput" type="Node" parent="." unique_id=887189832 node_paths=PackedStringArray("_selectionInput", "_moveModeInput")]
+script = ExtResource("76_105x8")
+_selectionInput = NodePath("../SelectionCombatModeInput")
+_moveModeInput = NodePath("../ModesManager/MoveMode/MoveModeInput")
+metadata/_custom_type_script = "uid://2vuqibpvr3cq"

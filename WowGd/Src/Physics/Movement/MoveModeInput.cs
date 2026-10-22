@@ -14,8 +14,6 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
 
     public event Action? InputStarted;
     public event Action? InputStopped;
-    public event Action? InputPushed;
-    public event Action? InputRemoved;
 
     public bool CanStart() => true;
     public bool CanStop() => true;
@@ -33,8 +31,7 @@ public partial class MoveModeInput : Node, IFirstHandInputMode, IListenableHandI
         _entity = entity;
 
         await _entity.Initialization;
-        if (HandsInputManager.TryPushFirstHandMode(this))
-            InputPushed?.Invoke();
+        HandsInputManager.TryPushFirstHandMode(this);
     }
 
     public void Start()

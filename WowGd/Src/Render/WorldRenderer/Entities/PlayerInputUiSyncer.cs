@@ -42,13 +42,13 @@ public static class PlayerInputUiSyncer
     private static void SyncPushed(IHandInputMode mode)
     {
         if (mode.TryInto(out IHandInputUi? ui))
-            ui.PushToContext();
+            ui.Context.TryPushUi(ui, ui.Docking);
     }
 
     public static void Register(IHandInputUi handInputUi) =>
         _modesRegistry.Add(handInputUi.InputMode, handInputUi);
 
-    private static bool TryInto(this IHandInputMode mode, [NotNullWhen(true)] out IHandInputUi? handInputUi)
+    public static bool TryInto(this IHandInputMode mode, [NotNullWhen(true)] out IHandInputUi? handInputUi)
     {
         handInputUi = null;
         if (mode is not IListenableHandInputMode listenable)

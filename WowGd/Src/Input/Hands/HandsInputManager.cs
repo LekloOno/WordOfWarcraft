@@ -28,13 +28,17 @@ public static class HandsInputManager
 
     public static event Action<IHandInputMode>? ModeStarted;
     public static event Action<IHandInputMode>? ModeStopped;
+    public static event Action<IHandInputMode>? ModePushed;
+    public static event Action<IHandInputMode>? ModeRemoved;
 
     public static bool TryPushFirstHandMode(IFirstHandInputMode mode)
     {
         if (mode is ITwoHandedInputMode)
             return false;
 
-        return TryTransition(mode, TopOrNull(_secondHand), () => _firstHand.Add(mode));
+        bool pushed = TryTransition(mode, TopOrNull(_secondHand), () => _firstHand.Add(mode));
+        if (pushed) ModePushed?.Invoke(mode);
+        return pushed;
     }
 
     public static bool TryPushSecondHandMode(ISecondHandInputMode mode)
@@ -42,15 +46,21 @@ public static class HandsInputManager
         if (mode is ITwoHandedInputMode)
             return false;
 
-        return TryTransition(TopOrNull(_firstHand), mode, () => _secondHand.Add(mode));
+        bool pushed = TryTransition(TopOrNull(_firstHand), mode, () => _secondHand.Add(mode));
+        if (pushed) ModePushed?.Invoke(mode);
+        return pushed;
     }
 
-    public static bool TryPushTwoHandedMode(ITwoHandedInputMode mode) =>
-        TryTransition(mode, mode, () =>
+    public static bool TryPushTwoHandedMode(ITwoHandedInputMode mode)
+    {
+        bool pushed = TryTransition(mode, mode, () =>
         {
             _firstHand.Add(mode);
             _secondHand.Add(mode);
         });
+        if (pushed) ModePushed?.Invoke(mode);
+        return pushed;
+    }
 
     public static bool TryPopFirstHandMode() =>
         _firstHand.Count == 0 || TryRemoveAndReconcile(_firstHand.Count - 1, null);
@@ -178,11 +188,18 @@ public static class HandsInputManager
                 ? TopOrNull(_secondHand, 2)
                 : TopOrNull(_secondHand);
 
-        return TryTransition(newFirstTop, newSecondTop, () =>
+        IHandInputMode mode = firstIndex is int fi
+            ? _firstHand[fi]
+            : _secondHand[(int)secondIndex!];
+
+        bool removed = TryTransition(newFirstTop, newSecondTop, () =>
         {
             if (firstIndex is int fi) _firstHand.RemoveAt(fi);
             if (secondIndex is int si) _secondHand.RemoveAt(si);
         });
+
+        if (removed) ModeRemoved?.Invoke(mode);
+        return removed;
     }
 
 

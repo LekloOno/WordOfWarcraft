@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using WowGd.Src.Input.Hands;
 using WowGd.Src.Render.Ui.Input.HandStack;
+using WowGd.Src.Render.WorldRenderer.Entities;
 
 namespace WowGd.Src.Render.Ui.Input;
 
@@ -36,6 +38,24 @@ public class HandsInputUiContext : IHandsInputUiContext
         [HandInputDocking.Main] = new(),
         [HandInputDocking.Screen] = new(),
     };
+
+    public HandsInputUiContext()
+    {
+        HandsInputManager.ModePushed += OnModePushed;
+        HandsInputManager.ModeRemoved += OnModeRemoved;
+    }
+
+    private void OnModeRemoved(IHandInputMode mode)
+    {
+        if (mode.TryInto(out IHandInputUi? handInputUi))
+            TryRemoveUi(handInputUi, handInputUi.Docking);
+    }
+
+    private void OnModePushed(IHandInputMode mode)
+    {
+        if (mode.TryInto(out IHandInputUi? handInputUi))
+            TryPushUi(handInputUi, handInputUi.Docking);
+    }
 
     public bool TryPushUi(IHandInputUi handInputUi, HandInputDocking docking)
     {

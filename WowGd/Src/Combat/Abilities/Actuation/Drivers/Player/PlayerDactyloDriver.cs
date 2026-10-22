@@ -22,8 +22,6 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
 
     public event Action? InputStarted;
     public event Action? InputStopped;
-    public event Action? InputPushed;
-    public event Action? InputRemoved;
 
     private bool _processing = false;
 
@@ -51,8 +49,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
         {
             _processing = true;
 
-            if (HandsInputManager.TryPushTwoHandedMode(this))
-                InputPushed?.Invoke();
+            HandsInputManager.TryPushTwoHandedMode(this);
 
             Queue<Word> wordQueue = new();
             int totalWordsToQueue = 1 + request.LookaheadCount;
@@ -104,8 +101,7 @@ public partial class PlayerDactyloDriver : Node, IActuatorDriver, ITwoHandedInpu
         finally
         {
             _processing = false;
-            if (HandsInputManager.TryRemoveTwoHandedMode(this))
-                InputRemoved?.Invoke();
+            HandsInputManager.TryRemoveTwoHandedMode(this);
 
             Stopped?.Invoke();
         }
