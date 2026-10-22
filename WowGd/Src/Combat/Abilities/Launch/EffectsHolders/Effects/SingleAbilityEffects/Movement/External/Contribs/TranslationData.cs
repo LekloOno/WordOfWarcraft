@@ -8,7 +8,7 @@ public partial class TranslationData : Resource, IMoveContribData
 {
     [Export(PropertyHint.Range, "0,15,0.1,or_greater,exp")]
     private float _distance = 2f;
-    [Export(PropertyHint.Range, "0,2,0.1,or_greater,exp")]
+    [Export(PropertyHint.Range, "0,2,0.01,or_greater,exp")]
     private float _duration = 0.2f;
     [Export] private TranslationWeighting _weighting =
         TranslationWeighting.Distance | TranslationWeighting.Duration;

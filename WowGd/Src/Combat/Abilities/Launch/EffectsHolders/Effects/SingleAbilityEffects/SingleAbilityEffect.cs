@@ -19,7 +19,7 @@ public abstract partial class SingleAbilityEffect : Effect
     public override bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance)
     {
         if (_launcher)
-            LauncherEffect(targetsPayload.Launcher, spellInstance, targetsPayload.ActuateWeight);
+            LauncherEffect(targetsPayload, spellInstance, targetsPayload.ActuateWeight);
 
         if (_target == TargetRelation.None)
             return true;
@@ -43,10 +43,10 @@ public abstract partial class SingleAbilityEffect : Effect
 
     public abstract void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight);
 
-    public virtual void LauncherEffect(IEntity entity, SpellInstance spellInstance, float actuateWeight) =>
+    public virtual void LauncherEffect(TargetsPayload targetsPayload, SpellInstance spellInstance, float actuateWeight) =>
         Effect(
-            launcher: entity,
-            target: entity,
+            launcher: targetsPayload.Launcher,
+            target: targetsPayload.Launcher,
             spellInstance: spellInstance,
             IsDirect: true,
             gatherWeight: 1f,

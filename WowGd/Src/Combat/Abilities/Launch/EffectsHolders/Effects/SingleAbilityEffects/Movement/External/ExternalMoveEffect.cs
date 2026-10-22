@@ -3,6 +3,7 @@ using Godot;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects.Movement.External;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects.SingleAbilityEffects.Movement.External.Contribs;
+using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Entities;
 
 namespace WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Effects;
@@ -69,13 +70,18 @@ public partial class ExternalMoveEffect : SingleAbilityEffect
         DoMove(target, direction, gatherWeight, actuateWeight);
     }
 
-    public override void LauncherEffect(IEntity entity, SpellInstance spellInstance, float actuateWeight)
+    public override void LauncherEffect(TargetsPayload targetsPayload, SpellInstance spellInstance, float actuateWeight)
     {
-        Vector2 direction = entity.WishDir.WishDir();
+        IEntity launcher = targetsPayload.Launcher;
+        Vector2 direction = launcher.WishDir.WishDir();
+
+        if (direction == Vector2.Zero && targetsPayload.Targets.Count > 0)
+            direction = (launcher.Body.GlobalPosition - targetsPayload.Targets[0].Entity.Body.GlobalPosition).Normalized();
+
         if (_moveDirection is ExternalMoveDirection.Pull)
             direction *= -1f;
 
-        DoMove(entity, direction, 1f, actuateWeight);
+        DoMove(launcher, direction, 1f, actuateWeight);
     }
 
     private void DoMove(IEntity target, Vector2 direction, float gatherWeight, float actuateWeight)
