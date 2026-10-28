@@ -1,4 +1,5 @@
 using CombatCore;
+using CombatCore.Primitives.Tags;
 using Godot;
 using Godot.Collections;
 using WowGd.Src.Entities;
@@ -10,7 +11,7 @@ public partial class StatusData : Resource
 {
     [Export] private string _name = string.Empty;
     [Export] private StatusCategory _category;
-    [Export] private Array<CombatRequestTag> _requestTags = [];
+    [Export] private Array<CombatGrantTag> _requestTags = [];
 
     [Export] private LevelModelData? _levelModelData;
     [Export] private TimeModelData? _timeModelData;

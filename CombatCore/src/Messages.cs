@@ -8,7 +8,7 @@ public abstract record Draft(Source Source, EntityId Target, InstanceId? Cause);
 
 public sealed record RequestDraft(
     Source Source, EntityId Target, ResourceId Resource, ResourceDirection Direction, long Amount,
-    TagSet Tags = default, InstanceId? Cause = null) : Draft(Source, Target, Cause);
+    RequestTagSet Tags = default, InstanceId? Cause = null) : Draft(Source, Target, Cause);
 
 public sealed record StatusDraft(
     Source Source, EntityId Target, StatusOp Op, StatusDefinition? Def = null,
@@ -33,7 +33,7 @@ public abstract record Request(
 public sealed record ResourceRequest(
     RequestId Id, Source Source, InstanceId? Cause, Origin Origin,
     ImmutableArray<long> Lineage, int Depth, EntityId Target,
-    ResourceId Resource, ResourceDirection Direction, TagSet Tags, BucketedValue Value)
+    ResourceId Resource, ResourceDirection Direction, RequestTagSet Tags, BucketedValue Value)
     : Request(Id, Source, Cause, Origin, Lineage, Depth, Target)
 {
     public override Request CloneValues() => this with { Value = Value.Clone() };
@@ -59,7 +59,7 @@ public sealed record StatusRequest(
 public readonly record struct FactCtx(RequestId Request, InstanceId? Cause, ImmutableArray<long> Lineage, int Depth);
 
 public sealed record ResourceFact(
-    FactCtx Ctx, Source Source, EntityId Target, ResourceId Resource, ResourceDirection Direction, TagSet Tags,
+    FactCtx Ctx, Source Source, EntityId Target, ResourceId Resource, ResourceDirection Direction, RequestTagSet Tags,
     long Requested, long Applied, long Before, long After, IReadOnlyList<Contribution> Contributions);
 
 public sealed record DeathFact(FactCtx Ctx, EntityId Entity, Source Killer);

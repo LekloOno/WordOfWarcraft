@@ -88,3 +88,7 @@ public sealed class FakeBreaches(EntityId owner) : IDisposable
 }
 
 public sealed class DisposeFlag : IDisposable { public bool Disposed { get; private set; } public void Dispose() => Disposed = true; }
+
+// One marker type per tag test: each closed generic gets its own private static registry, so tests do not interfere.
+public sealed class TG1; public sealed class TG2; public sealed class TG3; public sealed class TG5a; public sealed class TG5b;
+public sealed class TG6; public sealed class TG7; public sealed class TG8; public sealed class TG9a; public sealed class TG9b;

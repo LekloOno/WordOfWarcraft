@@ -64,7 +64,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
 
     public IReadOnlyCollection<StatusInstance> StatusesOf(EntityId e) =>
         _statuses.TryGetValue(e, out var l) ? l.Instances : Array.Empty<StatusInstance>();
-    public bool HasTag(EntityId e, Tag t) => StatusesOf(e).Any(s => s.Def.Grants.Contains(t));
+    public bool HasTag(EntityId e, GrantTag t) => StatusesOf(e).Any(s => s.Def.Grants.Contains(t));
 
     // ---------------- registration: every call returns a handle ----------------
     Pipeline<T> P<T>() where T : Request => _pipelines.Get<T>();

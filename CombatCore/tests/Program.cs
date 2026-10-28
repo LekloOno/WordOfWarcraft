@@ -1,5 +1,6 @@
 using CombatCore;
 using CombatCore.Primitives;
+using CombatCore.Primitives.Tags;
 using CombatCore.Tests;
 
 int failed = 0, passed = 0;
@@ -36,20 +37,20 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // competing replacements
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 100); w.Set(B, R.Stamina, 100); w.Set(B, R.Mana, 100);
-    var drain = Tag.Register("test.drain"); var dmg = Tag.Register("test.damage");
+    var drain = RequestTag.Register("test.drain"); var dmg = RequestTag.Register("test.damage");
     // both match "drain"; the first converts it (rewrites the tags), so the second no longer matches
-    a.Add(Rules.Replace(new(RequireAll: TagSet.Of(drain)), Phase.Convert, r => r with { Resource = R.Health, Tags = TagSet.Of(dmg) }));
-    a.Add(Rules.Replace(new(RequireAll: TagSet.Of(drain)), Phase.Convert, r => r with { Resource = R.Stamina, Tags = TagSet.Of(dmg) }));
-    a.Submit(new RequestDraft(Spell(1), B, R.Mana, ResourceDirection.Remove, 20, TagSet.Of(drain)));
+    a.Add(Rules.Replace(new(RequireAll: RequestTagSet.Of(drain)), Phase.Convert, r => r with { Resource = R.Health, Tags = RequestTagSet.Of(dmg) }));
+    a.Add(Rules.Replace(new(RequireAll: RequestTagSet.Of(drain)), Phase.Convert, r => r with { Resource = R.Stamina, Tags = RequestTagSet.Of(dmg) }));
+    a.Submit(new RequestDraft(Spell(1), B, R.Mana, ResourceDirection.Remove, 20, RequestTagSet.Of(drain)));
     Check("P2 first replacement wins", w.Get(B, R.Health) == 80 && w.Get(B, R.Stamina) == 100);
 }
 {   // lineage rule
     var a = New(out var w, out var clock);
     w.Set(B, R.Health, 1000); w.Set(B, R.Mana, 1000);
-    var drain = Tag.Register("test.drain"); var dmg = Tag.Register("test.damage");
-    a.Add(Rules.AddOn(new(RequireAll: TagSet.Of(dmg)),   r => new[] { new RequestDraft(Status(1), B, R.Mana, ResourceDirection.Remove, 5, TagSet.Of(drain)) }));
-    a.Add(Rules.AddOn(new(RequireAll: TagSet.Of(drain)), r => new[] { new RequestDraft(Status(2), B, R.Health, ResourceDirection.Remove, 5, TagSet.Of(dmg)) }));
-    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10, TagSet.Of(dmg)));
+    var drain = RequestTag.Register("test.drain"); var dmg = RequestTag.Register("test.damage");
+    a.Add(Rules.AddOn(new(RequireAll: RequestTagSet.Of(dmg)),   r => new[] { new RequestDraft(Status(1), B, R.Mana, ResourceDirection.Remove, 5, RequestTagSet.Of(drain)) }));
+    a.Add(Rules.AddOn(new(RequireAll: RequestTagSet.Of(drain)), r => new[] { new RequestDraft(Status(2), B, R.Health, ResourceDirection.Remove, 5, RequestTagSet.Of(dmg)) }));
+    a.Submit(new RequestDraft(Spell(1), B, R.Health, ResourceDirection.Remove, 10, RequestTagSet.Of(dmg)));
     Check("P3 lineage: terminates after one round, nothing dropped",
           w.Get(B, R.Health) == 985 && w.Get(B, R.Mana) == 995 && !a.Log.Any(l => l.StartsWith("DROP")));
 }
@@ -73,8 +74,8 @@ IEnumerable<Draft> None() => Array.Empty<Draft>();
 {   // rollback: refund on kill reads the cost fact
     foreach (var free in new[] { false, true })
     {
-        var costTag = Tag.Register("cost");
-        var tagSet = TagSet.Of(costTag);
+        var costTag = RequestTag.Register("cost");
+        var tagSet = RequestTagSet.Of(costTag);
         var a = New(out var w, out var clock);
         var instanceAbility = new Dictionary<InstanceId, uint> { [new(41)] = 1 };
         var optedIn = new HashSet<uint> { 1 };
@@ -169,9 +170,9 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
 }
 {   // S6: cleanse by category; passives are never swept by a catch-all
     var a = New(out var w, out var clock);
-    var Slowed = Tag.Register("Slowed");
+    var Slowed = GrantTag.Register("Slowed");
     var buff = Might(); 
-    var debuff = new StatusDefinition("Slow", StatusCategory.Debuff, Grants: TagSet.Of(Slowed));
+    var debuff = new StatusDefinition("Slow", StatusCategory.Debuff, Grants: GrantTagSet.Of(Slowed));
     var passive = new StatusDefinition("Ward", StatusCategory.Passive);
     foreach (var d in new[] { buff, debuff, passive })
         a.Submit(new StatusDraft(Spell(1), B, StatusOp.Apply, d, Level: 1, Duration: 1000));
@@ -327,6 +328,77 @@ StatusDefinition Might(StatusCategory cat = StatusCategory.Buff) => new(
     a.Submit(new StatusDraft(Spell(1), Mage, StatusOp.Apply, d2));
     Check("T4 same data type, two keys, two instances",
           a.TryGetData(Mage, d1, out var x) && a.TryGetData(Mage, d2, out var y) && !ReferenceEquals(x, y));
+}
+
+// =====================  tags: chunks, hierarchy, domains  =====================
+
+bool Throws(Action act) { try { act(); return false; } catch (Exception) { return true; } }
+
+{   // G1: more than 64 tags; sets built before the registry grew still compare correctly
+    var early = Tag<TG1>.Register("t0");
+    var setEarly = TagSet<TG1>.Of(early);
+    for (var i = 1; i < 200; i++) Tag<TG1>.Register("t" + i);
+    var late = Tag<TG1>.Register("t150");
+    var both = TagSet<TG1>.Of(early, late);
+    Check("G1 200 tags, indices past 64 work", TagRegistry<TG1>.Count == 200 && late.Index == 150 && both.Contains(late));
+    Check("G1 a shorter set is contained in a longer one, not the reverse", both.ContainsAll(setEarly) && !setEarly.ContainsAll(both));
+    Check("G1 Intersects across chunks", both.Intersects(TagSet<TG1>.Of(late)) && !setEarly.Intersects(TagSet<TG1>.Of(late)));
+}
+{   // G2: hierarchy: a set holding Spell.Fire also holds Spell
+    var fire = Tag<TG2>.Register("Spell.Fire"); var ice = Tag<TG2>.Register("Spell.Ice"); var dmg = Tag<TG2>.Register("Damage");
+    var spell = Tag<TG2>.Register("Spell");        // registered implicitly by Spell.Fire: same tag
+    var s = TagSet<TG2>.Of(fire);
+    Check("G2 parents are registered implicitly, once", TagRegistry<TG2>.Count == 4 && spell.Index == 0 && fire.Index == 1);
+    Check("G2 Spell.Fire matches Spell and itself, not Spell.Ice", s.Contains(spell) && s.Contains(fire) && !s.Contains(ice));
+    Check("G2 ContainsAll / Intersects follow the hierarchy", s.ContainsAll(TagSet<TG2>.Of(spell)) && !s.ContainsAll(TagSet<TG2>.Of(ice)) && s.Intersects(TagSet<TG2>.Of(spell)));
+    Check("G2 parent / descendant queries", fire.Parent == spell && spell.Parent is null && fire.IsSameOrDescendantOf(spell) && !spell.IsSameOrDescendantOf(fire));
+    Check("G2 ToString shows the most specific tags", TagSet<TG2>.Of(fire, dmg).ToString() == "{Spell.Fire, Damage}");
+}
+{   // G3: removal removes the tag and its descendants, ancestors stay
+    var fire = Tag<TG3>.Register("Spell.Fire"); var ice = Tag<TG3>.Register("Spell.Ice"); var dmg = Tag<TG3>.Register("Damage");
+    var spell = Tag<TG3>.Register("Spell");
+    var s = TagSet<TG3>.Of(fire, ice, dmg);
+    var noFire = s.Without(fire);
+    Check("G3 removing Spell.Fire keeps Spell.Ice and therefore Spell", !noFire.Contains(fire) && noFire.Contains(ice) && noFire.Contains(spell) && noFire.Contains(dmg));
+    var noSpell = s.Without(spell);
+    Check("G3 removing Spell removes every Spell.*", !noSpell.Contains(spell) && !noSpell.Contains(fire) && !noSpell.Contains(ice) && noSpell.Contains(dmg));
+}
+{   // G5: RegisterAll is order independent; the fingerprint tells two layouts apart
+    TagRegistry<TG5a>.RegisterAll(new[] { "Spell.Fire", "Damage", "Spell.Ice" });
+    TagRegistry<TG5b>.RegisterAll(new[] { "Damage", "Spell.Ice", "Spell.Fire" });
+    Check("G5 same names, any order: same layout and fingerprint",
+          TagRegistry<TG5a>.Fingerprint == TagRegistry<TG5b>.Fingerprint
+          && Tag<TG5a>.Register("Spell.Ice").Index == Tag<TG5b>.Register("Spell.Ice").Index);
+    Tag<TG5b>.Register("Other");
+    Check("G5 a different set of names gives a different fingerprint", TagRegistry<TG5a>.Fingerprint != TagRegistry<TG5b>.Fingerprint);
+    Check("G5 RegisterAll refuses a registry that already has tags", Throws(() => TagRegistry<TG5a>.RegisterAll(new[] { "X" })));
+}
+{   // G6: freeze
+    var a = Tag<TG6>.Register("Known");
+    TagRegistry<TG6>.Freeze();
+    Check("G6 frozen: a known name still resolves, an unknown one is rejected",
+          Tag<TG6>.Register("Known") == a && Throws(() => Tag<TG6>.Register("Unknown")) && TagRegistry<TG6>.IsFrozen);
+}
+{   // G7: declared roots catch typos
+    TagRegistry<TG7>.DeclareRoots("Spell", "Damage");
+    Tag<TG7>.Register("Spell.Fire");
+    Check("G7 an undeclared root is rejected (Spel.Fire)", Throws(() => Tag<TG7>.Register("Spel.Fire")) && Throws(() => Tag<TG7>.Register("Spell..Fire")));
+}
+{   // G8: canonical form: equality does not depend on how a set was built
+    var a = Tag<TG8>.Register("a"); var b = Tag<TG8>.Register("b");
+    for (var i = 0; i < 100; i++) Tag<TG8>.Register("pad" + i);
+    var far = Tag<TG8>.Register("pad99");
+    Check("G8 removing everything gives the empty set", TagSet<TG8>.Of(a, far).Without(a).Without(far) == default && TagSet<TG8>.Of(a).Without(a).IsEmpty);
+    Check("G8 construction order does not matter", TagSet<TG8>.Of(a, b) == TagSet<TG8>.Of(b, a)
+          && TagSet<TG8>.Of(a, b).GetHashCode() == TagSet<TG8>.Of(b, a).GetHashCode());
+    Check("G8 trailing empty chunks do not matter", TagSet<TG8>.Of(a, far).Without(far) == TagSet<TG8>.Of(a));
+    Check("G8 Union", TagSet<TG8>.Of(a).Union(TagSet<TG8>.Of(far)) == TagSet<TG8>.Of(a, far));
+}
+{   // G9: domains are independent registries
+    Tag<TG9a>.Register("x");
+    Tag<TG9b>.Register("y"); Tag<TG9b>.Register("z");
+    Check("G9 two domains, two registries (compile-time separation too: Tag<TG9a> and Tag<TG9b> do not mix)",
+          TagRegistry<TG9a>.Count == 1 && TagRegistry<TG9b>.Count == 2 && Tag<TG9a>.Register("x").Index == 0);
 }
 
 Console.WriteLine($"\n{passed} passed, {failed} failed");

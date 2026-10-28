@@ -12,7 +12,7 @@ public class MatterBreachBuff : IBreachBuff
     public string Key => "matter";
 
     private readonly Dictionary<IEntity, IDisposable> _handles = [];
-    private static readonly TagSet _tagSet = TagSet.Of(Tag.Register("generate"));
+    private static readonly RequestTagSet _tagSet = RequestTagSet.Of(RequestTag.Register("generate"));
 
     public void Apply(IEntity entity, TargetRelation targetRelation)
     {

@@ -1,5 +1,4 @@
 using CombatCore;
-using CombatCore.Primitives;
 using Godot;
 using Godot.Collections;
 using WowGd.Src.Combat.Abilities.Data;
@@ -19,7 +18,7 @@ public abstract partial class Effect : Resource, IEffect
 {
     [Export] private Array<CombatRequestTag> _requestTags = [];
 
-    protected TagSet RequestTagSet => _requestTags.IntoSet();
+    protected RequestTagSet RequestTagSet => _requestTags.IntoSet();
     public abstract string Id { get; }
     public abstract bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance);
 }

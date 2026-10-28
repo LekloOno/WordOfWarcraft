@@ -20,7 +20,7 @@ public sealed record TimeModel(MergeOp OnApply);
 
 public record StatusDefinition(
     string Name, StatusCategory Category,
-    TagSet Grants = default,
+    GrantTagSet Grants = default,
     LevelModel? Level = null,
     TimeModel? Time = null,
     IReadOnlyList<IStatusEffect>? Effects = null,
@@ -51,7 +51,7 @@ public record StatusDefinition(
 public sealed record TypedStatusDefinition<T>(
     string Name, StatusCategory Category,
     Func<StatusInstance, ICombatEntity, T> Create,
-    TagSet Grants = default,
+    GrantTagSet Grants = default,
     LevelModel? Level = null,
     TimeModel? Time = null,
     IReadOnlyList<IStatusEffect>? Effects = null,
@@ -87,7 +87,7 @@ public sealed class StatusInstance(uint id, StatusDefinition def, EntityId owner
 }
 
 /// <summary>Filters statuses by category / tags / definition. Categories == None means "any".</summary>
-public readonly record struct StatusFilter(StatusCategory Categories = StatusCategory.None, TagSet RequireAll = default, uint? DefId = null)
+public readonly record struct StatusFilter(StatusCategory Categories = StatusCategory.None, GrantTagSet RequireAll = default, uint? DefId = null)
 {
     public bool Matches(StatusDefinition d) =>
         (Categories == StatusCategory.None || (Categories & d.Category) != 0)

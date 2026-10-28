@@ -21,7 +21,7 @@ public sealed class SpellInstance
     public bool Stopped { get; internal set; }
     public Source Source => new(SourceKind.Ability, AbilityId, Caster);
 
-    public void Request(EntityId target, ResourceId resource, ResourceDirection direction, long amount, TagSet tags = default) =>
+    public void Request(EntityId target, ResourceId resource, ResourceDirection direction, long amount, RequestTagSet tags = default) =>
         _authority.Submit(new RequestDraft(Source, target, resource, direction, amount, tags, Id));
 
     public void ApplyStatus(EntityId target, StatusDefinition def, long level = 1, long? duration = null) =>
