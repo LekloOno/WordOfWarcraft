@@ -1,4 +1,4 @@
-using CombatCore;
+using CombatCore.Sources;
 using Godot;
 using WowGd.Src.Entities;
 using WowGd.Src.Physics.Movement.Status;
@@ -13,7 +13,14 @@ public partial class MovementStatusEffect : SingleAbilityEffect
     [Export] private MovementStatus _movementStatus;
     [Export] private float _duration;
 
-    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight)
+    protected override void Effect(
+        IEntity launcher,
+        IEntity target,
+        Source source,
+        bool IsDirect,
+        float gatherWeight,
+        float actuateWeight,
+        Source? cause)
     {
         target.EntityMover.StatusChannels.Query(this, _movementStatus, out _);
         

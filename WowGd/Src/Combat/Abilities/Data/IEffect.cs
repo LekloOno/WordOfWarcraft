@@ -1,4 +1,5 @@
 using CombatCore;
+using CombatCore.Sources;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 
 namespace WowGd.Src.Combat.Abilities.Data;
@@ -22,5 +23,5 @@ namespace WowGd.Src.Combat.Abilities.Data;
 public interface IEffect
 {
     string Id { get; }
-    bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance);
+    bool Apply(TargetsPayload targetsPayload, Source source, Source? cause = null);
 }

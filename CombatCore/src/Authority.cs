@@ -1,6 +1,9 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using CombatCore.Primitives;
+using CombatCore.Sources;
+using CombatCore.Sources.Attachment;
+using CombatCore.Sources.Lifecycle;
 using CombatCore.Status;
 
 namespace CombatCore;
@@ -10,8 +13,21 @@ namespace CombatCore;
 ///   fuse -> replace -> add -> modify -> resolve -> publish fact (reactions enqueue derived requests).
 /// The stages are shared by every request type; only 'resolve' is type specific.
 /// </summary>
-public sealed class Authority(IGameClock clock, IEntityDirectory entities)
+public sealed class Authority
 {
+    readonly IGameClock _clock;
+    readonly IEntityDirectory _entities;
+
+    public Authority(IGameClock clock, IEntityDirectory entities)
+    {
+        _clock = clock;
+        _entities = entities;
+        // The lifecycle processor is DRIVEN by this authority and private to it: every lifecycle command, whoever submits it
+        // (game code, a layer above, a hook, a ticket), becomes a SourceRequest of this pipeline. It is broadcast, can be intercepted,
+        // and waits in the same FIFO as every other request, so it can never overtake a request emitted before it.
+        _sources = new SourcesProcessor(new SourceSink(this), RouteSourceCommand);
+    }
+
     sealed class Handle(Action onDispose) : IDisposable
     {
         Action? _a = onDispose;
@@ -48,10 +64,13 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     public long Now { get; private set; }
     readonly Dictionary<EntityId, StatusRegistry> _statuses = [];
     readonly Queue<Request> _queue = new();
+    readonly SourcesProcessor _sources;
+    FactCtx? _applyCtx;                                // set while a SourceRequest is being applied: lifecycle facts carry it
+    readonly Dictionary<EntityId, Source> _entityNodes = [];
+    uint _nextSource;                                  // 0 is the System root
     readonly PipelineSet _pipelines = new();
     readonly Dictionary<Type, IFactChannel> _facts = [];
-    readonly Dictionary<InstanceId, SpellInstance> _instances = [];
-    uint _nextRequest, _nextStatus, _nextInstance;
+    uint _nextRequest, _nextStatus;
     long _nextTimestamp;
     bool _running;
 
@@ -101,12 +120,12 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     /// <summary>Call once per tick. Reads the clock and expires due statuses (through the pipeline, as Remove requests).</summary>
     public void Update()
     {
-        Now = clock.Tick;
+        Now = _clock.Tick;
         var due = _statuses.Values.SelectMany(l => l.Instances)
             .Where(s => s.ExpiresAt is { } t && t <= Now)
             .OrderBy(s => s.ExpiresAt).ThenBy(s => s.Id).ToList();
         foreach (var s in due)
-            Submit(new StatusDraft(new Source(SourceKind.System, 0, s.Owner), s.Owner, StatusOp.Remove,
+            Submit(new StatusDraft(Root, s.Owner, StatusOp.Remove,
                                    RemoveFilter: new StatusFilter(DefId: s.Def.Id), Reason: RemoveReason.Expired));
     }
 
@@ -117,30 +136,91 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         return data is not null;
     }
 
-    // ---------------- spell lifecycle ----------------
-    public SpellInstance StartInstance(uint abilityId, EntityId caster, InstanceId? parent = null)
+    // ---------------- sources ----------------
+
+    /// <summary>The System node, root of the source tree.</summary>
+    public Source Root => _sources.Root;
+
+    /// <summary>A node that is not in the tree yet (Terminated). Ids come from here, nothing to pick by hand.</summary>
+    public Source NewSource(string name, SourceTagSet tags = default, ISourceAttachment? attachment = null) =>
+        new(++_nextSource, name, tags, attachment);
+
+    // ---- lifecycle requests. `by` = who asks (default: the node acting). Applied when their turn comes in the FIFO. ----
+
+    /// <summary>Asks to put <paramref name="child"/> under <paramref name="parent"/> (born pending if the parent is pending).</summary>
+    public void Insert(Source parent, Source child, object? ctx = null, Source? by = null, Source? cause = null) =>
+        Submit(new SourceDraft(by ?? parent, SourceCommandKind.Insert, parent, child, 0, ctx, cause));
+
+    /// <summary>Asks for a graceful termination: the node drains (children, then its attachment), then leaves the tree.</summary>
+    public void Terminate(Source node, object? ctx = null, Source? by = null, Source? cause = null) =>
+        Submit(new SourceDraft(by ?? node, SourceCommandKind.Terminate, node, null, 0, ctx, cause));
+
+    /// <summary>Asks for a hard kill: the whole subtree leaves the tree at once, no waiting.</summary>
+    public void Kill(Source node, object? ctx = null, Source? by = null, Source? cause = null) =>
+        Submit(new SourceDraft(by ?? node, SourceCommandKind.Kill, node, null, 0, ctx, cause));
+
+    /// <summary>Asks to cancel a pending termination (only the node that started the wave can be aborted).</summary>
+    public void Abort(Source node, object? ctx = null, Source? by = null, Source? cause = null) =>
+        Submit(new SourceDraft(by ?? node, SourceCommandKind.Abort, node, null, 0, ctx, cause));
+
+    /// <summary>NewSource + Insert (emitted by the parent). Outside a run the node is Active when this returns; during a run, when its turn comes.</summary>
+    public Source Spawn(Source parent, string name, SourceTagSet tags = default, ISourceAttachment? attachment = null)
     {
-        var inst = new SpellInstance(this, new InstanceId(++_nextInstance), abilityId, caster, parent);
-        _instances[inst.Id] = inst;
-        Log.Add($"LIFE  {inst.Id} started: ability {abilityId} by {caster}");
-        PublishLifecycle(new InstanceStarted(inst.Id, abilityId, caster, parent), inst.Id);
-        return inst;
+        var node = NewSource(name, tags, attachment);
+        Insert(parent, node);
+        return node;
     }
 
-    internal void StopInstance(SpellInstance inst, StopReason reason)
+    /// <summary>The node of an entity, created on first use under the System root. Gone (and forgotten) once terminated.</summary>
+    public Source EntitySource(EntityId entity)
     {
-        if (inst.Stopped) return;
-        inst.Stopped = true;
-        _instances.Remove(inst.Id);
-        Log.Add($"LIFE  {inst.Id} stopped: {reason}");
-        PublishLifecycle(new InstanceStopped(inst.Id, inst.AbilityId, inst.Caster, reason), inst.Id);
+        if (_entityNodes.TryGetValue(entity, out var node)) return node;
+        node = NewSource($"Entity {entity}", SourceTagSet.Of(SourceTags.Entity), new EntityAttachment(entity));
+        _entityNodes[entity] = node;
+        Insert(Root, node);
+        return node;
     }
 
-    void PublishLifecycle<T>(T fact, InstanceId cause)
+    // What a hook or a ticket submits to the processor lands here: it becomes a request like any other. Submitted while a lifecycle
+    // request is being applied, it is DERIVED from it (lineage and depth continue, so the fuse covers lifecycle cascades).
+    void RouteSourceCommand(SourceCommand c)
     {
-        Publish(fact, new FactCtx(default, cause, ImmutableArray<long>.Empty, 0));
+        var draft = new SourceDraft(c.Node, c.Kind, c.Node, c.Other, c.Generation, c.Ctx);
+        if (_applyCtx is { } ctx) Enqueue(draft with { Cause = ctx.Cause }, Origin.Derived, ctx.Lineage, ctx.Depth + 1);
+        else Enqueue(draft, Origin.Original, [], 0);
         if (!_running) Run();
     }
+
+    /// <summary>
+    /// Publishes a fact that has no request of its own, of ANY type: the lifecycle facts, and the facts of the layers built on the
+    /// authority (a spell layer announcing "the run stopped", a passive layer...). Called from a lifecycle hook, the fact carries the ctx
+    /// of the request being applied (lineage, depth); <paramref name="node"/> becomes its cause when the request has none.
+    /// </summary>
+    public void Announce<T>(T fact, Source? node = null)
+    {
+        var ctx = _applyCtx is { } c
+            ? c with { Cause = c.Cause ?? node }
+            : new FactCtx(default, node, ImmutableArray<long>.Empty, 0);
+        Publish(fact, ctx);
+        if (!_running) Run();   // outside a run (a game callback): the reactions are resolved now
+    }
+
+    // Forgets the lookup entries of a node that left the tree, so a later EntitySource builds a fresh one.
+    void Forget(Source node)
+    {
+        if (node.Attachment is EntityAttachment e && _entityNodes.GetValueOrDefault(e.Id) == node) _entityNodes.Remove(e.Id);
+    }
+
+    sealed class SourceSink(Authority authority) : ISourceLifecycleSink
+    {
+        public void OnInserted(Source parent, Source child) { authority.Log.Add($"SRC   {child} inserted under {parent}"); authority.Announce(new SourceInserted(parent, child), child); }
+        public void OnTerminationStarted(Source node) { authority.Log.Add($"SRC   {node} terminating"); authority.Announce(new SourceTerminating(node), node); }
+        public void OnTerminated(Source node, bool killed) { authority.Log.Add($"SRC   {node} {(killed ? "killed" : "terminated")}"); authority.Forget(node); authority.Announce(new SourceTerminated(node, killed), node); }
+        public void OnAborted(Source node) { authority.Log.Add($"SRC   {node} abort"); authority.Announce(new SourceAborted(node), node); }
+        public void OnRejected(SourceCommandKind kind, Source node, SourceRejectReason reason) { authority.Log.Add($"SRC   {kind} on {node} rejected: {reason}"); authority.Announce(new SourceCommandRejected(kind, node, reason), node); }
+    }
+
+    // ---------------- entity lifecycle ----------------
 
     /// <summary>
     /// Call when an entity is about to be freed: ends every status it owns (their effects are disposed).
@@ -151,6 +231,9 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         var ctx = new FactCtx(default, null, ImmutableArray<long>.Empty, 0);
         foreach (var inst in StatusesOf(entity).ToList()) RemoveInstance(inst, RemoveReason.OwnerRemoved, ctx);
         _statuses.Remove(entity);
+
+        // Graceful: whatever runs under it is told from outside, but a consequence still in flight (a projectile...) keeps the node, and so its chain, alive.
+        if (_entityNodes.TryGetValue(entity, out var node)) Terminate(node, by: Root);
     }
 
     void Enqueue(Draft d, Origin origin, ImmutableArray<long> lineage, int depth)
@@ -158,11 +241,13 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         var id = new RequestId(++_nextRequest);
         _queue.Enqueue(d switch
         {
-            RequestDraft r => new ResourceRequest(id, r.Source, r.Cause, origin, lineage, depth, r.Target,
+            ResourceDraft r => new ResourceRequest(id, r.Source, r.Cause, origin, lineage, depth, r.Target,
                                                   r.Resource, r.Direction, r.Tags, new BucketedValue(r.Amount)),
             StatusDraft s => new StatusRequest(id, s.Source, s.Cause, origin, lineage, depth, s.Target,
                                                s.Op, s.Def, new BucketedValue(s.Level), new BucketedValue((long)(s.Duration ?? 0)),
                                                s.Duration.HasValue, s.LevelOp, s.TimeOp, s.RemoveFilter, s.Reason),
+            SourceDraft c => new SourceRequest(id, c.Source, c.Cause, origin, lineage, depth, c.Node.OwnerOf() ?? default,
+                                               c.Command, c.Node, c.Other, c.Generation, c.Ctx),
             _ => throw new NotSupportedException(d.GetType().Name),
         });
     }
@@ -172,11 +257,12 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         _running = true;
         try
         {
-            while (_queue.TryDequeue(out var r))
-                switch (r)
+            while (_queue.TryDequeue(out var item))
+                switch (item)
                 {
                     case ResourceRequest rr: Process(rr, ResolveResource); break;
                     case StatusRequest sr: Process(sr, ResolveStatus); break;
+                    case SourceRequest src: Process(src, ResolveSource); break;
                 }
         }
         finally { _running = false; }
@@ -194,6 +280,16 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
             Publish(new RequestDropped(CtxOf(original), "depth"), CtxOf(original));
             return;
         }
+
+        // (lifecycle commands are exempt: asking twice, or asking about a node that is already gone, is handled by the processor)
+        // A node that left the tree has lost its chain (no parent, no inherited context): its requests would match nothing
+        // reliably. Pending nodes are fine: that is exactly what "consequences outlive the flow" means.
+        if (original is not SourceRequest && original.Source.State is SourceState.Terminated)
+        {
+            Drop(original, "source terminated", CtxOf(original));
+            return;
+        }
+
         Log.Add($"REQ   {original.Describe()}");
         var p = P<T>();
 
@@ -248,11 +344,20 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
             }
     }
 
+    // ---------------- resolve: lifecycle ----------------
+    void ResolveSource(SourceRequest r)
+    {
+        // Facts published while it is applied (inserted, terminating, terminated, hooks) carry this request's ctx.
+        _applyCtx = CtxOf(r);
+        try { _sources.Apply(new SourceCommand(r.Command, r.Node, r.Other, r.Generation, r.Ctx)); }
+        finally { _applyCtx = null; }
+    }
+
     // ---------------- resolve: resources ----------------
     void ResolveResource(ResourceRequest current)
     {
         var ctx = CtxOf(current);
-        var entity = entities.Find(current.Target);
+        var entity = _entities.Find(current.Target);
         if (entity is null) { Drop(current, "target gone", ctx); return; }
         if (!entity.Resources.Has(current.Resource)) { Log.Add($"NOOP  {current.Id} {current.Target} has no resource {current.Resource.Value}"); return; }
 
@@ -267,7 +372,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
 
         if (change.Killed)
         {
-            Log.Add($"FACT  {current.Target} died (killer {current.Source.Kind}:{current.Source.Id})");
+            Log.Add($"FACT  {current.Target} died (killer {current.Source})");
             Publish(new DeathFact(ctx, current.Target, current.Source), ctx);
         }
     }
@@ -292,7 +397,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     void ResolveStatus(StatusRequest r)
     {
         var ctx = CtxOf(r);
-        var owner = entities.Find(r.Target);
+        var owner = _entities.Find(r.Target);
         if (owner is null) { Drop(r, "target gone", ctx); return; }
         if (r.Op == StatusOp.Remove)
         {
@@ -340,6 +445,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
     void Create(StatusDefinition def, StatusRequest r, ICombatEntity owner, int level, long? expires, FactCtx ctx)
     {
         var inst = new StatusInstance(++_nextStatus, def, r.Target, level, expires, r.Source);
+        inst.Source = Spawn(EntitySource(r.Target), def.Name, SourceTagSet.Of(SourceTags.Status));
         inst.Data = def.CreateData(inst, owner);   // before effects/install, so they can read it
         if (def.Effects is not null)
             foreach (var e in def.Effects) inst.EffectHandles.Add(e.Apply(inst, owner));
@@ -359,6 +465,7 @@ public sealed class Authority(IGameClock clock, IEntityDirectory entities)
         foreach (var h in inst.Handles) h.Dispose();
         (inst.Data as IDisposable)?.Dispose();
         if (_statuses.TryGetValue(inst.Owner, out var owned)) owned.Remove(inst);
+        Terminate(inst.Source, by: Root);   // graceful: reactions still in flight keep their chain until they are done
         Log.Add($"FACT  {inst.Def.Name} removed from {inst.Owner} ({reason})");
         Publish(new StatusRemoved(ctx, inst.Owner, inst.Def.Id, inst.Id, reason), ctx);
     }

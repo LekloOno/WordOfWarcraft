@@ -1,4 +1,4 @@
-using CombatCore;
+using CombatCore.Sources;
 using Godot;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Entities;
@@ -16,16 +16,16 @@ public abstract partial class SingleAbilityEffect : Effect
     [Export] private TargetRelation _target;
     [Export] private EffectWeighting _weighting = EffectWeighting.Actuate | EffectWeighting.Gather;
 
-    public override bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance)
+    public override bool Apply(TargetsPayload targetsPayload, Source source, Source? cause = null)
     {
         if (_launcher)
-            LauncherEffect(targetsPayload, spellInstance, targetsPayload.ActuateWeight);
+            LauncherEffect(targetsPayload, source, targetsPayload.ActuateWeight, cause);
 
         if (_target == TargetRelation.None)
             return true;
 
         void solver(IEntity entity, bool IsDirect, float gatherWeight, float actuateWeight) =>
-            ResolveEffect(targetsPayload.Launcher, entity, spellInstance, IsDirect, gatherWeight, actuateWeight);
+            ResolveEffect(targetsPayload.Launcher, entity, source, IsDirect, gatherWeight, actuateWeight, cause);
 
         targetsPayload.Apply(
             _target.HasSelf()  ? solver : null,
@@ -36,20 +36,28 @@ public abstract partial class SingleAbilityEffect : Effect
         return true;
     }
 
-    private void ResolveEffect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        Effect(launcher, target, spellInstance, IsDirect,
+    private void ResolveEffect(IEntity launcher, IEntity target, Source source, bool IsDirect, float gatherWeight, float actuateWeight, Source? cause) =>
+        Effect(launcher, target, source, IsDirect,
             _weighting.HasFlag(EffectWeighting.Gather)  ? gatherWeight  : 1f,
-            _weighting.HasFlag(EffectWeighting.Actuate) ? actuateWeight : 1f);
+            _weighting.HasFlag(EffectWeighting.Actuate) ? actuateWeight : 1f, cause);
 
-    public abstract void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight);
+    protected abstract void Effect(
+        IEntity launcher,
+        IEntity target,
+        Source source,
+        bool IsDirect,
+        float gatherWeight,
+        float actuateWeight,
+        Source? cause);
 
-    public virtual void LauncherEffect(TargetsPayload targetsPayload, SpellInstance spellInstance, float actuateWeight) =>
+    protected virtual void LauncherEffect(TargetsPayload targetsPayload, Source source, float actuateWeight, Source? cause) =>
         Effect(
             launcher: targetsPayload.Launcher,
             target: targetsPayload.Launcher,
-            spellInstance: spellInstance,
+            source: source,
             IsDirect: true,
             gatherWeight: 1f,
-            actuateWeight
+            actuateWeight,
+            cause: cause
         );
 }

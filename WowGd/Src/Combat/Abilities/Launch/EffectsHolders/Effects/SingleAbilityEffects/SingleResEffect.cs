@@ -1,4 +1,4 @@
-using CombatCore;
+using CombatCore.Sources;
 using Godot;
 using WowGd.Src.Combat.Resources;
 using WowGd.Src.Entities;
@@ -14,7 +14,14 @@ public partial class SingleResEffect : SingleAbilityEffect
     public override string Id => "effect_single_resurrect";
     [Export] private float _hp = 10f;
 
-    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight)
+    protected override void Effect(
+        IEntity launcher,
+        IEntity target,
+        Source source,
+        bool IsDirect,
+        float gatherWeight,
+        float actuateWeight,
+        Source? cause)
     {
         int? hp = _hp > 0 ? Mathf.FloorToInt(_hp * gatherWeight * actuateWeight) : null;
         target.HealthRes()?.Resurrect(hp);

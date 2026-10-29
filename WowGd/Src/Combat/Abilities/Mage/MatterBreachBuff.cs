@@ -21,7 +21,7 @@ public class MatterBreachBuff : IBreachBuff
 
         if (_handles.TryGetValue(entity, out IDisposable? handle))
             handle.Dispose();
-
+/*
         _handles.Add(entity, 
             CombatCoreNode.Authority.Add(Rules.Mod(
                 new(direction: ResourceDirection.Add,
@@ -30,7 +30,7 @@ public class MatterBreachBuff : IBreachBuff
                     Target: entity.Id,
                     SourceOwner: entity.Id,
                     RequireAll: _tagSet),
-                ValueMod.Times(1.25f))));
+                ValueMod.Times(1.25f))));*/
     }
 
     public void Cancel(IEntity entity, TargetRelation targetRelation)

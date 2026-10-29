@@ -1,4 +1,5 @@
 using CombatCore;
+using CombatCore.Sources;
 using Godot;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Combat.Resources;
@@ -15,11 +16,20 @@ public partial class SingleHealEffect : SingleAbilityEffect
     public override string Id => "effect_single_heal";
     [Export] private float _hp = 10f;
 
-    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight) =>
-        spellInstance.Request(
+    protected override void Effect(
+        IEntity launcher,
+        IEntity target,
+        Source source,
+        bool IsDirect,
+        float gatherWeight,
+        float actuateWeight,
+        Source? cause) =>
+        CombatCoreNode.Authority.Submit(new ResourceDraft(
+            source,
             target.Id,
             ResourceRegistry.GetId<IEntityHealth>(),
             ResourceDirection.Add,
             Mathf.FloorToInt(_hp * gatherWeight * actuateWeight),
-            RequestTagSet);
+            RequestTagSet,
+            cause));
 }

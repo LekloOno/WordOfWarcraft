@@ -1,4 +1,5 @@
 using CombatCore.Primitives;
+using CombatCore.Sources.Attachment;
 
 namespace CombatCore.Tests;
 
@@ -85,6 +86,14 @@ public sealed class FakeBreaches(EntityId owner) : IDisposable
     public int Generation { get; set; } = 1;     // bumped by the reapply hook: "Brèches re-cast re-rolls the positions"
     public bool Disposed { get; private set; }
     public void Dispose() => Disposed = true;
+}
+
+/// <summary>An attachment that keeps its node pending until the test completes the ticket (a projectile in flight).</summary>
+public sealed class Hold : ISourceAttachment
+{
+    public TerminationTicket Ticket { get; private set; }
+    public bool Terminating { get; private set; }
+    public TerminationResponse TerminationRequested(TerminationTicket ticket, object? ctx) { Ticket = ticket; Terminating = true; return TerminationResponse.Deferred; }
 }
 
 public sealed class DisposeFlag : IDisposable { public bool Disposed { get; private set; } public void Dispose() => Disposed = true; }

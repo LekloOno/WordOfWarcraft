@@ -1,4 +1,4 @@
-using CombatCore;
+using CombatCore.Sources;
 using WowGd.Src.Combat.Abilities.Actuation;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders.Gatherers;
@@ -24,13 +24,13 @@ public class EffectsHolder : IEffectsHolder
         _trigger.Triggered += OnTriggered;
     }
 
-    private void OnTriggered(ActuatePayload payload, TargetIntent intent, SpellInstance spellInstance)
+    private void OnTriggered(ActuatePayload payload, TargetIntent intent, Source source, Source? cause)
     {
         TargetsPayload targets = _gatherer.Gather(payload, intent);
         foreach (IEffect effect in _data.EffectsDt)
-            effect.Apply(targets, spellInstance);
+            effect.Apply(targets, source, cause);
     }
 
-    public void Launch(ActuatePayload payload, SpellInstance spellInstance) =>
-        _trigger.Start(payload, spellInstance);
+    public void Launch(ActuatePayload payload, Source source, Source? cause) =>
+        _trigger.Start(payload, source, cause);
 }

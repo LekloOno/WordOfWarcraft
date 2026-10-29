@@ -1,4 +1,6 @@
 using CombatCore;
+using CombatCore.Primitives;
+using CombatCore.Sources;
 using Godot;
 using WowGd.Src.Combat.Resources;
 using WowGd.Src.Combat.Resources.FocusRes;
@@ -15,22 +17,29 @@ public partial class SingleFocusEffect : SingleAbilityEffect
     public override string Id => "effect_single_focus";
     [Export] private float _focus = 10f;
 
-    public override void Effect(IEntity launcher, IEntity target, SpellInstance spellInstance, bool IsDirect, float gatherWeight, float actuateWeight)
+    protected override void Effect(
+        IEntity launcher,
+        IEntity target,
+        Source source,
+        bool IsDirect,
+        float gatherWeight,
+        float actuateWeight,
+        Source? cause)
     {
         int fp = Mathf.FloorToInt(_focus * gatherWeight * actuateWeight);
-        if (fp > 0)
-            spellInstance.Request(
-                target.Id,
-                ResourceRegistry.GetId<IFocus>(),
-                ResourceDirection.Add,
-                Mathf.FloorToInt(_focus * gatherWeight * actuateWeight),
-                RequestTagSet);
-        else
-            spellInstance.Request(
-                target.Id,
-                ResourceRegistry.GetId<IFocus>(),
-                ResourceDirection.Remove,
-                Mathf.FloorToInt(-_focus * gatherWeight * actuateWeight),
-                RequestTagSet);
+        int value = Mathf.FloorToInt(_focus * gatherWeight * actuateWeight);
+
+        ResourceId resourceId = ResourceRegistry.GetId<IFocus>();
+        
+        ResourceDirection dir = fp > 0 ? ResourceDirection.Add : ResourceDirection.Remove;
+
+        if (dir is ResourceDirection.Remove)
+            value *= -1;
+
+        CombatCoreNode.Authority.Submit(new ResourceDraft(
+            source, target.Id,
+            resourceId, dir, value,
+            RequestTagSet,
+            cause));
     }
 }

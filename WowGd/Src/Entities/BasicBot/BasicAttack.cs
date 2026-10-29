@@ -1,9 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CombatCore;
+using CombatCore.Primitives;
+using CombatCore.Sources;
 using Godot;
 using WowGd.Src.Combat;
 using WowGd.Src.Combat.Abilities.Data;
+using WowGd.Src.Combat.Abilities.Spells;
 using WowGd.Src.Combat.Abilities.Targeting;
 using WowGd.Src.Combat.Health;
 using WowGd.Src.Combat.Resources;
@@ -23,6 +26,7 @@ public partial class BasicAttack : Node, IEntityHealthHandler
     private bool _enabled = true;
 
     private IEntity _entity = null!;
+    private Source? _source;
 
     public override void _Ready()
     {
@@ -40,8 +44,24 @@ public partial class BasicAttack : Node, IEntityHealthHandler
     }
 
     private CancellationTokenSource? _cts;
+    private static Authority Authority => CombatCoreNode.Authority;
+
+    /// <summary>
+    /// Starts one run: its node goes under the ability node. If the caster's node is gone the node is not inserted and
+    /// every request from it is dropped ("source terminated").
+    /// </summary>
+    public SpellInstance Start()
+    {
+        var inst = new SpellInstance(Authority, 0, _entity.Id, null);
+        inst.Node = Authority.Spawn(_source!, $"Run of basic attack", SourceTagSet.Of(SpellTags.Instance), inst);
+        return inst;
+    }
+
     private async void StartAttack()
     {
+        _source ??= CombatCoreNode.Authority.Spawn(CombatCoreNode.Authority.EntitySource(_entity.Id), "basic attack", SourceTagSet.Of(SpellTags.Spell));
+        
+
         SetPhysicsProcess(false);
 
         _cts?.Cancel();
@@ -64,12 +84,16 @@ public partial class BasicAttack : Node, IEntityHealthHandler
             result = await _entity.TargetIntentDriver.RetrieveTargetIntent(_entity, _targetType, token);
         }
 
-        CombatCoreNode.Authority.Submit(new RequestDraft(
-            new(CombatCore.Primitives.SourceKind.Ability, 1, _entity.Id),
+        var inst = Start();
+
+        CombatCoreNode.Authority.Submit(new ResourceDraft(
+            inst.Node,
             target.Id,
             ResourceRegistry.GetId<IEntityHealth>(),
             ResourceDirection.Remove,
             Mathf.FloorToInt(_attackDmg)));
+
+        inst.Stop(StopReason.Completed);
 
         _acc = 0f;
 

@@ -1,5 +1,6 @@
 using CombatCore;
 using CombatCore.Primitives.Tags;
+using CombatCore.Sources;
 using Godot;
 using Godot.Collections;
 using WowGd.Src.Entities;
@@ -20,6 +21,18 @@ public partial class StatusData : Resource
     [Export] private StatusInstalls? _installs = null;
 
     private StatusDefinition? Definition;
+    private readonly System.Collections.Generic.Dictionary<IEntity, Source> _sources = [];
+
+    private Source StatusSource(IEntity entity)
+    {
+        if (_sources.TryGetValue(entity, out var node))
+            return node;
+
+        node = CombatCoreNode.Authority.NewSource($"Status {_name}", SourceTagSet.Of(SourceTag.Register("Status")));
+        _sources[entity] = node;
+        CombatCoreNode.Authority.Insert(CombatCoreNode.Authority.EntitySource(entity.Id), node);
+        return node;
+    }
 
     public void Submit(IEntity owner, IEntity target, StatusOp statusOp, long level = 1, long? duration = null)
     {
@@ -33,7 +46,7 @@ public partial class StatusData : Resource
             Install: _installs?.Build());
 
         CombatCoreNode.Authority.Submit(new StatusDraft(
-            new CombatCore.Primitives.Source(CombatCore.Primitives.SourceKind.Status, Definition.Id, owner.Id),
+            StatusSource(owner),
             target.Id,
             statusOp,
             Definition,

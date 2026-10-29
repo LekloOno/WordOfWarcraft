@@ -1,4 +1,4 @@
-using CombatCore;
+using CombatCore.Sources;
 using Godot;
 using Godot.Collections;
 using WowGd.Src.Combat.Abilities.Data;
@@ -20,5 +20,5 @@ public abstract partial class Effect : Resource, IEffect
 
     protected RequestTagSet RequestTagSet => _requestTags.IntoSet();
     public abstract string Id { get; }
-    public abstract bool Apply(TargetsPayload targetsPayload, SpellInstance spellInstance);
+    public abstract bool Apply(TargetsPayload targetsPayload, Source source, Source? cause = null);
 }

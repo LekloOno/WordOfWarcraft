@@ -1,4 +1,5 @@
 using CombatCore.Primitives;
+using CombatCore.Sources;
 
 namespace CombatCore;
 
@@ -76,6 +77,8 @@ public sealed class StatusInstance(uint id, StatusDefinition def, EntityId owner
     public int Level { get; internal set; } = level;
     public long? ExpiresAt { get; internal set; } = expiresAt;
     public Source Applier { get; internal set; } = applier;   // latest applier, kept for attribution
+    /// <summary>The source node of this instance (child of its owner's node). Reactions and requests it emits are stamped with it.</summary>
+    public Source Source { get; internal set; } = null!;
     /// <summary>Typed payload (see TypedStatusDefinition). Owned by the instance: disposed with it.</summary>
     public object? Data { get; internal set; }
     internal bool Removed;

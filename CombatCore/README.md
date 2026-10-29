@@ -12,6 +12,33 @@ Run the tests:  `cd tests && dotnet run`
 7. `src/Authority.cs`                           - the pipeline: fuse -> replace -> add -> modify -> resolve -> publish.
 8. `tests/Mock.cs`, `tests/Program.cs`          - fake entities (the ports) and the scenarios, readable as a spec.
 
+## Sources (src/Sources)
+
+Every request has a **Source** (who emits it) and an optional **Cause**, both nodes of one tree owned by the authority. The core only builds
+`System > Entity` and `System > Entity > Status`; everything else (spells, abilities, passives...) is a layer ABOVE the core that puts its own
+nodes under those, with its own tags and its own **attachments**. The core never asks "what is this node": interceptors and handlers do, by climbing
+the tree (`FindAttachment<T>`, `SourceFilter.Having<T>`). `tests/Spells` is a reference layer: capability interfaces (`IAbilityAttachment`,
+`IAbilityInstanceAttachment`), a `SpellInstance` attachment with its own facts (published with `Authority.Announce`), and a `SpellBook` that builds
+`Entity > Ability > Run` with nothing but the public API.
+
+What the old `Source` record carried:
+
+| old | now |
+|---|---|
+| `SourceKind` | tags on the node, inherited by its descendants |
+| `Source.Owner` | `source.OwnerOf()` (the entity node above it) |
+| `Source.Id` (ability id) | a capability climb: `SourceFilter.Having<IAbilityAttachment>(a => a.AbilityId == 1)`, or `Under: abilityNode` |
+| `InstanceId` / `SpellInstance` | the run's own node; `SpellInstance` is an attachment of the spell layer |
+| `Cause` | `Source?` (same inheritance rule through reactions as before) |
+
+The **lifecycle processor** is the only writer of the tree, and it is private to the authority. Insert / Terminate / Kill / Abort and ticket
+completions are **requests** (`SourceDraft` / `SourceRequest`): they are broadcast, can be replaced / added to / observed like any other request,
+and wait in the same FIFO, so a terminate can never overtake a request emitted before it. A request whose source has left the tree (Terminated)
+is dropped; a *pending* source (draining) still emits: that is "consequences outlive the flow".
+
+Filters on a node (`SourceFilter`, used for the source, the cause, and the nodes of lifecycle requests): inherited tags (`RequireAll`/`Exclude`),
+exact tags (`ExactRequireAll`/`ExactExclude`), `Is` (exactly this node), `Under` (this node or below), `Owner`, and by implementation (`Having<T>` nearest attachment of type T, `HavingExact<T>` the node's own).
+
 ## Deliberately NOT here yet
 Movement requests/contributions, flag registers (Silenced/Dead), EndedBy / consequence contexts, WhileRunning (stackable
 spells), per-entity subscription index, per-source status instances, network serialization.

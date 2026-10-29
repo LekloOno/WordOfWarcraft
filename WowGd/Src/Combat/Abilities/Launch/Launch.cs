@@ -1,4 +1,4 @@
-using CombatCore;
+using CombatCore.Sources;
 using WowGd.Src.Combat.Abilities.Actuation;
 using WowGd.Src.Combat.Abilities.Data;
 using WowGd.Src.Combat.Abilities.Launch.EffectsHolders;
@@ -29,7 +29,7 @@ public class Launch : ILaunch
             _effectHolders[i] = data.EffectsHoldersDt[i].Build();
     }
 
-    void ILaunch.Launch(ActuatePayload payload, SpellInstance spellInstance)
+    void ILaunch.Launch(ActuatePayload payload, Source source, Source? cause)
     {
         if (!_data.CasterRulesDt.CheckAll(payload.Caster))
             return;
@@ -38,6 +38,6 @@ public class Launch : ILaunch
             return;
 
         foreach (IEffectsHolder holder in _effectHolders)
-            holder.Launch(payload, spellInstance);
+            holder.Launch(payload, source, cause);
     }
 }

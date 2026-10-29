@@ -7,6 +7,7 @@ using WowGd.Src.Entities;
 using WowGd.Src.Combat.Abilities.Targeting.Payload;
 using WowGd.Src.Combat.Health;
 using Godot;
+using CombatCore.Sources;
 
 namespace WowGd.Src.Combat.Statuses.Installs;
 
@@ -17,9 +18,10 @@ public partial class TestStatusInstall : StatusInstall
     {
         RequestFilter filter = new(
             Origin: OriginMask.Original,
-            SourceOwner: inst.Owner);
+            Source: new(Owner: inst.Owner));
 
-        Source source = new(SourceKind.Status, inst.Id, inst.Owner);
+        //Source source = new(SourceKind.Status, inst.Id, inst.Owner);
+        Source source = CombatCoreNode.Authority.Spawn(inst.Source, $"Run of test status", SourceTagSet.Of(SourceTag.Register("StatusInstance")));
 
         IEntity owner = EntitiesRegistryNode.Registry.FindAsEntity(inst.Owner)!;
 
@@ -32,8 +34,8 @@ public partial class TestStatusInstall : StatusInstall
                 return [];
                 
             if (relation.IsEnemy())
-                return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Remove, r.Value.Resolve())];
-            return [new RequestDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Add, 5)];
+                return [new ResourceDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Remove, r.Value.Resolve())];
+            return [new ResourceDraft(source, r.Target, ResourceRegistry.GetId<IEntityHealth>(), ResourceDirection.Add, 5)];
         }
 
         return auth.Add(
